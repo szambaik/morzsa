@@ -102,3 +102,20 @@ const householdEssentials=['Tojás','Tej','Kenyér','Paradicsom','Krumpli','Hagy
 householdEssentials.push('Fogkrém','Tusfürdő','Sampon','Pelenka','Papír zsebkendő','Mosogatógép-tabletta','Folyékony szappan','Száraz kutyaeledel','Száraz macskaeledel');
 const householdPriority=new Map(catalog.map((item,index)=>[item.name,1000+categoryPriorityOrder.indexOf(item.category)*100+index]));
 householdEssentials.forEach((name,index)=>householdPriority.set(name,index));
+
+// Trial artwork supplied by the user; related product variants share an image.
+const productArtwork={};
+for(const [file,names] of Object.entries({
+ 'tomato':'Paradicsom|Koktélparadicsom',
+ 'bread':'Kenyér|Kovászos kenyér|Teljes kiőrlésű kenyér|Rozskenyér|Magvas kenyér',
+ 'milk':'Tej|Laktózmentes tej',
+ 'cheese':'Sajt|Trappista|Cheddar|Gouda|Edami|Ementáli|Laktózmentes sajt',
+ 'chicken':'Csirkecomb',
+ 'rice':'Rizs|Jázminrizs|Basmati rizs|Barna rizs|Rizottórizs',
+ 'peas':'Zöldborsókonzerv',
+ 'soap':'Folyékony szappan',
+ 'detergent':'Mosószer|Mosógél|Öblítő',
+ 'diaper':'Pelenka|Úszópelenka',
+ 'cat-food':'Száraz macskaeledel',
+ 'toilet-paper':'WC-papír'
+}))for(const name of names.split('|'))productArtwork[name]='assets/icons/'+file+'.webp';
