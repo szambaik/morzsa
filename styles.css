@@ -108,3 +108,6 @@ nav button.active:not(.shopping-nav){color:#a75a3d}.add-form input{border-color:
 .pantry-tools>#sort-toggle{position:absolute;right:0;top:98px;min-width:150px;background:var(--white);box-shadow:0 6px 20px #302b2520}
 @media(max-width:360px){.app[data-page=pantry]{padding-left:12px;padding-right:12px}.app[data-page=pantry] .search-open h1{font-size:16px}.app[data-page=pantry] .product-artwork{width:32px;height:32px}}
 @media(min-width:600px){.app[data-page=pantry] .ingredient-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.search-open .search-wrap input::-webkit-search-cancel-button{display:none}
+.search-open .search-wrap input:focus{outline:none}
+.search-open .catalog-search-row:focus-within{outline:2px solid var(--green);outline-offset:2px}
