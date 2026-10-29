@@ -119,7 +119,7 @@ class Handler(SimpleHTTPRequestHandler):
         path = urlparse(self.path).path
         if path == '/':
             return True
-        return path in ('/index.html', '/styles.css', '/app.js', '/catalog.js', '/recipes.js', '/translations.js', '/i18n.js', '/household-config.js', '/household-model.js', '/household.js', '/auth-link.js', '/quick-entry.js', '/recipe-prompt.js') or (path.startswith('/assets/') and '..' not in path and '%' not in path and Path(path).suffix in ('.svg', '.jpg', '.png', '.webp'))
+        return path in ('/index.html', '/styles.css', '/app.js', '/catalog.js', '/recipes.js', '/translations.js', '/i18n.js', '/household-config.js', '/household-model.js', '/household.js', '/auth-link.js', '/quick-entry.js', '/recipe-prompt.js', '/shopping-model.js') or (path.startswith('/assets/') and '..' not in path and '%' not in path and Path(path).suffix in ('.svg', '.jpg', '.png', '.webp'))
 
     def do_GET(self):
         if self.path == '/api/status':

@@ -10,6 +10,10 @@
  async function restoreHousehold(){
   if(!session||!configured||recoveryMode||cloud.active||cloud.busy)return;
   let saved;try{saved=JSON.parse(localStorage.getItem(preferenceKey()))}catch{return}
+  if(!saved){
+   cloud.busy=true;
+   try{const houses=await request('/rest/v1/households?select=id,name,owner_id&order=created_at');saved=houses[0];}catch{status('A háztartások nem tölthetők be · most a helyi készlet látszik','Households unavailable · showing local pantry')}finally{cloud.busy=false}
+  }
   if(!saved?.id||typeof saved.id!=='string')return;
   try{await connect(saved.id,{name:saved.name})}catch{status('A háztartás nem tölthető be · most a helyi készlet látszik','Household unavailable · showing local pantry');toast(say('Az utolsó háztartást nem sikerült betölteni. Válassz a háztartásmenüből.','Could not load the last household. Choose from the household menu.'))}
  }
@@ -76,9 +80,13 @@
   section.querySelector('#skip-pantry-copy')?.addEventListener('click',()=>{if(menuBusy||cloud.busy)return;newHouseholdId=null;q.close()});
   b.onclick=()=>run(b,async()=>{select.disabled=true;try{const added=await copyPantry(select.value);if(added===undefined)return;newHouseholdId=null;await open();const message=document.getElementById('local-pantry-feedback');if(message)message.textContent=added?say(added+' terméket otthonra jelöltünk a közös készletben.',added+(added===1?' item marked':' items marked')+' at home in the shared pantry.'):say('Nincs új otthonjelölés: a forrás üres, vagy a termékek már megvannak.','No new items: the source is empty or its items are already at home.');}finally{select.disabled=false}});
  }
+ function positionHouseholdMenu(){
+  const anchor=document.getElementById('household-button').getBoundingClientRect(),v=window.visualViewport,offset=v?.offsetTop||0,height=v?.height||innerHeight,width=Math.min(360,innerWidth-24),top=Math.max(offset+8,Math.min(anchor.bottom+8,offset+height-180));
+  q.style.width=width+'px';q.style.left=Math.max(12,Math.min(anchor.right-width,innerWidth-width-12))+'px';q.style.top=top+'px';q.style.maxHeight=Math.max(140,offset+height-top-12)+'px';
+ }
  async function open(){
   q.innerHTML='<button class="close" aria-label="'+say('Bezárás','Close')+'">×</button><h2>'+say('Közös háztartás','Shared household')+'</h2><p class="household-error" role="alert"></p><div id="household-body"></div>';
-  q.querySelector('.close').onclick=()=>q.close();if(!q.open)q.showModal();const body=q.querySelector('#household-body');
+  q.querySelector('.close').onclick=()=>q.close();q.classList.add('household-menu');positionHouseholdMenu();if(!q.open)q.showModal();document.getElementById('household-button').setAttribute('aria-expanded','true');const body=q.querySelector('#household-body');
   if(!configured){body.innerHTML='<p>'+say('A közös háztartás előkészítve. A bejelentkezéshez és megosztáshoz még be kell kötni a felhőszolgáltatást.','Shared households are prepared. Connect the cloud service to enable sign-in and sharing.')+'</p><p>'+say('Addig a készleted és listád csak ezen a böngészőn mentődik.','Until then, your pantry and list are saved in this browser only.')+'</p>';return}
   if(authPending){body.innerHTML='<p role="status">'+say('Belépési link ellenőrzése…','Checking your sign-in link…')+'</p>';return}
   if(recoveryMode){paintPasswordReset(body);return}
@@ -101,10 +109,10 @@
  }
  function paintInviteBadge(){
   paintAccount();
-  const button=document.getElementById('household-button'),name=switchingName?switchingName+'…':cloud.active?(houseNames.get(cloud.active)||say('Közös háztartás','Shared household')):say('Saját készlet · ezen az eszközön','My pantry · this device');
+  const button=document.getElementById('household-button'),name=switchingName?switchingName+'…':cloud.active?(houseNames.get(cloud.active)||say('Közös háztartás','Shared household')):session?say('Saját készlet','My pantry'):say('Belépés','Sign in');
   button.setAttribute('data-no-translate','');button.title=name;button.setAttribute('aria-haspopup','dialog');
   button.innerHTML='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5M5 9v12h5v-7h4v7h5V9"/></svg><span class="household-name">'+esc(name)+'</span><span class="household-chevron" aria-hidden="true">⌄</span>';
-  button.setAttribute('aria-label',say('Háztartás váltása: ','Switch household: ')+name+(invitations.length?' · '+invitations.length+' '+say('meghívás','invitations'):''));
+  button.setAttribute('aria-label',say('Fiók és háztartás: ','Account and household: ')+name+(invitations.length?' · '+invitations.length+' '+say('meghívás','invitations'):''));
   if(invitations.length)button.insertAdjacentHTML('beforeend','<span class="invite-badge" aria-hidden="true">'+invitations.length+'</span>');
  }
  async function loadInvitations(){
@@ -153,9 +161,10 @@
   catch(e){authNotice=say('Ez a belépési link érvénytelen, lejárt, vagy nem sikerült ellenőrizni. Kérj új linket.','This sign-in link is invalid, expired or could not be verified. Request a new link.');}
   finally{authPending=false;incomingLink.access=null;incomingLink.refresh=null;await restoreHousehold();await open();if(authNotice)q.querySelector('.household-error').textContent=authNotice}
  }
- document.getElementById('household-button').onclick=open;
- document.querySelector('header').append(document.getElementById('household-button'));
- const account=document.createElement('button');account.id='account-button';account.setAttribute('data-no-translate','');document.querySelector('.header-controls').prepend(account);account.onclick=open;paintAccount();
+ const menuButton=document.getElementById('household-button');menuButton.onclick=()=>q.open?q.close():open();menuButton.setAttribute('aria-expanded','false');menuButton.setAttribute('aria-controls','household-dialog');
+ q.addEventListener('close',()=>{menuButton.setAttribute('aria-expanded','false')});
+ q.addEventListener('click',e=>{if(e.target===q){const r=q.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)q.close()}});
+ window.addEventListener('resize',()=>{if(q.open)positionHouseholdMenu()});window.visualViewport?.addEventListener('resize',()=>{if(q.open)positionHouseholdMenu()});
  // Freeze mutations until a write is acknowledged; other devices use revision checks.
  for(const event of ['click','submit','pointerdown','keydown'])document.addEventListener(event,e=>{if(cloud.busy&&e.target.closest('#main,#quantity-dialog,#clear-dialog,#history-dialog')){e.preventDefault();e.stopImmediatePropagation()}},true);
  window.addEventListener('online',refresh);document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh()});

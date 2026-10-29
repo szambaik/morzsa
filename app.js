@@ -133,12 +133,17 @@ async function sendChat(id){if(chatRequests.has(id))return;const controller=new 
  }catch(error){if(dialog.dataset.recipe===id)dialog.querySelector('.chat-error').textContent=error.name==='AbortError'?'Túl sokáig tartott a válasz. Próbáld újra.':error.message||'Nem sikerült kapcsolódni.';
  }finally{clearTimeout(timeout);chatRequests.delete(id);paintChat(id)}
 }
+function shoppingGroupHeader(category){
+ const items=state.cart.filter(item=>productCategory(item.name)===category),pending=items.filter(item=>!item.done).length,complete=pending===0;
+ const label=language==='en'?'Everything in this category is checked':'Ebben a kategóriában minden megvan';
+ return '<details class="shopping-group '+(complete?'complete':'')+'" data-category="'+esc(category)+'" '+(complete?'':'open')+'><summary><span aria-hidden="true">'+categoryIcon(category)+'</span><span>'+esc(category)+'</span>'+(complete?'<span class="shopping-complete" role="img" data-no-translate aria-label="'+label+'" title="'+label+'"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4 10-10"/></svg></span>':'<small>'+pending+'</small>')+'</summary>';
+}
 function renderShopping(){
  const pending=state.cart.filter(x=>!x.done).length,order=categoryPriorityOrder;
  const groups=[...new Set(state.cart.map(x=>productCategory(x.name)))].sort((a,b)=>order.indexOf(a)-order.indexOf(b));
- main.innerHTML='<div class="pantry-heading"><h1>Bevásárlólista</h1><span>'+pending+' tétel</span></div>'+(state.cart.length?groups.map(c=>'<details class="shopping-group" open><summary><span aria-hidden="true">'+categoryIcon(c)+'</span><span>'+esc(c)+'</span><small>'+state.cart.filter(x=>productCategory(x.name)===c&&!x.done).length+'</small></summary>'+state.cart.map((x,i)=>({x,i})).filter(({x})=>productCategory(x.name)===c).sort((a,b)=>compareProducts(a.x,b.x)).map(({x,i})=>'<div class="list-row '+(x.done?'done':'')+'"><input type="checkbox" id="cart-'+i+'" data-cart="'+i+'" '+(x.done?'checked':'')+'><label for="cart-'+i+'" '+(!productEnglish[x.name]?'data-no-translate':'')+'>'+esc(x.name)+'</label><span class="quantity-stepper"><button class="quantity-step" data-step="-1" data-index="'+i+'" aria-label="'+esc(x.name)+': mennyiség csökkentése" '+((x.quantity||1)<=1?'disabled':'')+'>−</button><button class="quantity-badge" data-edit-quantity="'+i+'" aria-label="'+esc(x.name)+': mennyiség módosítása">'+esc(cartAmount(x))+'</button><button class="quantity-step" data-step="1" data-index="'+i+'" aria-label="'+esc(x.name)+': mennyiség növelése">+</button></span><button class="delete" data-delete="'+i+'" aria-label="'+esc(x.name)+' törlése">×</button></div>').join('')+'</details>').join(''):'<div class="empty"><span>🧺</span>Most üres a kosarad.<br>A készletben a + gombbal adhatsz hozzá.</div>')+'<form class="add-form" id="add-cart"><input aria-label="Új bevásárlótétel" placeholder="Még valami a listára…" maxlength="60" required><button aria-label="Listára vétel">+</button></form>'+(state.cart.length?'<button class="primary full" id="restock">Vásárlás befejezése</button><p class="helper">A teljes lista az archívumba kerül, minden tétel otthonra lesz jelölve.</p>':'');
+ main.innerHTML='<div class="pantry-heading"><h1>Bevásárlólista</h1><span>'+pending+' tétel</span></div>'+(state.cart.length?groups.map(c=>shoppingGroupHeader(c)+state.cart.map((x,i)=>({x,i})).filter(({x})=>productCategory(x.name)===c).sort((a,b)=>compareProducts(a.x,b.x)).map(({x,i})=>'<div class="list-row '+(x.done?'done':'')+'"><input type="checkbox" id="cart-'+i+'" data-cart="'+i+'" '+(x.done?'checked':'')+'><label for="cart-'+i+'" '+(!productEnglish[x.name]?'data-no-translate':'')+'>'+esc(x.name)+'</label><span class="quantity-stepper"><button class="quantity-step" data-step="-1" data-index="'+i+'" aria-label="'+esc(x.name)+': mennyiség csökkentése" '+((x.quantity||1)<=1?'disabled':'')+'>−</button><button class="quantity-badge" data-edit-quantity="'+i+'" aria-label="'+esc(x.name)+': mennyiség módosítása">'+esc(cartAmount(x))+'</button><button class="quantity-step" data-step="1" data-index="'+i+'" aria-label="'+esc(x.name)+': mennyiség növelése">+</button></span><button class="delete" data-delete="'+i+'" aria-label="'+esc(x.name)+' törlése">×</button></div>').join('')+'</details>').join(''):'<div class="empty"><span>🧺</span>Most üres a kosarad.<br>A készletben a + gombbal adhatsz hozzá.</div>')+'<form class="add-form" id="add-cart"><input aria-label="Új bevásárlótétel" placeholder="Még valami a listára…" maxlength="60" required><button aria-label="Listára vétel">+</button></form>'+(state.cart.length?'<button class="primary full" id="restock">Vásárlás befejezése</button><p class="helper" data-no-translate>'+(language==='en'?'Purchased items go to your pantry and archive.':'A megvett tételek a készletbe és az archívumba kerülnek.')+'</p>':'');
  main.querySelectorAll('[data-step]').forEach(b=>b.onclick=()=>{const i=Number(b.dataset.index),item=state.cart[i],quantity=Math.max(1,(item.quantity||1)+Number(b.dataset.step));if(commitState({...state,cart:state.cart.map((x,j)=>j===i?{...x,quantity}:x)}))renderShopping()});
- main.querySelectorAll('[data-cart]').forEach(i=>i.onchange=()=>{state.cart[Number(i.dataset.cart)].done=i.checked;save();renderShopping()});
+ main.querySelectorAll('[data-cart]').forEach(i=>i.onchange=async()=>{const group=i.closest('details').dataset.category,index=Number(i.dataset.cart),next={...state,cart:state.cart.map((item,n)=>n===index?{...item,done:i.checked}:item)};if(window.household?.active){state=next;await window.household.notify()}else commitState(next);renderShopping();const section=[...main.querySelectorAll('.shopping-group')].find(el=>el.dataset.category===group);if(section&&!section.open)section.querySelector('summary').focus({preventScroll:true})});
  main.querySelectorAll('[data-delete]').forEach(b=>b.onclick=()=>{state.cart.splice(Number(b.dataset.delete),1);save();renderShopping()});
  main.querySelectorAll('[data-edit-quantity]').forEach(b=>b.onclick=()=>openQuantity(state.cart[Number(b.dataset.editQuantity)].name,true));
 
@@ -153,14 +158,29 @@ function commitState(next){
  try{localStorage.setItem(window.household?.storageKey()||'morzsa-v2',JSON.stringify(next))}catch{toast('Nem sikerült menteni. Semmit sem módosítottunk.');return false}
  state=next;updateCount();window.household?.notify();return true;
 }
+let purchaseSaving=false;
 function finishShopping(){
- if(!state.cart.length)return;
- const items=state.cart.map(x=>({...x,done:true,quantity:x.quantity||1,unit:x.unit||productUnit(x.name),category:productCategory(x.name)}));
- const next=JSON.parse(JSON.stringify(state));
- next.history.unshift({id:crypto.randomUUID(),date:new Date().toISOString(),kind:'purchase',items});
- next.cart=[];
- items.forEach(x=>{next.stock[x.name]=2;if(![...catalog,...next.custom].some(i=>i.name===x.name))next.custom.push({name:x.name,emoji:'🫙',category:'Saját tételek'})});
- if(commitState(next)){toast('Vásárlás elmentve. Minden tétel az otthoni készletbe került.');renderShopping()}
+ if(!state.cart.length||purchaseSaving||window.household?.busy)return;
+ if(state.cart.some(item=>!item.done))showFinishPrompt();else completeShopping(true);
+}
+function showFinishPrompt(error=''){
+ const say=(hu,en)=>language==='en'?en:hu,unchecked=state.cart.filter(item=>!item.done).length,checked=state.cart.length-unchecked;
+ let q=document.getElementById('finish-shopping-dialog');if(!q){q=document.createElement('dialog');q.id='finish-shopping-dialog';q.setAttribute('data-no-translate','');q.setAttribute('aria-labelledby','finish-title');document.body.append(q)}
+ q.innerHTML='<h2 id="finish-title">'+say('Befejezed a vásárlást?','Finish shopping?')+'</h2><p>'+unchecked+say(' tétel még nincs kipipálva. Ezeket is megvetted?',' items are still unchecked. Did you buy these too?')+'</p><p class="helper">'+say('Csak a megvett tételek kerülnek a készletbe és az archívumba. A többi a listán marad.','Only purchased items go to your pantry and archive. The rest stay on your list.')+'</p><p class="finish-error" role="alert">'+esc(error)+'</p><div class="finish-options"><button class="primary" id="finish-all" '+(!state.cart.length?'disabled':'')+'>'+say('Igen, mindent megvettem','Yes, I bought everything')+'</button><button class="small-button" id="finish-checked" '+(!checked?'disabled':'')+'>'+say('Csak a kipipáltakat · '+checked,'Only checked items · '+checked)+'</button><button class="small-button" id="finish-cancel" autofocus>'+say('Még vásárolok','Keep shopping')+'</button></div>';
+ q.querySelector('#finish-cancel').onclick=()=>{if(!purchaseSaving)q.close()};q.oncancel=e=>{if(purchaseSaving)e.preventDefault()};
+ for(const [id,include] of [['finish-all',true],['finish-checked',false]])q.querySelector('#'+id).onclick=async()=>{q.querySelectorAll('button').forEach(b=>b.disabled=true);if(await completeShopping(include))q.close();else showFinishPrompt(say('Nem sikerült lezárni a vásárlást. Ellenőrizd a friss listát, és próbáld újra.','Could not finish shopping. Check the updated list and try again.'))};
+ if(!q.open)q.showModal();
+}
+async function completeShopping(includeUnchecked){
+ if(purchaseSaving||window.household?.busy)return false;
+ const next=ShoppingModel.complete(state,{includeUnchecked,id:crypto.randomUUID(),date:new Date().toISOString(),unitFor:productUnit,categoryFor:productCategory,knownNames:catalog.map(item=>item.name)});
+ if(!next)return false;
+ purchaseSaving=true;
+ try{
+  let saved;if(window.household?.active){state=next;saved=await window.household.notify()}else saved=commitState(next);
+  if(!saved)return false;
+  toast(language==='en'?'Shopping saved. Purchased items are now in your pantry.':'Vásárlás elmentve. A megvett tételek a készletbe kerültek.');renderShopping();return true;
+ }finally{purchaseSaving=false}
 }
 function confirmClearCart(){
  if(!state.cart.length)return;

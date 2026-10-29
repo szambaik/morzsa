@@ -261,11 +261,20 @@ nav button.active:not(.shopping-nav){color:var(--orange-ink)}
 @media(max-width:380px){.app .brand{font-size:25px;gap:4px;letter-spacing:-1.4px}.brand .brand-mark{width:32px;height:32px}header{gap:6px}.header-controls{gap:4px}}
 @media(max-width:340px){.app .brand{font-size:23px}.brand .brand-mark{width:29px;height:29px}#account-button{padding:6px;font-size:11px}.language-switch button{padding:6px}}
 @media(prefers-reduced-motion:reduce){.brand .brand-mark{transition:none}.brand:hover .brand-mark{transform:rotate(-8deg)}}
-/* The selected household is always visible, with room for a real name on mobile. */
-.app header{display:grid;grid-template-columns:minmax(0,1fr) auto;align-content:center;column-gap:8px;row-gap:5px;height:auto;min-height:104px;padding:10px 0}
-.app header .brand{justify-self:start}.header-controls{justify-self:end}
-#household-button{grid-column:1/-1;justify-self:start;display:flex;align-items:center;gap:7px;width:auto;max-width:100%;min-width:0;min-height:36px;height:auto;padding:6px 11px;background:#f5e7d8;color:var(--orange-ink);font-size:12px;border-radius:12px 7px 12px 7px}
+/* One compact account/household menu; language remains a separate control. */
+.app header{display:flex;align-items:center;gap:10px;height:72px;min-height:72px;padding:8px 0}
+.header-controls{display:flex;justify-content:flex-end;flex:1;min-width:0;gap:6px}.language-switch{flex:none}
+#household-button{display:flex;align-items:center;gap:5px;flex:0 1 auto;width:auto;max-width:180px;min-width:0;min-height:36px;height:auto;padding:6px 9px;background:#f5e7d8;color:var(--orange-ink);font-size:12px;border-radius:12px 7px 12px 7px}
 #household-button svg,.household-chevron{flex:none}.household-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}.household-chevron{font-size:16px}
 #household-button .invite-badge{position:static;flex:none;order:2;min-width:18px;background:var(--orange);color:white}
 #pantry-copy-source{width:100%;min-width:0;min-height:44px;margin:8px 0 0;padding:8px;font:inherit;font-size:14px;color:var(--ink);background:var(--white);border:1px solid var(--line);border-radius:10px}
 #skip-pantry-copy{margin-top:8px;background:transparent}
+.shopping-complete{margin-left:auto;display:grid;place-items:center;width:25px;height:25px;flex:none;background:#e3ecd9;color:#345e43;border-radius:50%}
+.shopping-group.complete>summary{color:#476143;border-bottom-color:#d6dfcb}
+.finish-options{display:grid;gap:10px;margin-top:20px}.finish-options button{min-height:46px;width:100%;margin:0}
+.finish-options button:disabled{opacity:.45;cursor:default}.finish-error{font-size:13px;color:#a44231}.finish-error:empty{display:none}
+#household-dialog.household-menu{position:fixed;margin:0;right:auto;bottom:auto;transform:none;padding:18px;border:1px solid #e8d3be;border-radius:16px 8px 16px 16px;box-shadow:0 12px 38px #4f311f26;overscroll-behavior:contain}
+#household-dialog.household-menu::backdrop{background:#32291e20}
+.household-menu h2{font-size:21px;margin:6px 0 16px}.household-menu .full{margin:10px 0}.household-menu .local-pantry-import{padding:13px;margin:14px 0}
+.household-menu #create-house{margin:16px 0}.household-menu .auth-tabs{margin:8px 0 14px}
+@media(max-width:380px){#household-button>svg{display:none}.app header{gap:6px}#household-button{padding:6px 8px}}
