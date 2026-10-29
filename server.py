@@ -53,7 +53,7 @@ def validate(body):
         raise ApiError(400, 'A recept adatai hiányosak.')
     if len(json.dumps(recipe, ensure_ascii=False)) > 16000:
         raise ApiError(400, 'A recept túl hosszú.')
-    if not isinstance(stock, list) or len(stock) > 500 or any(not isinstance(n, str) or len(n) > 80 for n in stock):
+    if not isinstance(stock, list) or len(stock) > 1000 or any(not isinstance(n, str) or len(n) > 80 for n in stock):
         raise ApiError(400, 'Érvénytelen készlet.')
     if not isinstance(messages, list) or not 1 <= len(messages) <= 24:
         raise ApiError(400, 'Érvénytelen beszélgetés.')

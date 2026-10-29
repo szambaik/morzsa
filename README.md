@@ -21,7 +21,7 @@ Az implementáció az OpenAI hivatalos Responses API útmutatóját követi: htt
 
 ## Készlet
 
-320 választható tétel, 16 kategória; keresés ékezet nélkül is. A van otthon és bevásárlólistán jelölés független. Jobbra húzás is listára tesz. Nincs mennyiség, kevés állapot, lejárat vagy főzés utáni kötelező adminisztráció. Saját tétel hozzáadható. A v1 készlet, lista és kedvencek megmaradnak; a v2 állapota külön tárolódik.
+667 választható tétel, 27 kategória; keresés ékezet nélkül is. A van otthon és bevásárlólistán jelölés független. Jobbra húzás is listára tesz. Nincs mennyiség, kevés állapot, lejárat vagy főzés utáni kötelező adminisztráció. Saját tétel hozzáadható. A v1 készlet, lista és kedvencek megmaradnak; a v2 állapota külön tárolódik.
 
 ## Beszélgetés
 
@@ -44,7 +44,7 @@ A szervertesztek ellenőrzik a privát fájlok védelmét, hiányzó kulcs hibá
 
 Böngészőben ellenőrizve: ugyanaz a paprika mindkét jelöléssel egyszerre, keresési szűrés, 390 és 320 px szélességen túlcsordulás nélkül, receptenkénti kérdés megőrzése újratöltés után, hiányzó kulcs valós hibajelzése és újrapróbálási lehetősége. Mind a 7 szerverteszt átment.
 
-Katalógus megjelenítés: háromoszlopos kis kártyarács. Mind a 16 kategória nyitva indul, natív details/summary elemmel külön összecsukható. Keresés alatt a találatok kategóriái nyitva látszanak. Egy munkameneten belül a kategóriák összecsukott állapota megmarad jelöléskor. Az ikonok ahol lehetséges alapanyagonként különböznek; rokon termékek közös ikont kaphatnak. Az otthoni és listás jelölés független maradt.
+Katalógus megjelenítés: háromoszlopos kis kártyarács. Mind a 27 kategória nyitva indul, natív details/summary elemmel külön összecsukható. Keresés alatt a találatok kategóriái nyitva látszanak. Egy munkameneten belül a kategóriák összecsukott állapota megmarad jelöléskor. Az ikonok ahol lehetséges alapanyagonként különböznek; rokon termékek közös ikont kaphatnak. Az otthoni és listás jelölés független maradt.
 
 Kategórianavigáció: bal oldali sticky, külön görgethető ikon- és feliratsáv, mellette mobilon kétoszlopos alapanyagrács. Kategóriaválasztáskor a megfelelő csoport jelenik meg; a Minden gomb minden csoportot megmutat. Az összecsukható csoportfejlécek megmaradtak.
 
@@ -71,3 +71,7 @@ A Van otthon nézet a bal oldali sávban a Minden felett van; a három felső sz
 A categoryPriorityOrder és householdEssentials szerkesztett háztartási alapsorrend, nem felhasználói vagy piaci vásárlási statisztika. A gyakori alapok megelőzik a ritkábbakat. A kereső melletti ★/ABC kapcsoló fontosság és magyar ABC-rend között vált; a választás megmarad. Minden nézetben a csoportok háztartási prioritás szerint következnek, azon belül a kiválasztott rendezés érvényes. Kereséskor egyetlen, rendezett találati rács jelenik meg minden kategóriából; Van otthon nézetben a keresés az otthon jelöltekre szűkül.
 
 Ellenőrizve: natív böngészős dragTo-val paradicsom → házikó, majd → plusz; mindkét státusz egyszerre helyes. Kategórián belüli és keresési fejlécek eltűnnek, ABC-rend és visszaváltás működik, a Van otthon csak jelölt alapanyagokat tartalmaz. Hosszú nyomás megnyitja a mennyiségválasztót. 320 és 390 px szélességen nincs vízszintes kilógás.
+
+## Termékirány és szupermarket-katalógus
+
+A [termékterv](PRODUCT-PLAN.md) rögzíti az alapverziót és a tervezett fizetős funkciókat. Ezekhez még nincs előfizetés vagy fizetési integráció. A 27 kategória élelmiszer, higiénia, baba, kisállat és háztartási kínálatot is tartalmaz. Az új nem élelmiszeres kategóriákat nem küldjük főzési alapanyagként az AI-nak. Az alsó menü sorrendje Készlet – kiemelt Lista – Ötletek.
