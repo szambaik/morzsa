@@ -29,3 +29,9 @@ Object.assign(foodIcons,{
 'Mosogatószer':'🫧','Szivacs':'🧽','Papírtörlő':'🧻','WC-papír':'🧻','Szemeteszsák':'🗑️','Alufólia':'🥡','Sütőpapír':'📜','Szalvéta':'📄','Mosószer':'🧴','Öblítő':'🧴','Folyékony szappan':'🧼','Tisztítószer':'🧹'
 });
 const catalog=catalogGroups.flatMap(([category,emoji,names])=>names.split('|').map(name=>({name,category,emoji:foodIcons[name]||emoji})));
+
+// Editorial household defaults, not measured purchase frequency. Keep all items reachable.
+const categoryPriorityOrder=['Zöldségek','Tejtermék és tojás','Pékáru','Gyümölcsök','Hús és felvágott','Rizs és tészta','Szószok és olajok','Fűszerek','Konzervek és hüvelyesek','Fagyasztott','Sütés és édesség','Reggeli és rágcsálnivaló','Italok','Növényi alapok','Hal és tengeri','Háztartás','Saját tételek','Egyéb'];
+const householdEssentials=['Tojás','Tej','Kenyér','Paradicsom','Krumpli','Hagyma','Paprika','Fokhagyma','Alma','Banán','Vaj','Sajt','Tejföl','Joghurt','Csirkemell','Csirkecomb','Rizs','Tészta','Olaj','Liszt','Só','Cukor','Sárgarépa','Uborka','Citrom','Zsemle','Kifli','Csirkemellsonka','Sonka','Trappista','Túró','Tejszín','Sajtkrém','Zabpehely','Kávé','Tea','Pirospaprika','Bors','Mustár','Majonéz','Ketchup','Zöldségkeverék','Borsó','Gomba','Brokkoli','Cukkini','Saláta','Narancs','Körte','Barack','Jázminrizs','Spagetti','Penne','Darált sertéshús','Darált marhahús','Szalonna','Virsli','Kolbász','Babkonzerv','Kukoricakonzerv','Paradicsomkonzerv','Sűrített paradicsom','Lencse','Méz','Baracklekvár','Müzli','Sütőpor','Kakaópor','Mosogatószer','WC-papír','Papírtörlő','Szemeteszsák','Mosószer'];
+const householdPriority=new Map(catalog.map((item,index)=>[item.name,1000+categoryPriorityOrder.indexOf(item.category)*100+index]));
+householdEssentials.forEach((name,index)=>householdPriority.set(name,index));

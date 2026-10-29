@@ -61,3 +61,13 @@ A plusz 450 ms-os nyomva tartása (vagy jobb kattintás, billentyűzettel Alt+le
 A bevásárlólista kategóriánként csoportosított, a csoportok nyitva indulnak. A katalógusban nem szereplő tétel az Egyéb csoportba kerül, a hozzáadott saját alapanyag a Saját tételek közé.
 
 Ellenőrzés: böngészőben két koppintás → 2 kg krumpli; hosszú nyomás és 3 választása → 3 db fokhagyma; tej külön tejtermék-csoportba kerül. Mennyiség utólagos szerkesztése és újratöltés utáni megőrzése működik. Elmozdított érintés megszakítja a hosszú nyomás időzítőjét. 320 és 390 px szélességen nincs vízszintes túlcsordulás. Fizikai telefonon a hosszú nyomás még külön ellenőrizendő.
+
+## Otthon / lista és alapértelmezett sorrend
+
+Az alacsonyabb kártyák tetején balra házikó, középen alapanyagikon, jobbra plusz található. A házikó kapcsolja az otthoni jelölést. Az ikon vagy név balra húzása otthonra jelöl, jobbra húzása egy egységet ad a bevásárlólistához. A plusz hosszú nyomása továbbra is mennyiségválasztó. Az Otthon és Listán státusz egyszerre is megjelenik, a lista mennyiségével együtt.
+
+A Van otthon nézet a bal oldali sávban a Minden felett van; a három felső szűrő megszűnt. A katalógus kategóriafejlécei csak Minden nézetben látszanak, keresés és kategórián belüli böngészés közben nem. A Van otthon szintén egyetlen rács. A bevásárlólista továbbra is kategorizált.
+
+A categoryPriorityOrder és householdEssentials szerkesztett háztartási alapsorrend, nem felhasználói vagy piaci vásárlási statisztika. A gyakori alapok megelőzik a ritkábbakat. A kereső melletti ★/ABC kapcsoló fontosság és magyar ABC-rend között vált; a választás megmarad. Minden nézetben a csoportok háztartási prioritás szerint következnek, azon belül a kiválasztott rendezés érvényes. Kereséskor egyetlen, rendezett találati rács jelenik meg minden kategóriából; Van otthon nézetben a keresés az otthon jelöltekre szűkül.
+
+Ellenőrizve: natív böngészős dragTo-val paradicsom → házikó, majd → plusz; mindkét státusz egyszerre helyes. Kategórián belüli és keresési fejlécek eltűnnek, ABC-rend és visszaváltás működik, a Van otthon csak jelölt alapanyagokat tartalmaz. Hosszú nyomás megnyitja a mennyiségválasztót. 320 és 390 px szélességen nincs vízszintes kilógás.
