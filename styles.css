@@ -25,3 +25,26 @@ nav{align-items:center;gap:12px}nav button{min-height:60px}nav .shopping-nav{fle
 .header-controls{display:flex;align-items:center;gap:8px}.language-switch{display:flex;border:1px solid var(--line);border-radius:12px;overflow:hidden}.language-switch button{border:0;background:transparent;min-height:36px;padding:7px;font-size:12px}.language-switch button[aria-pressed=true]{background:var(--green);color:white}#household-button{border:1px solid var(--line);background:transparent;border-radius:12px;width:36px;height:36px;font-size:23px}header{gap:12px}
 
 #cloud-status{font-size:10px;color:var(--muted);margin:-4px 0 10px}#household-dialog label{display:flex;flex-direction:column;gap:8px;font-size:13px}#household-dialog input{width:100%;min-height:44px;border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit;background:var(--white)}#household-dialog p{font-size:14px}.household-error{color:#a44231}#invite-output{display:block;overflow-wrap:anywhere;font-size:13px}
+
+/* Morzsa's warmer, quieter surface treatment. Existing geometry is retained. */
+:root{--bg:#f8f5ee;--line:#e7e4d9;--white:#fffcf5;--orange:#bc603c}
+header{border-bottom:0}.brand span{display:inline-block;transform:rotate(-9deg)}
+.search-wrap{background:#eeeae0;border-color:transparent}.search-wrap input{background:transparent}
+.sort-toggle,.language-switch,#household-button{border-color:transparent;background:#eeeae0}
+.ingredient-card{border-color:transparent;background:#fffcf5;border-radius:12px}
+.ingredient-card.at-home{background:#eaf0e1;border-color:transparent}
+.home-action.selected{background:#dce8cd}.ingredient-plus:not(.selected){color:#a75a3d}
+.cart-status{background:#f2ddca;color:#80472d;border-radius:4px}
+.category-rail button.active{background:#e9dfce!important;color:var(--ink)!important;box-shadow:inset 3px 0 var(--orange)}
+.category-artwork{width:28px;height:28px;object-fit:contain;vertical-align:middle;display:inline-block}
+.category-rail button>span:first-child{display:flex;align-items:center;justify-content:center}
+.catalog-section>summary,.shopping-group>summary{border-bottom-color:#e7dfd0}
+.category-title,.shopping-group>summary{letter-spacing:.15px}
+.quantity-badge{background:#f0ece2;border-color:transparent;border-radius:9px}
+.shopping-actions .small-button{border-color:transparent;background:#eee9de}
+nav{background:#f8f5eef5;border-top-color:#e9e2d5}
+nav .shopping-nav{box-shadow:none;border-radius:18px}nav .shopping-nav i{background:#edc9ac}
+nav button.active:not(.shopping-nav){color:#a75a3d}.add-form input{border-color:#e7dfd0}
+.basket-bump .shopping-nav-icon{animation:morzsa-basket .36s ease-out}
+@keyframes morzsa-basket{0%,100%{transform:translateY(0) rotate(0)}40%{transform:translateY(-4px) rotate(-8deg)}70%{transform:translateY(-1px) rotate(5deg)}}
+@media(prefers-reduced-motion:reduce){.basket-bump .shopping-nav-icon{animation:none}}

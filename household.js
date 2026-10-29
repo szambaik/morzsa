@@ -4,6 +4,8 @@
  let session;try{session=JSON.parse(localStorage.getItem('morzsa-session'))}catch{}
  const cloud=window.household={active:null,rows:[],busy:false,configured,notify:()=>push(),storageKey:()=>cloud.active?'morzsa-household-cache-'+cloud.active:'morzsa-v2'};
  let localBackup=null,authEmail='',pollTimer;
+ const incomingLink=AuthLink.consume(location.href);if(incomingLink)history.replaceState(null,'',incomingLink.cleanURL);
+ let authPending=!!incomingLink,authNotice='';
  function status(hu,en){document.getElementById('cloud-status').textContent=say(hu,en)}
  function errorText(e){if(e.message?.includes('Conflict'))return say('Valaki közben módosította a listát. Frissítettük; ismételd meg a műveletet.','Someone changed the list. It has been refreshed; repeat your action.');return e.message||say('Nem sikerült kapcsolódni.','Could not connect.')}
  async function request(path,body,auth=true){
@@ -40,9 +42,10 @@
   q.innerHTML='<button class="close" aria-label="'+say('Bezárás','Close')+'">×</button><h2>'+say('Közös háztartás','Shared household')+'</h2><p class="household-error" role="alert"></p><div id="household-body"></div>';
   q.querySelector('.close').onclick=()=>q.close();if(!q.open)q.showModal();const body=q.querySelector('#household-body');
   if(!configured){body.innerHTML='<p>'+say('A közös háztartás előkészítve. A bejelentkezéshez és megosztáshoz még be kell kötni a felhőszolgáltatást.','Shared households are prepared. Connect the cloud service to enable sign-in and sharing.')+'</p><p>'+say('Addig a készleted és listád csak ezen a böngészőn mentődik.','Until then, your pantry and list are saved in this browser only.')+'</p>';return}
-  if(!session){body.innerHTML='<form id="cloud-signin"><label>Email<input type="email" id="cloud-email" required autocomplete="email" value="'+esc(authEmail)+'"></label><button class="primary full">'+say('Belépőkód küldése','Send sign-in code')+'</button></form><form id="cloud-verify" hidden><label>'+say('Emailben kapott kód','Code from your email')+'<input id="cloud-code" inputmode="numeric" autocomplete="one-time-code" required></label><button class="primary full">'+say('Bejelentkezés','Sign in')+'</button></form>';
-   body.querySelector('#cloud-signin').onsubmit=e=>{e.preventDefault();run(e.target.querySelector('button'),async()=>{authEmail=body.querySelector('#cloud-email').value.trim();await request('/auth/v1/otp',{email:authEmail,create_user:true},false);body.querySelector('#cloud-verify').hidden=false;body.querySelector('#cloud-code').focus()})};
-   body.querySelector('#cloud-verify').onsubmit=e=>{e.preventDefault();run(e.target.querySelector('button'),async()=>{setSession(await request('/auth/v1/verify',{email:authEmail,token:body.querySelector('#cloud-code').value.trim(),type:'email'},false));await open()})};return;
+  if(authPending){body.innerHTML='<p role="status">'+say('Belépési link ellenőrzése…','Checking your sign-in link…')+'</p>';return}
+  if(!session){body.innerHTML='<p>'+say('Küldünk egy belépési linket. A levélben kattints a Sign in gombra, és ide érkezel vissza.','We’ll email you a sign-in link. Click Sign in in the email to return here.')+'</p><form id="cloud-signin"><label>Email<input type="email" id="cloud-email" required autocomplete="email" value="'+esc(authEmail)+'"></label><button class="primary full">'+say('Belépési link küldése','Send sign-in link')+'</button></form><p id="signin-feedback" role="status"></p>';
+   q.querySelector('.household-error').textContent=authNotice;
+   body.querySelector('#cloud-signin').onsubmit=e=>{e.preventDefault();run(e.target.querySelector('button'),async()=>{authEmail=body.querySelector('#cloud-email').value.trim();const redirect=new URL(location.pathname,location.origin).href;await request('/auth/v1/otp?redirect_to='+encodeURIComponent(redirect),{email:authEmail,create_user:true},false);body.querySelector('#signin-feedback').textContent=say('A belépési linket elküldtük. Nézd meg a postaládádat és a spam mappát is.','Sign-in link sent. Check your inbox and spam folder.');e.target.querySelector('button').textContent=say('Új link küldése','Send another link')})};return;
   }
   body.innerHTML='<p>'+esc(session.user?.email||'')+'</p><p>'+say('Háztartások betöltése…','Loading households…')+'</p>';
   try{const houses=await request('/rest/v1/households?select=id,name,owner_id&order=created_at');body.innerHTML='<p>'+esc(session.user?.email||'')+'</p>'+houses.map(h=>'<button class="small-button full" data-house="'+h.id+'">'+esc(h.name)+(cloud.active===h.id?' ✓':'')+'</button>').join('')+'<form id="create-house"><label>'+say('Új háztartás neve','New household name')+'<input required maxlength="80" name="house-name"></label><button class="primary full">'+say('Létrehozás','Create')+'</button></form><form id="join-house"><label>'+say('Meghívókód','Invitation code')+'<input required name="invite" autocomplete="off"></label><button class="small-button full">'+say('Csatlakozás','Join')+'</button></form>'+(cloud.active?button('cloud-import','Helyi készlet és lista hozzáadása','Import local pantry and list')+button('cloud-disconnect','Vissza a helyi készlethez','Return to local pantry'):'')+button('cloud-signout','Kijelentkezés','Sign out');
@@ -58,10 +61,18 @@
    }
   }catch(e){q.querySelector('.household-error').textContent=errorText(e)}
  }
+ async function receiveLink(){
+  if(!incomingLink)return;
+  await open();
+  try{if(!configured)throw Error('not-configured');const verified=await AuthLink.validate(incomingLink,config);setSession(verified);authNotice=''}
+  catch(e){authNotice=say('Ez a belépési link érvénytelen, lejárt, vagy nem sikerült ellenőrizni. Kérj új linket.','This sign-in link is invalid, expired or could not be verified. Request a new link.');}
+  finally{authPending=false;incomingLink.access=null;incomingLink.refresh=null;await open();if(authNotice)q.querySelector('.household-error').textContent=authNotice}
+ }
  document.getElementById('household-button').onclick=open;
  // Freeze mutations until a write is acknowledged; other devices use revision checks.
  for(const event of ['click','submit','pointerdown','keydown'])document.addEventListener(event,e=>{if(cloud.busy&&e.target.closest('#main,#quantity-dialog,#clear-dialog,#history-dialog')){e.preventDefault();e.stopImmediatePropagation()}},true);
  window.addEventListener('online',refresh);document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh()});
  status('Csak ezen az eszközön','This device only');
+ receiveLink();
  cloud.updateLanguage=()=>status(cloud.active?'Közös háztartás':'Csak ezen az eszközön',cloud.active?'Shared household':'This device only');
 })();

@@ -93,3 +93,7 @@ A fejléc HU/EN gombjai váltanak nyelvet. A választás megmarad. A teljes 667 
 ## Közös háztartás – első implementáció
 
 A fejléc házikója nyitja a bejelentkezést/háztartáskezelést. Üres konfiguráció mellett őszinte „még nincs bekötve” állapot látszik. A bekötési útmutató: [supabase/SETUP.md](supabase/SETUP.md). A frontend, egyszer használható meghívók, termékenkénti verziózott közös mentés és 8 másodperces frissítés elkészült; éles Supabase-projekt nélkül a publikus app továbbra is helyi tárolást használ. A régebbi HOUSEHOLD-PLAN.md a célt írja le, a SETUP.md az aktuális megvalósítást és korlátait.
+
+## Emailes link és vizuális finomítás
+
+A belépés a Supabase alapértelmezett Sign in linkjét használja; nincs kódbeírás. A visszatérő tokeneket a címsorból eltávolítjuk, majd szerveroldalon ellenőriztetjük. Éles emailküldés továbbra is csak konfigurált Supabase-projekttel ellenőrizhető. A felület kevesebb keretet, generált kategóriaikonokat és visszafogott terrakotta hangsúlyokat kapott. Listára vételkor a kosár röviden mozdul; csökkentett mozgás beállítás mellett az animáció kikapcsol.

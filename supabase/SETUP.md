@@ -12,7 +12,13 @@ Egy új projekt SQL Editorában futtasd a supabase/schema.sql fájlt. Ez egyszer
 
 ## 3. Belépési email
 
-Authentication alatt engedélyezd az emailes belépést. A Magic Link email sablonban jelenjen meg a {{ .Token }} egyszer használatos kód; az app ezt kéri be, nem a levél linkjét követi. Site URL: https://szambaik.github.io/morzsa/. A küldő email/SMTP beállítást és a tesztcímek engedélyezését a Supabase aktuális követelményei szerint állítsd be. A kliens az OTP és verify végpontokat használja, rövid életű access tokennel és megújítható sessionnel.
+Authentication alatt engedélyezd az emailes belépést. A Magic link or OTP email sablon maradhat alapállapotban: a felhasználó a levél Sign in linkjére kattint. Nem szükséges kódot beírni vagy a sablont szerkeszteni.
+
+Site URL és Redirect URLs: https://szambaik.github.io/morzsa/. Az app a saját pontos alapcímét küldi redirect_to értékként. Helyi teszteléshez a használt localhost címet is engedélyezni kell a Redirect URLs alatt.
+
+A visszatéréskor az app azonnal eltávolítja a belépési adatokat a címsorból, ellenőrzi az access tokent a Supabase user végpontján, és csak sikeres ellenőrzés után menti a munkamenetet. Hibás vagy lejárt linknél új link kérhető. A háztartáskezelő automatikusan megnyílik.
+
+Az alap emailküldés címzett- és küldési korlátait ez nem oldja fel. Ha a szolgáltató nem engedi a kívánt címre küldést, külön SMTP-konfiguráció szükséges a Supabase aktuális feltételei szerint.
 
 ## 4. Publikus konfiguráció
 
