@@ -111,3 +111,7 @@ A lista tetején a gépelés ajánlásokat mutat. Vessző, pontosvessző vagy En
 ## Emailes meghívások és Google-fiók
 
 Elkészült az email-címhez kötött, appon belül elfogadható háztartásmeghívás, értesítési jelvénnyel, 7 napos lejárattal és tulajdonosi visszavonással. A Google-belépés a Supabase Google providerét használja, az emailes belépési link továbbra is elérhető. Az éles bekötéshez SQL-migráció és Google OAuth konfiguráció kell: [útmutató](supabase/EMAIL-GOOGLE-SETUP.md). A meghívó nem küld emailt vagy mobil push üzenetet.
+
+## Receptötletek a saját ChatGPT-ben
+
+Az Ötletek oldal és a Készlet ··· menü „Receptötletek ChatGPT-ben” gombja szerkeszthető kérést állít össze az aktuális helyi/közös készlet élelmiszereiből. „Másolás és ChatGPT megnyitása” után a felhasználó beilleszti és elküldi a szöveget. Nincs API-kulcs vagy háttérben küldött AI-kérés. A telefon dönti el, hogy a https://chatgpt.com/ link böngészőben vagy alkalmazásban nyílik meg; automatikus promptkitöltést vagy elküldést nem garantálunk. Másolási vagy popup-tiltásnál kézi másolás és külön megnyitási link érhető el. Személyes beszélgetéseket, emailt, meghívásokat nem tartalmaz a készletkérés.

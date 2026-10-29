@@ -173,3 +173,8 @@ body:has(.undo-home) #toast.visible{visibility:hidden}
 .invitation-card h3{margin:0 0 8px;font-size:16px}.invitation-actions{display:flex;gap:8px}.invitation-actions button{min-height:44px}
 .google-signin{display:flex;justify-content:center;align-items:center;gap:10px;min-height:48px;background:var(--white)}
 .invite-sent{display:flex;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);font-size:12px}.invite-sent span{min-width:0;overflow-wrap:anywhere;flex:1}
+.pantry-tools>#chatgpt-pantry{top:148px}
+.chatgpt-ideas{margin:4px 0 8px;min-height:44px;background:#eaf0e1;border:0}
+#chatgpt-dialog textarea{display:block;box-sizing:border-box;width:100%;font:inherit;font-size:16px;line-height:1.5;border:1px solid var(--line);border-radius:12px;background:var(--white);padding:12px;margin-top:8px;resize:vertical}
+#chatgpt-dialog h2{padding-right:24px}#chatgpt-dialog label,#chatgpt-dialog p,#chatgpt-dialog a{font-size:13px}
+#chatgpt-dialog .chatgpt-feedback:empty{display:none}
