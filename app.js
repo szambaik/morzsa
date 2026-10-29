@@ -48,7 +48,7 @@ function nextRecipe(){return [...recipes].filter(r=>!state.likes.includes(r.id)&
 function hero(label,title,desc){return '<section class="hero"><div class="eyebrow">'+label+'</div><h1>'+title+'</h1><p class="subtitle">'+desc+'</p></section>'}
 function render(){document.querySelector('.app').dataset.page=page;document.querySelectorAll('nav button').forEach(b=>{b.classList.toggle('active',b.dataset.page===page);b.setAttribute('aria-current',b.dataset.page===page?'page':'false')});updateCount();if(page==='pantry')renderPantry();if(page==='recipes')renderRecipes();if(page==='shopping')renderShopping()}
 const houseIcon='<svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5M5 9v12h5v-7h4v7h5V9"/></svg>';
-let categoryRailScroll=0,sortMode=state.sortMode==='alpha'?'alpha':'importance';
+let categoryPage=0,pantrySearchOpen=false,sortMode=state.sortMode==='alpha'?'alpha':'importance';
 function compareProducts(a,b){return sortMode==='alpha'?displayName(a.name).localeCompare(displayName(b.name),language):(householdPriority.get(a.name)??9999)-(householdPriority.get(b.name)??9999)||displayName(a.name).localeCompare(displayName(b.name),language)}
 function categoryIcon(name){const key=({'Zöldségek':'carrot','Gyümölcsök':'peach','Tejtermék és tojás':'milk','Hús és felvágott':'chicken','Fűszerek':'paprika','Italok':'tea','Háztartás':'cleaner','Saját tételek':'oats'})[name]||familyArtwork[name]||'oats';return '<img class="category-artwork" src="assets/icons/'+key+'.webp" alt="" width="28" height="28">'}
 function basketFeedback(){const basket=document.querySelector('.shopping-nav');basket.classList.remove('basket-bump');void basket.offsetWidth;basket.classList.add('basket-bump');clearTimeout(basketFeedback.timer);basketFeedback.timer=setTimeout(()=>basket.classList.remove('basket-bump'),400)}
@@ -59,10 +59,9 @@ function renderPantry(){
  main.innerHTML='<div class="pantry-heading"><h1>'+(stockView==='home'?'Van otthon':'Készlet')+'</h1><span>'+all.filter(i=>state.stock[i.name]>0).length+' otthon</span></div><div class="catalog-search-row"><div class="search-wrap"><span aria-hidden="true">⌕</span><input id="catalog-search" type="search" aria-label="Keresés az alapanyagok között" placeholder="Mit keresel?" value="'+esc(search)+'"></div><button id="sort-toggle" class="sort-toggle" aria-label="'+(sortMode==='alpha'?'Rendezés: ABC. Váltás fontossági sorrendre.':'Rendezés: fontosság. Váltás ABC-sorrendre.')+'" aria-pressed="'+(sortMode==='alpha')+'">'+(sortMode==='alpha'?'ABC':'★')+'<span aria-hidden="true">↕</span></button></div><div class="catalog-layout"><aside class="category-rail" aria-label="Alapanyag-kategóriák"><button data-home-view aria-label="Van otthon nézet" aria-pressed="'+(stockView==='home')+'" class="home-view '+(stockView==='home'?'active':'')+'"><span aria-hidden="true">'+houseIcon+'</span><span>Van otthon</span></button>'+cats.map(c=>{const g=catalogGroups.find(g=>g[0]===c),icon=c==='Minden'?'▦':categoryIcon(c);const label=({'Gyümölcsök':'Gyümölcs','Hús és felvágott':'Húsok','Hal és tengeri':'Halak','Tejtermék és tojás':'Tej és tojás','Növényi alapok':'Növényi','Rizs és tészta':'Rizs, tészta','Konzervek és hüvelyesek':'Konzervek','Szószok és olajok':'Szósz, olaj','Sütés és édesség':'Sütés','Reggeli és rágcsálnivaló':'Reggeli','Saját tételek':'Saját','Lekvárok és kenhető krémek':'Lekvár, méz','Magvak és rágcsálnivalók':'Magvak, nasi','Készételek és gyors fogások':'Készételek','Sör, bor és szeszes italok':'Sör, bor','Takarítás és mosás':'Takarítás','Papír és konyhai kellékek':'Papír, konyha','Tisztálkodás és szépségápolás':'Testápolás','Fogápolás és higiénia':'Higiénia','Baba és kisgyerek':'Baba','Állateledel és kellékek':'Kisállat','Otthoni apróságok':'Otthon'})[c]||c;const active=stockView!=='home'&&category===c;return '<button data-rail-category="'+esc(c)+'" aria-label="Kategória: '+esc(c)+'" aria-pressed="'+active+'" class="'+(active?'active':'')+'"><span aria-hidden="true">'+icon+'</span><span>'+label+'</span></button>'}).join('')+'</aside><div class="catalog-content"><div id="catalog-results">'+catalogRows(matchingItems(),hasCart)+'</div></div></div><form class="add-form" id="add-item"><input aria-label="Új alapanyag" placeholder="Saját tétel hozzáadása…" maxlength="60" required><button aria-label="Alapanyag hozzáadása">+</button></form>';
  const tools=document.createElement('details');tools.className='pantry-tools';tools.innerHTML='<summary aria-label="Készlet műveletek">···</summary><button class="small-button" id="clear-stock">Készlet ürítése</button>';main.querySelector('.pantry-heading').append(tools);tools.querySelector('button').onclick=confirmClearStock;
  if(homeUndo.length){const last=homeUndo[homeUndo.length-1],notice=document.createElement('div');notice.className='undo-home';notice.setAttribute('role','status');notice.innerHTML='<span data-no-translate>'+esc(displayName(last.name))+'</span><button data-undo>Visszavonás</button><button data-dismiss aria-label="Bezárás">×</button>';main.querySelector('.pantry-heading').after(notice);notice.querySelector('[data-undo]').onclick=()=>{if(commitState({...state,stock:{...state.stock,[last.name]:last.value}})){homeUndo.pop();refreshCatalog()}};notice.querySelector('[data-dismiss]').onclick=()=>{homeUndo.length=0;notice.remove()}}
- requestAnimationFrame(sizeCategoryRail);
- const rail=main.querySelector('.category-rail');rail.scrollTop=categoryRailScroll;rail.onscroll=()=>{categoryRailScroll=rail.scrollTop};
+ setupPantryNavigation();
  main.querySelector('[data-home-view]').onclick=()=>{stockView='home';category='Minden';search='';renderPantry()};
- main.querySelectorAll('[data-rail-category]').forEach(b=>b.onclick=()=>{category=b.dataset.railCategory;stockView='all';search='';collapsedCategories.delete(category);renderPantry();main.querySelector('.catalog-layout').scrollIntoView({block:'start',behavior:'instant'})});
+ main.querySelectorAll('[data-rail-category]').forEach(b=>b.onclick=()=>{category=b.dataset.railCategory;stockView='all';search='';collapsedCategories.delete(category);renderPantry();window.scrollTo({top:0,behavior:'instant'})});
  main.querySelector('#sort-toggle').onclick=()=>{sortMode=sortMode==='alpha'?'importance':'alpha';state.sortMode=sortMode;save();renderPantry()};
  main.querySelector('#catalog-search').oninput=e=>{search=e.target.value;main.querySelector('#catalog-results').innerHTML=catalogRows(matchingItems(),hasCart);bindCatalog()};
  main.querySelector('#add-item').onsubmit=e=>{e.preventDefault();const name=e.target.querySelector('input').value.trim();if(!name)return;const found=all.find(i=>norm(i.name)===norm(name)||norm(productEnglish[i.name]||'')===norm(name));if(found)state.stock[found.name]=2;else{state.custom.push({name,emoji:'🫙',category:'Saját tételek'});state.stock[name]=2}save();toast('Otthonra jelölve.');renderPantry()};
@@ -181,14 +180,6 @@ function openArchive(){
  q.querySelector('.close').onclick=()=>q.close();q.querySelectorAll('[data-restore]').forEach(b=>b.onclick=()=>{if(restoreArchive(b.dataset.restore)){b.disabled=true;b.textContent='Hozzáadva ✓';q.querySelector('#archive-feedback').textContent='Hozzáadva a bevásárlólistához.'}else q.querySelector('#archive-feedback').textContent=document.getElementById('toast').textContent});q.showModal();
 }
 
-function sizeCategoryRail(){
- const rail=main.querySelector('.category-rail');if(!rail)return;
- const navTop=document.querySelector('nav').getBoundingClientRect().top;
- rail.style.maxHeight=Math.max(80,navTop-rail.getBoundingClientRect().top-12)+'px';
-}
-let railFrame;
-for(const event of ['scroll','resize'])window.addEventListener(event,()=>{cancelAnimationFrame(railFrame);railFrame=requestAnimationFrame(sizeCategoryRail)},{passive:true});
-window.visualViewport?.addEventListener('resize',sizeCategoryRail);
 function confirmClearStock(){
  const q=document.getElementById('clear-dialog');
  q.innerHTML='<h2 id="clear-title">Kiüríted a készletet?</h2><p>Minden otthonjelölést eltávolítunk. A bevásárlólista és a saját termékeid megmaradnak.</p>'+(window.household?.active?'<p>A közös háztartás minden tagjának készlete kiürül.</p>':'')+'<div class="clear-actions"><button class="small-button" id="cancel-clear" autofocus>Mégse</button><button class="primary" id="confirm-clear">Készlet ürítése</button></div>';
@@ -215,4 +206,23 @@ function setupQuickEntry(actions){
  input.onfocus=suggest;input.onblur=()=>setTimeout(()=>{if(!form.contains(document.activeElement))close()},100);
  input.onkeydown=e=>{if(e.isComposing)return;if(e.key==='Escape'){close();return}if(['ArrowDown','ArrowUp'].includes(e.key)&&choices.length){e.preventDefault();active=(active+(e.key==='ArrowDown'?1:-1)+choices.length)%choices.length;options.querySelectorAll('button').forEach((b,i)=>b.setAttribute('aria-selected',String(i===active)));input.setAttribute('aria-activedescendant','quick-option-'+active)}if(e.key==='Enter'){e.preventDefault();commit([active>=0?choices[active].item.name:input.value],'')}};
  form.onsubmit=e=>{e.preventDefault();commit(input.value.split(/[,;\n]/),'')};
+}
+
+function setupPantryNavigation(){
+ const heading=main.querySelector('.pantry-heading'),row=main.querySelector('.catalog-search-row'),input=row.querySelector('input'),sort=row.querySelector('#sort-toggle'),tools=heading.querySelector('.pantry-tools');
+ const count=heading.querySelector('span');count.remove();
+ heading.insertBefore(row,tools);tools.append(sort);
+ const toggle=document.createElement('button');toggle.className='search-toggle';toggle.type='button';toggle.innerHTML='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg>';toggle.setAttribute('aria-label',language==='en'?'Search pantry':'Keresés a készletben');row.prepend(toggle);
+ const close=document.createElement('button');close.type='button';close.className='search-close';close.textContent='×';close.setAttribute('aria-label',language==='en'?'Close search':'Kereső bezárása');row.append(close);
+ const paint=()=>{const open=pantrySearchOpen||!!search;heading.classList.toggle('search-open',open);toggle.setAttribute('aria-expanded',String(open));input.tabIndex=open?0:-1};paint();
+ toggle.onclick=()=>{pantrySearchOpen=true;paint();input.focus()};close.onclick=()=>{search='';pantrySearchOpen=false;renderPantry();main.querySelector('.search-toggle').focus()};input.addEventListener('keydown',e=>{if(e.key==='Escape')close.click()});
+ const rail=main.querySelector('.category-rail'),buttons=[...rail.children],pages=[];
+ for(let start=0;start<buttons.length;start+=8){const panel=document.createElement('div');panel.className='category-page';buttons.slice(start,start+8).forEach(b=>panel.append(b));pages.push(panel)}
+ rail.replaceChildren(...pages);rail.setAttribute('aria-label',language==='en'?'Category pages':'Kategóriaoldalak');
+ const pager=document.createElement('div');pager.className='category-pager';pager.innerHTML=pages.map((_,i)=>'<button aria-label="'+(language==='en'?'Category page ':'Kategóriaoldal ')+(i+1)+'" data-category-page="'+i+'"><span></span></button>').join('');rail.after(pager);
+ const update=()=>pager.querySelectorAll('button').forEach((b,i)=>b.setAttribute('aria-current',i===categoryPage?'true':'false'));
+ const go=i=>{categoryPage=Math.max(0,Math.min(pages.length-1,i));rail.scrollTo({left:categoryPage*rail.clientWidth,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});update()};
+ pager.querySelectorAll('button').forEach((b,i)=>b.onclick=()=>go(i));rail.onscroll=()=>{categoryPage=Math.round(rail.scrollLeft/rail.clientWidth);update()};
+ rail.onkeydown=e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();go(categoryPage+(e.key==='ArrowRight'?1:-1));pages[categoryPage].querySelector('button').focus({preventScroll:true})}};
+ categoryPage=Math.min(categoryPage,pages.length-1);rail.scrollLeft=categoryPage*rail.clientWidth;update();
 }
