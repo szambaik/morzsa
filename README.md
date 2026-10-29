@@ -79,3 +79,9 @@ A [termékterv](PRODUCT-PLAN.md) rögzíti az alapverziót és a tervezett fizet
 ## Vásárlás lezárása és törlés
 
 A Vásárlás befejezése minden listatételt archivál és otthonra jelöl, a pipáktól függetlenül, majd kiüríti a listát. A Lista törlése külön megerősítést kér; nem archivál és nem változtatja a készletet. Sikertelen mentés esetén a lista megmarad. A korábban ürítéskor mentett archív bejegyzések továbbra is elérhetők.
+
+## Lista kezelése és következő lépések
+
+A kártyán + listára tesz, az aktív ✓ újabb koppintásra levesz. Hosszú nyomás a teljes mennyiséget szerkeszti. A bevásárlólistán külön −/+ gombok léptetik a mennyiséget; 1-nél a mínusz letiltott, törölni az × gombbal lehet. Az ismeretlenül begépelt termékek a Saját tételek kategóriába kerülnek. Korábbi vásárlás az archívumból újrafelhasználható, a mennyiségek a meglévőkhöz adódnak.
+
+A teljes hiányzóikon-lista az ICON-AUDIT.md fájlban; a többeszközös, bejelentkezéses háztartás terve a HOUSEHOLD-PLAN.md fájlban van. A szinkron még nem működik, ehhez háttérszolgáltatást kell bekötni.

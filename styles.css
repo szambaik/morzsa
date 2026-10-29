@@ -19,3 +19,5 @@ nav{align-items:center;gap:12px}nav button{min-height:60px}nav .shopping-nav{fle
 
 /* Larger trial artwork occupies the existing 40px icon row, never enlarging cards. */
 .ingredient-icon:has(.product-artwork){position:relative;width:100%;height:40px;min-width:0}.product-artwork{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:block;width:40px;height:40px;object-fit:contain;pointer-events:none;user-select:none}@media(max-width:360px){.product-artwork{width:36px;height:36px}}
+
+.quantity-stepper{display:inline-flex;align-items:center;gap:1px}.quantity-step{border:0;background:transparent;color:var(--green);min-width:30px;min-height:44px;padding:3px;font-size:20px}.quantity-step:disabled{opacity:.3;cursor:default}.quantity-stepper .quantity-badge{min-width:48px;padding:5px;font-size:11px}.list-row{flex-wrap:wrap}.list-row label{flex:1 1 80px}.list-row .delete{padding:5px}@media(max-width:360px){.list-row{gap:4px}.quantity-step{min-width:26px}.list-row label{flex-basis:60px}}
