@@ -261,3 +261,11 @@ nav button.active:not(.shopping-nav){color:var(--orange-ink)}
 @media(max-width:380px){.app .brand{font-size:25px;gap:4px;letter-spacing:-1.4px}.brand .brand-mark{width:32px;height:32px}header{gap:6px}.header-controls{gap:4px}}
 @media(max-width:340px){.app .brand{font-size:23px}.brand .brand-mark{width:29px;height:29px}#account-button{padding:6px;font-size:11px}.language-switch button{padding:6px}}
 @media(prefers-reduced-motion:reduce){.brand .brand-mark{transition:none}.brand:hover .brand-mark{transform:rotate(-8deg)}}
+/* The selected household is always visible, with room for a real name on mobile. */
+.app header{display:grid;grid-template-columns:minmax(0,1fr) auto;align-content:center;column-gap:8px;row-gap:5px;height:auto;min-height:104px;padding:10px 0}
+.app header .brand{justify-self:start}.header-controls{justify-self:end}
+#household-button{grid-column:1/-1;justify-self:start;display:flex;align-items:center;gap:7px;width:auto;max-width:100%;min-width:0;min-height:36px;height:auto;padding:6px 11px;background:#f5e7d8;color:var(--orange-ink);font-size:12px;border-radius:12px 7px 12px 7px}
+#household-button svg,.household-chevron{flex:none}.household-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}.household-chevron{font-size:16px}
+#household-button .invite-badge{position:static;flex:none;order:2;min-width:18px;background:var(--orange);color:white}
+#pantry-copy-source{width:100%;min-width:0;min-height:44px;margin:8px 0 0;padding:8px;font:inherit;font-size:14px;color:var(--ink);background:var(--white);border:1px solid var(--line);border-radius:10px}
+#skip-pantry-copy{margin-top:8px;background:transparent}
