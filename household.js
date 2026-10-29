@@ -3,15 +3,15 @@
  const say=(hu,en)=>language==='en'?en:hu;
  let session;try{session=JSON.parse(localStorage.getItem('morzsa-session'))}catch{}
  const cloud=window.household={active:null,rows:[],busy:false,configured,notify:()=>push(),storageKey:()=>cloud.active?'morzsa-household-cache-'+cloud.active:'morzsa-v2'};
- let localBackup=null,authEmail='',pollTimer,invitations=[],inviteUnavailable=false,inviteLoading=false;
+ let localBackup=null,authEmail='',authMode='login',recoveryMode=false,pollTimer,invitations=[],inviteUnavailable=false,inviteLoading=false;
  const incomingLink=AuthLink.consume(location.href);if(incomingLink)history.replaceState(null,'',incomingLink.cleanURL);
  let authPending=!!incomingLink,authNotice='';
  function status(hu,en){document.getElementById('cloud-status').textContent=say(hu,en)}
- function errorText(e){if(e.message?.includes('Conflict'))return say('Valaki közben módosította a listát. Frissítettük; ismételd meg a műveletet.','Someone changed the list. It has been refreshed; repeat your action.');return e.message||say('Nem sikerült kapcsolódni.','Could not connect.')}
- async function request(path,body,auth=true){
+ function errorText(e){if(e.message?.includes('Invalid login credentials'))return say('Hibás email-cím vagy jelszó.','Incorrect email or password.');if(e.message?.includes('Email not confirmed'))return say('Előbb erősítsd meg az email-címedet a kapott levélben.','Confirm your email using the message in your inbox first.');if(e.message?.includes('Conflict'))return say('Valaki közben módosította a listát. Frissítettük; ismételd meg a műveletet.','Someone changed the list. It has been refreshed; repeat your action.');return e.message||say('Nem sikerült kapcsolódni.','Could not connect.')}
+ async function request(path,body,auth=true,method=body===undefined?'GET':'POST'){
   if(!configured)throw Error(say('A felhő még nincs bekötve.','Cloud is not configured yet.'));
   if(auth&&session&&session.expires_at*1000<Date.now()+60000){const r=await fetch(config.url+'/auth/v1/token?grant_type=refresh_token',{method:'POST',signal:AbortSignal.timeout(20000),headers:{apikey:config.publishableKey,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:session.refresh_token})});const data=await r.json();if(!r.ok)throw Error(say('Jelentkezz be újra.','Please sign in again.'));setSession(data)}
-  const response=await fetch(config.url+path,{method:body===undefined?'GET':'POST',signal:AbortSignal.timeout(20000),headers:{apikey:config.publishableKey,'Content-Type':'application/json',...(auth&&session?{Authorization:'Bearer '+session.access_token}:{})},...(body===undefined?{}:{body:JSON.stringify(body)})});
+  const response=await fetch(config.url+path,{method,signal:AbortSignal.timeout(20000),headers:{apikey:config.publishableKey,'Content-Type':'application/json',...(auth&&session?{Authorization:'Bearer '+session.access_token}:{})},...(body===undefined?{}:{body:JSON.stringify(body)})});
   const text=await response.text();let data;try{data=text?JSON.parse(text):null}catch{throw Error('Invalid server response')}
   if(!response.ok)throw Error(data?.message||data?.msg||data?.error_description||'Request failed');return data;
  }
@@ -43,11 +43,8 @@
   q.querySelector('.close').onclick=()=>q.close();if(!q.open)q.showModal();const body=q.querySelector('#household-body');
   if(!configured){body.innerHTML='<p>'+say('A közös háztartás előkészítve. A bejelentkezéshez és megosztáshoz még be kell kötni a felhőszolgáltatást.','Shared households are prepared. Connect the cloud service to enable sign-in and sharing.')+'</p><p>'+say('Addig a készleted és listád csak ezen a böngészőn mentődik.','Until then, your pantry and list are saved in this browser only.')+'</p>';return}
   if(authPending){body.innerHTML='<p role="status">'+say('Belépési link ellenőrzése…','Checking your sign-in link…')+'</p>';return}
-  if(!session){body.innerHTML=button('google-signin','Belépés Google-fiókkal','Continue with Google')+'<p>'+say('Küldünk egy belépési linket. A levélben kattints a Sign in gombra, és ide érkezel vissza.','We’ll email you a sign-in link. Click Sign in in the email to return here.')+'</p><form id="cloud-signin"><label>Email<input type="email" id="cloud-email" required autocomplete="email" value="'+esc(authEmail)+'"></label><button class="primary full">'+say('Belépési link küldése','Send sign-in link')+'</button></form><p id="signin-feedback" role="status"></p>';
-   q.querySelector('.household-error').textContent=authNotice;
-   body.querySelector('#google-signin').classList.add('google-signin');body.querySelector('#google-signin').onclick=e=>run(e.target,async()=>{const settings=await request('/auth/v1/settings',undefined,false);if(!settings.external?.google)throw Error(say('A Google-belépés még nincs bekapcsolva. Addig emailes linkkel tudsz belépni.','Google sign-in is not enabled yet. Use an email link for now.'));const url=new URL(config.url+'/auth/v1/authorize');url.searchParams.set('provider','google');url.searchParams.set('redirect_to',new URL(location.pathname,location.origin).href);location.assign(url.href)});
-   body.querySelector('#cloud-signin').onsubmit=e=>{e.preventDefault();run(e.target.querySelector('button'),async()=>{authEmail=body.querySelector('#cloud-email').value.trim();const redirect=new URL(location.pathname,location.origin).href;await request('/auth/v1/otp?redirect_to='+encodeURIComponent(redirect),{email:authEmail,create_user:true},false);body.querySelector('#signin-feedback').textContent=say('A belépési linket elküldtük. Nézd meg a postaládádat és a spam mappát is.','Sign-in link sent. Check your inbox and spam folder.');e.target.querySelector('button').textContent=say('Új link küldése','Send another link')})};return;
-  }
+  if(recoveryMode){paintPasswordReset(body);return}
+  if(!session){paintAuth(body);return}
   body.innerHTML='<p>'+esc(session.user?.email||'')+'</p><p>'+say('Háztartások betöltése…','Loading households…')+'</p>';
   try{const houses=await request('/rest/v1/households?select=id,name,owner_id&order=created_at');await loadInvitations();body.innerHTML='<p>'+esc(session.user?.email||'')+'</p>'+houses.map(h=>'<button class="small-button full" data-house="'+h.id+'">'+esc(h.name)+(cloud.active===h.id?' ✓':'')+'</button>').join('')+'<form id="create-house"><label>'+say('Új háztartás neve','New household name')+'<input required maxlength="80" name="house-name"></label><button class="primary full">'+say('Létrehozás','Create')+'</button></form>'+(cloud.active?button('cloud-disconnect','Vissza a helyi készlethez','Return to local pantry'):'')+button('cloud-signout','Kijelentkezés','Sign out');
    body.insertAdjacentHTML('afterbegin','<section id="incoming-invitations"></section>');paintInvitations();
@@ -65,6 +62,7 @@
   }catch(e){q.querySelector('.household-error').textContent=errorText(e)}
  }
  function paintInviteBadge(){
+  paintAccount();
   const button=document.getElementById('household-button');button.querySelector('.invite-badge')?.remove();
   button.setAttribute('aria-label',say('Háztartás','Household')+(invitations.length?' · '+invitations.length+' '+say('meghívás','invitations'):''));
   if(invitations.length)button.insertAdjacentHTML('beforeend','<span class="invite-badge" aria-hidden="true">'+invitations.length+'</span>');
@@ -86,14 +84,37 @@
   el.innerHTML=rows.map(i=>'<div class="invite-sent"><span>'+esc(i.email)+'<br>'+((i.status==='pending'&&new Date(i.expires_at)<new Date())?say('Lejárt','Expired'):labels[i.status])+'</span>'+(i.status==='pending'?'<button class="small-button" data-revoke="'+esc(i.id)+'">'+say('Visszavonás','Revoke')+'</button>':'')+'</div>').join('');
   el.querySelectorAll('[data-revoke]').forEach(b=>b.onclick=()=>run(b,async()=>{await rpc('revoke_household_email_invite',{invitation_id:b.dataset.revoke});await paintSentInvitations(hid)}));
  }
+ function paintAccount(){const b=document.getElementById('account-button');if(b){b.textContent=session?say('Fiókom','Account'):say('Belépés','Sign in');b.setAttribute('aria-label',session?say('Fiókom és háztartásaim','Account and households'):say('Belépés vagy regisztráció','Sign in or register'))}}
+ function paintAuth(body){
+  const signup=authMode==='signup',reset=authMode==='reset';q.querySelector('h2').textContent=reset?say('Új jelszó kérése','Reset password'):signup?say('Regisztráció','Create account'):say('Belépés','Sign in');
+  body.innerHTML='<div class="auth-tabs"><button data-auth="login" aria-pressed="'+(!signup&&!reset)+'">'+say('Belépés','Sign in')+'</button><button data-auth="signup" aria-pressed="'+signup+'">'+say('Regisztráció','Register')+'</button></div><form id="password-auth"><label>Email<input name="email" type="email" required autocomplete="username" value="'+esc(authEmail)+'"></label>'+(!reset?'<label>'+say('Jelszó','Password')+'<input name="password" type="password" required '+(signup?'minlength="8"':'')+' autocomplete="'+(signup?'new-password':'current-password')+'"></label>'+(signup?'<p class="helper">'+say('Legalább 8 karakter. A regisztráció után igazold az email-címedet a kapott levélben.','At least 8 characters. Confirm your email using the message sent after registration.')+'</p>':''):'<p>'+say('Küldünk egy jelszóbeállító linket. Ezzel korábbi, linkkel létrehozott fiókodhoz is beállíthatsz jelszót.','We will send a password reset link. You can also use it to set a password for an account previously accessed with email links.')+'</p>')+'<button class="primary full">'+(reset?say('Jelszóbeállító levél kérése','Send reset email'):signup?say('Fiók létrehozása','Create account'):say('Belépés','Sign in'))+'</button></form><p id="signin-feedback" role="status"></p>'+(!reset?button('forgot-password','Elfelejtett / még nincs jelszavam','Forgot / no password yet')+button('google-signin','Belépés Google-fiókkal','Continue with Google'):'');
+  body.querySelectorAll('[data-auth]').forEach(b=>b.onclick=()=>{authEmail=body.querySelector('[name=email]').value;authMode=b.dataset.auth;authNotice='';open()});
+  const forgot=body.querySelector('#forgot-password');if(forgot)forgot.onclick=()=>{authEmail=body.querySelector('[name=email]').value;authMode='reset';open()};
+  body.querySelector('#password-auth').onsubmit=e=>{e.preventDefault();const form=e.target;run(form.querySelector('button'),async()=>{
+   authEmail=form.elements.email.value.trim();const password=form.elements.password?.value;const redirect=encodeURIComponent(new URL(location.pathname,location.origin).href);
+   try{
+    if(reset){await request('/auth/v1/recover?redirect_to='+redirect,{email:authEmail},false);body.querySelector('#signin-feedback').textContent=say('Ha a címhez tartozik fiók, hamarosan megérkezik a jelszóbeállító levél.','If an account exists for this email, a reset message will arrive shortly.');return}
+    const data=await request(signup?'/auth/v1/signup?redirect_to='+redirect:'/auth/v1/token?grant_type=password',{email:authEmail,password},false);
+    if(data.access_token){setSession(data);authMode='login';authNotice='';await open()}
+    else body.querySelector('#signin-feedback').textContent=say('Nézd meg a postaládádat az email-cím megerősítéséhez. Ha már van fiókod, válaszd a Belépést vagy kérj új jelszót.','Check your inbox to confirm your email. If you already have an account, sign in or reset your password.');
+   }finally{if(form.elements.password)form.elements.password.value=''}
+  })};
+  const google=body.querySelector('#google-signin');if(google){google.classList.add('google-signin');google.onclick=e=>run(e.target,async()=>{const settings=await request('/auth/v1/settings',undefined,false);if(!settings.external?.google)throw Error(say('A Google-belépés még nincs bekapcsolva. Használd az emailt és jelszót.','Google sign-in is not enabled yet. Use email and password.'));const url=new URL(config.url+'/auth/v1/authorize');url.searchParams.set('provider','google');url.searchParams.set('redirect_to',new URL(location.pathname,location.origin).href);location.assign(url.href)})}
+  q.querySelector('.household-error').textContent=authNotice;
+ }
+ function paintPasswordReset(body){
+  q.querySelector('h2').textContent=say('Új jelszó beállítása','Set a new password');body.innerHTML='<form id="new-password"><label>'+say('Új jelszó · legalább 8 karakter','New password · at least 8 characters')+'<input name="password" type="password" required minlength="8" autocomplete="new-password"></label><label>'+say('Jelszó újra','Repeat password')+'<input name="confirmation" type="password" required minlength="8" autocomplete="new-password"></label><button class="primary full">'+say('Jelszó mentése','Save password')+'</button></form>';
+  body.querySelector('form').onsubmit=e=>{e.preventDefault();const form=e.target;run(form.querySelector('button'),async()=>{if(form.elements.password.value!==form.elements.confirmation.value)throw Error(say('A két jelszó nem egyezik.','The passwords do not match.'));await request('/auth/v1/user',{password:form.elements.password.value},true,'PUT');form.reset();recoveryMode=false;authMode='login';await open();toast(say('A jelszavadat elmentettük.','Your password has been saved.'))})};
+ }
  async function receiveLink(){
   if(!incomingLink)return;
   await open();
-  try{if(!configured)throw Error('not-configured');const verified=await AuthLink.validate(incomingLink,config);setSession(verified);authNotice=''}
+  try{if(!configured)throw Error('not-configured');const verified=await AuthLink.validate(incomingLink,config);setSession(verified);recoveryMode=incomingLink.type==='recovery';authNotice=''}
   catch(e){authNotice=say('Ez a belépési link érvénytelen, lejárt, vagy nem sikerült ellenőrizni. Kérj új linket.','This sign-in link is invalid, expired or could not be verified. Request a new link.');}
   finally{authPending=false;incomingLink.access=null;incomingLink.refresh=null;await open();if(authNotice)q.querySelector('.household-error').textContent=authNotice}
  }
  document.getElementById('household-button').onclick=open;
+ const account=document.createElement('button');account.id='account-button';account.setAttribute('data-no-translate','');document.querySelector('.header-controls').prepend(account);account.onclick=open;paintAccount();
  // Freeze mutations until a write is acknowledged; other devices use revision checks.
  for(const event of ['click','submit','pointerdown','keydown'])document.addEventListener(event,e=>{if(cloud.busy&&e.target.closest('#main,#quantity-dialog,#clear-dialog,#history-dialog')){e.preventDefault();e.stopImmediatePropagation()}},true);
  window.addEventListener('online',refresh);document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh()});
@@ -101,5 +122,5 @@
  receiveLink();
  loadInvitations();setInterval(async()=>{if(document.hidden||authPending)return;await loadInvitations();if(q.open&&!q.contains(document.activeElement))paintInvitations()},30000);
  window.addEventListener('focus',()=>loadInvitations());
- cloud.updateLanguage=()=>status(cloud.active?'Közös háztartás':'Csak ezen az eszközön',cloud.active?'Shared household':'This device only');
+ cloud.updateLanguage=()=>{paintAccount();status(cloud.active?'Közös háztartás':'Csak ezen az eszközön',cloud.active?'Shared household':'This device only')};
 })();

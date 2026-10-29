@@ -181,3 +181,8 @@ body:has(.undo-home) #toast.visible{visibility:hidden}
 
 #chatgpt-dialog .chatgpt-direct{display:block;text-align:center;text-decoration:none;font-size:14px;box-sizing:border-box}
 #chatgpt-dialog #copy-open-chatgpt{margin:0 0 14px}
+#account-button{border:0;border-radius:10px;background:#e9dfce;color:var(--ink);min-height:36px;padding:6px 10px;font-size:12px;white-space:nowrap}
+.auth-tabs{display:flex;gap:6px;margin:12px 0 20px}.auth-tabs button{flex:1;border:0;border-radius:12px;background:transparent;min-height:44px}.auth-tabs button[aria-pressed=true]{background:#e9dfce}
+#password-auth label+label,#new-password label+label{margin-top:14px}
+#forgot-password{margin:0;border:0;text-decoration:underline}
+@media(max-width:360px){.header-controls{gap:4px}#account-button{padding:6px;font-size:11px}.app .brand{font-size:23px}}

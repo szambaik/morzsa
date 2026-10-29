@@ -8,3 +8,4 @@ test('OAuth provider credentials are removed with the session fragment',()=>{
  assert.equal(link.cleanURL,'https://example.com/');
  assert.equal(link.error,false);
 });
+test('recovery links keep their purpose but remove credentials from the URL',()=>{const link=AuthLink.consume('https://site.test/#access_token=a&refresh_token=b&type=recovery');assert.equal(link.type,'recovery');assert.equal(link.error,false);assert.equal(link.cleanURL,'https://site.test/')});

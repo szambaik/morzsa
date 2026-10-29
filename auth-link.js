@@ -12,7 +12,7 @@ const AuthLink={
   const expiry=Number(get('expires_in'));
   for(const key of keys){fragment.delete(key);url.searchParams.delete(key)}
   url.hash=fragment.toString();
-  return {cleanURL:url.href,error:error||!access||!refresh||!!(type&&!['magiclink','signup','invite'].includes(type)),access,refresh,expiresIn:Number.isFinite(expiry)&&expiry>0?Math.min(expiry,86400):3600};
+  return {cleanURL:url.href,type,error:error||!access||!refresh||!!(type&&!['magiclink','signup','invite','recovery'].includes(type)),access,refresh,expiresIn:Number.isFinite(expiry)&&expiry>0?Math.min(expiry,86400):3600};
  },
  async validate(link,config,fetcher=fetch){
   if(link.error)throw Error('invalid-link');

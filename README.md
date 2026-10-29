@@ -115,3 +115,7 @@ Elkészült az email-címhez kötött, appon belül elfogadható háztartásmegh
 ## Receptötletek a saját ChatGPT-ben
 
 Az Ötletek oldal és a Készlet ··· menü „Receptötletek ChatGPT-ben” gombja szerkeszthető kérést állít össze az aktuális helyi/közös készlet élelmiszereiből. Az elsődleges megnyitási link a szerkesztett kérést URL-kódolva a ChatGPT q paraméterében adja át. Ha ez nem működik (például a kliens nem kezeli vagy túl hosszú az URL), a „Másolás és ChatGPT megnyitása” tartalék gombbal beilleszthető a teljes kérés. Nincs API-kulcs vagy háttérben küldött AI-kérés. A telefon dönti el, hogy a https://chatgpt.com/ link böngészőben vagy alkalmazásban nyílik meg; automatikus promptkitöltést vagy elküldést nem garantálunk. Másolási vagy popup-tiltásnál kézi másolás és külön megnyitási link érhető el. Személyes beszélgetéseket, emailt, meghívásokat nem tartalmaz a készletkérés.
+
+## Közvetlen belépés
+
+A fejléc Belépés / Fiókom gombja email+jelszavas belépést és regisztrációt nyit. A regisztráció email-megerősítést kér a Supabase beállítása szerint. A korábbi linkes fiókhoz az „Elfelejtett / még nincs jelszavam” menüből kérhető jelszóbeállító levél. A recovery linket az app szerveroldali felhasználó-ellenőrzés után fogadja el, majd két egyező jelszót kér, és a Supabase felé menti. Jelszó nem kerül localStorage-ba. A Google-belépés továbbra is külön Supabase provider konfigurációt igényel. A sima email+jelszóhoz nincs új SQL-migráció.
