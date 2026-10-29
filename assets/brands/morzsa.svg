@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="#c6532d">
+  <path d="M21 5q3-4 6 0l-1 11q-2 4-4 0z"/>
+  <path d="M21 6q3-4 6 0l-1 10q-2 4-4 0z" transform="rotate(45 24 24)"/>
+  <path d="M21 4q3-3 6 1l-1 11q-2 4-4 0z" transform="rotate(90 24 24)"/>
+  <path d="M21 6q3-4 6 0l-1 10q-2 4-4 0z" transform="rotate(135 24 24)"/>
+  <path d="M21 5q3-4 6 0l-1 11q-2 4-4 0z" transform="rotate(180 24 24)"/>
+  <path d="M21 6q3-4 6 0l-1 10q-2 4-4 0z" transform="rotate(225 24 24)"/>
+  <path d="M21 4q3-3 6 1l-1 11q-2 4-4 0z" transform="rotate(270 24 24)"/>
+  <path d="M21 6q3-4 6 0l-1 10q-2 4-4 0z" transform="rotate(315 24 24)"/>
+</svg>

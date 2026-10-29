@@ -223,3 +223,41 @@ body:has(.undo-home) .pantry-search-fab{visibility:hidden}
 .idea-open{min-height:56px}
 .local-pantry-import{margin:18px 0;padding:16px;background:#eaf0e1;border-radius:16px}
 .local-pantry-import h3{margin:0 0 8px;font-size:16px}.local-pantry-import p{font-size:12px;line-height:1.5;overflow-wrap:anywhere}.local-pantry-import button{min-height:44px;margin-bottom:0}.local-pantry-import button:disabled{opacity:.55}.local-pantry-import [role=status]:empty{display:none}
+
+/* Morzsa identity: warm paper, orange crumb mark, and softly cut label corners. */
+:root{--bg:#fbf6ee;--white:#fffdf8;--ink:#2c3a2e;--muted:#706f62;--line:#e7ddcd;--orange:#b94b27;--orange-soft:#f8e4d5;--orange-ink:#943b1e}
+header{position:relative;border-bottom:1px solid #e8d9c5;margin-bottom:5px}
+.app .brand{display:inline-flex;align-items:center;gap:7px;font-size:29px;letter-spacing:-1.6px;flex-shrink:0}
+.brand .brand-mark{display:block;width:40px;height:40px;flex:none;transform:rotate(-8deg);transition:transform .22s ease}
+.brand:hover .brand-mark{transform:rotate(6deg)}
+#account-button{background:#f1e6d7;color:var(--ink)}
+.language-switch,#household-button{background:#f1e6d7;border-radius:10px}
+.language-switch button[aria-pressed=true]{background:var(--ink)}
+.category-fixed button.active,.category-rail button.active{background:var(--orange-soft)!important;color:var(--orange-ink)!important;border-radius:13px 7px 13px 7px;box-shadow:inset 0 -2px var(--orange)!important}
+.category-fixed{border-right-color:#e5d4c0}
+.app[data-page=pantry] .ingredient-card{background:var(--white);box-shadow:0 1px 0 #e9decd;border-radius:14px 8px 14px 8px}
+.app[data-page=pantry] .ingredient-card.at-home{background:#eaf0e1;box-shadow:0 1px 0 #d5dfc9}
+.app[data-page=pantry] .ingredient-card .home-action:not(.selected){color:var(--orange)}
+.primary,.add-form>button{background:var(--orange);border-radius:16px 8px 16px 8px}
+.add-form .quick-input>button{background:var(--orange);border-radius:16px 8px 16px 8px}
+.pantry-search-fab{background:var(--orange);border-radius:20px 10px 20px 10px;box-shadow:0 4px 12px #a6462526}
+nav{background:#fbf6eef5;border-top:1px solid #e8d9c5}
+nav .shopping-nav{background:var(--orange);color:white;border-radius:21px 10px 21px 10px;box-shadow:0 3px 0 #8a351b}
+nav .shopping-nav.active{background:#9c3e1f;color:white;box-shadow:0 3px 0 #773018,inset 0 0 0 1px #edb395}
+nav .shopping-nav i{background:#ffe6ce;color:#783115}
+nav button.active:not(.shopping-nav){color:var(--orange-ink)}
+.shopping-group>summary{color:var(--orange-ink);border-bottom:1px dashed #d9bfa5}
+.shopping-group>summary small{background:var(--orange-soft);color:var(--orange-ink);padding:3px 7px;border-radius:7px}
+.list-row{border-bottom:1px dashed #e4d7c5}
+.quantity-badge{background:#f4e8d9;color:#7d4d32}
+.ideas-ai-panel{position:relative;isolation:isolate;overflow:hidden;background:var(--orange-soft);border-radius:26px 10px 26px 10px;border:1px solid #edcbb0}
+.ideas-ai-panel:before{content:"";position:absolute;z-index:-1;right:-24px;top:-25px;width:154px;height:154px;background:url('assets/brands/morzsa.svg') center/contain no-repeat;opacity:.12;transform:rotate(10deg);pointer-events:none}
+.ideas-ai-panel .eyebrow{color:var(--orange-ink);letter-spacing:1.6px}
+.ideas-ai-panel h2{max-width:85%;font-size:27px}
+.ai-client-buttons button{border-radius:13px 7px 13px 7px;background:#fffaf2;border:1px solid #ebc8ad;color:#7d351e}
+.idea-save{color:var(--orange)}
+.local-pantry-import{background:#f5eadb;border-radius:20px 9px 20px 9px}
+.undo-home{border:1px solid #e9c6a7;box-shadow:0 5px 24px #6f401b18}
+@media(max-width:380px){.app .brand{font-size:25px;gap:4px;letter-spacing:-1.4px}.brand .brand-mark{width:32px;height:32px}header{gap:6px}.header-controls{gap:4px}}
+@media(max-width:340px){.app .brand{font-size:23px}.brand .brand-mark{width:29px;height:29px}#account-button{padding:6px;font-size:11px}.language-switch button{padding:6px}}
+@media(prefers-reduced-motion:reduce){.brand .brand-mark{transition:none}.brand:hover .brand-mark{transform:rotate(-8deg)}}
