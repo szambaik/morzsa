@@ -1,0 +1,31 @@
+const catalogGroups = [
+['Zöldségek','🥕','Paprika|Paradicsom|Krumpli|Hagyma|Fokhagyma|Lilahagyma|Újhagyma|Póréhagyma|Sárgarépa|Fehérrépa|Zeller|Karalábé|Cékla|Uborka|Cukkini|Padlizsán|Brokkoli|Karfiol|Fejes káposzta|Lila káposzta|Kelkáposzta|Kelbimbó|Spenót|Sóska|Saláta|Rukkola|Gomba|Édesburgonya|Sütőtök|Retek|Zöldbab|Spárga|Chili|Kukorica|Borsó'],
+['Gyümölcsök','🍑','Barack|Alma|Körte|Banán|Narancs|Mandarin|Citrom|Lime|Grapefruit|Szilva|Szőlő|Eper|Málna|Áfonya|Szeder|Cseresznye|Meggy|Ananász|Mangó|Kiwi|Avokádó|Görögdinnye|Sárgadinnye|Gránátalma'],
+['Hús és felvágott','🍗','Csirkecomb|Csirkemell|Csirkeszárny|Egész csirke|Pulykamell|Sertéskaraj|Sertéstarja|Sertéscomb|Sertésszűz|Darált sertéshús|Darált marhahús|Marhapörkölt-hús|Marhasteak|Kacsa|Csirkemáj|Csirkemellsonka|Sonka|Szalonna|Bacon|Kolbász|Szalámi|Virsli|Párizsi|Májkrém'],
+['Hal és tengeri','🐟','Hal|Lazac|Tőkehal|Hekk|Pisztráng|Ponty|Tonhalkonzerv|Szardíniakonzerv|Garnéla|Kagyló|Halrudacska'],
+['Tejtermék és tojás','🥛','Tojás|Tej|Vaj|Tejszín|Joghurt|Görög joghurt|Tejföl|Kefir|Túró|Sajtkrém|Sajt|Trappista|Cheddar|Mozzarella|Parmezán|Feta|Camembert|Mascarpone|Ricotta|Krémtúró|Író|Laktózmentes tej'],
+['Növényi alapok','🌱','Tofu|Füstölt tofu|Tempeh|Hummusz|Zabital|Mandulaital|Szójaital|Kókusztej|Növényi tejszín|Növényi joghurt|Vegán sajt|Seitan'],
+['Pékáru','🍞','Kenyér|Teljes kiőrlésű kenyér|Toastkenyér|Zsemle|Kifli|Bagett|Ciabatta|Pita|Tortillalap|Croissant|Kalács|Kétszersült|Pászka'],
+['Rizs és tészta','🍚','Rizs|Jázminrizs|Basmati rizs|Barna rizs|Rizottórizs|Tészta|Spagetti|Penne|Fusilli|Tagliatelle|Lasagnelap|Tarhonya|Rizstészta|Üvegtészta|Kuszkusz|Bulgur|Quinoa|Köles|Hajdina|Árpagyöngy|Gnocchi'],
+['Konzervek és hüvelyesek','🥫','Konzerv gomba|Babkonzerv|Csicseriborsó-konzerv|Lencsekonzerv|Kukoricakonzerv|Paradicsomkonzerv|Passata|Sűrített paradicsom|Fehér bab|Vörös bab|Száraz csicseriborsó|Lencse|Vörös lencse|Sárgaborsó|Csemegeuborka|Olívabogyó|Savanyú káposzta|Cékla savanyúság|Befőtt'],
+['Fagyasztott','🧊','Zöldségkeverék|Mirelit zöldség|Mirelit borsó|Mirelit brokkoli|Mirelit spenót|Mirelit zöldbab|Mirelit kukorica|Mirelit gyümölcs|Mirelit hasábburgonya|Leveles tészta|Pizza|Fagylalt|Jégkocka'],
+['Szószok és olajok','🫙','Olaj|Olívaolaj|Kókuszolaj|Szezámolaj|Sertészsír|Majonéz|Mustár|Ketchup|Piros Arany|Szójaszósz|Worcestershire-szósz|Csípős szósz|Pesto|Tahini|Barbecue-szósz|Almaecet|Ételecet|Balzsamecet|Málnás balzsamecet|Méz|Baracklekvár|Eperlekvár|Szilvalekvár|Mogyoróvaj'],
+['Fűszerek','🌿','Só|Bors|Pirospaprika|Füstölt paprika|Chilipehely|Fokhagymasó|Delikát|Csirkeleveskocka|Zöldségleveskocka|Marhaleveskocka|Babérlevél|Bazsalikom|Majoranna|Szárított petrezselyem|Oregánó|Kakukkfű|Rozmaring|Kapor|Koriander|Kömény|Római kömény|Curry|Kurkuma|Gyömbér|Fahéj|Szerecsendió|Szegfűszeg|Vanília|Fűszerkeverék'],
+['Sütés és édesség','🧁','Liszt|Teljes kiőrlésű liszt|Rétesliszt|Rizsliszt|Mandulaliszt|Búzadara|Zsemlemorzsa|Keményítő|Sütőpor|Szódabikarbóna|Élesztő|Szárított élesztő|Cukor|Barna cukor|Porcukor|Vaníliás cukor|Édesítőszer|Kakaópor|Puding|Étcsokoládé|Tejcsokoládé|Fehér csokoládé|Kókuszreszelék|Dió|Mandula|Mogyoró|Mák|Mazsola|Zselatin|Babapiskóta|Keksz'],
+['Reggeli és rágcsálnivaló','🥣','Zabpehely|Müzli|Granola|Kukoricapehely|Chiamag|Lenmag|Tökmag|Napraforgómag|Szezámmag|Aszalt gyümölcs|Datolya|Chips|Sós keksz|Pattogatott kukorica|Mogyorókrém'],
+['Italok','☕','Víz|Szénsavas víz|Gyümölcslé|Narancslé|Almalé|Szörp|Tea|Kávé|Kakaóital|Üdítő|Sör|Bor'],
+['Háztartás','🧽','Mosogatószer|Mosogatógép-tabletta|Szivacs|Papírtörlő|Szemeteszsák|Alufólia|Sütőpapír|Frissentartó fólia|Fagyasztózacskó|Szalvéta|WC-papír|Mosószer|Öblítő|Tisztítószer|Folyékony szappan']
+];
+const foodIcons={'Tojás':'🥚','Vaj':'🧈','Sajt':'🧀','Sajtkrém':'🧀','Paprika':'🫑','Paradicsom':'🍅','Krumpli':'🥔','Hagyma':'🧅','Fokhagyma':'🧄','Brokkoli':'🥦','Gomba':'🍄','Konzerv gomba':'🍄','Szalonna':'🥓','Barack':'🍑','Alma':'🍎','Banán':'🍌','Citrom':'🍋','Tészta':'🍝','Spagetti':'🍝'};
+Object.assign(foodIcons,{
+'Sárgarépa':'🥕','Uborka':'🥒','Padlizsán':'🍆','Cukkini':'🥒','Kukorica':'🌽','Borsó':'🫛','Mirelit borsó':'🫛','Zöldbab':'🫛','Édesburgonya':'🍠','Sütőtök':'🎃','Saláta':'🥬','Spenót':'🥬','Chili':'🌶️',
+'Körte':'🍐','Lime':'🍋‍🟩','Narancs':'🍊','Mandarin':'🍊','Szőlő':'🍇','Eper':'🍓','Áfonya':'🫐','Cseresznye':'🍒','Meggy':'🍒','Ananász':'🍍','Mangó':'🥭','Kiwi':'🥝','Avokádó':'🥑','Görögdinnye':'🍉','Sárgadinnye':'🍈',
+'Csirkecomb':'🍗','Csirkemell':'🐔','Csirkeszárny':'🍗','Egész csirke':'🐔','Pulykamell':'🦃','Sertéskaraj':'🐖','Sertéstarja':'🐖','Sertéscomb':'🍖','Marhasteak':'🥩','Darált marhahús':'🥩','Kacsa':'🦆','Virsli':'🌭','Kolbász':'🌭','Csirkemellsonka':'🍖','Sonka':'🍖','Bacon':'🥓',
+'Garnéla':'🦐','Kagyló':'🦪','Halrudacska':'🐠','Tej':'🥛','Tejszín':'🥛','Joghurt':'🥣','Tejföl':'🥣','Túró':'🧀','Tofu':'⬜','Hummusz':'🫘','Kókusztej':'🥥','Kenyér':'🍞','Zsemle':'🥯','Kifli':'🥖','Bagett':'🥖','Croissant':'🥐','Pita':'🫓','Tortillalap':'🫓','Kalács':'🍞',
+'Babkonzerv':'🫘','Fehér bab':'🫘','Vörös bab':'🫘','Lencse':'🫘','Kukoricakonzerv':'🌽','Paradicsomkonzerv':'🍅','Passata':'🍅','Olívabogyó':'🫒','Pizza':'🍕','Fagylalt':'🍨','Jégkocka':'🧊','Mirelit hasábburgonya':'🍟',
+'Olaj':'🫗','Olívaolaj':'🫒','Kókuszolaj':'🥥','Méz':'🍯','Piros Arany':'🌶️','Ketchup':'🍅','Almaecet':'🍎','Só':'🧂','Bors':'⚫','Pirospaprika':'🌶️','Gyömbér':'🫚','Fahéj':'🪵','Babérlevél':'🍃',
+'Liszt':'🌾','Búzadara':'🌾','Zsemlemorzsa':'🍞','Puding':'🍮','Kakaópor':'🍫','Étcsokoládé':'🍫','Tejcsokoládé':'🍫','Kókuszreszelék':'🥥','Dió':'🌰','Mandula':'🌰','Mogyoró':'🥜','Keksz':'🍪','Babapiskóta':'🍪','Mogyoróvaj':'🥜','Zabpehely':'🌾','Müzli':'🥣','Pattogatott kukorica':'🍿','Chips':'🍟',
+'Víz':'💧','Szénsavas víz':'🫧','Gyümölcslé':'🧃','Narancslé':'🍊','Almalé':'🍎','Tea':'🍵','Kávé':'☕','Sör':'🍺','Bor':'🍷','Üdítő':'🥤','Szörp':'🍹',
+'Mosogatószer':'🫧','Szivacs':'🧽','Papírtörlő':'🧻','WC-papír':'🧻','Szemeteszsák':'🗑️','Alufólia':'🥡','Sütőpapír':'📜','Szalvéta':'📄','Mosószer':'🧴','Öblítő':'🧴','Folyékony szappan':'🧼','Tisztítószer':'🧹'
+});
+const catalog=catalogGroups.flatMap(([category,emoji,names])=>names.split('|').map(name=>({name,category,emoji:foodIcons[name]||emoji})));
