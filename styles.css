@@ -196,3 +196,11 @@ body:has(.undo-home) .pantry-search-fab{visibility:hidden}
 #pantry-options button[aria-selected=true],#pantry-options button:hover{background:#eaf0e1}.pantry-option-add{font-size:21px;color:var(--green)}
 .pantry-entry-feedback{font-size:12px;color:var(--green);margin:10px 0 0}.pantry-entry-feedback:empty{display:none}
 .app[data-page=pantry]{padding-bottom:175px}
+/* Left is shopping; right is the pantry toggle. */
+.ingredient-card .ingredient-plus{grid-column:1}
+.ingredient-card .home-action{grid-column:3;font-size:23px}
+.app[data-page=pantry] .ingredient-card .home-action{color:#a75a3d}
+.app[data-page=pantry] .ingredient-card .home-action.selected{color:#63805b}
+.ingredient-card.drag-home .ingredient-icon{transform:translateX(9px)}
+.ingredient-card.drag-cart .ingredient-icon{transform:translateX(-9px)}
+.ingredient-plus.just-added svg path{animation:none;stroke-dasharray:none}
