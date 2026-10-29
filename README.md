@@ -50,7 +50,7 @@ Kategórianavigáció: bal oldali sticky, külön görgethető ikon- és felirat
 
 ## GitHub Pages
 
-A GitHub Pages kiadás a statikus mobilos felületet publikálja. A készlet, kedvencek és bevásárlólista ott is működik, az adott böngészőben tárolva. A Python AI-szerver nem fut GitHub Pages alatt; az AI-chathez a helyi server.py vagy később külön hosztolt backend szükséges. A .env fájl nincs a repóban. A weboldal az október 28-án felmért mintakészlettel indul, amit szabadon módosíthatsz.
+A GitHub Pages kiadás a statikus mobilos felületet publikálja. A készlet, kedvencek és bevásárlólista ott is működik, az adott böngészőben tárolva. A Python AI-szerver nem fut GitHub Pages alatt; az AI-chathez a helyi server.py vagy később külön hosztolt backend szükséges. A .env fájl nincs a repóban. Az új böngésző üres készlettel indul. A korábban mentett készlet megmarad.
 
 ## Gyors bevásárlási mennyiségek
 
@@ -119,3 +119,7 @@ Az Ötletek oldal és a Készlet ··· menü „Receptötletek ChatGPT-ben” g
 ## Közvetlen belépés
 
 A fejléc Belépés / Fiókom gombja email+jelszavas belépést és regisztrációt nyit. A regisztráció email-megerősítést kér a Supabase beállítása szerint. A korábbi linkes fiókhoz az „Elfelejtett / még nincs jelszavam” menüből kérhető jelszóbeállító levél. A recovery linket az app szerveroldali felhasználó-ellenőrzés után fogadja el, majd két egyező jelszót kér, és a Supabase felé menti. Jelszó nem kerül localStorage-ba. A Google-belépés továbbra is külön Supabase provider konfigurációt igényel. A sima email+jelszóhoz nincs új SQL-migráció.
+
+## Készlet gyors felvétele
+
+Alapnézet a Van otthon. A lebegő Keresés / felvétel gomb alsó panelt nyit, automatikus inputfókusszal. A katalógus ajánlásai, a +, az Enter és a vesszővel/pontosvesszővel/újsorral elválasztott tételek az otthoni készlethez adnak. Az ismételt felvétel nem vesz le tételt, nem módosítja a bevásárlólistát; ismeretlen névből saját termék lesz. A meglévő helyi adatokat nem töröljük a mintakészlet megszüntetésekor.

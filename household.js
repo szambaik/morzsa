@@ -33,9 +33,9 @@
  }
  async function connect(hid){
   if(cloud.busy)return;const previous=cloud.active;cloud.active=hid;cloud.busy=true;
-  try{const rows=await fetchRows();if(!previous)localBackup=JSON.parse(JSON.stringify(state));cloud.rows=rows;homeUndo.length=0;shoppingDraft='';state=HouseholdModel.decode(rows,state);render();q.close();status('Közös háztartás · szinkronizálva','Shared household · synced');clearInterval(pollTimer);pollTimer=setInterval(refresh,8000)}catch(e){cloud.active=previous;throw e}finally{cloud.busy=false}
+  try{const rows=await fetchRows();if(!previous)localBackup=JSON.parse(JSON.stringify(state));cloud.rows=rows;homeUndo.length=0;shoppingDraft='';pantryDraft='';state=HouseholdModel.decode(rows,state);render();q.close();status('Közös háztartás · szinkronizálva','Shared household · synced');clearInterval(pollTimer);pollTimer=setInterval(refresh,8000)}catch(e){cloud.active=previous;throw e}finally{cloud.busy=false}
  }
- function disconnect(){if(cloud.busy)return;homeUndo.length=0;shoppingDraft='';cloud.active=null;clearInterval(pollTimer);if(localBackup){state={...localBackup,likes:state.likes,skips:state.skips,chats:state.chats,sortMode:state.sortMode};localStorage.setItem('morzsa-v2',JSON.stringify(state));localBackup=null;render()}status('Csak ezen az eszközön','This device only')}
+ function disconnect(){if(cloud.busy)return;homeUndo.length=0;shoppingDraft='';pantryDraft='';cloud.active=null;clearInterval(pollTimer);if(localBackup){state={...localBackup,likes:state.likes,skips:state.skips,chats:state.chats,sortMode:state.sortMode};localStorage.setItem('morzsa-v2',JSON.stringify(state));localBackup=null;render()}status('Csak ezen az eszközön','This device only')}
  async function run(button,fn){button.disabled=true;const error=q.querySelector('.household-error');error.textContent='';try{await fn()}catch(e){error.textContent=errorText(e)}finally{button.disabled=false}}
  function button(id,hu,en){return '<button class="small-button full" id="'+id+'">'+say(hu,en)+'</button>'}
  async function open(){

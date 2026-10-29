@@ -186,3 +186,13 @@ body:has(.undo-home) #toast.visible{visibility:hidden}
 #password-auth label+label,#new-password label+label{margin-top:14px}
 #forgot-password{margin:0;border:0;text-decoration:underline}
 @media(max-width:360px){.header-controls{gap:4px}#account-button{padding:6px;font-size:11px}.app .brand{font-size:23px}}
+.pantry-search-fab{position:fixed;right:max(16px,calc((100vw - 600px)/2 + 20px));z-index:12;display:flex;align-items:center;gap:8px;min-height:48px;border:0;border-radius:24px;padding:12px 16px;background:var(--green);color:white;box-shadow:0 4px 16px #263c3026;font-size:13px}
+body:has(.undo-home) .pantry-search-fab{visibility:hidden}
+#pantry-entry-dialog{position:fixed;top:auto;left:50%;right:auto;transform:translateX(-50%);margin:0;width:min(100%,600px);border-radius:22px 22px 0 0;padding:16px 20px calc(16px + env(safe-area-inset-bottom));max-height:75dvh}
+#pantry-entry-dialog h2{font-size:21px;margin:8px 0 10px}#pantry-entry-dialog .helper{margin:0 0 14px;font-size:12px}
+#pantry-entry-dialog input{font:inherit;font-size:16px;min-height:48px;border:1px solid var(--line);border-radius:12px;background:var(--white);padding:10px 12px}
+#pantry-options{max-height:240px;overflow-y:auto;margin-top:8px}
+#pantry-options button{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:46px;border:0;background:transparent;text-align:left;gap:12px;font-size:14px;padding:8px;border-radius:10px}
+#pantry-options button[aria-selected=true],#pantry-options button:hover{background:#eaf0e1}.pantry-option-add{font-size:21px;color:var(--green)}
+.pantry-entry-feedback{font-size:12px;color:var(--green);margin:10px 0 0}.pantry-entry-feedback:empty{display:none}
+.app[data-page=pantry]{padding-bottom:175px}
