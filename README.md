@@ -56,7 +56,7 @@ A GitHub Pages kiadás a statikus mobilos felületet publikálja. A készlet, ke
 
 A készletfejléc és a kártyák kompaktabbak. A kártya pluszgombja egy termékre jellemző vásárlási egységet ad hozzá: például krumpli 1 kg, fokhagyma 1 db, tej 1 l. Ismételt koppintás növeli az összmennyiséget. A régi, mennyiség nélküli listatételeket 1 egységként kezeli.
 
-A plusz 450 ms-os nyomva tartása (vagy jobb kattintás, billentyűzettel Alt+le) megnyitja a mennyiségválasztót. Gyorsértékek: 1, 2, 3, 5; külön szám és egység is választható. A választó hozzáadja a kiválasztott mennyiséget. A bevásárlólistán a mennyiségre koppintás a meglévő értéket szerkeszti. Az otthoni jelölés ettől független marad.
+A plusz 450 ms-os nyomva tartása (vagy jobb kattintás, billentyűzettel Alt+le) megnyitja a mennyiségválasztót. Gyorsértékek: 1, 2, 3, 5; külön szám és egység is választható. A választó a listán szereplő teljes mennyiséget állítja be: meglévő tételnél felülírja, új tételnél létrehozza azt. Megnyitáskor a jelenlegi mennyiség és egység látszik. A bevásárlólistán a mennyiségre koppintás a meglévő értéket szerkeszti. Az otthoni jelölés ettől független marad.
 
 A bevásárlólista kategóriánként csoportosított, a csoportok nyitva indulnak. A katalógusban nem szereplő tétel az Egyéb csoportba kerül, a hozzáadott saját alapanyag a Saját tételek közé.
 
