@@ -1,3 +1,8 @@
 const test=require('node:test'),assert=require('node:assert/strict'),prompt=require('../recipe-prompt.js');
 test('Uses only present ingredients and excludes household products and personal state',()=>{const state={stock:{Tej:2,Só:0,Fogkrém:2,Saját:2},cart:[{name:'Rizs'}],chats:{private:'secret'},custom:[{name:'Saját',category:'Saját tételek'}]};const result=prompt.build(state,[{name:'Tej',category:'Tejtermék és tojás'},{name:'Fogkrém',category:'Fogápolás és higiénia'}]);assert.equal(result.count,2);assert(result.text.includes('- Tej'));assert(result.text.includes('- Saját'));for(const absent of ['Fogkrém','- Só','Rizs','secret'])assert(!result.text.includes(absent))});
 test('English names and empty inventory',()=>{assert(prompt.build({stock:{Tej:2}},[],{Tej:'Milk'},'en').text.includes('- Milk'));assert.equal(prompt.build({stock:{}},[]).count,0)});
+test('quick can combine with a distinct meal intent in Hungarian and English',()=>{
+ const hu=prompt.build({stock:{Tej:2}},[],{},'hu',{quick:true,mood:'sweet'});assert(hu.text.includes('25 perc'));assert(hu.text.includes('édes fogásokat'));assert(hu.text.includes('\n\n'));assert.deepEqual(hu.names,['Tej']);
+ const en=prompt.build({stock:{Tej:2}},[],{Tej:'Milk'},'en',{quick:true,mood:'comfort'});assert(en.text.includes('25 minutes'));assert(en.text.includes('savoury main dishes'));assert.deepEqual(en.names,['Milk']);
+ assert(prompt.intent({mood:'light'}).includes('zöldségközpontú'));assert(prompt.intent({mood:'surprise'}).includes('Lepj meg'));assert.deepEqual(prompt.normalizePreferences({mood:'anything unsafe',quick:'yes'}),{mood:'any',quick:false});
+});

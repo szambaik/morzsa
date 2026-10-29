@@ -3,6 +3,9 @@
  const say=(hu,en)=>language==='en'?en:hu;
  let session;try{session=JSON.parse(localStorage.getItem('morzsa-session'))}catch{}
  const cloud=window.household={active:null,rows:[],busy:false,configured,notify:()=>push(),storageKey:()=>cloud.active?'morzsa-household-cache-'+cloud.active:'morzsa-v2'};
+ cloud.userId=()=>session?.user?.id||null;
+ cloud.recipeAIStatus=()=>request('/functions/v1/recipe-ideas',undefined,false);
+ cloud.recipeIdeas=payload=>{if(!session)throw Error('AI_SIGN_IN_REQUIRED');return request('/functions/v1/recipe-ideas',payload,true,'POST',45000)};
  let localBackup=null,authEmail='',authMode='login',recoveryMode=false,pollTimer,invitations=[],inviteUnavailable=false,inviteLoading=false;
  const houseNames=new Map();let switchingName='',menuBusy=false,newHouseholdId=null;
  const preferenceKey=()=>session?.user?.id?'morzsa-last-household-'+session.user.id:null;
@@ -21,14 +24,14 @@
  let authPending=!!incomingLink,authNotice='';
  function status(hu,en){const el=document.getElementById('cloud-status');el.textContent=say(hu,en);el.hidden=['Csak ezen az eszközön','Közös háztartás · szinkronizálva','Közös háztartás'].includes(hu)}
  function errorText(e){if(e.message?.includes('Invalid login credentials'))return say('Hibás email-cím vagy jelszó.','Incorrect email or password.');if(e.message?.includes('Email not confirmed'))return say('Előbb erősítsd meg az email-címedet a kapott levélben.','Confirm your email using the message in your inbox first.');if(e.message?.includes('Conflict'))return say('Valaki közben módosította a listát. Frissítettük; ismételd meg a műveletet.','Someone changed the list. It has been refreshed; repeat your action.');return e.message||say('Nem sikerült kapcsolódni.','Could not connect.')}
- async function request(path,body,auth=true,method=body===undefined?'GET':'POST'){
+ async function request(path,body,auth=true,method=body===undefined?'GET':'POST',timeoutMs=20000){
   if(!configured)throw Error(say('A felhő még nincs bekötve.','Cloud is not configured yet.'));
   if(auth&&session&&session.expires_at*1000<Date.now()+60000){const r=await fetch(config.url+'/auth/v1/token?grant_type=refresh_token',{method:'POST',signal:AbortSignal.timeout(20000),headers:{apikey:config.publishableKey,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:session.refresh_token})});const data=await r.json();if(!r.ok)throw Error(say('Jelentkezz be újra.','Please sign in again.'));setSession(data)}
-  const response=await fetch(config.url+path,{method,signal:AbortSignal.timeout(20000),headers:{apikey:config.publishableKey,'Content-Type':'application/json',...(auth&&session?{Authorization:'Bearer '+session.access_token}:{})},...(body===undefined?{}:{body:JSON.stringify(body)})});
+  const response=await fetch(config.url+path,{method,signal:AbortSignal.timeout(timeoutMs),headers:{apikey:config.publishableKey,'Content-Type':'application/json',...(auth&&session?{Authorization:'Bearer '+session.access_token}:{})},...(body===undefined?{}:{body:JSON.stringify(body)})});
   const text=await response.text();let data;try{data=text?JSON.parse(text):null}catch{throw Error('Invalid server response')}
-  if(!response.ok)throw Error(data?.message||data?.msg||data?.error_description||'Request failed');return data;
+  if(!response.ok)throw Error(data?.message||data?.msg||data?.error_description||(typeof data?.error==='string'?data.error:'Request failed'));return data;
  }
- function setSession(value){session=value;if(session&&!session.expires_at)session.expires_at=Math.floor(Date.now()/1000)+(session.expires_in||3600);if(session)localStorage.setItem('morzsa-session',JSON.stringify(session));else localStorage.removeItem('morzsa-session');invitations=[];paintInviteBadge()}
+ function setSession(value){const previousUser=session?.user?.id;session=value;if(session&&!session.expires_at)session.expires_at=Math.floor(Date.now()/1000)+(session.expires_in||3600);if(session)localStorage.setItem('morzsa-session',JSON.stringify(session));else localStorage.removeItem('morzsa-session');invitations=[];paintInviteBadge();if(previousUser!==session?.user?.id)window.dispatchEvent(new Event('morzsa-auth-change'))}
  const rpc=(name,args)=>request('/rest/v1/rpc/'+name,args);
  async function fetchRows(hid=cloud.active){
   const houses=await request('/rest/v1/households?id=eq.'+encodeURIComponent(hid)+'&select=id,name');if(!houses.length)throw Error(say('A háztartás már nem érhető el.','This household is no longer accessible.'));

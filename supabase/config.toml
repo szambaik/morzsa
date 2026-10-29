@@ -1,0 +1,5 @@
+project_id = "morzsa"
+
+[functions.recipe-ideas]
+# The function validates the user's access token itself; OPTIONS/GET are public.
+verify_jwt = false
