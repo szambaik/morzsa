@@ -33,10 +33,9 @@
  }
  async function connect(hid){
   if(cloud.busy)return;const previous=cloud.active;cloud.active=hid;cloud.busy=true;
-  try{const rows=await fetchRows();if(!previous)localBackup=JSON.parse(JSON.stringify(state));cloud.rows=rows;state=HouseholdModel.decode(rows,state);render();q.close();status('Közös háztartás · szinkronizálva','Shared household · synced');clearInterval(pollTimer);pollTimer=setInterval(refresh,8000)}catch(e){cloud.active=previous;throw e}finally{cloud.busy=false}
-  if(cloud.active===hid&&hasLocalItems()&&!localStorage.getItem(importChoiceKey()))showImportOffer();
+  try{const rows=await fetchRows();if(!previous)localBackup=JSON.parse(JSON.stringify(state));cloud.rows=rows;homeUndo.length=0;shoppingDraft='';state=HouseholdModel.decode(rows,state);render();q.close();status('Közös háztartás · szinkronizálva','Shared household · synced');clearInterval(pollTimer);pollTimer=setInterval(refresh,8000)}catch(e){cloud.active=previous;throw e}finally{cloud.busy=false}
  }
- function disconnect(){if(cloud.busy)return;cloud.active=null;clearInterval(pollTimer);if(localBackup){state={...localBackup,likes:state.likes,skips:state.skips,chats:state.chats,sortMode:state.sortMode};localStorage.setItem('morzsa-v2',JSON.stringify(state));localBackup=null;render()}status('Csak ezen az eszközön','This device only')}
+ function disconnect(){if(cloud.busy)return;homeUndo.length=0;shoppingDraft='';cloud.active=null;clearInterval(pollTimer);if(localBackup){state={...localBackup,likes:state.likes,skips:state.skips,chats:state.chats,sortMode:state.sortMode};localStorage.setItem('morzsa-v2',JSON.stringify(state));localBackup=null;render()}status('Csak ezen az eszközön','This device only')}
  async function run(button,fn){button.disabled=true;const error=q.querySelector('.household-error');error.textContent='';try{await fn()}catch(e){error.textContent=errorText(e)}finally{button.disabled=false}}
  function button(id,hu,en){return '<button class="small-button full" id="'+id+'">'+say(hu,en)+'</button>'}
  async function open(){
@@ -49,36 +48,15 @@
    body.querySelector('#cloud-signin').onsubmit=e=>{e.preventDefault();run(e.target.querySelector('button'),async()=>{authEmail=body.querySelector('#cloud-email').value.trim();const redirect=new URL(location.pathname,location.origin).href;await request('/auth/v1/otp?redirect_to='+encodeURIComponent(redirect),{email:authEmail,create_user:true},false);body.querySelector('#signin-feedback').textContent=say('A belépési linket elküldtük. Nézd meg a postaládádat és a spam mappát is.','Sign-in link sent. Check your inbox and spam folder.');e.target.querySelector('button').textContent=say('Új link küldése','Send another link')})};return;
   }
   body.innerHTML='<p>'+esc(session.user?.email||'')+'</p><p>'+say('Háztartások betöltése…','Loading households…')+'</p>';
-  try{const houses=await request('/rest/v1/households?select=id,name,owner_id&order=created_at');body.innerHTML='<p>'+esc(session.user?.email||'')+'</p>'+houses.map(h=>'<button class="small-button full" data-house="'+h.id+'">'+esc(h.name)+(cloud.active===h.id?' ✓':'')+'</button>').join('')+'<form id="create-house"><label>'+say('Új háztartás neve','New household name')+'<input required maxlength="80" name="house-name"></label><button class="primary full">'+say('Létrehozás','Create')+'</button></form><form id="join-house"><label>'+say('Meghívókód','Invitation code')+'<input required name="invite" autocomplete="off"></label><button class="small-button full">'+say('Csatlakozás','Join')+'</button></form>'+(cloud.active?button('cloud-import','Helyi készlet és lista hozzáadása','Import local pantry and list')+button('cloud-disconnect','Vissza a helyi készlethez','Return to local pantry'):'')+button('cloud-signout','Kijelentkezés','Sign out');
+  try{const houses=await request('/rest/v1/households?select=id,name,owner_id&order=created_at');body.innerHTML='<p>'+esc(session.user?.email||'')+'</p>'+houses.map(h=>'<button class="small-button full" data-house="'+h.id+'">'+esc(h.name)+(cloud.active===h.id?' ✓':'')+'</button>').join('')+'<form id="create-house"><label>'+say('Új háztartás neve','New household name')+'<input required maxlength="80" name="house-name"></label><button class="primary full">'+say('Létrehozás','Create')+'</button></form><form id="join-house"><label>'+say('Meghívókód','Invitation code')+'<input required name="invite" autocomplete="off"></label><button class="small-button full">'+say('Csatlakozás','Join')+'</button></form>'+(cloud.active?button('cloud-disconnect','Vissza a helyi készlethez','Return to local pantry'):'')+button('cloud-signout','Kijelentkezés','Sign out');
    body.querySelectorAll('[data-house]').forEach(b=>b.onclick=()=>run(b,()=>connect(b.dataset.house)));
    body.querySelector('#create-house').onsubmit=e=>{e.preventDefault();run(e.target.querySelector('button'),async()=>{const hid=await rpc('create_household',{household_name:e.target.elements['house-name'].value});await connect(hid)})};
    body.querySelector('#join-house').onsubmit=e=>{e.preventDefault();run(e.target.querySelector('button'),async()=>{const hid=await rpc('join_household',{invite_token:e.target.elements.invite.value.trim()});await connect(hid)})};
    body.querySelector('#cloud-signout').onclick=()=>{if(cloud.busy)return;disconnect();setSession(null);open()};
-   if(cloud.active){body.querySelector('#cloud-disconnect').onclick=()=>{disconnect();open()};body.querySelector('#cloud-import').onclick=()=>showImportPreview();
+   if(cloud.active){body.querySelector('#cloud-disconnect').onclick=()=>{disconnect();open()};
    const h=houses.find(h=>h.id===cloud.active);if(h?.owner_id===session.user?.id){body.insertAdjacentHTML('beforeend',button('cloud-invite','Meghívókód készítése','Create invitation code')+'<output id="invite-output"></output>'+button('revoke-invites','Függő meghívók visszavonása','Revoke pending invitations'));body.querySelector('#cloud-invite').onclick=e=>run(e.target,async()=>{const token=await rpc('invite_household',{hid:cloud.active});body.querySelector('#invite-output').textContent=say('Egyszer használható, 2 napig érvényes kód: ','Single-use code, valid for 2 days: ')+token});body.querySelector('#revoke-invites').onclick=e=>run(e.target,async()=>{await rpc('revoke_household_invites',{hid:cloud.active});body.querySelector('#invite-output').textContent=say('Meghívók visszavonva.','Invitations revoked.')});}
    }
   }catch(e){q.querySelector('.household-error').textContent=errorText(e)}
- }
- function importChoiceKey(){return 'morzsa-import-choice-'+session.user.id+'-'+cloud.active}
- function hasLocalItems(){return localBackup&&(Object.values(localBackup.stock).some(v=>v>0)||localBackup.cart.length||localBackup.custom.length)}
- function finishImportPrompt(choice){try{localStorage.setItem(importChoiceKey(),choice)}catch{}q.close()}
- function importFrame(title){q.innerHTML='<button class="close" aria-label="'+say('Bezárás','Close')+'">×</button><h2>'+title+'</h2><p class="household-error" role="alert"></p><div id="household-body"></div>';q.querySelector('.close').onclick=()=>q.close();if(!q.open)q.showModal();return q.querySelector('#household-body')}
- function showImportOffer(){
-  const body=importFrame(say('Hozzuk a saját készletedet?','Bring your local pantry?'));
-  body.innerHTML='<p>'+say('Ezen az eszközön már van készleted vagy bevásárlólistád. Hozzáadod őket a közös háztartáshoz?','You already have pantry or shopping items on this device. Would you like to add them to the shared household?')+'</p><p>'+Object.values(localBackup.stock).filter(v=>v>0).length+say(' otthoni tétel · ',' pantry items · ')+localBackup.cart.length+say(' listatétel',' shopping items')+'</p>'+button('review-import','Átnézem és hozzáadom','Review and import')+button('skip-import','Most kihagyom','Skip for now')+'<p class="helper">'+say('A helyi adataid megmaradnak. Később a házikó menüjéből is importálhatsz.','Your local data is kept. You can import later from the household menu.')+'</p>';
-  body.querySelector('#review-import').onclick=showImportPreview;body.querySelector('#skip-import').onclick=()=>finishImportPrompt('skipped');
- }
- function showImportPreview(){
-  if(!localBackup||!cloud.active)return;
-  const plan=HouseholdModel.importPlan(localBackup,state),body=importFrame(say('Import áttekintése','Review import'));
-  const sections=[['stock','Készlet','Pantry'],['cart','Bevásárlólista','Shopping list'],['custom','Saját tételek','Custom items']];
-  body.innerHTML=sections.map(([key,hu,en])=>'<details class="archive-entry" open><summary>'+say(hu,en)+' · +'+plan.added[key].length+'</summary>'+plan.added[key].map(name=>'<div class="archive-row"><span>'+esc(displayName(name))+'</span>'+(key==='cart'?'<span>'+esc(language==='en'?englishText(cartAmount(localBackup.cart.find(x=>x.name===name))):cartAmount(localBackup.cart.find(x=>x.name===name)))+'</span>':'')+'</div>').join('')+(plan.kept[key].length?'<p class="helper">'+say('Már szerepel, változatlan marad: ','Already present, kept unchanged: ')+plan.kept[key].map(n=>esc(displayName(n))).join(', ')+'</p>':'')+'</details>').join('')+'<p class="helper">'+say('A közös állapotot megtartjuk. A mennyiségeket nem adjuk össze. A helyi archívum, kedvencek és beszélgetések ezen az eszközön maradnak.','Shared values are kept; quantities are not added together. Local history, favourites and chats stay on this device.')+'</p>'+button('confirm-import','Hozzáadás a közös háztartáshoz','Import into shared household')+button('cancel-import','Most kihagyom','Skip for now');
-  body.querySelector('#cancel-import').onclick=()=>finishImportPrompt('skipped');
-  body.querySelector('#confirm-import').onclick=e=>run(e.target,async()=>{
-   state=HouseholdModel.importPlan(localBackup,state).next;
-   if(await push()){finishImportPrompt('imported');toast(say('A helyi tételeket hozzáadtuk.','Local items imported.'))}
-   else {q.querySelector('.household-error').textContent=say('Az import nem sikerült. A helyi adataid megmaradtak. Nyisd meg újra az áttekintést.','Import failed. Your local data is safe. Reopen the review before retrying.');body.querySelector('#confirm-import').onclick=showImportPreview;body.querySelector('#confirm-import').textContent=say('Friss áttekintés','Review again')}
-  });
  }
  async function receiveLink(){
   if(!incomingLink)return;

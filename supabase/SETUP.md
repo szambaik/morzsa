@@ -27,7 +27,7 @@ A household-config.js fájlban add meg a projekt HTTPS URL-jét és a frontendhe
 ## 5. Két eszközös próba
 
 - A készülék: belépés, háztartás létrehozása, kiválasztása. Az új közös háztartás üresen indul.
-- A felső házikó alatt külön előnézett művelet a helyi készlet/lista importja. Meglévő közös listatételeket nem dupláz; a közös készletállapot elsőbbséget kap.
+Háztartásba lépéskor csak a közös készlet és lista töltődik be. A helyi adatok külön megmaradnak; nincs import vagy automatikus összefésülés.
 - Tulajdonosként készíts meghívókódot; külön csatornán add át a másik felhasználónak. A kód 2 napig érvényes és egyszer használható. Függő kódok visszavonhatók.
 - B készülék: külön emaillel belépés, kód elfogadása.
 - Adj hozzá terméket, állíts mennyiséget, zárj le vásárlást. Az első kiadás 8 másodpercenként olvas friss adatokat; fókuszált mező vagy nyitott párbeszéd közben vár. Ez polling, nem Realtime WebSocket.

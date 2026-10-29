@@ -98,8 +98,12 @@ A fejléc házikója nyitja a bejelentkezést/háztartáskezelést. Üres konfig
 
 A belépés a Supabase alapértelmezett Sign in linkjét használja; nincs kódbeírás. A visszatérő tokeneket a címsorból eltávolítjuk, majd szerveroldalon ellenőriztetjük. Éles emailküldés továbbra is csak konfigurált Supabase-projekttel ellenőrizhető. A felület kevesebb keretet, generált kategóriaikonokat és visszafogott terrakotta hangsúlyokat kapott. Listára vételkor a kosár röviden mozdul; csökkentett mozgás beállítás mellett az animáció kikapcsol.
 
-## Bekötött Supabase és első import
+## Bekötött Supabase és külön helyi készlet
 
 A felhasználó által megadott Supabase-projekt publikus konfigurációja beállítva. A projekt auth settings végpontja elérhető, az emailes belépés engedélyezett. A households tábla névtelen olvasása jogosultsági hibával tiltott, ahogy elvárjuk. Valódi emailes belépés és két felhasználós éles próba még szükséges.
 
-Első háztartásválasztáskor az app felajánlja a meglévő helyi készlet és lista átvitelét. Az áttekintés felsorolja az új tételeket és a közös háztartásban változatlanul megmaradó ütközéseket. Kihagyás vagy sikeres import után a döntést felhasználónként/háztartásonként ezen a böngészőn megjegyzi. A kézi import később is elérhető. A forrásadat megmarad; listamennyiségeket nem ad össze, közös készletállapotot nem ír felül. A helyi vásárlási archívum és személyes adatok nem részei az importnak.
+Háztartásba lépéskor csak a közös készlet és lista töltődik be. A helyi adatok külön megmaradnak; nincs import vagy automatikus összefésülés.
+
+## Gyors bevitel és készletürítés
+
+A lista tetején a gépelés ajánlásokat mutat. Vessző, pontosvessző vagy Enter rögzíti a terméket; a teljes beillesztett felsorolás egy mentési csomag. Magyar és angol név, ékezet nélküli írás, néhány szinonima és kisebb elírás felismerhető. Bizonytalan egyezésnél saját tétel keletkezik. Ez helyi keresés, nem AI-hívás. A készlet címénél a ··· menüből megerősítéssel törölhető minden otthonjelölés, a lista és a termékkatalógus megtartásával.

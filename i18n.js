@@ -19,6 +19,7 @@ const englishRecipes=[
 ];
 recipes.forEach((r,i)=>{const e=englishRecipes[i];uiEnglish[r.name]=e[0];uiEnglish[r.desc]=e[1];r.steps.forEach((s,j)=>uiEnglish[s]=e[2][j])});
 uiEnglish['Háztartás']='Household';
+Object.assign(uiEnglish,{'Készlet műveletek':'Pantry actions','Készlet ürítése':'Clear pantry','Kiüríted a készletet?':'Clear your pantry?','Minden otthonjelölést eltávolítunk. A bevásárlólista és a saját termékeid megmaradnak.':'All at-home marks will be removed. Your shopping list and custom products will be kept.','A közös háztartás minden tagjának készlete kiürül.':'The pantry will be cleared for everyone in this household.','Tej, kenyér, alma…':'Milk, bread, apples…'});
 const dictionary={...productEnglish,...uiEnglish};
 const escapePattern=s=>Array.from(s).map(c=>'\\^$.*+?()[]{}|'.includes(c)?'\\'+c:c).join('');
 const translationPattern=new RegExp('(?<![\\p{L}])('+Object.keys(dictionary).sort((a,b)=>b.length-a.length).map(escapePattern).join('|')+')(?![\\p{L}])','gu');
