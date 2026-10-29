@@ -178,3 +178,6 @@ body:has(.undo-home) #toast.visible{visibility:hidden}
 #chatgpt-dialog textarea{display:block;box-sizing:border-box;width:100%;font:inherit;font-size:16px;line-height:1.5;border:1px solid var(--line);border-radius:12px;background:var(--white);padding:12px;margin-top:8px;resize:vertical}
 #chatgpt-dialog h2{padding-right:24px}#chatgpt-dialog label,#chatgpt-dialog p,#chatgpt-dialog a{font-size:13px}
 #chatgpt-dialog .chatgpt-feedback:empty{display:none}
+
+#chatgpt-dialog .chatgpt-direct{display:block;text-align:center;text-decoration:none;font-size:14px;box-sizing:border-box}
+#chatgpt-dialog #copy-open-chatgpt{margin:0 0 14px}
