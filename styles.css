@@ -148,3 +148,9 @@ nav button.active:not(.shopping-nav){color:#a75a3d}.add-form input{border-color:
 @keyframes morzsa-check-arrival{0%{transform:scale(.75);opacity:.4}65%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
 @keyframes morzsa-check-draw{from{stroke-dashoffset:24}to{stroke-dashoffset:0}}
 @media(prefers-reduced-motion:reduce){.basket-bump .shopping-nav-icon,.basket-bump #cart-count,.ingredient-plus.just-added svg,.ingredient-plus.just-added svg path{animation:none}}
+
+/* The green card carries the home state; the icon stays quiet. */
+.app[data-page=pantry] .ingredient-card .home-action{color:#969d90;background:transparent}
+.app[data-page=pantry] .ingredient-card .home-action svg{width:16px;height:16px;stroke-width:1.4}
+.app[data-page=pantry] .ingredient-card .home-action.selected{color:#63805b;background:transparent}
+nav .pantry-nav-icon{display:flex;align-items:center;justify-content:center;height:29px;margin:0 0 3px}
