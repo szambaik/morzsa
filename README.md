@@ -51,3 +51,13 @@ Kategórianavigáció: bal oldali sticky, külön görgethető ikon- és felirat
 ## GitHub Pages
 
 A GitHub Pages kiadás a statikus mobilos felületet publikálja. A készlet, kedvencek és bevásárlólista ott is működik, az adott böngészőben tárolva. A Python AI-szerver nem fut GitHub Pages alatt; az AI-chathez a helyi server.py vagy később külön hosztolt backend szükséges. A .env fájl nincs a repóban. A weboldal az október 28-án felmért mintakészlettel indul, amit szabadon módosíthatsz.
+
+## Gyors bevásárlási mennyiségek
+
+A készletfejléc és a kártyák kompaktabbak. A kártya pluszgombja egy termékre jellemző vásárlási egységet ad hozzá: például krumpli 1 kg, fokhagyma 1 db, tej 1 l. Ismételt koppintás növeli az összmennyiséget. A régi, mennyiség nélküli listatételeket 1 egységként kezeli.
+
+A plusz 450 ms-os nyomva tartása (vagy jobb kattintás, billentyűzettel Alt+le) megnyitja a mennyiségválasztót. Gyorsértékek: 1, 2, 3, 5; külön szám és egység is választható. A választó hozzáadja a kiválasztott mennyiséget. A bevásárlólistán a mennyiségre koppintás a meglévő értéket szerkeszti. Az otthoni jelölés ettől független marad.
+
+A bevásárlólista kategóriánként csoportosított, a csoportok nyitva indulnak. A katalógusban nem szereplő tétel az Egyéb csoportba kerül, a hozzáadott saját alapanyag a Saját tételek közé.
+
+Ellenőrzés: böngészőben két koppintás → 2 kg krumpli; hosszú nyomás és 3 választása → 3 db fokhagyma; tej külön tejtermék-csoportba kerül. Mennyiség utólagos szerkesztése és újratöltés utáni megőrzése működik. Elmozdított érintés megszakítja a hosszú nyomás időzítőjét. 320 és 390 px szélességen nincs vízszintes túlcsordulás. Fizikai telefonon a hosszú nyomás még külön ellenőrizendő.
