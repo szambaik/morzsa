@@ -3,7 +3,7 @@
  const say=(hu,en)=>language==='en'?en:hu;
  let session;try{session=JSON.parse(localStorage.getItem('morzsa-session'))}catch{}
  const cloud=window.household={active:null,rows:[],busy:false,configured,notify:()=>push(),storageKey:()=>cloud.active?'morzsa-household-cache-'+cloud.active:'morzsa-v2'};
- let localBackup=null,authEmail='',pollTimer;
+ let localBackup=null,authEmail='',pollTimer,invitations=[],inviteUnavailable=false,inviteLoading=false;
  const incomingLink=AuthLink.consume(location.href);if(incomingLink)history.replaceState(null,'',incomingLink.cleanURL);
  let authPending=!!incomingLink,authNotice='';
  function status(hu,en){document.getElementById('cloud-status').textContent=say(hu,en)}
@@ -15,7 +15,7 @@
   const text=await response.text();let data;try{data=text?JSON.parse(text):null}catch{throw Error('Invalid server response')}
   if(!response.ok)throw Error(data?.message||data?.msg||data?.error_description||'Request failed');return data;
  }
- function setSession(value){session=value;if(session&&!session.expires_at)session.expires_at=Math.floor(Date.now()/1000)+(session.expires_in||3600);if(session)localStorage.setItem('morzsa-session',JSON.stringify(session));else localStorage.removeItem('morzsa-session')}
+ function setSession(value){session=value;if(session&&!session.expires_at)session.expires_at=Math.floor(Date.now()/1000)+(session.expires_in||3600);if(session)localStorage.setItem('morzsa-session',JSON.stringify(session));else localStorage.removeItem('morzsa-session');invitations=[];paintInviteBadge()}
  const rpc=(name,args)=>request('/rest/v1/rpc/'+name,args);
  async function fetchRows(){
   const houses=await request('/rest/v1/households?id=eq.'+cloud.active+'&select=id');if(!houses.length)throw Error(say('A háztartás már nem érhető el.','This household is no longer accessible.'));
@@ -43,20 +43,48 @@
   q.querySelector('.close').onclick=()=>q.close();if(!q.open)q.showModal();const body=q.querySelector('#household-body');
   if(!configured){body.innerHTML='<p>'+say('A közös háztartás előkészítve. A bejelentkezéshez és megosztáshoz még be kell kötni a felhőszolgáltatást.','Shared households are prepared. Connect the cloud service to enable sign-in and sharing.')+'</p><p>'+say('Addig a készleted és listád csak ezen a böngészőn mentődik.','Until then, your pantry and list are saved in this browser only.')+'</p>';return}
   if(authPending){body.innerHTML='<p role="status">'+say('Belépési link ellenőrzése…','Checking your sign-in link…')+'</p>';return}
-  if(!session){body.innerHTML='<p>'+say('Küldünk egy belépési linket. A levélben kattints a Sign in gombra, és ide érkezel vissza.','We’ll email you a sign-in link. Click Sign in in the email to return here.')+'</p><form id="cloud-signin"><label>Email<input type="email" id="cloud-email" required autocomplete="email" value="'+esc(authEmail)+'"></label><button class="primary full">'+say('Belépési link küldése','Send sign-in link')+'</button></form><p id="signin-feedback" role="status"></p>';
+  if(!session){body.innerHTML=button('google-signin','Belépés Google-fiókkal','Continue with Google')+'<p>'+say('Küldünk egy belépési linket. A levélben kattints a Sign in gombra, és ide érkezel vissza.','We’ll email you a sign-in link. Click Sign in in the email to return here.')+'</p><form id="cloud-signin"><label>Email<input type="email" id="cloud-email" required autocomplete="email" value="'+esc(authEmail)+'"></label><button class="primary full">'+say('Belépési link küldése','Send sign-in link')+'</button></form><p id="signin-feedback" role="status"></p>';
    q.querySelector('.household-error').textContent=authNotice;
+   body.querySelector('#google-signin').classList.add('google-signin');body.querySelector('#google-signin').onclick=e=>run(e.target,async()=>{const settings=await request('/auth/v1/settings',undefined,false);if(!settings.external?.google)throw Error(say('A Google-belépés még nincs bekapcsolva. Addig emailes linkkel tudsz belépni.','Google sign-in is not enabled yet. Use an email link for now.'));const url=new URL(config.url+'/auth/v1/authorize');url.searchParams.set('provider','google');url.searchParams.set('redirect_to',new URL(location.pathname,location.origin).href);location.assign(url.href)});
    body.querySelector('#cloud-signin').onsubmit=e=>{e.preventDefault();run(e.target.querySelector('button'),async()=>{authEmail=body.querySelector('#cloud-email').value.trim();const redirect=new URL(location.pathname,location.origin).href;await request('/auth/v1/otp?redirect_to='+encodeURIComponent(redirect),{email:authEmail,create_user:true},false);body.querySelector('#signin-feedback').textContent=say('A belépési linket elküldtük. Nézd meg a postaládádat és a spam mappát is.','Sign-in link sent. Check your inbox and spam folder.');e.target.querySelector('button').textContent=say('Új link küldése','Send another link')})};return;
   }
   body.innerHTML='<p>'+esc(session.user?.email||'')+'</p><p>'+say('Háztartások betöltése…','Loading households…')+'</p>';
-  try{const houses=await request('/rest/v1/households?select=id,name,owner_id&order=created_at');body.innerHTML='<p>'+esc(session.user?.email||'')+'</p>'+houses.map(h=>'<button class="small-button full" data-house="'+h.id+'">'+esc(h.name)+(cloud.active===h.id?' ✓':'')+'</button>').join('')+'<form id="create-house"><label>'+say('Új háztartás neve','New household name')+'<input required maxlength="80" name="house-name"></label><button class="primary full">'+say('Létrehozás','Create')+'</button></form><form id="join-house"><label>'+say('Meghívókód','Invitation code')+'<input required name="invite" autocomplete="off"></label><button class="small-button full">'+say('Csatlakozás','Join')+'</button></form>'+(cloud.active?button('cloud-disconnect','Vissza a helyi készlethez','Return to local pantry'):'')+button('cloud-signout','Kijelentkezés','Sign out');
+  try{const houses=await request('/rest/v1/households?select=id,name,owner_id&order=created_at');await loadInvitations();body.innerHTML='<p>'+esc(session.user?.email||'')+'</p>'+houses.map(h=>'<button class="small-button full" data-house="'+h.id+'">'+esc(h.name)+(cloud.active===h.id?' ✓':'')+'</button>').join('')+'<form id="create-house"><label>'+say('Új háztartás neve','New household name')+'<input required maxlength="80" name="house-name"></label><button class="primary full">'+say('Létrehozás','Create')+'</button></form>'+(cloud.active?button('cloud-disconnect','Vissza a helyi készlethez','Return to local pantry'):'')+button('cloud-signout','Kijelentkezés','Sign out');
+   body.insertAdjacentHTML('afterbegin','<section id="incoming-invitations"></section>');paintInvitations();
    body.querySelectorAll('[data-house]').forEach(b=>b.onclick=()=>run(b,()=>connect(b.dataset.house)));
    body.querySelector('#create-house').onsubmit=e=>{e.preventDefault();run(e.target.querySelector('button'),async()=>{const hid=await rpc('create_household',{household_name:e.target.elements['house-name'].value});await connect(hid)})};
-   body.querySelector('#join-house').onsubmit=e=>{e.preventDefault();run(e.target.querySelector('button'),async()=>{const hid=await rpc('join_household',{invite_token:e.target.elements.invite.value.trim()});await connect(hid)})};
+
    body.querySelector('#cloud-signout').onclick=()=>{if(cloud.busy)return;disconnect();setSession(null);open()};
    if(cloud.active){body.querySelector('#cloud-disconnect').onclick=()=>{disconnect();open()};
-   const h=houses.find(h=>h.id===cloud.active);if(h?.owner_id===session.user?.id){body.insertAdjacentHTML('beforeend',button('cloud-invite','Meghívókód készítése','Create invitation code')+'<output id="invite-output"></output>'+button('revoke-invites','Függő meghívók visszavonása','Revoke pending invitations'));body.querySelector('#cloud-invite').onclick=e=>run(e.target,async()=>{const token=await rpc('invite_household',{hid:cloud.active});body.querySelector('#invite-output').textContent=say('Egyszer használható, 2 napig érvényes kód: ','Single-use code, valid for 2 days: ')+token});body.querySelector('#revoke-invites').onclick=e=>run(e.target,async()=>{await rpc('revoke_household_invites',{hid:cloud.active});body.querySelector('#invite-output').textContent=say('Meghívók visszavonva.','Invitations revoked.')});}
+   const h=houses.find(h=>h.id===cloud.active);if(h?.owner_id===session.user?.id){
+    body.insertAdjacentHTML('beforeend','<form id="invite-email"><label>'+say('Meghívás email-cím alapján','Invite by email')+'<input name="email" type="email" maxlength="254" required autocomplete="email" placeholder="nev@gmail.com"></label><button class="primary full" '+(inviteUnavailable?'disabled':'')+'>'+say('Meghívás','Invite')+'</button></form><p class="helper">'+say('A meghívott ezzel az email-címmel belépve az appban fogadhatja el. A meghívás 7 napig érvényes.','The recipient can accept in the app after signing in with this email. Invitations expire in 7 days.')+'</p><div id="sent-invitations"></div>');
+    body.querySelector('#invite-email').onsubmit=e=>{e.preventDefault();run(e.target.querySelector('button'),async()=>{await rpc('send_household_email_invite',{hid:cloud.active,recipient_email:e.target.elements.email.value.trim()});e.target.reset();toast(say('Meghívás létrehozva.','Invitation created.'));await paintSentInvitations(cloud.active)})};
+    if(!inviteUnavailable)await paintSentInvitations(cloud.active);
+   }
    }
   }catch(e){q.querySelector('.household-error').textContent=errorText(e)}
+ }
+ function paintInviteBadge(){
+  const button=document.getElementById('household-button');button.querySelector('.invite-badge')?.remove();
+  button.setAttribute('aria-label',say('Háztartás','Household')+(invitations.length?' · '+invitations.length+' '+say('meghívás','invitations'):''));
+  if(invitations.length)button.insertAdjacentHTML('beforeend','<span class="invite-badge" aria-hidden="true">'+invitations.length+'</span>');
+ }
+ async function loadInvitations(){
+  if(!session||!configured||inviteLoading)return;inviteLoading=true;const uid=session.user?.id;
+  try{const rows=await rpc('list_household_email_invites',{});if(session?.user?.id!==uid)return;invitations=rows;inviteUnavailable=false;paintInviteBadge();const section=q.querySelector("#incoming-invitations");if(section&&!section.contains(document.activeElement))paintInvitations()}
+  catch(e){if(session?.user?.id===uid){inviteUnavailable=true}}
+  finally{inviteLoading=false}
+ }
+ function paintInvitations(){
+  const section=q.querySelector('#incoming-invitations');if(!section)return;
+  section.innerHTML=inviteUnavailable?'<p class="helper">'+say('A meghívások most nem érhetők el. A szolgáltatást még be kell kapcsolni, vagy a kapcsolat szakadt meg.','Invitations are currently unavailable. Setup may be incomplete, or the connection was interrupted.')+'</p>':invitations.map(i=>'<article class="invitation-card"><h3>'+esc(i.household_name)+'</h3><p>'+say('Meghívtak ebbe a háztartásba.','You have been invited to this household.')+'</p><div class="invitation-actions"><button class="primary" data-accept="'+esc(i.id)+'">'+say('Elfogadom','Accept')+'</button><button class="small-button" data-decline="'+esc(i.id)+'">'+say('Elutasítom','Decline')+'</button></div></article>').join('');
+  section.querySelectorAll('[data-accept],[data-decline]').forEach(b=>b.onclick=()=>run(b,async()=>{const accept=!!b.dataset.accept;const hid=await rpc('respond_household_email_invite',{invitation_id:b.dataset.accept||b.dataset.decline,accept_invite:accept});await loadInvitations();if(accept)await connect(hid);else paintInvitations()}));
+ }
+ async function paintSentInvitations(hid){
+  const rows=await rpc('list_sent_household_invites',{hid}),el=q.querySelector('#sent-invitations');if(!el||cloud.active!==hid)return;
+  const labels={pending:say('Függőben','Pending'),accepted:say('Elfogadva','Accepted'),declined:say('Elutasítva','Declined'),revoked:say('Visszavonva','Revoked')};
+  el.innerHTML=rows.map(i=>'<div class="invite-sent"><span>'+esc(i.email)+'<br>'+((i.status==='pending'&&new Date(i.expires_at)<new Date())?say('Lejárt','Expired'):labels[i.status])+'</span>'+(i.status==='pending'?'<button class="small-button" data-revoke="'+esc(i.id)+'">'+say('Visszavonás','Revoke')+'</button>':'')+'</div>').join('');
+  el.querySelectorAll('[data-revoke]').forEach(b=>b.onclick=()=>run(b,async()=>{await rpc('revoke_household_email_invite',{invitation_id:b.dataset.revoke});await paintSentInvitations(hid)}));
  }
  async function receiveLink(){
   if(!incomingLink)return;
@@ -71,5 +99,7 @@
  window.addEventListener('online',refresh);document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh()});
  status('Csak ezen az eszközön','This device only');
  receiveLink();
+ loadInvitations();setInterval(async()=>{if(document.hidden||authPending)return;await loadInvitations();if(q.open&&!q.contains(document.activeElement))paintInvitations()},30000);
+ window.addEventListener('focus',()=>loadInvitations());
  cloud.updateLanguage=()=>status(cloud.active?'Közös háztartás':'Csak ezen az eszközön',cloud.active?'Shared household':'This device only');
 })();

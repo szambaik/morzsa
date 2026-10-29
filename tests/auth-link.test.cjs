@@ -2,3 +2,9 @@ const test=require('node:test'),assert=require('node:assert/strict'),AuthLink=re
 test('consumes credentials and removes them without losing ordinary URL parameters',()=>{const link=AuthLink.consume('https://site.test/morzsa/?v=2#access_token=test-access&refresh_token=test-refresh&expires_in=900&type=magiclink');assert.equal(link.cleanURL,'https://site.test/morzsa/?v=2');assert.equal(link.expiresIn,900);assert.equal(link.error,false)});
 test('expired links and partial credentials fail; ordinary anchors are untouched',()=>{assert.equal(AuthLink.consume('https://site.test/#recipes'),null);assert(AuthLink.consume('https://site.test/#access_token=bad').error);const link=AuthLink.consume('https://site.test/?v=1&error=access_denied&error_description=expired');assert(link.error);assert.equal(link.cleanURL,'https://site.test/?v=1')});
 test('server validation is required before establishing a session',async()=>{const link=AuthLink.consume('https://site.test/#access_token=test&refresh_token=refresh');const config={url:'https://project.supabase.co',publishableKey:'public'};await assert.rejects(AuthLink.validate(link,config,async()=>({ok:false})),/invalid-link/);let called;const session=await AuthLink.validate(link,config,async(url,options)=>{called={url,options};return {ok:true,json:async()=>({id:'verified-user'})}});assert.equal(called.url,config.url+'/auth/v1/user');assert.equal(session.user.id,'verified-user');assert.equal(session.refresh_token,'refresh')});
+
+test('OAuth provider credentials are removed with the session fragment',()=>{
+ const link=AuthLink.consume('https://example.com/#access_token=a&refresh_token=b&provider_token=private&provider_refresh_token=private2');
+ assert.equal(link.cleanURL,'https://example.com/');
+ assert.equal(link.error,false);
+});

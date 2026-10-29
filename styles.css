@@ -165,3 +165,11 @@ nav .pantry-nav-icon{display:flex;align-items:center;justify-content:center;heig
 body:has(.undo-home) #toast.visible{visibility:hidden}
 @keyframes undo-appear{from{opacity:0;translate:0 5px}to{opacity:1;translate:0 0}}
 @media(prefers-reduced-motion:reduce){.undo-home{animation:none}}
+.app[data-page=pantry] .search-open .search-wrap:focus-within{outline:none;box-shadow:none}
+.app[data-page=pantry] .pantry-heading.search-open .catalog-search-row{background:#f0ede5;box-shadow:none}
+#household-button{position:relative}
+.invite-badge{position:absolute;top:-4px;right:-4px;border-radius:10px;background:var(--orange);color:white;min-width:17px;padding:2px 4px;font-size:10px}
+.invitation-card{padding:14px;background:#eaf0e1;border-radius:14px;margin:10px 0}
+.invitation-card h3{margin:0 0 8px;font-size:16px}.invitation-actions{display:flex;gap:8px}.invitation-actions button{min-height:44px}
+.google-signin{display:flex;justify-content:center;align-items:center;gap:10px;min-height:48px;background:var(--white)}
+.invite-sent{display:flex;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);font-size:12px}.invite-sent span{min-width:0;overflow-wrap:anywhere;flex:1}

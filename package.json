@@ -1,5 +1,10 @@
 {
- "name":"morzsa", "private":true,
- "scripts":{"test":"node --test tests/*.test.cjs && node tests/household-sql.test.mjs"},
- "devDependencies":{"@electric-sql/pglite":"0.3.14"}
+  "name": "morzsa",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/*.test.cjs && node tests/household-sql.test.mjs && node tests/email-invites.test.mjs"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "0.3.14"
+  }
 }

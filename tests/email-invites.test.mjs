@@ -1,0 +1,24 @@
+import {PGlite} from '@electric-sql/pglite';import fs from 'node:fs';import assert from 'node:assert/strict';
+const db=new PGlite();
+await db.exec("create schema auth;create role anon;create role authenticated;create table auth.users(id uuid primary key,email text,email_confirmed_at timestamptz);create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;");
+await db.exec(fs.readFileSync(new URL('../supabase/schema.sql',import.meta.url),'utf8'));
+const migration=fs.readFileSync(new URL('../supabase/migrations/20261029_email_invitations.sql',import.meta.url),'utf8');await db.exec(migration);await db.exec(migration);
+const a='00000000-0000-4000-8000-000000000001',b='00000000-0000-4000-8000-000000000002',c='00000000-0000-4000-8000-000000000003';
+for(const [id,email] of [[a,'owner@example.com'],[b,'friend@example.com'],[c,'other@example.com']])await db.query('insert into auth.users values($1,$2,now())',[id,email]);
+async function user(id){await db.exec('reset role');await db.query("select set_config('request.jwt.claim.sub',$1,false)",[id]);await db.exec('set role authenticated')}
+await user(a);const hid=(await db.query("select public.create_household('Test Home') id")).rows[0].id;
+const invite=async(email=' Friend@Example.com ') => (await db.query('select public.send_household_email_invite($1,$2) id',[hid,email])).rows[0].id;
+const iid=await invite();assert.equal(await invite(),iid);
+await assert.rejects(db.query('select public.join_household($1)',['old-token']),/permission denied/);
+await user(c);assert.equal((await db.query('select * from public.list_household_email_invites()')).rows.length,0);
+await assert.rejects(db.query('select public.respond_household_email_invite($1,true)',[iid]),/unavailable/);
+await assert.rejects(invite(),/Owner/);
+await assert.rejects(db.query('select * from public.household_email_invites'),/permission denied/);
+await user(b);assert.equal((await db.query('select * from public.list_household_email_invites()')).rows.length,1);assert.equal((await db.query('select * from public.households')).rows.length,0);
+await db.exec('reset role');await db.query('update auth.users set email_confirmed_at=null where id=$1',[b]);await user(b);assert.equal((await db.query('select * from public.list_household_email_invites()')).rows.length,0);await assert.rejects(db.query('select public.respond_household_email_invite($1,true)',[iid]),/unavailable/);
+await db.exec('reset role');await db.query('update auth.users set email_confirmed_at=now() where id=$1',[b]);await user(b);
+await db.query('select public.respond_household_email_invite($1,false)',[iid]);assert.equal((await db.query('select * from public.households')).rows.length,0);
+await user(a);await invite();await db.query('select public.revoke_household_email_invite($1)',[iid]);await user(b);await assert.rejects(db.query('select public.respond_household_email_invite($1,true)',[iid]),/unavailable/);
+await user(a);await invite();await db.exec('reset role');await db.query("update public.household_email_invites set expires_at=now()-interval '1 hour' where id=$1",[iid]);await user(b);await assert.rejects(db.query('select public.respond_household_email_invite($1,true)',[iid]),/unavailable/);
+await user(a);await invite();await user(b);assert.equal((await db.query('select public.respond_household_email_invite($1,true) id',[iid])).rows[0].id,hid);assert.equal((await db.query('select * from public.households')).rows.length,1);await assert.rejects(db.query('select public.respond_household_email_invite($1,true)',[iid]),/unavailable/);
+console.log('Email invitations passed: verified recipient isolation, owner-only creation, no access before acceptance, duplicate handling, decline, revoke, expiry, one-time acceptance and repeatable migration.');await db.close();

@@ -3,7 +3,7 @@
 const AuthLink={
  consume(href){
   const url=new URL(href),fragment=new URLSearchParams(url.hash.slice(1));
-  const keys=['access_token','refresh_token','token_type','expires_in','expires_at','type','error','error_code','error_description'];
+  const keys=['access_token','refresh_token','token_type','expires_in','expires_at','type','error','error_code','error_description','provider_token','provider_refresh_token'];
   const present=['access_token','refresh_token','error','error_code'].some(k=>fragment.has(k)||url.searchParams.has(k));
   if(!present)return null;
   const get=k=>fragment.get(k)||url.searchParams.get(k);

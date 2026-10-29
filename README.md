@@ -107,3 +107,7 @@ Háztartásba lépéskor csak a közös készlet és lista töltődik be. A hely
 ## Gyors bevitel és készletürítés
 
 A lista tetején a gépelés ajánlásokat mutat. Vessző, pontosvessző vagy Enter rögzíti a terméket; a teljes beillesztett felsorolás egy mentési csomag. Magyar és angol név, ékezet nélküli írás, néhány szinonima és kisebb elírás felismerhető. Bizonytalan egyezésnél saját tétel keletkezik. Ez helyi keresés, nem AI-hívás. A készlet címénél a ··· menüből megerősítéssel törölhető minden otthonjelölés, a lista és a termékkatalógus megtartásával.
+
+## Emailes meghívások és Google-fiók
+
+Elkészült az email-címhez kötött, appon belül elfogadható háztartásmeghívás, értesítési jelvénnyel, 7 napos lejárattal és tulajdonosi visszavonással. A Google-belépés a Supabase Google providerét használja, az emailes belépési link továbbra is elérhető. Az éles bekötéshez SQL-migráció és Google OAuth konfiguráció kell: [útmutató](supabase/EMAIL-GOOGLE-SETUP.md). A meghívó nem küld emailt vagy mobil push üzenetet.

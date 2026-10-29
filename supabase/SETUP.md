@@ -1,3 +1,5 @@
+> Az emailes meghívásokhoz és Google-belépéshez kövesd az [új bekötési útmutatót](EMAIL-GOOGLE-SETUP.md). Meglévő projektnél az új migrációt is futtatni kell; az alábbi régi kódos meghívások helyett ez az aktuális folyamat.
+
 # Közös háztartás bekötése
 
 A projekt publikus URL-je és publishable kulcsa bekötve. Az auth settings és a households tábla anonim hozzáférésvédelme élesben ellenőrizve. Valódi emailes belépés és két felhasználós próba még nem történt.
