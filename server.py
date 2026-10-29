@@ -68,7 +68,7 @@ def validate(body):
 def ask_openai(body, key, model):
     recipe, stock, messages = validate(body)
     context = json.dumps({'recept': recipe, 'otthon_jelölt_alapanyagok': stock}, ensure_ascii=False)
-    payload = {'model': model, 'instructions': INSTRUCTIONS, 'store': False,
+    payload = {'model': model, 'instructions': INSTRUCTIONS + ('\nRespond in English.' if body.get('language') == 'en' else ''), 'store': False,
                'max_output_tokens': 3000,
                'input': [{'role': 'user', 'content': 'A beszélgetés recept- és készletadatai: ' + context}] +
                         [{'role': m['role'], 'content': m['content']} for m in messages]}
@@ -119,7 +119,7 @@ class Handler(SimpleHTTPRequestHandler):
         path = urlparse(self.path).path
         if path == '/':
             return True
-        return path in ('/index.html', '/styles.css', '/app.js', '/catalog.js', '/recipes.js') or (path.startswith('/assets/') and '..' not in path and '%' not in path and Path(path).suffix in ('.svg', '.jpg', '.png', '.webp'))
+        return path in ('/index.html', '/styles.css', '/app.js', '/catalog.js', '/recipes.js', '/translations.js', '/i18n.js', '/household-config.js', '/household-model.js', '/household.js') or (path.startswith('/assets/') and '..' not in path and '%' not in path and Path(path).suffix in ('.svg', '.jpg', '.png', '.webp'))
 
     def do_GET(self):
         if self.path == '/api/status':

@@ -1,0 +1,4 @@
+const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
+const ctx=vm.createContext({});vm.runInContext(fs.readFileSync('catalog.js','utf8')+fs.readFileSync('translations.js','utf8')+';globalThis.data={catalog,productArtwork,productEnglish,artworkFallbackNames};',ctx);
+test('every product has an English label and existing artwork',()=>{const {catalog,productArtwork,productEnglish}=ctx.data;assert.equal(catalog.length,667);for(const p of catalog){assert(productEnglish[p.name],p.name);assert(fs.existsSync(productArtwork[p.name]),p.name)}});
+test('translated names do not change canonical product identifiers',()=>{assert(ctx.data.catalog.some(p=>p.name==='Krumpli'));assert.equal(ctx.data.productEnglish.Krumpli,'Potato');assert.equal(new Set(ctx.data.catalog.map(p=>p.name)).size,667)});

@@ -35,6 +35,6 @@ Az AI nem találhat ki bolti árakat hiteles árként. Az eredmény becslés: me
 
 A jelenlegi katalógus 667 általános terméknevet fed le, 27 kategóriában. Ez szerkesztett szupermarket-alapkínálat, nem egy adott lánc teljes vagy élő választéka. Márka- és kiszerelésváltozatokat nem sokszorozunk meg külön kártyákkal; a vásárlási egység a listán módosítható. A korábbi terméknevek megmaradnak, hogy a mentett listák tovább működjenek.
 
-Most 139 különböző emoji segíti a felismerést. Konkrét termékhez konkrét ikon, közeli változatokhoz közös családikon tartozik. A nevek mindig látszanak; az ikon önmagában nem azonosító. A végleges vizuális irány egy saját vagy igazoltan licencelt, egységes színes SVG-készlet lehet: előbb a leggyakoribb termékek, majd a hosszú farok. Az egyforma ikonok mesterséges megkülönböztetése helyett a felismerhetőség a cél.
+Most 85 generált kép segíti a felismerést; minden termék konkrét vagy ideiglenes családikont kap. Konkrét termékhez konkrét ikon, közeli változatokhoz közös családikon tartozik. A nevek mindig látszanak; az ikon önmagában nem azonosító. A végleges vizuális irány egy saját vagy igazoltan licencelt, egységes színes SVG-készlet lehet: előbb a leggyakoribb termékek, majd a hosszú farok. Az egyforma ikonok mesterséges megkülönböztetése helyett a felismerhetőség a cél.
 
 A készlet, archívum és kedvencek jelenleg böngészőnként, helyben tárolódnak. A fizetős csomaghoz tartós fiók és megfelelő backend szükséges; a GitHub Pages önmagában nem futtatja ezeket.

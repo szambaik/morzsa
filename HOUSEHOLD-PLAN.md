@@ -1,6 +1,6 @@
 # Közös háztartás – bekötési terv
 
-Állapot: tervezett funkció, még nincs többeszközös szinkron. A felhasználó bejelentkezést és meghívásos tagságot választott. Javasolt háttér: Supabase Auth + PostgreSQL + Realtime. A szolgáltatás projektjét még nem kötöttük be.
+Állapot: az első implementáció elkészült, az éles szolgáltató még nincs bekötve. Az aktuális működést, 8 másodperces frissítést és korlátokat a supabase/SETUP.md írja le. Az alábbi a hosszabb távú célterv. A felhasználó bejelentkezést és meghívásos tagságot választott. Javasolt háttér: Supabase Auth + PostgreSQL + Realtime. A szolgáltatás projektjét még nem kötöttük be.
 
 ## Felhasználói folyamat
 

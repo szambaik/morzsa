@@ -85,3 +85,11 @@ A Vásárlás befejezése minden listatételt archivál és otthonra jelöl, a p
 A kártyán + listára tesz, az aktív ✓ újabb koppintásra levesz. Hosszú nyomás a teljes mennyiséget szerkeszti. A bevásárlólistán külön −/+ gombok léptetik a mennyiséget; 1-nél a mínusz letiltott, törölni az × gombbal lehet. Az ismeretlenül begépelt termékek a Saját tételek kategóriába kerülnek. Korábbi vásárlás az archívumból újrafelhasználható, a mennyiségek a meglévőkhöz adódnak.
 
 A teljes hiányzóikon-lista az ICON-AUDIT.md fájlban; a többeszközös, bejelentkezéses háztartás terve a HOUSEHOLD-PLAN.md fájlban van. A szinkron még nem működik, ehhez háttérszolgáltatást kell bekötni.
+
+## Magyar / English és képek
+
+A fejléc HU/EN gombjai váltanak nyelvet. A választás megmarad. A teljes 667 termékes katalógus, kategóriák, alapfelület és a hét beépített recept angol fordítást kapott. Magyarul és angolul is kereshetsz; az adatokban a korábbi magyar termékkulcsok maradnak. A saját beírt szövegek és AI-előzmények nem kapnak gépi fordítást. A generált készlet 85 képet tartalmaz; minden katalógustermék kap konkrét vagy ideiglenes családikont.
+
+## Közös háztartás – első implementáció
+
+A fejléc házikója nyitja a bejelentkezést/háztartáskezelést. Üres konfiguráció mellett őszinte „még nincs bekötve” állapot látszik. A bekötési útmutató: [supabase/SETUP.md](supabase/SETUP.md). A frontend, egyszer használható meghívók, termékenkénti verziózott közös mentés és 8 másodperces frissítés elkészült; éles Supabase-projekt nélkül a publikus app továbbra is helyi tárolást használ. A régebbi HOUSEHOLD-PLAN.md a célt írja le, a SETUP.md az aktuális megvalósítást és korlátait.
