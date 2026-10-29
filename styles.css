@@ -204,3 +204,10 @@ body:has(.undo-home) .pantry-search-fab{visibility:hidden}
 .ingredient-card.drag-home .ingredient-icon{transform:translateX(9px)}
 .ingredient-card.drag-cart .ingredient-icon{transform:translateX(-9px)}
 .ingredient-plus.just-added svg path{animation:none;stroke-dasharray:none}
+#cloud-status[hidden]{display:none}
+#pantry-entry-dialog{top:0;bottom:auto;border-radius:0 0 22px 22px;padding-top:max(12px,env(safe-area-inset-top))}
+#pantry-entry-dialog .quick-input{align-items:center}#pantry-entry-dialog .close{float:none;min-width:36px;min-height:44px;margin:0}
+#pantry-entry-dialog .helper{margin:10px 0;font-size:11px}
+#pantry-batch{display:flex;flex-wrap:wrap;gap:6px;max-height:160px;overflow:auto}
+.batch-chip{display:flex;align-items:center;gap:4px;background:#eaf0e1;border-radius:12px;padding:3px 3px 3px 10px;font-size:12px}.batch-chip small{display:block;font-size:9px;color:var(--muted)}.batch-chip button{border:0;background:transparent;min-width:32px;min-height:36px;font-size:18px}
+.batch-actions{display:flex;align-items:center;gap:8px;margin-top:12px}.batch-actions button{display:flex;align-items:center;justify-content:center;gap:5px;min-height:44px;padding:9px 12px;font-size:12px}.batch-actions button:disabled{opacity:.4;cursor:default}.batch-actions .primary span{font-size:21px}#batch-clear{margin-left:auto;border:0;font-size:11px;padding:6px}
