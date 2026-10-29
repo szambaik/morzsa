@@ -48,7 +48,7 @@ function nextRecipe(){return [...recipes].filter(r=>!state.likes.includes(r.id)&
 function hero(label,title,desc){return '<section class="hero"><div class="eyebrow">'+label+'</div><h1>'+title+'</h1><p class="subtitle">'+desc+'</p></section>'}
 function render(){document.querySelector('.app').dataset.page=page;document.querySelectorAll('nav button').forEach(b=>{b.classList.toggle('active',b.dataset.page===page);b.setAttribute('aria-current',b.dataset.page===page?'page':'false')});updateCount();if(page==='pantry')renderPantry();if(page==='recipes')renderRecipes();if(page==='shopping')renderShopping()}
 const houseIcon='<svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5M5 9v12h5v-7h4v7h5V9"/></svg>';
-let categoryPage=0,pantrySearchOpen=false,sortMode=state.sortMode==='alpha'?'alpha':'importance';
+let categoryPage=0,categoryOffset=0,pantrySearchOpen=false,sortMode=state.sortMode==='alpha'?'alpha':'importance';
 function compareProducts(a,b){return sortMode==='alpha'?displayName(a.name).localeCompare(displayName(b.name),language):(householdPriority.get(a.name)??9999)-(householdPriority.get(b.name)??9999)||displayName(a.name).localeCompare(displayName(b.name),language)}
 function categoryIcon(name){const key=({'Zöldségek':'carrot','Gyümölcsök':'peach','Tejtermék és tojás':'milk','Hús és felvágott':'chicken','Fűszerek':'paprika','Italok':'tea','Háztartás':'cleaner','Saját tételek':'oats'})[name]||familyArtwork[name]||'oats';return '<img class="category-artwork" src="assets/icons/'+key+'.webp" alt="" width="28" height="28">'}
 function basketFeedback(){const basket=document.querySelector('.shopping-nav');basket.classList.remove('basket-bump');void basket.offsetWidth;basket.classList.add('basket-bump');clearTimeout(basketFeedback.timer);basketFeedback.timer=setTimeout(()=>basket.classList.remove('basket-bump'),400)}
@@ -217,12 +217,24 @@ function setupPantryNavigation(){
  const paint=()=>{const open=pantrySearchOpen||!!search;heading.classList.toggle('search-open',open);toggle.setAttribute('aria-expanded',String(open));input.tabIndex=open?0:-1};paint();
  toggle.onclick=()=>{pantrySearchOpen=true;paint();input.focus()};close.onclick=()=>{search='';pantrySearchOpen=false;renderPantry();main.querySelector('.search-toggle').focus()};input.addEventListener('keydown',e=>{if(e.key==='Escape')close.click()});
  const rail=main.querySelector('.category-rail'),buttons=[...rail.children],pages=[];
- for(let start=0;start<buttons.length;start+=8){const panel=document.createElement('div');panel.className='category-page';buttons.slice(start,start+8).forEach(b=>panel.append(b));pages.push(panel)}
+ const dock=document.createElement('div');dock.className='category-dock';rail.before(dock);
+ const fixed=document.createElement('div');fixed.className='category-fixed';fixed.append(...buttons.splice(0,2));dock.append(fixed,rail);
+ for(let start=0;start<buttons.length;start+=16){const panel=document.createElement('div');panel.className='category-page';buttons.slice(start,start+16).forEach(b=>panel.append(b));pages.push(panel)}
  rail.replaceChildren(...pages);rail.setAttribute('aria-label',language==='en'?'Category pages':'Kategóriaoldalak');
- const pager=document.createElement('div');pager.className='category-pager';pager.innerHTML=pages.map((_,i)=>'<button aria-label="'+(language==='en'?'Category page ':'Kategóriaoldal ')+(i+1)+'" data-category-page="'+i+'"><span></span></button>').join('');rail.after(pager);
- const update=()=>pager.querySelectorAll('button').forEach((b,i)=>b.setAttribute('aria-current',i===categoryPage?'true':'false'));
- const go=i=>{categoryPage=Math.max(0,Math.min(pages.length-1,i));rail.scrollTo({left:categoryPage*rail.clientWidth,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});update()};
- pager.querySelectorAll('button').forEach((b,i)=>b.onclick=()=>go(i));rail.onscroll=()=>{categoryPage=Math.round(rail.scrollLeft/rail.clientWidth);update()};
+ const pager=document.createElement('div');pager.className='category-pager';pager.innerHTML='<button data-prev aria-label="'+(language==='en'?'Previous categories':'Előző kategóriák')+'">‹</button>'+pages.map((_,i)=>'<button aria-label="'+(language==='en'?'Category page ':'Kategóriaoldal ')+(i+1)+'" data-category-page="'+i+'"><span></span></button>').join('')+'<button data-next aria-label="'+(language==='en'?'Next categories':'Következő kategóriák')+'">›</button>';dock.after(pager);
+ const pageWidth=()=>pages[0].getBoundingClientRect().width;
+ const update=()=>{pager.querySelectorAll('[data-category-page]').forEach((b,i)=>b.setAttribute('aria-current',i===categoryPage?'true':'false'));pager.querySelector('[data-prev]').disabled=rail.scrollLeft<2;pager.querySelector('[data-next]').disabled=rail.scrollLeft>=rail.scrollWidth-rail.clientWidth-2};
+ const move=left=>rail.scrollTo({left,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
+ const go=i=>{categoryPage=Math.max(0,Math.min(pages.length-1,i));move(categoryPage*pageWidth());update()};
+ pager.querySelectorAll('[data-category-page]').forEach((b,i)=>b.onclick=()=>go(i));
+ pager.querySelector('[data-prev]').onclick=()=>move(Math.max(0,rail.scrollLeft-rail.clientWidth));pager.querySelector('[data-next]').onclick=()=>move(rail.scrollLeft+rail.clientWidth);
+ rail.onscroll=()=>{categoryOffset=rail.scrollLeft;categoryPage=Math.min(pages.length-1,Math.floor((rail.scrollLeft+rail.clientWidth/2)/pageWidth()));update()};
  rail.onkeydown=e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();go(categoryPage+(e.key==='ArrowRight'?1:-1));pages[categoryPage].querySelector('button').focus({preventScroll:true})}};
- categoryPage=Math.min(categoryPage,pages.length-1);rail.scrollLeft=categoryPage*rail.clientWidth;update();
+ // Native touch scrolling plus mouse dragging, without turning a drag into a selection.
+ let drag=null,suppressClick=false;
+ rail.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse'||e.button!==0)return;drag={x:e.clientX,left:rail.scrollLeft};suppressClick=false});
+ rail.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-drag.x;if(Math.abs(dx)>5){suppressClick=true;rail.setPointerCapture(e.pointerId);rail.scrollLeft=drag.left-dx}});
+ for(const event of ['pointerup','pointercancel','lostpointercapture'])rail.addEventListener(event,()=>{drag=null});
+ rail.addEventListener('click',e=>{if(suppressClick){e.preventDefault();e.stopImmediatePropagation();suppressClick=false}},true);
+ categoryPage=Math.min(categoryPage,pages.length-1);rail.scrollLeft=categoryOffset;update();
 }
