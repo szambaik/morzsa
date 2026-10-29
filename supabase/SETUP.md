@@ -1,6 +1,6 @@
 # Közös háztartás bekötése
 
-Az implementáció első verziója elkészült; a publikus app felhőbeállítása üres. Nincs még éles Supabase-telepítés vagy valódi emailes belépési teszt.
+A projekt publikus URL-je és publishable kulcsa bekötve. Az auth settings és a households tábla anonim hozzáférésvédelme élesben ellenőrizve. Valódi emailes belépés és két felhasználós próba még nem történt.
 
 ## 1. Supabase-projekt
 
