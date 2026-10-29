@@ -38,6 +38,33 @@
  function disconnect(){if(cloud.busy)return;homeUndo.length=0;shoppingDraft='';pantryDraft='';pantryBatch=[];pantryListed.clear();cloud.active=null;clearInterval(pollTimer);if(localBackup){state={...localBackup,likes:state.likes,skips:state.skips,chats:state.chats,sortMode:state.sortMode};localStorage.setItem('morzsa-v2',JSON.stringify(state));localBackup=null;render()}status('Csak ezen az eszközön','This device only')}
  async function run(button,fn){button.disabled=true;const error=q.querySelector('.household-error');error.textContent='';try{await fn()}catch(e){error.textContent=errorText(e)}finally{button.disabled=false}}
  function button(id,hu,en){return '<button class="small-button full" id="'+id+'">'+say(hu,en)+'</button>'}
+ function localPantry(){
+  // Read the existing local save, including v1 installations; never write to it here.
+  const raw=localStorage.getItem('morzsa-v2')||localStorage.getItem('morzsa-v1');
+  const source=raw?JSON.parse(raw):localBackup;
+  if(!source?.stock||typeof source.stock!=='object'||Array.isArray(source.stock))throw Error(say('A helyi készlet nem olvasható. Az eredeti mentést megtartottuk.','The local pantry could not be read. Your original save was kept.'));
+  return source;
+ }
+ async function copyLocalPantry(){
+  if(!cloud.active||cloud.busy)return;
+  const source=localPantry();let plan;cloud.busy=true;
+  try{
+   // Refresh first so unrelated changes made by another member are preserved.
+   const rows=await fetchRows();cloud.rows=rows;state=HouseholdModel.decode(rows,state);
+   plan=HouseholdModel.pantryImportPlan(source,state,catalog);state=plan.next;
+  }finally{cloud.busy=false}
+  if(!await push())throw Error(say('Az átmásolás nem sikerült. A helyi készleted megmaradt; próbáld újra.','Copying failed. Your local pantry is still saved; please try again.'));
+  render();return plan.added.length;
+ }
+ function paintLocalPantryImport(body,house){
+  const section=document.createElement('section');section.className='local-pantry-import';
+  section.innerHTML='<h3>'+say('Helyi készlet átmásolása','Copy local pantry')+'</h3><p>'+say('Az ezen a böngészőn otthon jelölt termékeket hozzáadjuk ide: ','Add the items marked at home in this browser to: ')+'<strong>'+esc(house.name)+'</strong>. '+say('A közös készlet meglévő tételei és a helyi mentés megmaradnak. A bevásárlólistát nem másoljuk át.','Existing shared items and your local save are kept. The shopping list is not copied.')+'</p><button class="small-button full" id="copy-local-pantry"></button><p class="helper" role="status" id="local-pantry-feedback"></p>';
+  body.querySelector('#create-house').before(section);
+  const b=section.querySelector('button');let count=0;
+  try{count=Object.values(localPantry().stock).filter(value=>Number(value)>0).length}catch(e){section.querySelector('[role=status]').textContent=errorText(e)}
+  b.textContent=count?say('Készlet átmásolása · '+count+' termék','Copy pantry · '+count+(count===1?' item':' items')):say('Nincs helyi készlet átmásoláshoz','No local pantry to copy');b.disabled=!count;
+  b.onclick=()=>run(b,async()=>{const added=await copyLocalPantry();if(added===undefined)return;await open();const message=document.getElementById('local-pantry-feedback');if(message)message.textContent=added?say(added+' terméket otthonra jelöltünk a közös készletben.',added+(added===1?' item marked':' items marked')+' at home in the shared pantry.'):say('Minden helyi termék már otthonra van jelölve a közös készletben.','All local items are already marked at home in the shared pantry.');});
+ }
  async function open(){
   q.innerHTML='<button class="close" aria-label="'+say('Bezárás','Close')+'">×</button><h2>'+say('Közös háztartás','Shared household')+'</h2><p class="household-error" role="alert"></p><div id="household-body"></div>';
   q.querySelector('.close').onclick=()=>q.close();if(!q.open)q.showModal();const body=q.querySelector('#household-body');
@@ -53,7 +80,7 @@
 
    body.querySelector('#cloud-signout').onclick=()=>{if(cloud.busy)return;disconnect();setSession(null);open()};
    if(cloud.active){body.querySelector('#cloud-disconnect').onclick=()=>{disconnect();open()};
-   const h=houses.find(h=>h.id===cloud.active);if(h?.owner_id===session.user?.id){
+   const h=houses.find(h=>h.id===cloud.active);if(h)paintLocalPantryImport(body,h);if(h?.owner_id===session.user?.id){
     body.insertAdjacentHTML('beforeend','<form id="invite-email"><label>'+say('Meghívás email-cím alapján','Invite by email')+'<input name="email" type="email" maxlength="254" required autocomplete="email" placeholder="nev@gmail.com"></label><button class="primary full" '+(inviteUnavailable?'disabled':'')+'>'+say('Meghívás','Invite')+'</button></form><p class="helper">'+say('A meghívott ezzel az email-címmel belépve az appban fogadhatja el. A meghívás 7 napig érvényes.','The recipient can accept in the app after signing in with this email. Invitations expire in 7 days.')+'</p><div id="sent-invitations"></div>');
     body.querySelector('#invite-email').onsubmit=e=>{e.preventDefault();run(e.target.querySelector('button'),async()=>{await rpc('send_household_email_invite',{hid:cloud.active,recipient_email:e.target.elements.email.value.trim()});e.target.reset();toast(say('Meghívás létrehozva.','Invitation created.'));await paintSentInvitations(cloud.active)})};
     if(!inviteUnavailable)await paintSentInvitations(cloud.active);

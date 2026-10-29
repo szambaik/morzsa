@@ -1,5 +1,26 @@
 // Pure shared-state conversion and per-record optimistic concurrency diff.
 const HouseholdModel={
+ // Additive pantry-only import; keep the older full import contract unchanged.
+ pantryImportPlan(source,target,catalog=[]){
+  const next=JSON.parse(JSON.stringify(target)),added=[],kept=[];
+  const norm=name=>name.normalize("NFC").trim().toLocaleLowerCase("hu");
+  const stockNames=new Map(Object.keys(next.stock).map(name=>[norm(name),name]));
+  const customNames=new Map(next.custom.map(item=>[norm(item.name),item.name]));
+  const catalogNames=new Map(catalog.map(item=>[norm(item.name),item.name]));
+  const sourceCustom=Array.isArray(source?.custom)?source.custom:[];
+  for(const [raw,value] of Object.entries(source?.stock||{})){
+   if(!(Number(value)>0)||!raw.trim())continue;
+   const key=norm(raw),name=stockNames.get(key)||catalogNames.get(key)||customNames.get(key)||raw.trim();
+   if(next.stock[name]>0)kept.push(name);
+   else{Object.defineProperty(next.stock,name,{value:2,writable:true,enumerable:true,configurable:true});added.push(name)}
+   stockNames.set(key,name);
+   if(!catalogNames.has(key)&&!customNames.has(key)){
+    const original=sourceCustom.find(item=>typeof item?.name==="string"&&norm(item.name)===key);
+    next.custom.push({...original,name,category:"Saját tételek",emoji:original?.emoji||"🫙"});customNames.set(key,name);
+   }
+  }
+  return {next,added,kept};
+ },
  importPlan(source,target){
   const next=JSON.parse(JSON.stringify(target)),added={stock:[],cart:[],custom:[]},kept={stock:[],cart:[],custom:[]};
   for(const [name,value] of Object.entries(source.stock))if(value>0){if(Object.hasOwn(next.stock,name))kept.stock.push(name);else{next.stock[name]=value;added.stock.push(name)}}

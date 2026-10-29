@@ -221,3 +221,5 @@ body:has(.undo-home) .pantry-search-fab{visibility:hidden}
 #chatgpt-dialog .chatgpt-direct[hidden]{display:none}
 .pantry-tools>#sort-toggle{padding:8px 14px;font-size:12px;min-width:190px;color:var(--ink)}
 .idea-open{min-height:56px}
+.local-pantry-import{margin:18px 0;padding:16px;background:#eaf0e1;border-radius:16px}
+.local-pantry-import h3{margin:0 0 8px;font-size:16px}.local-pantry-import p{font-size:12px;line-height:1.5;overflow-wrap:anywhere}.local-pantry-import button{min-height:44px;margin-bottom:0}.local-pantry-import button:disabled{opacity:.55}.local-pantry-import [role=status]:empty{display:none}
