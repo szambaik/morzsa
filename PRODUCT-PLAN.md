@@ -7,7 +7,7 @@ Gyors, mobilos segítség ahhoz, hogy tudd, mi van otthon és mit kell venni. Ne
 - Kategorizált termékkatalógus, keresés, fontossági és ABC-rend.
 - Egymástól független „van otthon” és bevásárlólistás jelölés.
 - Egy koppintásos hozzáadás, hosszan nyomva vásárlási mennyiségválasztás.
-- Kategorizált bevásárlólista, ürítés mentéssel, korábbi listák és vásárlások archívuma.
+- Kategorizált bevásárlólista, teljes törlés megerősítéssel, archiválás nélkül, vásárlás befejezésekor a teljes lista archiválása és minden tétel otthonra jelölése.
 - Saját tételek, visszavonható otthoni kivétel.
 - Receptötletek, kedvencek, az alap készletilleszkedés továbbra is elérhető.
 - Navigáció: Készlet – kiemelt Lista – Ötletek.

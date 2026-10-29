@@ -118,13 +118,13 @@ async function sendChat(id){if(chatRequests.has(id))return;const controller=new 
 function renderShopping(){
  const pending=state.cart.filter(x=>!x.done).length,order=categoryPriorityOrder;
  const groups=[...new Set(state.cart.map(x=>productCategory(x.name)))].sort((a,b)=>order.indexOf(a)-order.indexOf(b));
- main.innerHTML='<div class="pantry-heading"><h1>Bevásárlólista</h1><span>'+pending+' tétel</span></div>'+(state.cart.length?groups.map(c=>'<details class="shopping-group" open><summary><span aria-hidden="true">'+(catalogGroups.find(g=>g[0]===c)?.[1]||'🫙')+'</span><span>'+esc(c)+'</span><small>'+state.cart.filter(x=>productCategory(x.name)===c&&!x.done).length+'</small></summary>'+state.cart.map((x,i)=>({x,i})).filter(({x})=>productCategory(x.name)===c).sort((a,b)=>compareProducts(a.x,b.x)).map(({x,i})=>'<div class="list-row '+(x.done?'done':'')+'"><input type="checkbox" id="cart-'+i+'" data-cart="'+i+'" '+(x.done?'checked':'')+'><label for="cart-'+i+'">'+esc(x.name)+'</label><button class="quantity-badge" data-edit-quantity="'+i+'" aria-label="'+esc(x.name)+': mennyiség módosítása">'+esc(cartAmount(x))+'</button><button class="delete" data-delete="'+i+'" aria-label="'+esc(x.name)+' törlése">×</button></div>').join('')+'</details>').join(''):'<div class="empty"><span>🧺</span>Most üres a kosarad.<br>A készletben a + gombbal adhatsz hozzá.</div>')+'<form class="add-form" id="add-cart"><input aria-label="Új bevásárlótétel" placeholder="Még valami a listára…" maxlength="60" required><button aria-label="Listára vétel">+</button></form>'+(state.cart.some(x=>x.done)?'<button class="primary full" id="restock">Megvettek → otthoni készletbe</button>':'');
+ main.innerHTML='<div class="pantry-heading"><h1>Bevásárlólista</h1><span>'+pending+' tétel</span></div>'+(state.cart.length?groups.map(c=>'<details class="shopping-group" open><summary><span aria-hidden="true">'+(catalogGroups.find(g=>g[0]===c)?.[1]||'🫙')+'</span><span>'+esc(c)+'</span><small>'+state.cart.filter(x=>productCategory(x.name)===c&&!x.done).length+'</small></summary>'+state.cart.map((x,i)=>({x,i})).filter(({x})=>productCategory(x.name)===c).sort((a,b)=>compareProducts(a.x,b.x)).map(({x,i})=>'<div class="list-row '+(x.done?'done':'')+'"><input type="checkbox" id="cart-'+i+'" data-cart="'+i+'" '+(x.done?'checked':'')+'><label for="cart-'+i+'">'+esc(x.name)+'</label><button class="quantity-badge" data-edit-quantity="'+i+'" aria-label="'+esc(x.name)+': mennyiség módosítása">'+esc(cartAmount(x))+'</button><button class="delete" data-delete="'+i+'" aria-label="'+esc(x.name)+' törlése">×</button></div>').join('')+'</details>').join(''):'<div class="empty"><span>🧺</span>Most üres a kosarad.<br>A készletben a + gombbal adhatsz hozzá.</div>')+'<form class="add-form" id="add-cart"><input aria-label="Új bevásárlótétel" placeholder="Még valami a listára…" maxlength="60" required><button aria-label="Listára vétel">+</button></form>'+(state.cart.length?'<button class="primary full" id="restock">Vásárlás befejezése</button><p class="helper">A teljes lista az archívumba kerül, minden tétel otthonra lesz jelölve.</p>':'');
  main.querySelectorAll('[data-cart]').forEach(i=>i.onchange=()=>{state.cart[Number(i.dataset.cart)].done=i.checked;save();renderShopping()});
  main.querySelectorAll('[data-delete]').forEach(b=>b.onclick=()=>{state.cart.splice(Number(b.dataset.delete),1);save();renderShopping()});
  main.querySelectorAll('[data-edit-quantity]').forEach(b=>b.onclick=()=>openQuantity(state.cart[Number(b.dataset.editQuantity)].name,true));
  main.querySelector('#add-cart').onsubmit=e=>{e.preventDefault();const n=e.target.querySelector('input').value.trim();if(n){addCart(n,'Saját tétel');renderShopping()}};
- const restock=main.querySelector('#restock');if(restock)restock.onclick=()=>archiveCart('purchase');
- const actions=document.createElement('div');actions.className='shopping-actions';actions.innerHTML='<button class="small-button" id="open-history">Korábbi listák · '+state.history.length+'</button>'+(state.cart.length?'<button class="small-button" id="clear-cart">Lista ürítése</button>':'');main.querySelector('.pantry-heading').after(actions);actions.querySelector('#open-history').onclick=openArchive;const clear=actions.querySelector('#clear-cart');if(clear)clear.onclick=()=>archiveCart('cleared');
+ const restock=main.querySelector('#restock');if(restock)restock.onclick=()=>finishShopping();
+ const actions=document.createElement('div');actions.className='shopping-actions';actions.innerHTML='<button class="small-button" id="open-history">Korábbi listák · '+state.history.length+'</button>'+(state.cart.length?'<button class="small-button" id="clear-cart">Lista törlése</button>':'');main.querySelector('.pantry-heading').after(actions);actions.querySelector('#open-history').onclick=openArchive;const clear=actions.querySelector('#clear-cart');if(clear)clear.onclick=confirmClearCart;
 }
 function swipe(el,callback){let x=0,y=0,active=false;el.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'&&e.button!==0)return;if(e.target.closest('button')&&e.target.closest('button')!==el)return;x=e.clientX;y=e.clientY;active=true;el.setPointerCapture(e.pointerId)});el.addEventListener('pointermove',e=>{if(!active)return;const dx=e.clientX-x,dy=e.clientY-y;if(Math.abs(dy)>Math.abs(dx)&&Math.abs(dy)>15){active=false;el.style.transform='';return}if(Math.abs(dx)>15)el.style.transform='translateX('+Math.max(-90,Math.min(90,dx))+'px) rotate('+(dx/30)+'deg)'});const end=e=>{if(!active)return;active=false;el.style.transform='';const dx=e.clientX-x;if(Math.abs(dx)>65&&Math.abs(dx)>Math.abs(e.clientY-y)){callback(dx>0?1:-1)}};el.addEventListener('pointerup',end);el.addEventListener('pointercancel',()=>{active=false;el.style.transform=''})}
 main.addEventListener('click',e=>{if(e.target.closest('#saved-toggle')){showSaved=!showSaved;render()}}); document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{page=b.dataset.page;render();window.scrollTo({top:0,behavior:'instant'})});document.querySelector('.brand').onclick=e=>{e.preventDefault();page='pantry';render();window.scrollTo(0,0)};dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close()}});render();
@@ -133,14 +133,22 @@ function commitState(next){
  try{localStorage.setItem('morzsa-v2',JSON.stringify(next))}catch{toast('Nem sikerült menteni. Semmit sem módosítottunk.');return false}
  state=next;updateCount();return true;
 }
-function archiveCart(kind){
- const items=state.cart.filter(x=>kind==='cleared'||x.done).map(x=>({...x,quantity:x.quantity||1,unit:x.unit||productUnit(x.name),category:productCategory(x.name)}));
- if(!items.length)return;
+function finishShopping(){
+ if(!state.cart.length)return;
+ const items=state.cart.map(x=>({...x,done:true,quantity:x.quantity||1,unit:x.unit||productUnit(x.name),category:productCategory(x.name)}));
  const next=JSON.parse(JSON.stringify(state));
- next.history.unshift({id:crypto.randomUUID(),date:new Date().toISOString(),kind,items});
- next.cart=kind==='cleared'?[]:next.cart.filter(x=>!x.done);
- if(kind==='purchase')items.forEach(x=>{next.stock[x.name]=2;if(![...catalog,...next.custom].some(i=>i.name===x.name))next.custom.push({name:x.name,emoji:'🫙',category:'Saját tételek'})});
- if(commitState(next)){toast(kind==='cleared'?'Lista elmentve az archívumba és kiürítve.':'Vásárlás elmentve, a megvett tételek otthonra jelölve.');renderShopping()}
+ next.history.unshift({id:crypto.randomUUID(),date:new Date().toISOString(),kind:'purchase',items});
+ next.cart=[];
+ items.forEach(x=>{next.stock[x.name]=2;if(![...catalog,...next.custom].some(i=>i.name===x.name))next.custom.push({name:x.name,emoji:'🫙',category:'Saját tételek'})});
+ if(commitState(next)){toast('Vásárlás elmentve. Minden tétel az otthoni készletbe került.');renderShopping()}
+}
+function confirmClearCart(){
+ if(!state.cart.length)return;
+ const q=document.getElementById('clear-dialog');
+ q.innerHTML='<h2 id="clear-title">Törlöd a teljes listát?</h2><p>'+state.cart.length+' tétel kerül le a listáról. Nem mentjük az archívumba, és nem adjuk az otthoni készlethez. A törlés nem vonható vissza.</p><p class="clear-error" role="alert"></p><div class="clear-actions"><button class="small-button" id="cancel-clear" autofocus>Mégse</button><button class="primary" id="confirm-clear">Lista törlése</button></div>';
+ q.querySelector('#cancel-clear').onclick=()=>q.close();
+ q.querySelector('#confirm-clear').onclick=()=>{if(commitState({...state,cart:[]})){q.close();renderShopping();toast('A bevásárlólistát töröltük.')}else q.querySelector('.clear-error').textContent='Nem sikerült menteni. A listád megmaradt.'};
+ q.showModal();
 }
 function restoreArchive(id){
  const entry=state.history.find(x=>x.id===id);if(!entry)return false;

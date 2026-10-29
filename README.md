@@ -75,3 +75,7 @@ Ellenőrizve: natív böngészős dragTo-val paradicsom → házikó, majd → p
 ## Termékirány és szupermarket-katalógus
 
 A [termékterv](PRODUCT-PLAN.md) rögzíti az alapverziót és a tervezett fizetős funkciókat. Ezekhez még nincs előfizetés vagy fizetési integráció. A 27 kategória élelmiszer, higiénia, baba, kisállat és háztartási kínálatot is tartalmaz. Az új nem élelmiszeres kategóriákat nem küldjük főzési alapanyagként az AI-nak. Az alsó menü sorrendje Készlet – kiemelt Lista – Ötletek.
+
+## Vásárlás lezárása és törlés
+
+A Vásárlás befejezése minden listatételt archivál és otthonra jelöl, a pipáktól függetlenül, majd kiüríti a listát. A Lista törlése külön megerősítést kér; nem archivál és nem változtatja a készletet. Sikertelen mentés esetén a lista megmarad. A korábban ürítéskor mentett archív bejegyzések továbbra is elérhetők.
