@@ -2,7 +2,7 @@
   "name": "morzsa",
   "private": true,
   "scripts": {
-    "test": "node --test tests/*.test.cjs && node tests/household-sql.test.mjs && node tests/email-invites.test.mjs && node tests/recipe-ai-sql.test.mjs && node tests/voice-sql.test.mjs"
+    "test": "node --test tests/*.test.cjs && node tests/household-sql.test.mjs && node tests/email-invites.test.mjs && node tests/recipe-ai-sql.test.mjs && node tests/voice-sql.test.mjs && node tests/realtime-sql.test.mjs"
   },
   "devDependencies": {
     "@electric-sql/pglite": "0.3.14"

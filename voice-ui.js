@@ -3,7 +3,7 @@ const voiceContext=()=>JSON.stringify([window.household?.userId(),window.househo
 async function saveVoiceState(next){if(window.household?.busy)return false;if(window.household?.active){state=next;return !!await window.household.notify()}return commitState(next)}
 function voiceError(error){
  const en=language==='en',messages={
- VOICE_SIGN_IN_REQUIRED:['A hangfelismeréshez előbb lépj be.','Sign in to use voice commands.'],
+ VOICE_SIGN_IN_REQUIRED:['Morzsa AI-segítségéhez előbb lépj be.','Sign in to use Morzsa’s AI assistant.'],
  VOICE_SETUP_REQUIRED:['A hangfelismerés még nincs bekötve. Addig használd a szöveges felvételt.','Voice is not configured yet. You can use text entry in the meantime.'],
  VOICE_DAILY_LIMIT:['Mára elfogyott a hangfelismerés kerete. Használd a szöveges felvételt.','The daily voice limit has been reached. Use text entry instead.'],
  VOICE_INVALID_RESPONSE:['Nem sikerült egyértelműen értelmezni. Mondd el újra rövidebben.','Could not interpret that clearly. Try a shorter message.'],
@@ -30,7 +30,7 @@ function showVoiceUndo(changes,context){
   else toast(say('Nem sikerült visszavonni. Ellenőrizd a készletet.','Could not undo. Check your pantry.'));
  };
 }
-async function openVoiceCommand(){
+async function openVoiceCommand(mode='voice'){
  if(document.getElementById('voice-dialog')?.open||window.household?.busy)return;
  const say=(hu,en)=>language==='en'?en:hu,context=voiceContext();
  document.getElementById('voice-dialog')?.remove();const q=document.createElement('dialog');q.id='voice-dialog';q.setAttribute('data-no-translate','');document.body.append(q);
@@ -41,14 +41,18 @@ async function openVoiceCommand(){
  q.onclose=()=>{closed=true;generation++;discard=true;if(recorder?.state==='recording')recorder.stop();stopTracks();document.removeEventListener('visibilitychange',background)};
  const background=()=>{if(document.hidden&&!saving)close()};document.addEventListener('visibilitychange',background);
  const active=()=>{if(voiceContext()!==context){close();return false}return !closed&&q.open};
- function shell(content){q.innerHTML='<button class="close" aria-label="'+say('Bezárás','Close')+'">×</button><div class="eyebrow">'+say('MONDD A MORZSÁNAK','TELL MORZSA')+'</div><h2 id="voice-title">'+say('Készlet, szóban','Your pantry, by voice')+'</h2>'+content;q.setAttribute('aria-labelledby','voice-title');q.querySelector('.close').onclick=close;}
+ function shell(content){q.innerHTML='<button class="close" aria-label="'+say('Bezárás','Close')+'">×</button><div class="eyebrow">'+say('MONDD A MORZSÁNAK','TELL MORZSA')+'</div><h2 id="voice-title">'+say('Miben segítsek?','How can I help?')+'</h2>'+content;q.setAttribute('aria-labelledby','voice-title');q.querySelector('.close').onclick=close;}
  function errorView(error){if(!active())return;shell('<p role="alert">'+esc(voiceError(error))+'</p><button class="primary full" id="voice-retry">'+say('Újra próbálom','Try again')+'</button><button class="small-button full" id="voice-text">'+say('Inkább leírom','Use text instead')+'</button>');q.querySelector('#voice-retry').onclick=()=>{close();openVoiceCommand()};q.querySelector('#voice-text').onclick=()=>{close();openPantryEntry()};}
  function startView(){
-  shell('<p>'+say('„Vettem tejet és tojást. A vaj elfogyott, írd a listára.”','“I bought milk and eggs. We ran out of butter; put it on the list.”')+'</p><button class="voice-record primary full" id="voice-record">'+voiceMicIcon+' '+say('Felvétel indítása','Start recording')+'</button><p class="voice-disclosure">'+say('Legfeljebb 30 másodperc. A felvételt a Google AI értelmezi; a Morzsa nem menti el. Küldés után ellenőrizheted és javíthatod a változásokat.','Up to 30 seconds. Google AI interprets the audio; Morzsa does not store it. Review and edit the changes after sending.')+'</p>');
+  shell('<p>'+say('„Vettem tejet és tojást. A vaj elfogyott, írd a listára.”','“I bought milk and eggs. We ran out of butter; put it on the list.”')+'</p><button class="voice-record primary full" id="voice-record">'+voiceMicIcon+' '+say('Felvétel indítása','Start recording')+'</button><p class="voice-disclosure">'+say('Legfeljebb 30 másodperc. A hangot vagy szöveget a Google AI értelmezi; a Morzsa nem menti el. Küldés után ellenőrizheted és javíthatod a változásokat.','Up to 30 seconds. Google AI interprets the audio or text; Morzsa does not store it. Review and edit the changes after sending.')+'</p>');
   q.querySelector('#voice-record').onclick=startRecording;
+  const form=document.createElement('form');form.id='assistant-text-form';form.innerHTML='<label for="assistant-text">'+say('Vagy írd le egy mondatban','Or write a quick message')+'</label><textarea id="assistant-text" rows="2" maxlength="2000" placeholder="'+say('Vettem tejet. Elfogyott a vaj, írd a listára.','Bought milk. We ran out of butter; put it on the list.')+'"></textarea><button class="primary full" id="assistant-send" disabled>'+say('Értelmezés','Interpret')+'</button>';q.querySelector('.voice-disclosure').before(form);
+  const input=form.querySelector('textarea'),send=form.querySelector('button');input.oninput=()=>send.disabled=!input.value.trim();form.onsubmit=e=>{e.preventDefault();if(input.value.trim())interpretText(input.value.trim())};
+  const ideas=document.createElement('button');ideas.className='small-button full';ideas.textContent=say('Mit főzhetnék ezekből?','What can I cook with this?');ideas.onclick=()=>{close();page='recipes';render();window.scrollTo(0,0)};q.append(ideas);
+  if(mode==='text')input.focus();
  }
  async function startRecording(){
-  if(!active())return;const token=++generation;q.querySelector('#voice-record').disabled=true;
+  if(!active())return;if(!navigator.mediaDevices?.getUserMedia||typeof MediaRecorder==='undefined'){errorView(Error('VOICE_UNSUPPORTED'));return;}const token=++generation;q.querySelector('#voice-record').disabled=true;
   try{
    const acquired=await navigator.mediaDevices.getUserMedia({audio:true});if(!active()||token!==generation){acquired.getTracks().forEach(t=>t.stop());return}stream=acquired;
    const mime=['audio/webm;codecs=opus','audio/mp4','audio/ogg;codecs=opus'].find(t=>MediaRecorder.isTypeSupported(t));if(!mime)throw Error('VOICE_UNSUPPORTED');
@@ -61,6 +65,10 @@ async function openVoiceCommand(){
    recorder.start(250);recording=true;const start=Date.now();timer=setInterval(()=>{const seconds=Math.floor((Date.now()-start)/1000);const clock=q.querySelector('#voice-clock');if(clock)clock.textContent=seconds+' / 30 s';if(seconds>=30&&recorder.state==='recording')recorder.stop()},200);
   }catch(e){stopTracks();if(active())errorView(e)}
  }
+ async function interpretText(text){
+  if(!active())return;shell('<p role="status">'+say('Értelmezem a kérésed…','Interpreting your request…')+'</p>');
+  try{const output=await window.household.voiceCommand({text,language});if(!active())return;operations=VoiceModel.resolve(output,[...catalog,...state.custom],productEnglish,QuickEntry).map(o=>({...o,enabled:true}));review(output)}catch(e){if(active())errorView(e)}
+ }
  async function interpret(blob){
   shell('<p role="status">'+say('Értelmezem a mondatodat…','Interpreting your message…')+'</p>');
   try{
@@ -71,7 +79,7 @@ async function openVoiceCommand(){
   }catch(e){if(active())errorView(e)}
  }
  function review(output){
-  shell('<blockquote class="voice-transcript">'+esc(output.transcript)+'</blockquote>'+(output.clarification?'<p class="voice-clarification">'+esc(output.clarification)+'</p>':'')+'<p class="helper">'+say('Ezt fogom módosítani. A nevek és műveletek javíthatók; ami nem kell, vedd ki.','These are the proposed changes. Edit names or actions, and uncheck unwanted items.')+'</p><div id="voice-operations"></div><p id="voice-feedback" role="status"></p><button class="primary full" id="voice-apply">'+say('Változások alkalmazása','Apply changes')+'</button><button class="small-button full" id="voice-again">'+say('Új felvétel','New recording')+'</button>');
+  shell('<blockquote class="voice-transcript">'+esc(output.transcript)+'</blockquote>'+(output.clarification?'<p class="voice-clarification">'+esc(output.clarification)+'</p>':'')+'<p class="helper">'+say('Ezt fogom módosítani. A nevek és műveletek javíthatók; ami nem kell, vedd ki.','These are the proposed changes. Edit names or actions, and uncheck unwanted items.')+'</p><div id="voice-operations"></div><p id="voice-feedback" role="status"></p><button class="primary full" id="voice-apply">'+say('Változások alkalmazása','Apply changes')+'</button><button class="small-button full" id="voice-again">'+say('Új kérés','New request')+'</button>');
   const container=q.querySelector('#voice-operations');
   const labels={stock_add:say('Készletbe','Add to pantry'),stock_remove:say('Elfogyott','Remove from pantry'),list_set:say('Listára','Set on list')};
   const paint=()=>{
@@ -95,7 +103,6 @@ async function openVoiceCommand(){
   paint();
  }
  shell('<p role="status">'+say('Hangfelismerés ellenőrzése…','Checking voice availability…')+'</p>');q.showModal();
- if(!navigator.mediaDevices?.getUserMedia||typeof MediaRecorder==='undefined'){errorView(Error('VOICE_UNSUPPORTED'));return}
  if(!window.household?.userId()){errorView(Error('VOICE_SIGN_IN_REQUIRED'));const button=q.querySelector('#voice-retry');button.textContent=say('Belépés','Sign in');button.onclick=()=>{close();document.getElementById('household-button').click()};return}
  try{const status=await window.household.voiceStatus();if(!active())return;if(!status?.configured)throw Error('VOICE_SETUP_REQUIRED');startView()}catch(e){errorView(Error('VOICE_SETUP_REQUIRED'))}
 }

@@ -40,4 +40,18 @@ Introduce the supplied design language into the existing production app while re
 - [x] Compare source/render side by side and fix identified visual drift.
 - [x] Verify populated and narrow layouts and primary interactions.
 
+
+
+## Product-principles follow-up
+
+The user subsequently supplied PRODUCT-DESIGN-PRINCIPLES.md and requested its implementation. The companion is now an interactive, labeled entry to text/voice management; the recipe flow is directly accessible there. Shared event-driven updates preserve in-progress edits and explain changed product states.
+
+- New evidence: design/principles-mobile-final.png, 393 × 882; side-by-side source comparison design/principles-comparison.png. The same populated 14-product test state and CSS viewport were used.
+- [P2, fixed] The companion's hint/click target initially overlapped the Full catalog link. Kept the hint inside the companion, increased summary clearance, then recaptured. Browser bounding rectangles confirm separate hit areas, and the new comparison was opened and visually checked.
+- Typography, palette, source artwork, three-column grid, grouped overview and navigation remain consistent with the accepted adoption. The new assistant dialog uses the same type, border and corner tokens.
+- Text request → editable review → apply was exercised in the isolated manual fixture tests/assistant-fixture.py through the in-app browser. Screenshot: design/assistant-text-applied.png (pre-clearance-fix historical evidence). No real household or AI-provider data was used in this fixture.
+- Automated follow-up browser tests passed for voice flow, household switching, event-driven refresh, deferred updates during typing, and subscription cleanup on disconnect.
+- 46 Node tests and household, invitation, recipe quota, voice quota and realtime-publication SQL tests pass. Realtime publication and service-only voice quota permissions were checked on the deployed project.
+- Remaining field-test gap: actual microphone recognition and two physical devices using the live provider together. No claim of a successful real voice-provider call or live two-person session is made.
+
 final result: passed

@@ -33,3 +33,9 @@ Alapmodell: gemini-3.1-flash-lite; VOICE_MODEL titkos beállítással módosíth
 - Ha nincs szolgáltatás vagy engedély, a szöveges felvétel továbbra is elérhető.
 
 Források: [Google hangfeldolgozás](https://ai.google.dev/gemini-api/docs/audio), [árazás](https://ai.google.dev/gemini-api/docs/pricing).
+
+## Szöveges beszélgetős bevitel
+
+A készletnél a Morzsa-kabalára kattintva ugyanennek az asszisztensnek írhatsz is. A szöveget a voice-command függvény ugyanúgy ellenőrzött műveleti javaslatokra bontja, mint a hangot. A szöveges módhoz nem kell mikrofon. Az adatokat csak a szerkeszthető áttekintő jóváhagyása után mentjük. A szöveges és hangkérések közös napi keretet használnak.
+
+A „Mit főzhetnék ezekből?” gomb a meglévő készletalapú receptötletekhez vezet. Pusztán valamennyi alapanyag felhasználásából az asszisztens nem következtethet arra, hogy teljesen elfogyott.

@@ -8,6 +8,7 @@
  cloud.voiceCommand=payload=>{if(!session)throw Error('VOICE_SIGN_IN_REQUIRED');return request('/functions/v1/voice-command',payload,true,'POST',45000)};
  cloud.recipeAIStatus=()=>request('/functions/v1/recipe-ideas',undefined,false);
  cloud.recipeIdeas=payload=>{if(!session)throw Error('AI_SIGN_IN_REQUIRED');return request('/functions/v1/recipe-ideas',payload,true,'POST',45000)};
+ let liveConnection=null,liveRefreshTimer=null,liveDirty=false;
  let localBackup=null,authEmail='',authMode='login',recoveryMode=false,pollTimer,invitations=[],inviteUnavailable=false,inviteLoading=false;
  const houseNames=new Map();let switchingName='',menuBusy=false,newHouseholdId=null;
  const preferenceKey=()=>session?.user?.id?'morzsa-last-household-'+session.user.id:null;
@@ -33,14 +34,38 @@
   const text=await response.text();let data;try{data=text?JSON.parse(text):null}catch{throw Error('Invalid server response')}
   if(!response.ok)throw Error(data?.message||data?.msg||data?.error_description||(typeof data?.error==='string'?data.error:'Request failed'));return data;
  }
- function setSession(value){const previousUser=session?.user?.id;session=value;if(session&&!session.expires_at)session.expires_at=Math.floor(Date.now()/1000)+(session.expires_in||3600);if(session)localStorage.setItem('morzsa-session',JSON.stringify(session));else localStorage.removeItem('morzsa-session');invitations=[];paintInviteBadge();if(previousUser!==session?.user?.id)window.dispatchEvent(new Event('morzsa-auth-change'))}
+ function setSession(value){const previousUser=session?.user?.id;session=value;liveConnection?.updateToken(session?.access_token||'');if(session&&!session.expires_at)session.expires_at=Math.floor(Date.now()/1000)+(session.expires_in||3600);if(session)localStorage.setItem('morzsa-session',JSON.stringify(session));else localStorage.removeItem('morzsa-session');invitations=[];paintInviteBadge();if(previousUser!==session?.user?.id)window.dispatchEvent(new Event('morzsa-auth-change'))}
  const rpc=(name,args)=>request('/rest/v1/rpc/'+name,args);
  async function fetchRows(hid=cloud.active){
   const houses=await request('/rest/v1/households?id=eq.'+encodeURIComponent(hid)+'&select=id,name');if(!houses.length)throw Error(say('A háztartás már nem érhető el.','This household is no longer accessible.'));
   houseNames.set(hid,houses[0].name);if(hid===cloud.active)paintInviteBadge();
   const rows=[];let offset=0;while(true){const part=await request('/rest/v1/household_records?household_id=eq.'+encodeURIComponent(hid)+'&select=bucket,key,value,revision&order=bucket,key&limit=1000&offset='+offset);rows.push(...part);if(part.length<1000)break;offset+=part.length}return rows;
  }
- async function refresh(){if(!cloud.active||cloud.busy||q.open||document.querySelector('dialog[open]')||['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName))return;cloud.busy=true;try{const rows=await fetchRows();if(JSON.stringify(rows)!==JSON.stringify(cloud.rows)){cloud.rows=rows;state=HouseholdModel.decode(rows,state);render()}status('Közös háztartás · szinkronizálva','Shared household · synced')}catch(e){status('Szinkronizálás sikertelen','Sync failed')}finally{cloud.busy=false}}
+ function stopLive(){liveConnection?.close();liveConnection=null;clearTimeout(liveRefreshTimer);liveDirty=false}
+ function queueLiveRefresh(){liveDirty=true;clearTimeout(liveRefreshTimer);liveRefreshTimer=setTimeout(async()=>{if(!cloud.active||document.hidden)return;if(cloud.busy||document.querySelector('dialog[open]')||['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName)){queueLiveRefresh();return}liveDirty=false;await refresh()},350)}
+ function startLive(){stopLive();if(!cloud.active||!session||typeof HouseholdLive==='undefined')return;liveConnection=HouseholdLive.connect({url:config.url,key:config.publishableKey,token:session.access_token,householdId:cloud.active,onChange:queueLiveRefresh,onReady:queueLiveRefresh})}
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&cloud.active)queueLiveRefresh()});
+ window.addEventListener('online',()=>{if(cloud.active){startLive();queueLiveRefresh()}});
+ async function refresh(){
+  if(!cloud.active||document.hidden||cloud.busy||q.open||document.querySelector('dialog[open]')||['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName))return;
+  cloud.busy=true;
+  try{
+   const rows=await fetchRows();
+   if(JSON.stringify(rows)!==JSON.stringify(cloud.rows)){
+    const changed=HouseholdLive.changedNames(cloud.rows,rows),details=HouseholdLive.describeChanges(cloud.rows,rows);cloud.rows=rows;state=HouseholdModel.decode(rows,state);
+    try{localStorage.setItem(cloud.storageKey(),JSON.stringify(state))}catch{}
+    render();
+    if(changed.length){
+     const labels={home:say('otthon','at home'),gone:say('elfogyott','used up'),listed:say('listán','on list'),unlisted:say('levéve a listáról','off list'),bought:say('megvan','bought')};
+     toast(say('Közös frissítés · ','Household update · ')+(details.length?details.slice(0,2).map(d=>displayName(d.name)+': '+labels[d.kind]).join(' · '):changed.slice(0,2).map(displayName).join(', '))+(details.length>2?' +'+(details.length-2):''));
+     clearTimeout(toast.timer);toast.timer=setTimeout(()=>document.getElementById('toast').classList.remove('visible'),4000);
+     requestAnimationFrame(()=>document.querySelectorAll('[data-ingredient]').forEach(el=>{if(changed.includes(el.dataset.ingredient)){el.classList.add('shared-change');setTimeout(()=>el.classList.remove('shared-change'),1500)}}));
+    }
+   }
+   status('Közös háztartás · szinkronizálva','Shared household · synced');
+  }catch(e){status('Szinkronizálás sikertelen','Sync failed')}finally{cloud.busy=false}
+ }
+
  async function push(){
   if(!cloud.active)return;
   if(cloud.busy){state=HouseholdModel.decode(cloud.rows,state);render();toast(say('Mentés folyamatban, próbáld újra.','Saving in progress; try again.'));return}
@@ -52,9 +77,9 @@
  }
  async function connect(hid,{name}={}){
   if(cloud.busy)return;const previous=cloud.active;cloud.busy=true;switchingName=name||houseNames.get(hid)||say('Háztartás','Household');paintInviteBadge();
-  try{const rows=await fetchRows(hid);if(!previous)localBackup=JSON.parse(JSON.stringify(state));cloud.active=hid;cloud.rows=rows;homeUndo.length=0;shoppingDraft='';pantryDraft='';pantryBatch=[];pantryListed.clear();state=HouseholdModel.decode(rows,state);rememberHousehold();render();q.close();status('Közös háztartás · szinkronizálva','Shared household · synced');clearInterval(pollTimer);pollTimer=setInterval(refresh,8000)}finally{cloud.busy=false;switchingName='';paintInviteBadge()}
+  try{const rows=await fetchRows(hid);if(!previous)localBackup=JSON.parse(JSON.stringify(state));cloud.active=hid;cloud.rows=rows;homeUndo.length=0;shoppingDraft='';pantryDraft='';pantryBatch=[];pantryListed.clear();state=HouseholdModel.decode(rows,state);rememberHousehold();render();q.close();status('Közös háztartás · szinkronizálva','Shared household · synced');clearInterval(pollTimer);pollTimer=setInterval(refresh,8000);startLive()}finally{cloud.busy=false;switchingName='';paintInviteBadge()}
  }
- function disconnect({remember=true}={}){if(cloud.busy)return;homeUndo.length=0;shoppingDraft='';pantryDraft='';pantryBatch=[];pantryListed.clear();cloud.active=null;clearInterval(pollTimer);if(localBackup){state={...localBackup,likes:state.likes,skips:state.skips,chats:state.chats,sortMode:state.sortMode};localStorage.setItem('morzsa-v2',JSON.stringify(state));localBackup=null;render()}if(remember)rememberHousehold();paintInviteBadge();status('Csak ezen az eszközön','This device only')}
+ function disconnect({remember=true}={}){if(cloud.busy)return;stopLive();homeUndo.length=0;shoppingDraft='';pantryDraft='';pantryBatch=[];pantryListed.clear();cloud.active=null;clearInterval(pollTimer);if(localBackup){state={...localBackup,likes:state.likes,skips:state.skips,chats:state.chats,sortMode:state.sortMode};localStorage.setItem('morzsa-v2',JSON.stringify(state));localBackup=null;render()}if(remember)rememberHousehold();paintInviteBadge();status('Csak ezen az eszközön','This device only')}
  async function run(button,fn){if(menuBusy||cloud.busy)return;menuBusy=true;button.disabled=true;const error=q.querySelector('.household-error');error.textContent='';try{await fn()}catch(e){(q.querySelector('.household-error')||error).textContent=errorText(e)}finally{button.disabled=false;menuBusy=false}}
  function button(id,hu,en){return '<button class="small-button full" id="'+id+'">'+say(hu,en)+'</button>'}
  function localPantry(){
