@@ -4,6 +4,8 @@
  let session;try{session=JSON.parse(localStorage.getItem('morzsa-session'))}catch{}
  const cloud=window.household={active:null,rows:[],busy:false,configured,notify:()=>push(),storageKey:()=>cloud.active?'morzsa-household-cache-'+cloud.active:'morzsa-v2'};
  cloud.userId=()=>session?.user?.id||null;
+ cloud.voiceStatus=()=>request('/functions/v1/voice-command',undefined,false);
+ cloud.voiceCommand=payload=>{if(!session)throw Error('VOICE_SIGN_IN_REQUIRED');return request('/functions/v1/voice-command',payload,true,'POST',45000)};
  cloud.recipeAIStatus=()=>request('/functions/v1/recipe-ideas',undefined,false);
  cloud.recipeIdeas=payload=>{if(!session)throw Error('AI_SIGN_IN_REQUIRED');return request('/functions/v1/recipe-ideas',payload,true,'POST',45000)};
  let localBackup=null,authEmail='',authMode='login',recoveryMode=false,pollTimer,invitations=[],inviteUnavailable=false,inviteLoading=false;

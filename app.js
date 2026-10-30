@@ -58,6 +58,7 @@ function basketFeedback(name){
  if(name)requestAnimationFrame(()=>{const button=[...main.querySelectorAll('[data-basket]')].find(b=>b.dataset.basket===name);if(!button?.classList.contains('selected'))return;button.classList.remove('just-added');void button.offsetWidth;button.classList.add('just-added');setTimeout(()=>button.classList.remove('just-added'),600)});
 }
 function renderPantry(){
+ if(stockView==='home'&&category!=='Minden'&&![...catalog,...state.custom].some(i=>i.category===category&&state.stock[i.name]>0))category='Minden';
  const all=[...catalog,...state.custom.filter(item=>!catalog.some(c=>c.name.toLocaleLowerCase('hu')===item.name.toLocaleLowerCase('hu')))],norm=s=>s.toLocaleLowerCase('hu').normalize('NFD').replace(/[̀-ͯ]/g,''),hasCart=n=>state.cart.some(x=>x.name===n);
  const matchingItems=()=>all.filter(i=>(search.trim()||category==='Minden'||i.category===category)&&(stockView!=='home'||state.stock[i.name]>0)&&(norm(i.name).includes(norm(search.trim()))||norm(productEnglish[i.name]||'').includes(norm(search.trim())))).sort(compareProducts);
  const cats=['Minden',...categoryPriorityOrder.filter(c=>catalogGroups.some(g=>g[0]===c)),...(state.custom.length?['Saját tételek']:[])];
@@ -65,7 +66,7 @@ function renderPantry(){
  const tools=document.createElement('details');tools.className='pantry-tools';tools.innerHTML='<summary aria-label="Készlet műveletek">···</summary><button class="small-button" id="clear-stock">Készlet ürítése</button>';main.querySelector('.pantry-heading').append(tools);tools.querySelector('button').onclick=confirmClearStock;
  showHomeUndo();
  setupPantryNavigation();
- main.querySelector('[data-home-view]').onclick=()=>{stockView='home';category='Minden';search='';renderPantry()};
+ main.querySelector('[data-home-view]')?.addEventListener('click',()=>{stockView='home';category='Minden';search='';renderPantry()});
  main.querySelectorAll('[data-rail-category]').forEach(b=>b.onclick=()=>{category=b.dataset.railCategory;stockView='all';search='';collapsedCategories.delete(category);renderPantry();window.scrollTo({top:0,behavior:'instant'})});
  main.querySelector('#sort-toggle').onclick=()=>{sortMode=sortMode==='alpha'?'importance':'alpha';state.sortMode=sortMode;save();renderPantry()};
  bindCatalog();
@@ -78,15 +79,17 @@ function ingredientCard(i,hasCart){
  return '<div class="ingredient-card '+(home?'at-home':'')+' '+(basket?'in-cart':'')+'" data-ingredient="'+esc(i.name)+'"><button class="ingredient-plus '+(basket?'selected':'')+'" data-basket="'+esc(i.name)+'" aria-label="'+esc(i.name)+(basket?': eltávolítás a listáról':': listára vétel')+'" aria-pressed="'+basket+'" aria-description="Hosszan nyomva a teljes mennyiséget állíthatod">'+basketIcon+'</button><div class="ingredient-center" data-card-drag="'+esc(i.name)+'"><span class="ingredient-icon" aria-hidden="true"><img class="product-artwork" src="'+(productArtwork[i.name]||'assets/icons/oats.webp')+'" alt="" draggable="false" width="40" height="40"></span><span class="ingredient-copy"><span class="ingredient-name" '+(!productEnglish[i.name]?'data-no-translate':'')+'>'+esc(i.name)+'</span><span class="ingredient-status">'+(basket?'<span class="cart-status">Listán · '+esc(amount)+'</span>':'')+'</span></span></div><button class="home-action '+(home?'selected':'')+'" data-home="'+esc(i.name)+'" aria-label="'+esc(i.name)+(home?': kivétel a készletből':': készlethez adás')+'" aria-pressed="'+home+'">'+(home?check:'+')+'</button></div>';
 }
 function catalogRows(items,hasCart){
+ if(!items.length&&stockView==='home'&&!search)return '<div class="empty pantry-empty" data-no-translate><img src="assets/illustrations/morzsa-mascot.webp" width="100" height="80" alt=""><h2>'+(language==='en'?'What is in your kitchen?':'Mi lapul a konyhádban?')+'</h2><p>'+(language==='en'?'Mark a few things you have at home. Your pantry will take shape here.':'Jelölj be néhány dolgot, ami van otthon. Itt áll majd össze a készleted.')+'</p><button class="primary" data-empty-add>'+(language==='en'?'Add the first items':'Első alapanyagok felvétele')+'</button></div>';
  if(!items.length)return '<div class="empty" data-no-translate>'+(stockView==='home'&&!search?(language==='en'?'Your pantry is empty. Use Search / add below to mark what you have at home.':'Még üres a készleted. A lenti Keresés / felvétel gombbal jelöld be, mi van otthon.'):(language==='en'?'No matches. Try another name.':'Nincs találat. Próbálj más nevet.'))+'</div>';
  const grid=group=>'<div class="ingredient-grid">'+group.map(i=>ingredientCard(i,hasCart)).join('')+'</div>';
- if(search.trim()||category!=='Minden'||stockView==='home')return grid(items);
+ if(search.trim()||category!=='Minden')return grid(items);
  return categoryPriorityOrder.filter(c=>items.some(i=>i.category===c)).map(c=>{
  const group=items.filter(i=>i.category===c),icon=categoryIcon(c);
  return '<details class="catalog-section" data-collapse="'+esc(c)+'" '+(!collapsedCategories.has(c)?'open':'')+'><summary><span class="category-icon" aria-hidden="true">'+icon+'</span><span class="category-title">'+esc(c)+'</span><span class="category-count">'+group.length+'</span><span class="category-chevron" aria-hidden="true">⌄</span></summary>'+grid(group)+'</details>';
  }).join('');
 }
 function bindCatalog(){
+ main.querySelector('[data-empty-add]')?.addEventListener('click',openPantryEntry);
  main.querySelectorAll('[data-collapse]').forEach(d=>d.ontoggle=()=>{if(d.open)collapsedCategories.delete(d.dataset.collapse);else collapsedCategories.add(d.dataset.collapse)});
  main.querySelectorAll('[data-home]').forEach(b=>b.onclick=()=>{const n=b.dataset.home,previous=state.stock[n]||0;if(commitState({...state,stock:{...state.stock,[n]:previous>0?0:2}})){for(let i=homeUndo.length-1;i>=0;i--)if(homeUndo[i].name===n)homeUndo.splice(i,1);if(previous>0){homeUndo.length=0;homeUndo.push({name:n,value:previous,expires:Date.now()+8000})}refreshCatalog()}});
  main.querySelectorAll('[data-basket]').forEach(b=>bindAddButton(b,b.dataset.basket));
@@ -277,6 +280,8 @@ function setupPantryNavigation(){
  const chatgpt=document.createElement('button');chatgpt.id='chatgpt-pantry';chatgpt.className='small-button';chatgpt.setAttribute('data-no-translate','');chatgpt.textContent=language==='en'?'Recipe ideas with AI ↗':'Receptötletek AI-val ↗';chatgpt.onclick=()=>openChatGPTIdeas();tools.append(chatgpt);
  const fab=document.createElement('button');fab.className='pantry-search-fab';fab.setAttribute('data-no-translate','');fab.innerHTML='<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><span>'+(language==='en'?'Search / add':'Keresés / felvétel')+'</span>';fab.onclick=openPantryEntry;main.append(fab);
  fab.style.bottom=(document.querySelector('nav').getBoundingClientRect().height+12)+'px';
+ const voice=document.createElement('button');voice.className='pantry-voice-fab';voice.setAttribute('data-no-translate','');voice.setAttribute('aria-label',language==='en'?'Manage pantry by voice':'Készlet kezelése hanggal');voice.innerHTML='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="9" y="2" width="6" height="13" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3M8 22h8"/></svg>';voice.onclick=()=>openVoiceCommand();voice.style.bottom=fab.style.bottom;main.append(voice);
+ if(stockView==='home'){setupHomeOverview();return}
  const rail=main.querySelector('.category-rail'),buttons=[...rail.children],pages=[];
  const dock=document.createElement('div');dock.className='category-dock';rail.before(dock);
  const fixed=document.createElement('div');fixed.className='category-fixed';fixed.append(...buttons.splice(0,2));dock.append(fixed,rail);
@@ -364,4 +369,17 @@ function openPantryEntry(){
  const position=()=>{const v=window.visualViewport;q.style.top=(v?.offsetTop||0)+'px';q.style.bottom='auto';q.style.maxHeight=Math.max(120,(v?.height||innerHeight)-12)+'px'};
  q.querySelector('.close').onclick=()=>q.close();q.onclose=()=>{pantryDraft=input.value;window.visualViewport?.removeEventListener('resize',position);window.visualViewport?.removeEventListener('scroll',position)};
  paint();q.showModal();position();window.visualViewport?.addEventListener('resize',position);window.visualViewport?.addEventListener('scroll',position);input.focus();
+}
+
+function setupHomeOverview(){
+ const say=(hu,en)=>language==='en'?en:hu;
+ const all=[...catalog,...state.custom.filter(i=>!catalog.some(c=>c.name===i.name))],home=all.filter(i=>state.stock[i.name]>0);
+ const categories=categoryPriorityOrder.filter(c=>home.some(i=>i.category===c));
+ const layout=main.querySelector('.catalog-layout'),rail=main.querySelector('.category-rail');rail.remove();layout.classList.add('home-overview');
+ const heading=main.querySelector('.pantry-heading');heading.classList.add('pantry-welcome');
+ const greeting=document.createElement('p');greeting.className='pantry-welcome-copy';greeting.setAttribute('data-no-translate','');greeting.textContent=say('Jó alapanyagokból jó dolgok születnek.','Good things start with good ingredients.');heading.append(greeting);
+ const mascot=document.createElement('img');mascot.className='pantry-mascot';mascot.src='assets/illustrations/morzsa-mascot.webp';mascot.alt='';mascot.width=96;mascot.height=76;heading.append(mascot);
+ const overview=document.createElement('div');overview.className='home-overview-tools';overview.setAttribute('data-no-translate','');
+ overview.innerHTML='<div class="home-overview-caption"><span>'+home.length+say(' féle termék otthon',' products at home')+' · '+categories.length+say(' kategória',' categories')+'</span><button class="small-button" data-browse-catalog>'+say('Teljes katalógus +','Full catalog +')+'</button></div><div class="home-filters" aria-label="'+say('Otthoni kategóriák','Categories at home')+'"><button data-home-category="Minden" aria-pressed="'+(category==='Minden')+'">'+houseIcon+'<span>'+say('Összes','All')+'</span></button>'+categories.map(c=>'<button data-home-category="'+esc(c)+'" aria-pressed="'+(category===c)+'">'+categoryIcon(c)+'<span>'+esc(language==='en'?englishText(c):c)+'</span><small>'+home.filter(i=>i.category===c).length+'</small></button>').join('')+'</div>';
+ layout.before(overview);heading.append(overview.querySelector('.home-overview-caption'));heading.querySelector('[data-browse-catalog]').onclick=()=>{stockView='all';category='Minden';search='';renderPantry()};overview.querySelectorAll('[data-home-category]').forEach(b=>b.onclick=()=>{category=b.dataset.homeCategory;search='';renderPantry()});
 }

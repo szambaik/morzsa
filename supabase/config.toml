@@ -3,3 +3,7 @@ project_id = "morzsa"
 [functions.recipe-ideas]
 # The function validates the user's access token itself; OPTIONS/GET are public.
 verify_jwt = false
+
+[functions.voice-command]
+# Authenticated POST is validated inside the handler; GET/OPTIONS are public.
+verify_jwt = false
