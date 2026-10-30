@@ -9,3 +9,12 @@ test('undo changes only touched records and keeps later edits',()=>{const origin
 test('voice shared changes use existing per-record revisions and preserve unrelated rows',()=>{const s=base(),rows=[...HM.encode(s).values()].map(r=>({...r,revision:7}));const plan=VM.plan(s,[op('stock_remove','Vaj'),op('list_set','Krumpli',2,'kg')],items,unit),diff=HM.diff(rows,plan.next);assert.equal(diff.length,2);assert.ok(diff.every(d=>d.expected===7));assert.deepEqual(diff.map(x=>x.bucket).sort(),['cart','stock'])});
 
 test('fractional weights and volumes remain compatible with existing shared minimum quantity',()=>{const plan=VM.plan(base(),[op('list_set','Krumpli',0.5,'kg'),op('list_set','Tej',0.2,'l')],items,unit);assert.equal(plan.next.cart[0].quantity,500);assert.equal(plan.next.cart[0].unit,'g');assert.equal(plan.next.cart[1].quantity,200);assert.equal(plan.next.cart[1].unit,'ml');assert.throws(()=>VM.plan(base(),[op('list_set','Tej',0.5,'doboz')],items,unit));});
+
+test('name-only list requests default by product and preserve existing totals',()=>{
+ const original=base(),unit=n=>n==='Tej'?'l':n==='Krumpli'?'kg':'db';
+ const p=VM.plan(original,[op('list_set','Tej'),op('list_set','Krumpli'),op('list_set','Egyedi')],items,unit);
+ assert.deepEqual(p.next.cart.map(i=>[i.name,i.quantity,i.unit]),[['Krumpli',5,'kg'],['Tej',1,'l'],['Egyedi',1,'db']]);
+ assert.equal(VM.plan(p.next,[op('list_set','Tej')],items,unit).changes.length,0);
+ const fractional=VM.plan(base(),[op('list_set','Tej',.5)],items,unit);assert.equal(fractional.next.cart[1].quantity,500);assert.equal(fractional.next.cart[1].unit,'ml');
+ assert.equal(VM.defaults(op('list_set','Krumpli',null,'csomag'),original,unit).quantity,1);
+});

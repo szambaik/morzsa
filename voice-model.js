@@ -5,6 +5,14 @@ const VoiceModel=(()=>{
  const safeName=n=>typeof n==='string'&&n.trim().length>0&&n.length<=80&&!/[\u0000-\u001f]/.test(n)&&!['__proto__','constructor','prototype'].includes(n.trim());
  function validate(v){return v&&typeof v.transcript==='string'&&v.transcript.length<=3000&&typeof v.clarification==='string'&&v.clarification.length<=500&&Array.isArray(v.operations)&&v.operations.length<=30&&v.operations.every(o=>o&&actions.includes(o.action)&&safeName(o.name)&&(o.quantity===null||Number.isFinite(o.quantity)&&o.quantity>0&&o.quantity<=999)&&(o.unit===null||units.includes(o.unit)))}
  function canonical(o){if(o.quantity!==null&&o.quantity<1){if(o.unit==='kg')return {...o,quantity:o.quantity*1000,unit:'g'};if(o.unit==='l')return {...o,quantity:o.quantity*1000,unit:'ml'}}return o}
+ function defaults(op,current,unitFor){
+  if(op.action!=='list_set')return op;
+  const found=current.cart.find(i=>norm(i.name)===norm(op.name));
+  const unit=op.unit||found?.unit||unitFor(op.name)||'db';
+  // A unit-only request starts at one when it changes an existing unit.
+  const quantity=op.quantity??(found&&(!op.unit||op.unit===found.unit)?found.quantity||1:1);
+  return canonical({...op,quantity,unit});
+ }
  function resolve(value,items,english={},quick){
   if(!validate(value))throw Error('VOICE_INVALID_RESPONSE');
   return value.operations.map(o=>{const ranked=quick.ranked(o.name,items,english),exact=ranked.find(r=>r.exact);return {...canonical(o),name:exact?.item.name||o.name.trim(),confirmed:!!exact,suggestions:ranked.slice(0,5).map(r=>r.item.name)}});
@@ -13,7 +21,7 @@ const VoiceModel=(()=>{
   if(!validate({transcript:'',clarification:'',operations}))throw Error('VOICE_INVALID_RESPONSE');
   const next=JSON.parse(JSON.stringify(current)),changes=[];
   for(const raw of operations){
-   const op=canonical(raw);if(op.action==='list_set'&&op.quantity!==null&&op.quantity<1)throw Error('VOICE_INVALID_QUANTITY');
+   const op=defaults(raw,next,unitFor);if(op.action==='list_set'&&op.quantity!==null&&op.quantity<1)throw Error('VOICE_INVALID_QUANTITY');
    const name=op.name.trim(),known=[...items,...next.custom].find(i=>norm(i.name)===norm(name));
    if(known&&known.name!==name)throw Error('VOICE_NAME_CHANGED');
    if(op.action==='stock_add'||op.action==='stock_remove'){
@@ -46,6 +54,6 @@ const VoiceModel=(()=>{
   }
   return {next,skipped};
  }
- return {validate,resolve,plan,undo,safeName};
+ return {validate,resolve,plan,undo,safeName,defaults};
 })();
 if(typeof module!=='undefined')module.exports=VoiceModel;

@@ -39,3 +39,13 @@ Források: [Google hangfeldolgozás](https://ai.google.dev/gemini-api/docs/audio
 A készletnél a Morzsa-kabalára kattintva ugyanennek az asszisztensnek írhatsz is. A szöveget a voice-command függvény ugyanúgy ellenőrzött műveleti javaslatokra bontja, mint a hangot. A szöveges módhoz nem kell mikrofon. Az adatokat csak a szerkeszthető áttekintő jóváhagyása után mentjük. A szöveges és hangkérések közös napi keretet használnak.
 
 A „Mit főzhetnék ezekből?” gomb a meglévő készletalapú receptötletekhez vezet. Pusztán valamennyi alapanyag felhasználásából az asszisztens nem következtethet arra, hogy teljesen elfogyott.
+
+## Általános asszisztens és alapértékek
+
+A kabalánál írásban, a mikrofonról hanggal kérdezni is lehet. Például: „Mit főzzek?”, „Mivel helyettesíthetem a tojást?” vagy egy általános kérdés. A válasz után szöveges vagy hangos következő kérés indítható. Egy kérdés önmagában nem kér adatmódosítást; vegyes kérésnél a válasz mellett külön jóváhagyásra váró tételek jelennek meg. Az asszisztensnek nincs webkeresése, és nem ellenőriz aktuális árakat.
+
+A Google AI megkapja az aktuális háztartás jelenlévő termékneveit, a bevásárlólista neveit/mennyiségeit/egységeit és a nyitott beszélgetés utolsó három üzenetváltását. Régi receptcsevegést, archívumot, felhasználóazonosítót vagy fiókadatot nem adunk a modellnek. A beszélgetés csak memóriában él, a panel bezárásakor elvész. Ugyanaz a napi kvóta érvényes, mint a hangparancsokra.
+
+Ha csak a termék neve szerepel, a készletnézetből indított kérés alapból készletbe vételt jelent; egy kifejezett cél („listára”) ezt felülírja. Kérdésből nem következtetünk változtatásra. A készlethez nincs szükség mennyiségre. Új listatételnél a hiányzó mennyiség 1, az egység a katalógus alapegysége (például krumpli: kg); egyedi terméknél db. Már listázott terméknél a meglévő mennyiség és egység marad, ha nincs új megadva. Kifejezetten más egység kérése mennyiség nélkül 1-re állít, nem értelmezi át a korábbi számot.
+
+A kompakt áttekintő sorai érintésre szerkeszthetők; ismeretlen terméknél a névellenőrzés rögtön nyitva van. A háttérfüggvény új answer mezője és az opcionális context/history/destination bemenet visszafelé kompatibilis. Régi kliensnek a csak szöveges választ clarification mezőben is visszaadjuk. Nincs adatbázis-migráció.

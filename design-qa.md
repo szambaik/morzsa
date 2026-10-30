@@ -63,3 +63,11 @@ final result: passed
 - Bottom sheet keeps send/save actions below a separately scrolling body. Compact editable product/action rows retain uncertain-name confirmation, exclusion and list quantity controls. Transcript is expandable.
 - Browser regression passed at 390 × 844 and 320 × 740: immediate start, compact rows, navigation states, 24-operation overflow, visible save/send, permission denial, edit/apply/undo, newer edits, cancellation and stale responses. Microphone/provider simulated.
 - Screenshots: design/voice-review-compact.png and design/voice-recording-sheet.png. Visually checked. All 46 Node tests and 5 SQL suites passed.
+
+## Conversational answers and lighter review — 2026-10-30
+
+- Review rows show product, action and effective list quantity. Editor fields are collapsed; unrecognized names remain expanded for explicit confirmation. Original transcript stays optional.
+- Missing amounts use 1/product unit for new list items, preserve existing list totals, and remain irrelevant for pantry presence.
+- Assistant supports text/voice answers plus follow-up exchanges with bounded current-household context; questions have no save button or state mutations. Mixed requests show answers above proposed changes.
+- Validation: 49 Node tests plus 5 SQL suites; voice and assistant browser regressions include defaults, repeat actions, answer rendering, no-mutation questions, mixed requests, follow-up context and compatibility. Provider responses are simulated.
+- Visual evidence: design/voice-review-compact.png, design/assistant-answer.png, design/assistant-default-review.png.
