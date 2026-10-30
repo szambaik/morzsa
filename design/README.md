@@ -16,4 +16,4 @@ Ez a board bevezetése a meglévő alkalmazásba, nem a rajta szereplő fiktív 
 
 Mobilon három oszlop és kategóriánkénti csoportosítás segíti a felismerést és az érintést; a board négyszer négyes sűrű mintája helyett ez a korábban egyeztetett termékműködés. A teljes katalógus továbbra is elérhető, a Van otthon nézet kategóriasávja csak az otthon jelölt termékek kategóriáit tartalmazza.
 
-Az alsó Lista gomb enyhe kiemelése megmarad; erős terrakotta színt akkor kap, amikor ténylegesen a lista van nyitva. Az új mikrofon és a keresés kézzel elérhető marad.
+Az alsó navigációban kizárólag az aktuális menü kap kiemelést, egységes stílussal. A mikrofon egy érintésre indítja a felvételt; a hangbevitel és a kompakt ellenőrző nézet alsó paneljén a beküldés és a mentés kézzel elérhető.

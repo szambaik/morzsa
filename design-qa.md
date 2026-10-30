@@ -55,3 +55,11 @@ The user subsequently supplied PRODUCT-DESIGN-PRINCIPLES.md and requested its im
 - Remaining field-test gap: actual microphone recognition and two physical devices using the live provider together. No claim of a successful real voice-provider call or live two-person session is made.
 
 final result: passed
+
+## Voice and navigation refinement — 2026-10-30
+
+- Removed the shopping tab's permanent emphasis; all destinations share the same active treatment.
+- Microphone entry starts recording immediately after browser permission, without an availability round trip or a second start button. Text assistant entry keeps its existing chooser.
+- Bottom sheet keeps send/save actions below a separately scrolling body. Compact editable product/action rows retain uncertain-name confirmation, exclusion and list quantity controls. Transcript is expandable.
+- Browser regression passed at 390 × 844 and 320 × 740: immediate start, compact rows, navigation states, 24-operation overflow, visible save/send, permission denial, edit/apply/undo, newer edits, cancellation and stale responses. Microphone/provider simulated.
+- Screenshots: design/voice-review-compact.png and design/voice-recording-sheet.png. Visually checked. All 46 Node tests and 5 SQL suites passed.
