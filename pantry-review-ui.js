@@ -4,9 +4,10 @@ window.PantryReview=(()=>{
  const say=(hu,en)=>language==='en'?en:hu,key=()=>window.household?.active||'local';
  const due=()=>PantryReviewModel.due(state.stock,context===key()&&available?checks:{},productCategory,nonFoodCategories);
  function mount(){
-  document.getElementById('pantry-review-entry')?.remove();if(context!==key()||page!=='pantry'||!available||!due().length)return;
-  const button=document.createElement('button');button.id='pantry-review-entry';button.className='pantry-review-entry';button.setAttribute('data-no-translate','');button.textContent=say('Érdemes ránézni · ','Worth a quick check · ')+due().length;button.onclick=open;
-  (main.querySelector('.pantry-heading')||main.firstElementChild)?.after(button);
+  document.getElementById('pantry-review-entry')?.remove();if(context!==key()||!['pantry','recipes'].includes(page)||!available||!due().length)return;
+  const button=document.createElement('button');button.id='pantry-review-entry';button.className='pantry-review-entry';button.setAttribute('data-no-translate','');button.textContent=say('Van még otthon? · ','Still at home? · ')+due().length;button.onclick=open;
+  if(page==='recipes')main.querySelector('#dashboard-review-slot')?.append(button);
+  else{button.classList.add('small-button');main.querySelector('.pantry-tools')?.append(button)}
  }
  async function refresh(){
   const current=key(),token=++generation;if(current!==context){context=current;checks={};available=true;previous={...state.stock}}
@@ -40,7 +41,7 @@ window.PantryReview=(()=>{
      if(household?.active){state=next;ok=!!await household.notify()}else ok=commitState(next);
      if(ok){onStateChanged();await refresh()}
     }}catch{ok=false}finally{busy=false}
-    if(!q.open)return;if(ok){at++;paint();if(page==='pantry')renderPantry()}else{q.querySelectorAll('button').forEach(b=>b.disabled=false);q.querySelector('.review-error').textContent=say('Nem sikerült menteni. Próbáld újra.','Could not save. Try again.')}
+    if(!q.open)return;if(ok){at++;paint();if(page==='pantry')renderPantry();else if(page==='recipes')renderRecipes()}else{q.querySelectorAll('button').forEach(b=>b.disabled=false);q.querySelector('.review-error').textContent=say('Nem sikerült menteni. Próbáld újra.','Could not save. Try again.')}
    });
   };paint();if(at<batch.length)q.showModal();
  }
