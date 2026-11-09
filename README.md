@@ -129,3 +129,8 @@ Alapnézet a Van otthon. A lebegő Keresés / felvétel gomb felső panelt nyit,
 A készletoldal „Érdemes ránézni” gombja rövid, kihagyható jelenlétellenőrzést nyit; a megerősítés közös háztartásban megosztott. A régi készletet nem töröljük és nem jelöljük automatikusan frissnek. Az eltelt napok nem lejárati dátumok. Egyelőre alkalmazáson belüli emlékeztető van, push nincs.
 
 Az iOS/Android Capacitor projekt és a szűkített mobil build elkészült, de aláírt, valódi eszközön tesztelt kiadás még nincs. Az indítás, tőled szükséges beállítások, díjak és kiadás előtti feladatok: [Mobil bekötés és publikálás](mobile/SETUP.md).
+
+
+## Közös web / iOS / Android kód
+
+A webes csomag: npm run build:web. A natív csomagok előkészítése: npm run sync:mobile. A GitHub Actions Mobile builds Android debug APK-t és iOS Simulator csomagot készít. A natív adapter kezeli a Keychain/Keystore session-tárolást, PKCE belépést, rendszerböngészőt, vágólapot, billentyűzetet és hálózati/életciklus-eseményeket. A receptcsevegés is a közös Supabase AI-végpontot használja; nem kell hozzá helyi Python szerver. A szerver korábbi API-ja megmaradt a régi kliensekhez.

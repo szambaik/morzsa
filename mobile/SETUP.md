@@ -10,7 +10,7 @@
 - Készletellenőrzés: legfeljebb öt tétel, Van még / Elfogyott / Elfogyott, listára / Most kihagyom. A megerősítés közös. A régi készletet nem töröljük, és nem dátumozzuk át frissnek.
 - A vásárláslezárás és a jóváhagyott „van/vettem” hangművelet a már jelen lévő terméket is újra megerősíti. Az AI a régen ellenőrzött tételeket bizonytalanként kapja.
 
-**Ez fejlesztési alap, még nem aláírt, telefonon bevizsgált vagy áruházba beküldhető kiadás.** A helyi iOS Simulator build sikeresen lefordult. Az Xcode licence már elfogadva, de helyi szimulátorruntime még nincs telepítve. Android SDK nincs a vizsgált gépen. A natív belépés teljes körét, mikrofont és életciklust valódi eszközön még ellenőrizni kell.
+**Ez fejlesztési alap, még nem aláírt, telefonon bevizsgált vagy áruházba beküldhető kiadás.** A helyi iOS Simulator build sikeresen lefordult. Az Xcode licence már elfogadva, de helyi szimulátorruntime még nincs telepítve. Android SDK nincs a vizsgált gépen. A natív belépés teljes körét, mikrofont és életciklust valódi telefonon még ellenőrizni kell; az alkalmazáskód és a natív adapterek automatizált próbái lefutottak.
 
 ## Ingyenes lehet?
 
@@ -32,7 +32,7 @@ Az Apple meghatározott nonprofit, akkreditált oktatási és kormányzati szerv
 1. **Kiadó és fiókok:** magánszemély vagy cég? Van-e már Apple Developer / Play Console fiókod? Egyéni Apple-kiadásnál a jogi neved jelenik meg kiadóként; cégnél szervezeti ellenőrzés, jellemzően D‑U‑N‑S is szükséges. Az ideiglenes appazonosító `io.github.szambaik.morzsa`; az első áruházi regisztráció előtt véglegesítsük.
 2. **Xcode első indítás:** nyisd meg a telepített Xcode-ot, olvasd el és fogadd el a licenceket, telepítsd a kért komponenseket. Settings → Locations → Command Line Tools: válaszd ki az Xcode-ot. A gépen Xcode 27.2 van, a licenc elfogadva. A helyi futtatáshoz Settings → Components alatt tölts le iOS Simulator runtime-ot. A parancssori buildhez szükség esetén DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer használható.
 3. **Android:** Android Studio és SDK telepítése. Az android/variables.gradle fájlban megadott SDK-verziókat használd; Gradle JDK-nak elsőként a Studio támogatott beépített JDK-ját. Android-fordítást még nem végeztünk.
-4. **Supabase:** Authentication → URL Configuration → Redirect URLs → Add URL. Add hozzá pontosan: `io.github.szambaik.morzsa://auth-callback`. A meglévő `https://szambaik.github.io/morzsa/` maradjon. A Site URL is maradhat a webapp.
+4. **Supabase:** Authentication → URL Configuration → Redirect URLs → Add URL. A natív visszatérési címet már hozzáadtam és visszaellenőriztem az élő projekten. Ezt most nem kell kézzel felvenned. A meglévő `https://szambaik.github.io/morzsa/` maradjon. A Site URL is maradhat a webapp.
 5. **Telefonok:** egy iPhone és egy Android a kétplatformos próbához. Belépés, közös lista két taggal, hálózatvesztés, háttérbe kerülés, mikrofon, billentyűzet és nagyobb betűméret a próbakör.
 
 **A Google Cloud Console Authorized redirect URI továbbra is a Supabase callbackje:** `https://cbgcugshwivxpaurzyqq.supabase.co/auth/v1/callback`. A natív URL a Supabase utáni visszatéréshez kell. A webes Google-belépés változatlan. Az email-megerősítés és jelszó-visszaállítás jelenleg a webes Morzsában fejeződik be; utána az appban emaillel/jelszóval lehet belépni.
@@ -96,3 +96,12 @@ A receptcsevegés, hangos asszisztens és receptajánló a közös Supabase hát
 A GitHub Actions „Mobile builds” workflow webtesztet, Android debug APK-t és iOS Simulator buildet készít. Az artifactok 14 napig elérhetők; a nyilvános repo normál GitHub-hosted runnerjein ez nem igényel áruházi tagságot. Az iOS smoke script már telepített szimulátorra telepít és indít; runtime-ot nem tölt le, OAuthot/mikrofont nem tesztel.
 
 Az Android debug aláírókulcsot a workflow cache megőrzi az egymást követő tesztbuildekhez. Ez fejlesztői aláírás, nem kiadási kulcs. Cache-vesztés vagy helyi build esetén eltérhet: ilyen APK nem frissíthet rá a korábbira. Ilyenkor ne töröld az appot helyi adatok mentése nélkül; a végleges tesztterjesztéshez tartós kiadási aláírás szükséges.
+
+
+## Telefonos próbakör
+
+Androidon töltsd le a Mobile builds workflow morzsa-android-debug artifactját, bontsd ki, és az app-debug.apk fájlt nyisd meg a telefonon. Engedélyezd az adott böngésző/fájlkezelő számára a telepítést. Ez tesztcsomag, nem Play Store-kiadás. Ha a meglévő telepítést más kulcs írta alá, a frissítés visszautasítható; ne töröld a helyi készlet mentése nélkül.
+
+iPhone-on Xcode-ból válaszd ki a csatlakoztatott telefont és a saját Apple Team-et, majd Run. A Simulator artifact nem telepíthető valódi iPhone-ra. A szimulátor indítása ingyenes; terjesztéshez később TestFlight-fiók szükséges.
+
+A próba sorrendje: belépés → saját tesztháztartás → másik készüléken csatlakozás → lista gyors pipálása → hálózat ki/be → app háttérbe/elő → hangfelvétel és mentés → receptcsevegés → kijelentkezés és újraindítás. A böngésző helyi készletét belépéskor nem olvasztjuk a közös háztartásba.

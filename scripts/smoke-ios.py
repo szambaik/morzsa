@@ -1,7 +1,7 @@
 """Launch the built app on an already-installed simulator. Never downloads runtimes."""
 import json, os, pathlib, subprocess, time
 app = os.environ.get('MORZSA_IOS_APP', 'build/ios/Build/Products/Debug-iphonesimulator/App.app')
-run = lambda *args: subprocess.check_output(['xcrun', 'simctl', *args], text=True)
+run = lambda *args: subprocess.check_output(['xcrun', 'simctl', *args], text=True, timeout=120)
 devices = json.loads(run('list', 'devices', 'available', '-j'))['devices']
 phones = [d for runtime, group in devices.items() if 'iOS' in runtime for d in group if d.get('isAvailable') and d['name'].startswith('iPhone')]
 if not phones:
