@@ -64,10 +64,12 @@ jobs:
       - run: npm run sync:mobile
       - name: Build for iOS Simulator
         run: xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath build/ios CODE_SIGNING_ALLOWED=NO build
+      - name: Preserve simulator app bundle permissions
+        run: ditto -c -k --keepParent build/ios/Build/Products/Debug-iphonesimulator/App.app build/morzsa-ios-simulator.zip
       - uses: actions/upload-artifact@v4
         with:
           name: morzsa-ios-simulator
-          path: build/ios/Build/Products/Debug-iphonesimulator/App.app
+          path: build/morzsa-ios-simulator.zip
           if-no-files-found: error
           retention-days: 14
       - name: Launch installed iOS simulator

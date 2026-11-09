@@ -105,3 +105,6 @@ Androidon töltsd le a Mobile builds workflow morzsa-android-debug artifactját,
 iPhone-on Xcode-ból válaszd ki a csatlakoztatott telefont és a saját Apple Team-et, majd Run. A Simulator artifact nem telepíthető valódi iPhone-ra. A szimulátor indítása ingyenes; terjesztéshez később TestFlight-fiók szükséges.
 
 A próba sorrendje: belépés → saját tesztháztartás → másik készüléken csatlakozás → lista gyors pipálása → hálózat ki/be → app háttérbe/elő → hangfelvétel és mentés → receptcsevegés → kijelentkezés és újraindítás. A böngésző helyi készletét belépéskor nem olvasztjuk a közös háztartásba.
+
+
+Ellenőrzési eredmény (2026-11-09): a webes tesztcsomag, az Android debug build és a helyi iOS Simulator build sikeres. Az APK csomagazonosítóját és mikrofonengedélyeit a kész binárisból is ellenőriztük. Az iOS CI-indítás külön, időkorlátos, opcionális smoke lépés: a workflow összesített zöld állapota önmagában nem jelenti a szimulátoros indítás sikerét; ennek saját lépését és képét kell nézni. A ZIP-be csomagolt iOS artifact megőrzi az app futtatási jogosultságait.
