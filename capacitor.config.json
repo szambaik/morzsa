@@ -2,6 +2,18 @@
   "appId": "io.github.szambaik.morzsa",
   "appName": "Morzsa",
   "webDir": "dist",
-  "ios": {"contentInset": "automatic"},
-  "android": {"backgroundColor": "#f7f5ef"}
+  "ios": {
+    "contentInset": "never"
+  },
+  "android": {
+    "backgroundColor": "#f7f5ef"
+  },
+  "plugins": {
+    "Keyboard": {
+      "resize": "native",
+      "style": "LIGHT",
+      "resizeOnFullScreen": true,
+      "autoBackdropColor": "auto"
+    }
+  }
 }

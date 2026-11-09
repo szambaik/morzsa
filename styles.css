@@ -393,3 +393,8 @@ nav .shopping-nav.active{background:var(--orange-soft);color:var(--orange-ink);b
 .review-product{display:flex;align-items:center;gap:14px;margin-bottom:10px}.review-product img{object-fit:contain}.review-product strong{font-size:20px;overflow-wrap:anywhere}
 .review-choices{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:20px}.review-choices button{min-height:48px;margin:0}.review-choices [data-review=list]{grid-column:1/-1}.review-skip{display:block;width:100%;min-height:44px;margin-top:8px;border-color:transparent!important;background:transparent!important;color:var(--muted)}
 .review-error{font-size:13px;color:#a44231}.review-error:empty{display:none}
+
+/* Native WebViews resize for the keyboard; avoid duplicate bottom controls. */
+.native-app .app{padding-top:env(safe-area-inset-top)}
+.native-app.keyboard-open nav,.native-app.keyboard-open .pantry-voice-fab,.native-app.keyboard-open .pantry-search-fab{display:none}
+.native-app.keyboard-open .app{padding-bottom:16px}

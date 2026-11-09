@@ -13,7 +13,11 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/ionic-team/capacitor-swift-pm.git", exact: "8.6.0"),
         .package(name: "CapacitorApp", path: "../../../node_modules/@capacitor/app"),
-        .package(name: "CapacitorBrowser", path: "../../../node_modules/@capacitor/browser")
+        .package(name: "CapacitorBrowser", path: "../../../node_modules/@capacitor/browser"),
+        .package(name: "CapacitorClipboard", path: "../../../node_modules/@capacitor/clipboard"),
+        .package(name: "CapacitorKeyboard", path: "../../../node_modules/@capacitor/keyboard"),
+        .package(name: "CapacitorNetwork", path: "../../../node_modules/@capacitor/network"),
+        .package(name: "CapacitorSecureStoragePlugin", path: "../../../node_modules/capacitor-secure-storage-plugin")
     ],
     targets: [
         .target(
@@ -22,7 +26,11 @@ let package = Package(
                 .product(name: "Capacitor", package: "capacitor-swift-pm"),
                 .product(name: "Cordova", package: "capacitor-swift-pm"),
                 .product(name: "CapacitorApp", package: "CapacitorApp"),
-                .product(name: "CapacitorBrowser", package: "CapacitorBrowser")
+                .product(name: "CapacitorBrowser", package: "CapacitorBrowser"),
+                .product(name: "CapacitorClipboard", package: "CapacitorClipboard"),
+                .product(name: "CapacitorKeyboard", package: "CapacitorKeyboard"),
+                .product(name: "CapacitorNetwork", package: "CapacitorNetwork"),
+                .product(name: "CapacitorSecureStoragePlugin", package: "CapacitorSecureStoragePlugin")
             ]
         )
     ]

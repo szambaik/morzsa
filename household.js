@@ -1,7 +1,7 @@
 (() => {
  const config=window.MORZSA_CLOUD||{},configured=!!(config.url&&config.publishableKey),q=document.getElementById('household-dialog');
  const say=(hu,en)=>language==='en'?en:hu;
- let session;try{session=JSON.parse(localStorage.getItem('morzsa-session'))}catch{}
+ let session,authVersion=0,refreshPromise;try{if(!window.MorzsaNative)session=JSON.parse(localStorage.getItem('morzsa-session'))}catch{}
  const cloud=window.household={active:null,rows:[],busy:false,configured,notify:()=>push(),storageKey:()=>cloud.active?'morzsa-household-cache-'+cloud.active:'morzsa-v2'};
  let cartOutbox=[],cartSync=false,refreshing=false,cartTimer=null,cartFailed=false;
  Object.defineProperty(cloud,'cartPending',{get:()=>cartOutbox.length});
@@ -58,17 +58,23 @@
   try{await connect(saved.id,{name:saved.name})}catch{status('A háztartás nem tölthető be · most a helyi készlet látszik','Household unavailable · showing local pantry');toast(say('Az utolsó háztartást nem sikerült betölteni. Válassz a háztartásmenüből.','Could not load the last household. Choose from the household menu.'))}
  }
  const incomingLink=AuthLink.consume(location.href);if(incomingLink)history.replaceState(null,'',incomingLink.cleanURL);
- let authPending=!!incomingLink,authNotice='';
+ let authPending=!!incomingLink||!!window.MorzsaNative,authNotice='';
  function status(hu,en){if(cartOutbox.length&&cartFailed){cartStatus(true);return}const el=document.getElementById('cloud-status');delete el.dataset.cartSync;el.textContent=say(hu,en);el.hidden=['Csak ezen az eszközön','Közös háztartás · szinkronizálva','Közös háztartás'].includes(hu)}
  function errorText(e){if(e.message?.includes('Invalid login credentials'))return say('Hibás email-cím vagy jelszó.','Incorrect email or password.');if(e.message?.includes('Email not confirmed'))return say('Előbb erősítsd meg az email-címedet a kapott levélben.','Confirm your email using the message in your inbox first.');if(e.message?.includes('Conflict'))return say('Valaki közben módosította a listát. Frissítettük; ismételd meg a műveletet.','Someone changed the list. It has been refreshed; repeat your action.');return e.message||say('Nem sikerült kapcsolódni.','Could not connect.')}
  async function request(path,body,auth=true,method=body===undefined?'GET':'POST',timeoutMs=20000){
   if(!configured)throw Error(say('A felhő még nincs bekötve.','Cloud is not configured yet.'));
-  if(auth&&session&&session.expires_at*1000<Date.now()+60000){const r=await fetch(config.url+'/auth/v1/token?grant_type=refresh_token',{method:'POST',signal:AbortSignal.timeout(20000),headers:{apikey:config.publishableKey,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:session.refresh_token})});const data=await r.json();if(!r.ok)throw Error(say('Jelentkezz be újra.','Please sign in again.'));setSession(data)}
+  if(auth&&session&&session.expires_at*1000<Date.now()+60000){
+   if(!refreshPromise){const previous=session,version=authVersion;refreshPromise=(async()=>{const r=await fetch(config.url+'/auth/v1/token?grant_type=refresh_token',{method:'POST',signal:AbortSignal.timeout(20000),headers:{apikey:config.publishableKey,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:previous.refresh_token})});const data=await r.json();if(!r.ok||version!==authVersion)throw Error(say('Jelentkezz be újra.','Please sign in again.'));await setSession(data)})().finally(()=>{refreshPromise=null})}await refreshPromise;
+  }
   const response=await fetch(config.url+path,{method,signal:AbortSignal.timeout(timeoutMs),headers:{apikey:config.publishableKey,'Content-Type':'application/json',...(auth&&session?{Authorization:'Bearer '+session.access_token}:{})},...(body===undefined?{}:{body:JSON.stringify(body)})});
   const text=await response.text();let data;try{data=text?JSON.parse(text):null}catch{throw Error('Invalid server response')}
   if(!response.ok)throw Error(data?.message||data?.msg||data?.error_description||(typeof data?.error==='string'?data.error:'Request failed'));return data;
  }
- function setSession(value){const previousUser=session?.user?.id;session=value;liveConnection?.updateToken(session?.access_token||'');if(session&&!session.expires_at)session.expires_at=Math.floor(Date.now()/1000)+(session.expires_in||3600);if(session)localStorage.setItem('morzsa-session',JSON.stringify(session));else localStorage.removeItem('morzsa-session');invitations=[];paintInviteBadge();if(previousUser!==session?.user?.id)window.dispatchEvent(new Event('morzsa-auth-change'))}
+ async function setSession(value){
+  const previousUser=session?.user?.id,version=++authVersion;if(value&&!value.expires_at)value.expires_at=Math.floor(Date.now()/1000)+(value.expires_in||3600);
+  if(window.MorzsaNative)await window.MorzsaNative.saveSession(value);else if(value)localStorage.setItem('morzsa-session',JSON.stringify(value));else localStorage.removeItem('morzsa-session');
+  if(version!==authVersion)return;session=value;liveConnection?.updateToken(session?.access_token||'');invitations=[];paintInviteBadge();if(previousUser!==session?.user?.id)window.dispatchEvent(new Event('morzsa-auth-change'));
+ }
  const rpc=(name,args)=>request('/rest/v1/rpc/'+name,args);
  async function fetchRows(hid=cloud.active,verify=true){
   if(verify){
@@ -165,7 +171,7 @@
    body.querySelectorAll('[data-house]').forEach(b=>b.onclick=()=>run(b,()=>connect(b.dataset.house)));
    body.querySelector('#create-house').onsubmit=e=>{e.preventDefault();run(e.target.querySelector('button'),async()=>{const hid=await rpc('create_household',{household_name:e.target.elements['house-name'].value});newHouseholdId=hid;await connect(hid);await open()})};
 
-   body.querySelector('#cloud-signout').onclick=()=>{if(cloud.busy||menuBusy)return;disconnect({remember:false});setSession(null);open()};
+   body.querySelector('#cloud-signout').onclick=e=>run(e.currentTarget,async()=>{await setSession(null);disconnect({remember:false});await open()});
    if(cloud.active){body.querySelector('#cloud-disconnect').onclick=()=>{if(cloud.busy||menuBusy)return;disconnect();open()};
    const h=houses.find(h=>h.id===cloud.active);if(h)paintLocalPantryImport(body,h,houses);if(h?.owner_id===session.user?.id){
     body.insertAdjacentHTML('beforeend','<form id="invite-email"><label>'+say('Meghívás email-cím alapján','Invite by email')+'<input name="email" type="email" maxlength="254" required autocomplete="email" placeholder="nev@gmail.com"></label><button class="primary full" '+(inviteUnavailable?'disabled':'')+'>'+say('Meghívás','Invite')+'</button></form><p class="helper">'+say('A meghívott ezzel az email-címmel belépve az appban fogadhatja el. A meghívás 7 napig érvényes.','The recipient can accept in the app after signing in with this email. Invitations expire in 7 days.')+'</p><div id="sent-invitations"></div>');
@@ -211,7 +217,7 @@
    try{
     if(reset){await request('/auth/v1/recover?redirect_to='+redirect,{email:authEmail},false);body.querySelector('#signin-feedback').textContent=say('Ha a címhez tartozik fiók, hamarosan megérkezik a jelszóbeállító levél.','If an account exists for this email, a reset message will arrive shortly.');return}
     const data=await request(signup?'/auth/v1/signup?redirect_to='+redirect:'/auth/v1/token?grant_type=password',{email:authEmail,password},false);
-    if(data.access_token){setSession(data);authMode='login';authNotice='';await restoreHousehold();await open()}
+    if(data.access_token){await setSession(data);authMode='login';authNotice='';await restoreHousehold();await open()}
     else body.querySelector('#signin-feedback').textContent=say('Nézd meg a postaládádat az email-cím megerősítéséhez. Ha már van fiókod, válaszd a Belépést vagy kérj új jelszót.','Check your inbox to confirm your email. If you already have an account, sign in or reset your password.');
    }finally{if(form.elements.password)form.elements.password.value=''}
   })};
@@ -225,11 +231,11 @@
  async function receiveLink(){
   if(!incomingLink)return;
   await open();
-  try{if(!configured)throw Error('not-configured');const verified=await AuthLink.validate(incomingLink,config);setSession(verified);recoveryMode=incomingLink.type==='recovery';authNotice=''}
+  try{if(!configured)throw Error('not-configured');const verified=await AuthLink.validate(incomingLink,config);await setSession(verified);recoveryMode=incomingLink.type==='recovery';authNotice=''}
   catch(e){authNotice=say('Ez a belépési link érvénytelen, lejárt, vagy nem sikerült ellenőrizni. Kérj új linket.','This sign-in link is invalid, expired or could not be verified. Request a new link.');}
   finally{authPending=false;incomingLink.access=null;incomingLink.refresh=null;await restoreHousehold();await open();if(authNotice)q.querySelector('.household-error').textContent=authNotice}
  }
- window.MorzsaNative?.onAuth(async url=>{try{const body=await window.MorzsaNative.consume(url);const data=await request('/auth/v1/token?grant_type=pkce',body,false);if(!data.access_token)throw Error('Invalid session');setSession(data);await restoreHousehold();await open()}catch{authNotice=say('Nem sikerült belépni. Próbáld újra.','Could not sign in. Please try again.');await open()}finally{await window.MorzsaNative.closeBrowser()}});
+ const nativeAuth=async url=>{try{const body=await window.MorzsaNative.consume(url);const data=await request('/auth/v1/token?grant_type=pkce',body,false);if(!data.access_token)throw Error('Invalid session');await setSession(data);authNotice='';await restoreHousehold();await open()}catch{authNotice=say('Nem sikerült belépni. Próbáld újra.','Could not sign in. Please try again.');await open()}finally{await window.MorzsaNative.closeBrowser()}};
  const menuButton=document.getElementById('household-button');menuButton.onclick=()=>q.open?q.close():open();menuButton.setAttribute('aria-expanded','false');menuButton.setAttribute('aria-controls','household-dialog');
  q.addEventListener('close',()=>{menuButton.setAttribute('aria-expanded','false')});
  q.addEventListener('click',e=>{if(e.target===q){const r=q.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)q.close()}});
@@ -238,7 +244,8 @@
  for(const event of ['click','submit','pointerdown','keydown'])document.addEventListener(event,e=>{const cartAction=e.target.closest('[data-cart],[data-step],[data-delete],.list-row label,#add-cart');if(cloud.cartInteractive&&cartAction)return;if((cloud.busy||cartOutbox.length)&&e.target.closest('#main,#quantity-dialog,#clear-dialog,#history-dialog')){e.preventDefault();e.stopImmediatePropagation()}},true);
  window.addEventListener('online',()=>{if(cartOutbox.length)flushCart();else refresh()});document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh()});
  paintInviteBadge();window.PantryReview?.refresh();status('Csak ezen az eszközön','This device only');
- if(incomingLink)receiveLink();else restoreHousehold();
+ async function start(){try{if(window.MorzsaNative)session=await window.MorzsaNative.loadSession();authPending=!!incomingLink;if(incomingLink)await receiveLink();else await restoreHousehold();await window.MorzsaNative?.onAuth(nativeAuth);if(q.open)await open()}catch{authPending=false;authNotice=say('A biztonságos bejelentkezést nem sikerült betölteni. Nyisd meg újra az appot.','Could not load secure sign-in. Reopen the app.');status(authNotice,authNotice);await open()}}
+ start();
  loadInvitations();setInterval(async()=>{if(document.hidden||authPending)return;await loadInvitations();if(q.open&&!q.contains(document.activeElement))paintInvitations()},30000);
  window.addEventListener('focus',()=>loadInvitations());
  cloud.updateLanguage=()=>{paintInviteBadge();status(cloud.active?'Közös háztartás':'Csak ezen az eszközön',cloud.active?'Shared household':'This device only')};

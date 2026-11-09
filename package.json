@@ -6,7 +6,8 @@
     "build:mobile": "node scripts/build-mobile.mjs",
     "sync:mobile": "npm run build:mobile && cap sync",
     "open:ios": "cap open ios",
-    "open:android": "cap open android"
+    "open:android": "cap open android",
+    "build:web": "node scripts/build-mobile.mjs --web"
   },
   "devDependencies": {
     "@capacitor/cli": "^8.6.0",
@@ -17,7 +18,11 @@
     "@capacitor/android": "^8.6.0",
     "@capacitor/app": "^8.1.2",
     "@capacitor/browser": "^8.0.5",
+    "@capacitor/clipboard": "^8.0.1",
     "@capacitor/core": "^8.6.0",
-    "@capacitor/ios": "^8.6.0"
+    "@capacitor/ios": "^8.6.0",
+    "@capacitor/keyboard": "^8.0.6",
+    "@capacitor/network": "^8.0.1",
+    "capacitor-secure-storage-plugin": "^0.13.0"
   }
 }

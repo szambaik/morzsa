@@ -144,7 +144,7 @@ function renderRecipes(){
 
 function vote(like){if(!currentId)return;(like?state.likes:state.skips).push(currentId);save();toast(like?'Elmentve a kedvenceid közé ♡':'Most kihagytuk.');render()}
 const chatRequests=new Map();let aiConfigured=false;
-async function checkAI(){try{const res=await fetch('/api/status');const data=await res.json();aiConfigured=!!data.configured}catch{aiConfigured=false}const el=dialog.querySelector('.ai-status');if(el)el.textContent=aiConfigured?'AI készen áll':'AI még nincs bekapcsolva'}
+async function checkAI(){try{aiConfigured=(await window.household.voiceStatus()).configured===true}catch{aiConfigured=false}const el=dialog.querySelector('.ai-status');if(el){el.setAttribute('data-no-translate','');el.textContent=aiConfigured?(language==='en'?'AI ready':'AI készen áll'):(language==='en'?'AI unavailable':'AI most nem érhető el')}}
 function openRecipe(id){
  const r=recipes.find(x=>x.id===id);if(!r)return;const m=missing(r);
  dialog.dataset.recipe=id;
@@ -154,6 +154,7 @@ function openRecipe(id){
  dialog.querySelector('.chat-form').onsubmit=e=>{e.preventDefault();const input=e.target.querySelector('textarea'),text=input.value.trim();if(!text||chatRequests.has(id))return;state.chats[id]||=[];state.chats[id].push({role:'user',content:text});input.value='';save();sendChat(id)};
  dialog.querySelectorAll('[data-chat-suggestion]').forEach(b=>b.onclick=()=>{const input=dialog.querySelector('textarea');input.value=language==='en'?englishText(b.dataset.chatSuggestion):b.dataset.chatSuggestion;input.focus()});
  dialog.querySelector('#chat-retry').onclick=()=>sendChat(id);
+ const disclosure=dialog.querySelectorAll('.chat-hint');disclosure[disclosure.length-1].setAttribute('data-no-translate','');disclosure[disclosure.length-1].textContent=language==='en'?'Your question, this recipe and pantry context are sent to Google AI. This chat does not change your pantry or list.':'A kérdés, a recept és a készlet a Google AI-hoz kerül. Ez a beszélgetés nem módosítja a készletet vagy a listát.';
  paintChat(id);checkAI();if(!dialog.open)dialog.showModal();
 }
 function paintChat(id){if(dialog.dataset.recipe!==id)return;const history=state.chats[id]||[];
@@ -161,11 +162,14 @@ function paintChat(id){if(dialog.dataset.recipe!==id)return;const history=state.
  const busy=chatRequests.has(id);dialog.querySelector('.chat-form button').disabled=busy;dialog.querySelector('.chat-pending').textContent=busy?'Morzsa gondolkodik…':'';
  dialog.querySelector('#chat-retry').hidden=busy||!history.length||history[history.length-1].role!=='user';
 }
-async function sendChat(id){if(chatRequests.has(id))return;const controller=new AbortController();chatRequests.set(id,controller);if(dialog.dataset.recipe===id)dialog.querySelector('.chat-error').textContent='';paintChat(id);const timeout=setTimeout(()=>controller.abort(),65000);
- try{const history=state.chats[id]||[],recipe=recipes.find(r=>r.id===id);const foodNames=new Set(catalog.filter(i=>!nonFoodCategories.has(i.category)).map(i=>i.name));state.custom.filter(i=>!nonFoodCategories.has(productCategory(i.name))).forEach(i=>foodNames.add(i.name));const response=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({recipe,messages:history.slice(-24).map(m=>({role:m.role,content:m.content.slice(0,8000)})),language,stock:Object.keys(state.stock).filter(n=>state.stock[n]>0&&foodNames.has(n))}),signal:controller.signal});const data=await response.json();if(!response.ok)throw new Error(data.error||'Az AI most nem elérhető.');if(typeof data.reply!=='string'||!data.reply.trim())throw new Error('Nem érkezett válasz.');state.chats[id].push({role:'assistant',content:data.reply});save();
- }catch(error){if(dialog.dataset.recipe===id)dialog.querySelector('.chat-error').textContent=error.name==='AbortError'?'Túl sokáig tartott a válasz. Próbáld újra.':error.message||'Nem sikerült kapcsolódni.';
- }finally{clearTimeout(timeout);chatRequests.delete(id);paintChat(id)}
+async function sendChat(id){
+ if(chatRequests.has(id))return;const context=JSON.stringify([window.household?.userId(),window.household?.active]);chatRequests.set(id,true);if(dialog.dataset.recipe===id)dialog.querySelector('.chat-error').textContent='';paintChat(id);
+ try{const recipe=recipes.find(r=>r.id===id),request=RecipeChat.request(state,recipe,language,productCategory,nonFoodCategories,window.PantryReview?.uncertain()||[]);const data=await window.household.voiceCommand(request);
+  if(context!==JSON.stringify([window.household?.userId(),window.household?.active]))throw Error('VOICE_CHANGED');
+  const reply=data.answer||data.clarification;if(typeof reply!=='string'||!reply.trim())throw Error('VOICE_INVALID_RESPONSE');state.chats[id].push({role:'assistant',content:reply});save();
+ }catch(error){if(dialog.dataset.recipe===id){const el=dialog.querySelector('.chat-error');el.setAttribute('data-no-translate','');el.textContent=voiceError(error)}}finally{chatRequests.delete(id);paintChat(id)}
 }
+
 function shoppingGroupHeader(category){
  const items=state.cart.filter(item=>productCategory(item.name)===category),pending=items.filter(item=>!item.done).length,complete=pending===0;
  const label=language==='en'?'Everything in this category is checked':'Ebben a kategóriában minden megvan';
@@ -348,10 +352,10 @@ function openChatGPTIdeas(initialClient='ChatGPT'){
   select.onchange=()=>{message.textContent='';update()};input.oninput=update;update();
   copy.onclick=async e=>{
    const button=e.currentTarget,client=select.value,prompt=input.value;button.disabled=true;select.disabled=true;let popup=null;
-   try{popup=window.open('about:blank','_blank');if(popup)popup.opener=null}catch{}
-   try{if(navigator.clipboard?.writeText)await navigator.clipboard.writeText(prompt);else{input.focus();input.select();if(!document.execCommand('copy'))throw Error('copy')}
+   try{if(!window.MorzsaNative){popup=window.open('about:blank','_blank');if(popup)popup.opener=null}}catch{}
+   try{if(window.MorzsaNative)await window.MorzsaNative.copyText(prompt);else if(navigator.clipboard?.writeText)await navigator.clipboard.writeText(prompt);else{input.focus();input.select();if(!document.execCommand('copy'))throw Error('copy')}
     message.textContent=say('Kimásolva. Illeszd be a '+client+' felületén, majd küldd el.','Copied. Paste into '+client+', then send.');
-    if(popup)popup.location.replace(clients[client]);else message.textContent+=say(' A megnyitáshoz használd az alábbi linket.',' Use the link below to open it.');
+    if(window.MorzsaNative)await window.MorzsaNative.openExternal(clients[client]);else if(popup)popup.location.replace(clients[client]);else message.textContent+=say(' A megnyitáshoz használd az alábbi linket.',' Use the link below to open it.');
    }catch{popup?.close();input.focus();input.select();message.textContent=say('Az automatikus másolás nem sikerült. Másold ki a kijelölt szöveget, majd használd az alábbi linket.','Automatic copying failed. Copy the selected text, then use the link below.')}
    finally{button.disabled=false;select.disabled=false}
   };

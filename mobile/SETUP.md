@@ -10,7 +10,7 @@
 - Készletellenőrzés: legfeljebb öt tétel, Van még / Elfogyott / Elfogyott, listára / Most kihagyom. A megerősítés közös. A régi készletet nem töröljük, és nem dátumozzuk át frissnek.
 - A vásárláslezárás és a jóváhagyott „van/vettem” hangművelet a már jelen lévő terméket is újra megerősíti. Az AI a régen ellenőrzött tételeket bizonytalanként kapja.
 
-**Ez fejlesztési alap, még nem aláírt, telefonon bevizsgált vagy áruházba beküldhető kiadás.** Az iOS-fordítást az Xcode licencelfogadása blokkolta. Android SDK nincs a vizsgált gépen. A natív belépés teljes körét, mikrofont és életciklust valódi eszközön még ellenőrizni kell.
+**Ez fejlesztési alap, még nem aláírt, telefonon bevizsgált vagy áruházba beküldhető kiadás.** A helyi iOS Simulator build sikeresen lefordult. Az Xcode licence már elfogadva, de helyi szimulátorruntime még nincs telepítve. Android SDK nincs a vizsgált gépen. A natív belépés teljes körét, mikrofont és életciklust valódi eszközön még ellenőrizni kell.
 
 ## Ingyenes lehet?
 
@@ -30,7 +30,7 @@ Az Apple meghatározott nonprofit, akkreditált oktatási és kormányzati szerv
 ## Tőled mire van szükség most?
 
 1. **Kiadó és fiókok:** magánszemély vagy cég? Van-e már Apple Developer / Play Console fiókod? Egyéni Apple-kiadásnál a jogi neved jelenik meg kiadóként; cégnél szervezeti ellenőrzés, jellemzően D‑U‑N‑S is szükséges. Az ideiglenes appazonosító `io.github.szambaik.morzsa`; az első áruházi regisztráció előtt véglegesítsük.
-2. **Xcode első indítás:** nyisd meg a telepített Xcode-ot, olvasd el és fogadd el a licenceket, telepítsd a kért komponenseket. Settings → Locations → Command Line Tools: válaszd ki az Xcode-ot. A gépen Xcode 27.2 van, de a parancssori alapértelmezés a külön CommandLineTools. A licencet neked kell elfogadnod.
+2. **Xcode első indítás:** nyisd meg a telepített Xcode-ot, olvasd el és fogadd el a licenceket, telepítsd a kért komponenseket. Settings → Locations → Command Line Tools: válaszd ki az Xcode-ot. A gépen Xcode 27.2 van, a licenc elfogadva. A helyi futtatáshoz Settings → Components alatt tölts le iOS Simulator runtime-ot. A parancssori buildhez szükség esetén DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer használható.
 3. **Android:** Android Studio és SDK telepítése. Az android/variables.gradle fájlban megadott SDK-verziókat használd; Gradle JDK-nak elsőként a Studio támogatott beépített JDK-ját. Android-fordítást még nem végeztünk.
 4. **Supabase:** Authentication → URL Configuration → Redirect URLs → Add URL. Add hozzá pontosan: `io.github.szambaik.morzsa://auth-callback`. A meglévő `https://szambaik.github.io/morzsa/` maradjon. A Site URL is maradhat a webapp.
 5. **Telefonok:** egy iPhone és egy Android a kétplatformos próbához. Belépés, közös lista két taggal, hálózatvesztés, háttérbe kerülés, mikrofon, billentyűzet és nagyobb betűméret a próbakör.
@@ -63,7 +63,7 @@ Az AI-függvények engedélyezett eredeteinek alaplistájában szerepel a `capac
 - Fiókok létrehozása, személyazonosság/cég ellenőrzése és szerződések elfogadása a te fiókodban.
 - A 2023. november 13. után létrehozott személyes Play-fiókoknál legalább **12 tesztelő 14 folyamatos napig** zárt tesztben, utána production-hozzáférési kérelem. Az áruházi ellenőrzés további idő.
 - iOS-en Sign in with Apple integrációt tervezünk a Google mellé az App Review 4.8 szerinti követelményhez. Ez még nincs megvalósítva.
-- Natív session-tárolás véglegesítése Keychain/Keystore használatával, kijelentkezés és lejárt session tesztje. A scaffold még a webapp helyi session-tárolását használja.
+- Natív session-tárolás véglegesítése Keychain/Keystore használatával, kijelentkezés és lejárt session tesztje. A natív session és PKCE már Keychain/Keystore tárolóban van; a régi natív localStorage-session egyszer, sikeres írás után migrálódik. Valódi telefonos ellenőrzés még szükséges.
 - Appon belüli fióktörlés és közös háztartás tulajdonosi/adatmegőrzési szabályai; Google által kért webes törlési kérelem elérhetősége.
 - Valós adatkezelési tájékoztató, támogatási elérhetőség. Tőled a kiadó/adatkezelő és support adatai kellenek. Az AI-hoz továbbított hang/készlet és szolgáltatói feltételek ellenőrzése is része ennek.
 - Privacy/Data safety nyilatkozat, korhatár, képernyőképek, leírás és reviewer-tesztfiók.
@@ -85,3 +85,14 @@ Induló idők: zöldség/gyümölcs/pékáru 5 nap; tej/hús/hal/növényi alapo
 - [Play tesztkövetelmények](https://support.google.com/googleplay/android-developer/answer/14151465?hl=en)
 - [App Store Review Guidelines](https://developer.apple.com/app-store/review/guidelines/)
 - [Capacitor dokumentáció](https://capacitorjs.com/docs)
+
+
+## Portolás: aktuális technikai ellenőrzés
+
+A webes csomag külön is előáll: npm run build:web → web-dist. A webes felület a meglévő GitHub Pages címen marad. A telepítési manifest saját ikonnal kezdőképernyős indítást támogat; újratöltéshez internet kell, offline service worker még nincs.
+
+A receptcsevegés, hangos asszisztens és receptajánló a közös Supabase hátteret használja mindhárom platformon. A recept alatti beszélgetés nem módosít készletet. Native Browser/Clipboard kezeli a külső AI megnyitását és másolást; Keyboard a billentyűzetet; App/Network az előtérbe visszatérés és hálózat helyreállásának frissítését. Háttérbe kerüléskor a folyamatban lévő felvétel bezárul és a mikrofon leáll.
+
+A GitHub Actions „Mobile builds” workflow webtesztet, Android debug APK-t és iOS Simulator buildet készít. Az artifactok 14 napig elérhetők; a nyilvános repo normál GitHub-hosted runnerjein ez nem igényel áruházi tagságot. Az iOS smoke script már telepített szimulátorra telepít és indít; runtime-ot nem tölt le, OAuthot/mikrofont nem tesztel.
+
+Az Android debug aláírókulcsot a workflow cache megőrzi az egymást követő tesztbuildekhez. Ez fejlesztői aláírás, nem kiadási kulcs. Cache-vesztés vagy helyi build esetén eltérhet: ilyen APK nem frissíthet rá a korábbira. Ilyenkor ne töröld az appot helyi adatok mentése nélkül; a végleges tesztterjesztéshez tartós kiadási aláírás szükséges.

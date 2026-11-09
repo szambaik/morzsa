@@ -10,7 +10,7 @@ function voiceError(error){
  VOICE_UNSUPPORTED:['Ebben a böngészőben nem elérhető a hangfelvétel. Használd a szöveges felvételt.','Recording is not available in this browser. Use text entry.'],
  VOICE_TOO_LARGE:['A felvétel túl nagy. Próbálj rövidebb üzenetet.','Recording is too large. Try a shorter message.'],
  VOICE_CHANGED:['Közben megváltozott a fiók vagy a háztartás. Kezdd újra a felvételt.','Account or household changed. Start a new recording.'],
- NotAllowedError:['Engedélyezd a mikrofont a böngészőben, vagy használd a szöveges felvételt.','Allow microphone access in your browser, or use text entry.'],
+ NotAllowedError:window.MorzsaNative?['Engedélyezd a mikrofont a telefon beállításaiban a Morzsának, vagy használd a szöveges felvételt.','Allow Morzsa microphone access in your phone settings, or use text entry.']:['Engedélyezd a mikrofont a böngészőben, vagy használd a szöveges felvételt.','Allow microphone access in your browser, or use text entry.'],
  NotFoundError:['Nem található mikrofon. Használd a szöveges felvételt.','No microphone found. Use text entry.']};
  return (messages[error?.message]||messages[error?.name]||['Morzsa most nem tud válaszolni. Semmit sem módosítottunk. Próbáld újra.','Morzsa cannot respond right now. Nothing was changed. Try again.'])[en?1:0];
 }
@@ -38,8 +38,8 @@ async function openVoiceCommand(mode='voice'){
  const stopTracks=()=>{stream?.getTracks().forEach(t=>t.stop());stream=null;clearInterval(timer)};
  const close=()=>{if(!saving)q.close()};
  q.oncancel=e=>{if(saving)e.preventDefault()};
- q.onclose=()=>{closed=true;generation++;discard=true;if(recorder?.state==='recording')recorder.stop();stopTracks();document.removeEventListener('visibilitychange',background)};
- const background=()=>{if(document.hidden&&!saving)close()};document.addEventListener('visibilitychange',background);
+ q.onclose=()=>{closed=true;generation++;discard=true;if(recorder?.state==='recording')recorder.stop();stopTracks();document.removeEventListener('visibilitychange',background);window.removeEventListener('morzsa-pause',pause)};
+ const pause=()=>{if(!saving)close()};window.addEventListener('morzsa-pause',pause);const background=()=>{if(document.hidden&&!saving)close()};document.addEventListener('visibilitychange',background);
  const active=()=>{if(voiceContext()!==context){close();return false}return !closed&&q.open};
  function shell(content,title=say('Miben segítsek?','How can I help?')){q.dataset.view='';q.innerHTML='<button class="close" aria-label="'+say('Bezárás','Close')+'">×</button><div class="eyebrow">'+say('MONDD A MORZSÁNAK','TELL MORZSA')+'</div><h2 id="voice-title">'+title+'</h2><div class=voice-body>'+content+'</div>';q.setAttribute('aria-labelledby','voice-title');q.querySelector('.close').onclick=close;}
  function footer(content){const el=document.createElement('div');el.className='voice-footer';el.innerHTML=content;q.append(el)}
@@ -59,7 +59,7 @@ async function openVoiceCommand(mode='voice'){
    const mime=['audio/webm;codecs=opus','audio/mp4','audio/ogg;codecs=opus'].find(t=>MediaRecorder.isTypeSupported(t));if(!mime)throw Error('VOICE_UNSUPPORTED');
    recorder=new MediaRecorder(stream,{mimeType:mime,audioBitsPerSecond:64000});chunks=[];bytes=0;discard=false;
    recorder.ondataavailable=e=>{if(e.data.size){bytes+=e.data.size;if(bytes>3000000){discard=true;if(recorder.state==='recording')recorder.stop();stopTracks();errorView(Error('VOICE_TOO_LARGE'));return}chunks.push(e.data)}};
-   recorder.onerror=()=>{discard=true;stopTracks();errorView(Error('VOICE_UNAVAILABLE'))};
+   recorder.onerror=()=>{discard=true;if(recorder.state==='recording')recorder.stop();stopTracks();errorView(Error('VOICE_UNAVAILABLE'))};
    recorder.onstop=async()=>{recording=false;stopTracks();if(discard||!active())return;const blob=new Blob(chunks,{type:mime.split(';')[0]});chunks=[];await interpret(blob)};
    shell('<div class="voice-listening">'+voiceMicIcon+'<span id="voice-clock">0 / 30 s</span></div><p class="voice-record-hint">'+say('Kérdezz bátran, vagy mondd el, mi változott otthon.','Ask me anything, or tell me what changed at home.')+'</p><p class="voice-disclosure">'+say('A Google AI a kérésedet, készletedet és listádat használja. Mentés előtt ellenőrizheted. 30 mp-nél automatikusan elküldjük.','Google AI uses your message, pantry and list. Review before saving. Sent automatically at 30 seconds.')+'</p>',say('Hallgatlak…','Listening…'));q.dataset.view='recording';
    footer('<button class="small-button" id="voice-cancel">'+say('Mégsem','Cancel')+'</button><button class="primary" id="voice-send">'+say('Küldés','Send')+' ↑</button>');
