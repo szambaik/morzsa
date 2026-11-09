@@ -71,3 +71,10 @@ final result: passed
 - Assistant supports text/voice answers plus follow-up exchanges with bounded current-household context; questions have no save button or state mutations. Mixed requests show answers above proposed changes.
 - Validation: 49 Node tests plus 5 SQL suites; voice and assistant browser regressions include defaults, repeat actions, answer rendering, no-mutation questions, mixed requests, follow-up context and compatibility. Provider responses are simulated.
 - Visual evidence: design/voice-review-compact.png, design/assistant-answer.png, design/assistant-default-review.png.
+
+## Shopping responsiveness — 2026-11-09
+
+- Shopping is the launch screen. List options moved into overflow; rows measured at 46px with 44px controls, and category gaps reduced. HU 390px and EN 320px screenshots: design/shopping-compact.png, design/shopping-compact-320.png.
+- Injected stalled server response: several checks, an uncheck and quantity change completed before releasing the response; existing row nodes stayed intact.
+- Concurrent partner quantity change generated a revision conflict; rebase preserved it and saved the latest checks. Background-read overlap, pending reload/retry, and queued quick entry passed.
+- Existing local/shared checkout, category collapse/reopen, account and household switching, and Realtime regression suites passed. 52 Node tests and five SQL suites passed. Server/network behavior is simulated in browser tests; physical two-phone testing remains user validation.

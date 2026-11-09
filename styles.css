@@ -360,3 +360,28 @@ nav .shopping-nav.active{background:var(--orange-soft);color:var(--orange-ink);b
 #assistant-followup-form label{font-size:12px;color:var(--muted)}
 #assistant-followup{display:block;width:100%;resize:vertical;min-height:68px;max-height:160px;margin-top:6px;padding:10px;border:1px solid var(--line);border-radius:12px;background:var(--white);color:var(--ink);font:inherit;font-size:16px}
 #assistant-followup-mic{display:grid;place-items:center}
+/* Shopping first: compact rows with unchanged 44px control height. */
+.app[data-page=shopping] .pantry-heading{align-items:center;gap:8px;margin:0 0 6px}
+.app[data-page=shopping] .pantry-heading h1{font-size:24px;flex:1}
+.app[data-page=shopping] .shopping-actions{margin:0;position:relative;z-index:6}
+.shopping-menu>summary{list-style:none;display:grid;place-items:center;min-width:40px;min-height:44px;font-size:24px;cursor:pointer}
+.shopping-menu>summary::-webkit-details-marker{display:none}
+.shopping-menu>div{position:absolute;right:0;top:44px;min-width:210px;padding:6px;background:var(--white);border:1px solid var(--line);border-radius:14px;box-shadow:0 5px 20px #263c3015}
+.shopping-menu>div button{display:block;width:100%;text-align:left;background:transparent!important;white-space:nowrap}
+.app[data-page=shopping] .quick-entry{margin:0 0 10px}
+.app[data-page=shopping] .quick-input input{min-height:44px;padding:10px 12px}
+.app[data-page=shopping] .shopping-group{margin:8px 0}
+.app[data-page=shopping] .shopping-group>summary{min-height:32px;font-size:12px;gap:6px}
+.app[data-page=shopping] .shopping-group .category-artwork{width:24px;height:24px}
+.app[data-page=shopping] .list-row{display:grid;grid-template-columns:24px minmax(0,1fr) 108px 28px;gap:6px;padding:0;min-height:46px;border-bottom:1px solid #e8e1d5}
+.app[data-page=shopping] .list-row label{display:flex;align-items:center;min-height:44px;font-size:14px;line-height:1.25}
+.app[data-page=shopping] .list-row input{margin:0;width:22px;height:22px}
+.app[data-page=shopping] .quantity-stepper{gap:0}
+.app[data-page=shopping] .quantity-step{min-width:30px;min-height:44px;font-size:18px}
+.app[data-page=shopping] .quantity-badge{min-width:48px;border:0;background:transparent;padding:2px;font-size:11px}
+.app[data-page=shopping] .list-row .delete{min-width:28px;min-height:44px;padding:0}
+.app[data-page=shopping] #restock{margin:16px 0 4px;min-height:44px}
+.app[data-page=shopping] #restock+.helper{margin:6px 0 12px}
+#cloud-status[data-cart-sync]:not([hidden]){position:fixed;bottom:calc(94px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);z-index:20;max-width:calc(100vw - 24px);width:max-content;padding:6px 12px;margin:0;background:var(--bg);border:1px solid var(--line);border-radius:16px;box-shadow:0 3px 10px #263c3010;font-size:11px}
+#cloud-status[data-cart-sync] button{border:0;background:transparent;color:var(--orange);padding:6px;min-height:36px;font-size:12px}
+@media(max-width:360px){.app[data-page=shopping] .pantry-heading h1{font-size:21px}.app[data-page=shopping] .list-row{grid-template-columns:22px minmax(0,1fr) 100px 24px;gap:4px}.app[data-page=shopping] .quantity-step{min-width:28px}.app[data-page=shopping] .quantity-badge{min-width:44px}.app[data-page=shopping] .list-row label{font-size:13px}}

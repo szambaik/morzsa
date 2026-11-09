@@ -1,5 +1,19 @@
 // Pure shared-state conversion and per-record optimistic concurrency diff.
 const HouseholdModel={
+ // Store field-level shopping intent, so a check never overwrites a partner's quantity.
+ cartIntent(before,next){
+  const old=new Map(before.cart.map(x=>[x.name,x])),fresh=new Map(next.cart.map(x=>[x.name,x])),cart=[];
+  for(const [name,item] of old)if(!fresh.has(name))cart.push({name,remove:true});
+  for(const [name,item] of fresh){const previous=old.get(name),fields={};for(const key of Object.keys(item))if(key!=='name'&&JSON.stringify(item[key])!==JSON.stringify(previous?.[key]))fields[key]=item[key];if(!previous||Object.keys(fields).length)cart.push({name,create:!previous,fields})}
+  return {cart,custom:next.custom.filter(x=>!before.custom.some(y=>y.name===x.name))};
+ },
+ applyCartIntents(base,intents){
+  const next={...base,cart:base.cart.map(x=>({...x})),custom:[...base.custom]};
+  for(const intent of intents){
+   for(const op of intent.cart){const i=next.cart.findIndex(x=>x.name===op.name);if(op.remove){if(i>=0)next.cart.splice(i,1)}else if(i>=0)next.cart[i]={...next.cart[i],...op.fields,name:op.name};else if(op.create)next.cart.push({...op.fields,name:op.name})}
+   for(const item of intent.custom)if(!next.custom.some(x=>x.name===item.name))next.custom.push(item);
+  }return next;
+ },
  // Additive pantry-only import; keep the older full import contract unchanged.
  pantryImportPlan(source,target,catalog=[]){
   const next=JSON.parse(JSON.stringify(target)),added=[],kept=[];

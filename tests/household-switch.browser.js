@@ -1,5 +1,5 @@
 // Playwright browser_run_code_unsafe runner: isolated context and mocked Supabase.
-// Start server.py on localhost:8770, then run this file through that tool.
+// Start server.py on localhost:8771, then run this file through that tool.
 async (page) => {
  const context=await page.context().browser().newContext({viewport:{width:390,height:844}}),p=await context.newPage();
  const check=(ok,message)=>{if(!ok)throw Error(message)};
@@ -21,7 +21,7 @@ async (page) => {
  const active=()=>p.evaluate(()=>window.household.active);
  const choose=async id=>{await p.locator('#household-button').click();await p.locator('[data-house="'+id+'"]').click();await p.locator('#household-dialog').waitFor({state:'hidden'})};
  try{
-  await p.goto('http://localhost:8770/');await choose('a');check(await active()==='a','house a selected');check(await p.locator('.household-name').textContent()==='Otthon','active name visible');
+  await p.goto('http://localhost:8771/');await choose('a');check(await active()==='a','house a selected');check(await p.locator('.household-name').textContent()==='Otthon','active name visible');
   await p.reload();await p.waitForFunction(()=>household.active==='a');check(await p.evaluate(()=>!state.stock.Tojás&&state.stock.Rizs===2),'restore does not import local stock');
   await choose('b');await p.reload();await p.waitForFunction(()=>household.active==='b');
   for(const width of [320,390]){await p.setViewportSize({width,height:844});check(await p.evaluate(()=>document.documentElement.scrollWidth===innerWidth),'header overflow');}

@@ -38,7 +38,7 @@ function localize(root=document.body){
   const next=language==='en'?englishText(record.source):record.source;if(node.nodeValue!==next)node.nodeValue=next;
   record.output=next;originalText.set(node,record);
  }
- root.querySelectorAll('[aria-label],[placeholder],[aria-description]').forEach(el=>{
+ [...(root.matches?.('[aria-label],[placeholder],[aria-description]')?[root]:[]),...root.querySelectorAll('[aria-label],[placeholder],[aria-description]')].forEach(el=>{
   if(el.closest('[data-no-translate]'))return;
   const records=originalAttributes.get(el)||{};
   for(const attr of ['aria-label','placeholder','aria-description'])if(el.hasAttribute(attr)){
@@ -50,6 +50,6 @@ function localize(root=document.body){
 function setLanguage(next){language=next==='en'?'en':'hu';localStorage.setItem('morzsa-language',language);document.querySelectorAll('dialog[open]').forEach(d=>d.close());render();localize();window.household?.updateLanguage();document.querySelectorAll('[data-language]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.language===language)))}
 function startLocalization(){
  document.querySelectorAll('[data-language]').forEach(b=>{b.onclick=()=>setLanguage(b.dataset.language);b.setAttribute('aria-pressed',String(b.dataset.language===language))});
- const observer=new MutationObserver(()=>{observer.disconnect();localize();observer.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['placeholder','aria-label','aria-description']})});
+ const observer=new MutationObserver(records=>{observer.disconnect();const roots=[];for(const r of records){const el=r.target.nodeType===Node.ELEMENT_NODE?r.target:r.target.parentElement;if(!el?.isConnected||el.closest('script,style,[data-no-translate],textarea'))continue;if(roots.some(root=>root.contains(el)))continue;for(let i=roots.length-1;i>=0;i--)if(el.contains(roots[i]))roots.splice(i,1);roots.push(el)}roots.forEach(localize);observer.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['placeholder','aria-label','aria-description']})});
  localize();observer.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['placeholder','aria-label','aria-description']});
 }
