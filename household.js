@@ -35,6 +35,8 @@
   finally{clearTimeout(indicator);cloud.busy=false;cartSync=false;if(!cartFailed&&cartOutbox.length)cartTimer=setTimeout(flushCart,120)}
  }
  const pendingCart=()=>{if(!cartOutbox.length)return false;toast(say('A listád még mentésre vár. Próbáld újra a szinkronizálást.','Your list is waiting to save. Retry syncing first.'));return true};
+ cloud.readPantryReviews=()=>request('/rest/v1/household_pantry_reviews?household_id=eq.'+encodeURIComponent(cloud.active)+'&select=product_name,last_confirmed_at,stock_revision');
+ cloud.confirmPantryReviews=names=>rpc('confirm_pantry_items',{hid:cloud.active,items:names.map(name=>({name,revision:cloud.rows.find(r=>r.bucket==='stock'&&r.key===name)?.revision}))});
  cloud.userId=()=>session?.user?.id||null;
  cloud.voiceStatus=()=>request('/functions/v1/voice-command',undefined,false);
  cloud.voiceCommand=payload=>{if(!session)throw Error('VOICE_SIGN_IN_REQUIRED');return request('/functions/v1/voice-command',payload,true,'POST',45000)};
@@ -97,7 +99,7 @@
      requestAnimationFrame(()=>document.querySelectorAll('[data-ingredient]').forEach(el=>{if(changed.includes(el.dataset.ingredient)){el.classList.add('shared-change');setTimeout(()=>el.classList.remove('shared-change'),1500)}}));
     }
    }
-   status('Közös háztartás · szinkronizálva','Shared household · synced');
+   window.PantryReview?.refresh();status('Közös háztartás · szinkronizálva','Shared household · synced');
   }catch(e){status('Szinkronizálás sikertelen','Sync failed')}finally{cloud.busy=false;refreshing=false;if(cartOutbox.length&&!cartFailed)cartTimer=setTimeout(flushCart,0)}
  }
 
@@ -107,15 +109,15 @@
   if(cloud.busy){state=HouseholdModel.decode(cloud.rows,state);render();toast(say('Mentés folyamatban, próbáld újra.','Saving in progress; try again.'));return}
   const changes=HouseholdModel.diff(cloud.rows,state);if(!changes.length)return true;
   const draft=JSON.stringify(state),hid=cloud.active;try{localStorage.setItem('morzsa-pending-'+hid,draft)}catch{state=HouseholdModel.decode(cloud.rows,state);render();toast(say('A böngésző nem tudta menteni a változtatást.','The browser could not save this change.'));return}cloud.busy=true;status('Mentés…','Saving…');
-  try{await rpc('apply_household_changes',{hid,changes});cloud.rows=await fetchRows();state=HouseholdModel.decode(cloud.rows,state);localStorage.setItem(cloud.storageKey(),JSON.stringify(state));localStorage.removeItem('morzsa-pending-'+hid);render();status('Közös háztartás · szinkronizálva','Shared household · synced');return true}
+  try{await rpc('apply_household_changes',{hid,changes});cloud.rows=await fetchRows();state=HouseholdModel.decode(cloud.rows,state);localStorage.setItem(cloud.storageKey(),JSON.stringify(state));localStorage.removeItem('morzsa-pending-'+hid);render();window.PantryReview?.refresh();status('Közös háztartás · szinkronizálva','Shared household · synced');return true}
   catch(e){try{cloud.rows=await fetchRows()}catch{}state=HouseholdModel.decode(cloud.rows,state);render();status('Nem sikerült menteni · ismételd meg','Not saved · repeat your action');toast(errorText(e));return false}
   finally{cloud.busy=false}
  }
  async function connect(hid,{name}={}){
   if(cloud.busy||pendingCart())return;const previous=cloud.active;cloud.busy=true;switchingName=name||houseNames.get(hid)||say('Háztartás','Household');paintInviteBadge();
-  try{const rows=await fetchRows(hid);if(!previous)localBackup=JSON.parse(JSON.stringify(state));cloud.active=hid;cloud.rows=rows;cartOutbox=[];try{const saved=JSON.parse(localStorage.getItem(outboxKey())||'[]');if(Array.isArray(saved)&&saved.every(i=>Array.isArray(i.cart)&&Array.isArray(i.custom)))cartOutbox=saved}catch{}cartFailed=!!cartOutbox.length;homeUndo.length=0;shoppingDraft='';pantryDraft='';pantryBatch=[];pantryListed.clear();state=overlayCart(rows);rememberHousehold();render();q.close();status('Közös háztartás · szinkronizálva','Shared household · synced');clearInterval(pollTimer);pollTimer=setInterval(refresh,8000);startLive()}finally{cloud.busy=false;switchingName='';paintInviteBadge();if(cartOutbox.length)cartTimer=setTimeout(flushCart,0)}
+  try{const rows=await fetchRows(hid);if(!previous)localBackup=JSON.parse(JSON.stringify(state));cloud.active=hid;cloud.rows=rows;cartOutbox=[];try{const saved=JSON.parse(localStorage.getItem(outboxKey())||'[]');if(Array.isArray(saved)&&saved.every(i=>Array.isArray(i.cart)&&Array.isArray(i.custom)))cartOutbox=saved}catch{}cartFailed=!!cartOutbox.length;homeUndo.length=0;shoppingDraft='';pantryDraft='';pantryBatch=[];pantryListed.clear();state=overlayCart(rows);rememberHousehold();render();window.PantryReview?.refresh();q.close();status('Közös háztartás · szinkronizálva','Shared household · synced');clearInterval(pollTimer);pollTimer=setInterval(refresh,8000);startLive()}finally{cloud.busy=false;switchingName='';paintInviteBadge();if(cartOutbox.length)cartTimer=setTimeout(flushCart,0)}
  }
- function disconnect({remember=true}={}){if(cloud.busy)return;stopLive();clearTimeout(cartTimer);cartOutbox=[];cartFailed=false;homeUndo.length=0;shoppingDraft='';pantryDraft='';pantryBatch=[];pantryListed.clear();cloud.active=null;clearInterval(pollTimer);if(localBackup){state={...localBackup,likes:state.likes,skips:state.skips,chats:state.chats,sortMode:state.sortMode};localStorage.setItem('morzsa-v2',JSON.stringify(state));localBackup=null;render()}if(remember)rememberHousehold();paintInviteBadge();status('Csak ezen az eszközön','This device only')}
+ function disconnect({remember=true}={}){if(cloud.busy)return;stopLive();clearTimeout(cartTimer);cartOutbox=[];cartFailed=false;homeUndo.length=0;shoppingDraft='';pantryDraft='';pantryBatch=[];pantryListed.clear();cloud.active=null;clearInterval(pollTimer);if(localBackup){state={...localBackup,likes:state.likes,skips:state.skips,chats:state.chats,sortMode:state.sortMode};localStorage.setItem('morzsa-v2',JSON.stringify(state));localBackup=null;render()}if(remember)rememberHousehold();paintInviteBadge();window.PantryReview?.refresh();status('Csak ezen az eszközön','This device only')}
  async function run(button,fn){if(menuBusy||cloud.busy||pendingCart())return;menuBusy=true;button.disabled=true;const error=q.querySelector('.household-error');error.textContent='';try{await fn()}catch(e){(q.querySelector('.household-error')||error).textContent=errorText(e)}finally{button.disabled=false;menuBusy=false}}
  function button(id,hu,en){return '<button class="small-button full" id="'+id+'">'+say(hu,en)+'</button>'}
  function localPantry(){
@@ -205,7 +207,7 @@
   body.querySelectorAll('[data-auth]').forEach(b=>b.onclick=()=>{authEmail=body.querySelector('[name=email]').value;authMode=b.dataset.auth;authNotice='';open()});
   const forgot=body.querySelector('#forgot-password');if(forgot)forgot.onclick=()=>{authEmail=body.querySelector('[name=email]').value;authMode='reset';open()};
   body.querySelector('#password-auth').onsubmit=e=>{e.preventDefault();const form=e.target;run(form.querySelector('button'),async()=>{
-   authEmail=form.elements.email.value.trim();const password=form.elements.password?.value;const redirect=encodeURIComponent(new URL(location.pathname,location.origin).href);
+   authEmail=form.elements.email.value.trim();const password=form.elements.password?.value;const redirect=encodeURIComponent(window.MorzsaNative?'https://szambaik.github.io/morzsa/':new URL(location.pathname,location.origin).href);
    try{
     if(reset){await request('/auth/v1/recover?redirect_to='+redirect,{email:authEmail},false);body.querySelector('#signin-feedback').textContent=say('Ha a címhez tartozik fiók, hamarosan megérkezik a jelszóbeállító levél.','If an account exists for this email, a reset message will arrive shortly.');return}
     const data=await request(signup?'/auth/v1/signup?redirect_to='+redirect:'/auth/v1/token?grant_type=password',{email:authEmail,password},false);
@@ -213,7 +215,7 @@
     else body.querySelector('#signin-feedback').textContent=say('Nézd meg a postaládádat az email-cím megerősítéséhez. Ha már van fiókod, válaszd a Belépést vagy kérj új jelszót.','Check your inbox to confirm your email. If you already have an account, sign in or reset your password.');
    }finally{if(form.elements.password)form.elements.password.value=''}
   })};
-  const google=body.querySelector('#google-signin');if(google){google.classList.add('google-signin');google.innerHTML='<img src="assets/brands/google.svg" width="20" height="20" alt=""><span>'+say('Folytatás Google-fiókkal','Continue with Google')+'</span>';body.prepend(google);const divider=document.createElement('div');divider.className='auth-divider';divider.textContent=say('vagy emaillel','or with email');google.after(divider);google.onclick=e=>run(e.currentTarget,async()=>{const settings=await request('/auth/v1/settings',undefined,false);if(!settings.external?.google)throw Error(say('A Google-belépés még nincs bekapcsolva. Használd az emailt és jelszót.','Google sign-in is not enabled yet. Use email and password.'));const url=new URL(config.url+'/auth/v1/authorize');url.searchParams.set('provider','google');url.searchParams.set('redirect_to',new URL(location.pathname,location.origin).href);location.assign(url.href)})}
+  const google=body.querySelector('#google-signin');if(google){google.classList.add('google-signin');google.innerHTML='<img src="assets/brands/google.svg" width="20" height="20" alt=""><span>'+say('Folytatás Google-fiókkal','Continue with Google')+'</span>';body.prepend(google);const divider=document.createElement('div');divider.className='auth-divider';divider.textContent=say('vagy emaillel','or with email');google.after(divider);google.onclick=e=>run(e.currentTarget,async()=>{const settings=await request('/auth/v1/settings',undefined,false);if(!settings.external?.google)throw Error(say('A Google-belépés még nincs bekapcsolva. Használd az emailt és jelszót.','Google sign-in is not enabled yet. Use email and password.'));const url=new URL(config.url+'/auth/v1/authorize');url.searchParams.set('provider','google');url.searchParams.set('redirect_to',new URL(location.pathname,location.origin).href);if(window.MorzsaNative)await window.MorzsaNative.signIn(url);else location.assign(url.href)})}
   q.querySelector('.household-error').textContent=authNotice;
  }
  function paintPasswordReset(body){
@@ -227,6 +229,7 @@
   catch(e){authNotice=say('Ez a belépési link érvénytelen, lejárt, vagy nem sikerült ellenőrizni. Kérj új linket.','This sign-in link is invalid, expired or could not be verified. Request a new link.');}
   finally{authPending=false;incomingLink.access=null;incomingLink.refresh=null;await restoreHousehold();await open();if(authNotice)q.querySelector('.household-error').textContent=authNotice}
  }
+ window.MorzsaNative?.onAuth(async url=>{try{const body=await window.MorzsaNative.consume(url);const data=await request('/auth/v1/token?grant_type=pkce',body,false);if(!data.access_token)throw Error('Invalid session');setSession(data);await restoreHousehold();await open()}catch{authNotice=say('Nem sikerült belépni. Próbáld újra.','Could not sign in. Please try again.');await open()}finally{await window.MorzsaNative.closeBrowser()}});
  const menuButton=document.getElementById('household-button');menuButton.onclick=()=>q.open?q.close():open();menuButton.setAttribute('aria-expanded','false');menuButton.setAttribute('aria-controls','household-dialog');
  q.addEventListener('close',()=>{menuButton.setAttribute('aria-expanded','false')});
  q.addEventListener('click',e=>{if(e.target===q){const r=q.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)q.close()}});
@@ -234,7 +237,7 @@
  // Freeze mutations until a write is acknowledged; other devices use revision checks.
  for(const event of ['click','submit','pointerdown','keydown'])document.addEventListener(event,e=>{const cartAction=e.target.closest('[data-cart],[data-step],[data-delete],.list-row label,#add-cart');if(cloud.cartInteractive&&cartAction)return;if((cloud.busy||cartOutbox.length)&&e.target.closest('#main,#quantity-dialog,#clear-dialog,#history-dialog')){e.preventDefault();e.stopImmediatePropagation()}},true);
  window.addEventListener('online',()=>{if(cartOutbox.length)flushCart();else refresh()});document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh()});
- paintInviteBadge();status('Csak ezen az eszközön','This device only');
+ paintInviteBadge();window.PantryReview?.refresh();status('Csak ezen az eszközön','This device only');
  if(incomingLink)receiveLink();else restoreHousehold();
  loadInvitations();setInterval(async()=>{if(document.hidden||authPending)return;await loadInvitations();if(q.open&&!q.contains(document.activeElement))paintInvitations()},30000);
  window.addEventListener('focus',()=>loadInvitations());

@@ -67,7 +67,7 @@ async function openVoiceCommand(mode='voice'){
    recorder.start(250);recording=true;const start=Date.now();timer=setInterval(()=>{const seconds=Math.floor((Date.now()-start)/1000);const clock=q.querySelector('#voice-clock');if(clock)clock.textContent=seconds+' / 30 s';if(seconds>=30&&recorder.state==='recording')recorder.stop()},200);
   }catch(e){stopTracks();if(active())errorView(e)}
  }
- function requestContext(){return {assistant:true,destination:page==='shopping'?'list':'stock',context:{stock:Object.keys(state.stock).filter(n=>state.stock[n]>0).slice(0,1000),cart:state.cart.slice(0,1000).map(i=>({name:i.name,quantity:i.quantity||1,unit:i.unit||productUnit(i.name)}))},history:conversation.slice(-6)}}
+ function requestContext(){return {assistant:true,destination:page==='shopping'?'list':'stock',context:{uncertain:window.PantryReview?.uncertain()||[],stock:Object.keys(state.stock).filter(n=>state.stock[n]>0).slice(0,1000),cart:state.cart.slice(0,1000).map(i=>({name:i.name,quantity:i.quantity||1,unit:i.unit||productUnit(i.name)}))},history:conversation.slice(-6)}}
  function receive(output){
   operations=VoiceModel.resolve(output,[...catalog,...state.custom],productEnglish,QuickEntry).map(o=>({...o,enabled:true}));
   conversation.push({role:'user',text:output.transcript},{role:'model',text:output.answer||output.clarification||say('Módosításokat javasoltam, még nincsenek mentve.','Changes proposed, not yet saved.')});conversation=conversation.slice(-6);
@@ -114,7 +114,7 @@ async function openVoiceCommand(mode='voice'){
    if(!active()){errorView(Error('VOICE_CHANGED'));return}if(saving||window.household?.busy)return;
    const selected=operations.filter(o=>o.enabled);if(!selected.length||selected.some(o=>!o.confirmed))return;
    saving=true;q.querySelectorAll('button,input,select').forEach(e=>e.disabled=true);
-   try{const plan=VoiceModel.plan(state,selected,[...catalog,...state.custom],productUnit);const ok=await saveVoiceState(plan.next);if(!ok)throw Error('VOICE_SAVE_FAILED');saving=false;close();homeUndo.length=0;render();showVoiceUndo(plan.changes,context);if(!plan.changes.length)toast(say('Már így szerepel a készletben és a listán.','Your pantry and list already match.'))}
+   try{const plan=VoiceModel.plan(state,selected,[...catalog,...state.custom],productUnit);const ok=await saveVoiceState(plan.next);if(!ok)throw Error('VOICE_SAVE_FAILED');await window.PantryReview?.confirm(selected.filter(o=>o.action==='stock_add').map(o=>o.name));saving=false;close();homeUndo.length=0;render();showVoiceUndo(plan.changes,context);if(!plan.changes.length)toast(say('Már így szerepel a készletben és a listán.','Your pantry and list already match.'))}
    catch(e){saving=false;q.querySelectorAll('button,input,select').forEach(e=>e.disabled=false);q.querySelector('#voice-feedback').textContent=say('Nem sikerült menteni. A javításaid megmaradtak; ellenőrizd és próbáld újra.','Could not save. Your edits are kept; review and try again.');update()}
   };
   paint();

@@ -16,7 +16,7 @@ const HouseholdLive=(()=>{
    if(stopped)return;ref=0;awaiting=null;
    try{socket=new WebSocketImpl(url.replace(/^http/,'ws')+'/realtime/v1/websocket?apikey='+encodeURIComponent(key)+'&vsn=1.0.0')}catch{reconnect();return}
    const current=socket;
-   socket.onopen=()=>{if(stopped||socket!==current)return;send('phx_join',{config:{broadcast:{ack:false,self:false},presence:{key:''},postgres_changes:[{event:'*',schema:'public',table:'household_records',filter:'household_id=eq.'+householdId}]},access_token:token});
+   socket.onopen=()=>{if(stopped||socket!==current)return;send('phx_join',{config:{broadcast:{ack:false,self:false},presence:{key:''},postgres_changes:[{event:'*',schema:'public',table:'household_records',filter:'household_id=eq.'+householdId},{event:'*',schema:'public',table:'household_pantry_reviews',filter:'household_id=eq.'+householdId}]},access_token:token});
     pulse=repeat(()=>{if(awaiting){current.close();return}awaiting=send('heartbeat',{},'phoenix')},20000);
    };
    socket.onmessage=e=>{if(stopped||socket!==current)return;let message;try{message=JSON.parse(e.data)}catch{return}

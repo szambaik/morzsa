@@ -385,3 +385,11 @@ nav .shopping-nav.active{background:var(--orange-soft);color:var(--orange-ink);b
 #cloud-status[data-cart-sync]:not([hidden]){position:fixed;bottom:calc(94px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);z-index:20;max-width:calc(100vw - 24px);width:max-content;padding:6px 12px;margin:0;background:var(--bg);border:1px solid var(--line);border-radius:16px;box-shadow:0 3px 10px #263c3010;font-size:11px}
 #cloud-status[data-cart-sync] button{border:0;background:transparent;color:var(--orange);padding:6px;min-height:36px;font-size:12px}
 @media(max-width:360px){.app[data-page=shopping] .pantry-heading h1{font-size:21px}.app[data-page=shopping] .list-row{grid-template-columns:22px minmax(0,1fr) 100px 24px;gap:4px}.app[data-page=shopping] .quantity-step{min-width:28px}.app[data-page=shopping] .quantity-badge{min-width:44px}.app[data-page=shopping] .list-row label{font-size:13px}}
+
+/* A short presence review, never an expiry ledger. */
+.pantry-review-entry{display:block;width:100%;text-align:left;padding:10px 13px;min-height:44px;margin:0 0 12px;background:#eee8d8;border:0;border-radius:12px;color:var(--ink);font-size:13px}
+#pantry-review-dialog{width:min(390px,calc(100vw - 24px));max-height:calc(100dvh - 32px);overflow:auto;padding:24px;border:0;border-radius:24px;background:var(--bg);color:var(--ink)}
+#pantry-review-dialog h2{font-size:22px;margin:10px 0 18px;letter-spacing:-.6px}
+.review-product{display:flex;align-items:center;gap:14px;margin-bottom:10px}.review-product img{object-fit:contain}.review-product strong{font-size:20px;overflow-wrap:anywhere}
+.review-choices{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:20px}.review-choices button{min-height:48px;margin:0}.review-choices [data-review=list]{grid-column:1/-1}.review-skip{display:block;width:100%;min-height:44px;margin-top:8px;border-color:transparent!important;background:transparent!important;color:var(--muted)}
+.review-error{font-size:13px;color:#a44231}.review-error:empty{display:none}

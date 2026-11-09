@@ -9,7 +9,7 @@ let shoppingDraft='',pantryDraft='';
 let pantryBatch=[],pantryListed=new Set();
 let page='shopping',category='Minden',stockView='home',search='' ,showSaved=false,currentId=null;const main=document.getElementById('main'),dialog=document.getElementById('detail');
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-function save(){try{localStorage.setItem(window.household?.storageKey()||'morzsa-v2',JSON.stringify(state))}catch{toast('A böngésző nem engedte a mentést.')}updateCount();window.household?.notify()}
+function save(){try{localStorage.setItem(window.household?.storageKey()||'morzsa-v2',JSON.stringify(state))}catch{toast('A böngésző nem engedte a mentést.')}updateCount();window.PantryReview?.onStateChanged();window.household?.notify()}
 function toast(text){const el=document.getElementById('toast');el.textContent=text;el.classList.add('visible');clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.remove('visible'),2300)}
 function updateCount(){document.getElementById('cart-count').textContent=state.cart.filter(x=>!x.done).length||''}
 function productCategory(name){return [...catalog,...state.custom].find(i=>i.name.toLocaleLowerCase('hu')===name.toLocaleLowerCase('hu'))?.category||'Saját tételek'}
@@ -107,9 +107,9 @@ function refreshCatalog(){const scroll=window.scrollY;renderPantry();window.scro
 let recipePreferences=RecipePrompt.normalizePreferences();try{recipePreferences=RecipePrompt.normalizePreferences(JSON.parse(localStorage.getItem('morzsa-recipe-preferences'))||{})}catch{}
 let recipeAIReady=null,recipeAILoading=false,recipeAIError='',recipeAIGeneration=0;
 const recipeAIResults=new Map();
-function recipeRequest(){return RecipePrompt.build(state,catalog,productEnglish,language,recipePreferences)}
+function recipeRequest(){return RecipePrompt.build(state,catalog,productEnglish,language,recipePreferences,window.PantryReview?.uncertain()||[])}
 function recipeIntentCaption(){const en=language==='en',labels={any:en?'Varied ideas, fewer extra ingredients':'Változatos ötletek, kevés plusz hozzávaló',sweet:en?'Sweet treats and desserts':'Édes finomságok és desszertek',comfort:en?'Filling comfort food':'Laktató, otthonos főételek',light:en?'Light, vegetable-forward dishes':'Könnyű, zöldséges fogások',surprise:en?'A little culinary adventure':'Egy kis konyhai kaland'};return (recipePreferences.quick?(en?'Within 25 minutes · ':'25 percen belül · '):'')+labels[recipePreferences.mood]}
-function recipeContext(request=recipeRequest()){return JSON.stringify([window.household?.userId?.(),window.household?.active||'local',language,[...request.names].sort(),request.preferences])}
+function recipeContext(request=recipeRequest()){return JSON.stringify([window.household?.userId?.(),window.household?.active||'local',language,[...request.names].sort(),request.preferences,request.uncertain])}
 function recipeChoiceButtons(){const choices=[['quick','Gyors','Quick'],['sweet','Édes','Sweet'],['comfort','Laktató','Comfort food'],['light','Könnyű','Light'],['surprise','Lepj meg','Surprise me']];return '<div class="recipe-choices" role="group" aria-label="'+(language==='en'?'What are you in the mood for?':'Milyen ételhez van kedved?')+'">'+choices.map(([id,hu,en])=>'<button data-recipe-choice="'+id+'" aria-pressed="'+(id==='quick'?recipePreferences.quick:recipePreferences.mood===id)+'">'+(language==='en'?en:hu)+'</button>').join('')+'</div>'}
 function generatedRecipeCards(request){
  const result=recipeAIResults.get(recipeContext(request));if(!result)return '';
@@ -125,7 +125,7 @@ async function generateRecipeIdeas(){
  const request=recipeRequest(),key=recipeContext(request);if(!request.count)return;
  if(recipeAIResults.has(key)){recipeAIError='';renderRecipes();return}
  const generation=++recipeAIGeneration;recipeAILoading=true;recipeAIError='';renderRecipes();
- try{const result=await window.household.recipeIdeas({names:request.names,language,preferences:request.preferences});
+ try{const result=await window.household.recipeIdeas({names:request.names,language,preferences:request.preferences,uncertain:request.uncertain});
   if(!Array.isArray(result.recipes)||result.recipes.length!==3||!result.recipes.every(r=>typeof r.title==='string'&&Number.isInteger(r.minutes)&&Array.isArray(r.ingredients)&&Array.isArray(r.steps)))throw Error('AI_INVALID_RESPONSE');
   if(generation===recipeAIGeneration&&key===recipeContext()){recipeAIResults.set(key,result);if(recipeAIResults.size>8)recipeAIResults.delete(recipeAIResults.keys().next().value)}
  }catch(e){if(generation===recipeAIGeneration&&key===recipeContext()){const messages={AI_SIGN_IN_REQUIRED:['Jelentkezz be újra az ajánló használatához.','Sign in again to use the suggestions.'],AI_DAILY_LIMIT:['Az AI mai kerete elfogyott. Próbáld később, vagy használd a külső AI-k egyikét.','The AI quota is exhausted. Try later or use an external AI.'],AI_SETUP_REQUIRED:['Az appon belüli AI bekötése még nincs kész.','The in-app AI setup is not complete yet.'],AI_NOT_CONFIGURED:['Az appon belüli AI még nincs bekapcsolva.','The in-app AI is not enabled yet.'],AI_INVALID_INPUT:['A készlet most túl nagy vagy nem olvasható. Használd a szerkeszthető külső AI-kérést.','The pantry is too large or could not be read. Use the editable external AI request.']};recipeAIError=(messages[e.message]||['Most nem érkezett használható válasz. Próbáld újra.','No usable response arrived. Please try again.'])[language==='en'?1:0]}}
@@ -203,7 +203,7 @@ main.addEventListener('click',e=>{if(e.target.closest('#saved-toggle')){showSave
 
 function commitState(next){
  try{localStorage.setItem(window.household?.storageKey()||'morzsa-v2',JSON.stringify(next))}catch{toast('Nem sikerült menteni. Semmit sem módosítottunk.');return false}
- state=next;updateCount();window.household?.notify();return true;
+ state=next;updateCount();window.PantryReview?.onStateChanged();window.household?.notify();return true;
 }
 let purchaseSaving=false;
 function finishShopping(){
@@ -226,6 +226,7 @@ async function completeShopping(includeUnchecked){
  try{
   let saved;if(window.household?.active){state=next;saved=await window.household.notify()}else saved=commitState(next);
   if(!saved)return false;
+  await window.PantryReview?.confirm(next.history[0].items.map(i=>i.name));
   toast(language==='en'?'Shopping saved. Purchased items are now in your pantry.':'Vásárlás elmentve. A megvett tételek a készletbe kerültek.');renderShopping();return true;
  }finally{purchaseSaving=false}
 }
@@ -336,7 +337,7 @@ function showHomeUndo(){
 main.addEventListener('click',e=>{const button=e.target.closest('[data-ai-client], [data-chatgpt-ideas]');if(button)openChatGPTIdeas(button.dataset.aiClient||'ChatGPT')});
 function openChatGPTIdeas(initialClient='ChatGPT'){
  const clients={ChatGPT:'https://chatgpt.com/',Gemini:'https://gemini.google.com/app',Claude:'https://claude.ai/new'};
- const say=(hu,en)=>language==='en'?en:hu,{text,count}=RecipePrompt.build(state,catalog,productEnglish,language,recipePreferences);
+ const say=(hu,en)=>language==='en'?en:hu,{text,count}=RecipePrompt.build(state,catalog,productEnglish,language,recipePreferences,window.PantryReview?.uncertain()||[]);
  let q=document.getElementById('chatgpt-dialog');if(!q){q=document.createElement('dialog');q.id='chatgpt-dialog';q.setAttribute('data-no-translate','');document.body.append(q)}
  q.innerHTML='<button class="close" aria-label="'+say('Bezárás','Close')+'">×</button><h2>'+say('Főzzünk a készletből','Cook from your pantry')+'</h2>'+(count?'<label for="recipe-ai-client">'+say('Melyik AI-val?','Which AI?')+'</label><select id="recipe-ai-client">'+Object.keys(clients).map(c=>'<option>'+c+'</option>').join('')+'</select><p id="ai-client-help"></p><label for="recipe-prompt">'+say('Szerkeszthető kérés','Editable request')+'</label><textarea id="recipe-prompt" rows="7"></textarea><a class="primary full chatgpt-direct" id="open-chatgpt-prompt" target="_blank" rel="noopener noreferrer">'+say('Receptötletek kérése ↗','Ask for recipe ideas ↗')+'</a><button class="small-button full" id="copy-open-chatgpt"></button><p class="chatgpt-feedback" role="status"></p><a id="open-ai-separately" target="_blank" rel="noopener noreferrer"></a><p class="helper">'+say('A saját AI-fiókodban folytatod. A telefonod dönti el, hogy böngészőben vagy appban nyílik meg.','Continue in your own AI account. Your phone determines whether it opens in the browser or app.')+'</p>':'<p>'+say('Előbb jelöld be a készletben, milyen hozzávalók vannak otthon.','First mark the ingredients you have at home in your pantry.')+'</p>');
  q.querySelector('.close').onclick=()=>q.close();

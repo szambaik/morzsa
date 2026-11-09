@@ -4,3 +4,8 @@ __pycache__/
 *-preview.jpg
 
 node_modules/
+
+# Generated Capacitor web bundle; native projects are versioned.
+dist/
+.DS_Store
+supabase/.temp/

@@ -6,3 +6,4 @@ test('quick can combine with a distinct meal intent in Hungarian and English',()
  const en=prompt.build({stock:{Tej:2}},[],{Tej:'Milk'},'en',{quick:true,mood:'comfort'});assert(en.text.includes('25 minutes'));assert(en.text.includes('savoury main dishes'));assert.deepEqual(en.names,['Milk']);
  assert(prompt.intent({mood:'light'}).includes('zöldségközpontú'));assert(prompt.intent({mood:'surprise'}).includes('Lepj meg'));assert.deepEqual(prompt.normalizePreferences({mood:'anything unsafe',quick:'yes'}),{mood:'any',quick:false});
 });
+test('uncertain pantry is qualified and translated for external prompts',()=>{const RecipePrompt=require('../recipe-prompt.js');const result=RecipePrompt.build({stock:{Tej:2,Alma:0}},[{name:'Tej',category:'Tejtermék és tojás'}],{Tej:'Milk'},'en',{},['Tej','Alma']);assert.deepEqual(result.uncertain,['Milk']);assert.match(result.text,/Ask whether they are still available/)});

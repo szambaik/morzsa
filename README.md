@@ -123,3 +123,9 @@ A fejléc Belépés / Fiókom gombja email+jelszavas belépést és regisztráci
 ## Készlet gyors felvétele
 
 Alapnézet a Van otthon. A lebegő Keresés / felvétel gomb felső panelt nyit, automatikus inputfókusszal. Az ajánlások, az Enter és a vesszővel/pontosvesszővel/újsorral elválasztott tételek csak ideiglenes gyűjtést készítenek. A + Készlet és a kosár Lista gomb az egész gyűjtést a választott célra adja. A már listára átadott tételeket a gyűjtés megjegyzi; további gépelés nem növeli újra a mennyiségüket. A már meglévő aktív listatételek mennyisége is megmarad. A gyűjtés bezáráskor megmarad, újratöltéskor vagy háztartásváltáskor megszűnik. Az ismételt felvétel nem vesz le tételt, nem módosítja a bevásárlólistát; ismeretlen névből saját termék lesz. A meglévő helyi adatokat nem töröljük a mintakészlet megszüntetésekor.
+
+## Készletellenőrzés és mobilapp
+
+A készletoldal „Érdemes ránézni” gombja rövid, kihagyható jelenlétellenőrzést nyit; a megerősítés közös háztartásban megosztott. A régi készletet nem töröljük és nem jelöljük automatikusan frissnek. Az eltelt napok nem lejárati dátumok. Egyelőre alkalmazáson belüli emlékeztető van, push nincs.
+
+Az iOS/Android Capacitor projekt és a szűkített mobil build elkészült, de aláírt, valódi eszközön tesztelt kiadás még nincs. Az indítás, tőled szükséges beállítások, díjak és kiadás előtti feladatok: [Mobil bekötés és publikálás](mobile/SETUP.md).
