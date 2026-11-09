@@ -35,3 +35,12 @@ háttérrendszer-változás, illetve automatikus készletimport.
 Az alsó navigáció lebegő, áttetsző üveghatást kap; ez webes CSS, nem natív
 Liquid Glass komponens. A termékeken nincs blur. Csökkentett áttetszőség vagy
 mozgás esetén a navigáció egyszerűbb, olvasható felületre vált.
+
+## Sunshine finomítás
+
+Világosabb krém alap, barackos üdvözlőfelület, teltebb narancs műveletek.
+A lebegő navigáció áttetszősége erősebb; csak ezen az egy kis felületen van
+háttérelmosás. A fejléc szöveges nyila helyett méretezett chevron jelenik meg.
+Az Áttekintés Lepj meg gombja a meglévő receptgyűjteményből választ a készlet
+alapján, külön AI-hívás és adatváltoztatás nélkül. A következő választás a
+hasonlóan jó találatok közt változik; egyetlen megfelelő találat ismétlődhet.

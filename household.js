@@ -185,7 +185,7 @@
   paintAccount();
   const button=document.getElementById('household-button'),name=switchingName?switchingName+'…':cloud.active?(houseNames.get(cloud.active)||say('Közös háztartás','Shared household')):session?say('Saját készlet','My pantry'):say('Belépés','Sign in');
   button.setAttribute('data-no-translate','');button.title=name;button.setAttribute('aria-haspopup','dialog');
-  button.innerHTML='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5M5 9v12h5v-7h4v7h5V9"/></svg><span class="household-name">'+esc(name)+'</span><span class="household-chevron" aria-hidden="true">⌄</span>';
+  button.innerHTML='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5M5 9v12h5v-7h4v7h5V9"/></svg><span class="household-name">'+esc(name)+'</span><span class="household-chevron" aria-hidden="true"><svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>';
   button.setAttribute('aria-label',say('Fiók és háztartás: ','Account and household: ')+name+(invitations.length?' · '+invitations.length+' '+say('meghívás','invitations'):''));
   if(invitations.length)button.insertAdjacentHTML('beforeend','<span class="invite-badge" aria-hidden="true">'+invitations.length+'</span>');
  }

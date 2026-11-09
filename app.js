@@ -138,6 +138,17 @@ const voiceMicIcon='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" 
 // Preserve the recipes route for older clients and pending AI callbacks.
 let dashboardIdeasOpen=false,dashboardLibraryOpen=false;
 function dashboardGo(destination){page=destination;if(destination==='pantry'){stockView='home';category='Minden';search=''}render();window.scrollTo({top:0,behavior:'instant'})}
+const surpriseSeen=new Map();
+function surpriseRecipe(){
+ const key=JSON.stringify([window.household?.active||'local',Object.entries(state.stock).filter(([,v])=>v>0).map(([n])=>n).sort()]);
+ const seen=surpriseSeen.get(key)||[],chosen=SurpriseRecipe.choose(recipes,state.stock,seen);
+ if(!chosen)return;
+ surpriseSeen.set(key,[...seen,chosen.id].slice(-recipes.length));if(surpriseSeen.size>8)surpriseSeen.delete(surpriseSeen.keys().next().value);
+ openRecipe(chosen.id);
+ const next=document.createElement('button');next.className='surprise-again small-button';next.setAttribute('data-no-translate','');next.textContent=language==='en'?'Another idea':'Másik ötlet';next.onclick=surpriseRecipe;
+ const label=document.createElement('p');label.className='surprise-caption';label.setAttribute('data-no-translate','');label.textContent=language==='en'?'A little inspiration from our recipe collection.':'Egy kis inspiráció a receptgyűjteményünkből.';
+ dialog.querySelector('h2').after(label,next);
+}
 function dashboardRecipeRow(r){
  const say=(hu,en)=>language==='en'?en:hu,available=r.ingredients.length-missing(r).length;
  const image=productArtwork[r.ingredients[0][0]]||'assets/icons/oats.webp';
@@ -159,7 +170,7 @@ function renderRecipes(){
    ${state.cart.length?`<button class="dashboard-next-action" data-dashboard-go="shopping"><span><strong>${pending.length?say('Indulhat a bevásárlás','Ready for your next shop'):say('Minden kipipálva','Everything checked off')}</strong><small>${pending.length?esc(pending.slice(0,3).map(i=>displayName(i.name)).join(', '))+(pending.length>3?'…':''):say('Fejezd be a vásárlást, és frissül a készlet.','Finish shopping to update your pantry.')}</small></span><span aria-hidden="true">→</span></button>`:`<button class="dashboard-next-action" data-dashboard-go="${homeCount?'shopping':'pantry'}"><span><strong>${homeCount?say('Mi hiányzik még?','Anything to pick up?'):say('Mi lapul a konyhádban?','What is in your kitchen?')}</strong><small>${homeCount?say('Írd a listára, vagy mondd el Morzsának.','Add it to your list, or tell Morzsa.'):say('Vegyél fel néhány dolgot, ami van otthon.','Start with a few things you have at home.')}</small></span><span aria-hidden="true">→</span></button>`}
   </section>
   <section class="dashboard-assistant"><button id="dashboard-ask"><img src="assets/brands/morzsa.svg" width="26" height="26" alt=""><span><strong>${say('Mondd el Morzsának','Tell Morzsa')}</strong><small>${say('„Elfogyott a tej. Mit főzzek ma?”','“We’re out of milk. What can I cook?”')}</small></span></button><button id="dashboard-mic" aria-label="${say('Beszélgetés Morzsával hanggal','Talk to Morzsa by voice')}">${voiceMicIcon}</button></section>
-  <section class="dashboard-meals"><div class="dashboard-section-title"><h2>${say('Valami finomat?','Something delicious?')}</h2><span>${say('A készletedből indulunk','Inspired by your pantry')}</span></div>
+  <section class="dashboard-meals"><div class="dashboard-section-title"><h2>${say('Valami finomat?','Something delicious?')}</h2><button class="surprise-button" id="surprise-recipe"><img src="assets/brands/morzsa.svg" width="17" height="17" alt="">${say('Lepj meg','Surprise me')}</button></div>
    ${!count?'<p class="dashboard-note">'+say('Néhány kezdőötlet. A készleted felvétele után hozzád igazítjuk.','A few ideas to start. Add your pantry to personalize them.')+'</p>':''}
    ${ranked.slice(0,2).map(dashboardRecipeRow).join('')}
    ${!ranked.length?'<p class="dashboard-note">'+say('Még nincs elmentett kedvenced.','No saved favourites yet.')+'</p>':''}
@@ -178,6 +189,7 @@ function renderRecipes(){
  main.querySelectorAll('[data-dashboard-go]').forEach(b=>b.onclick=()=>dashboardGo(b.dataset.dashboardGo));
  main.querySelector('#dashboard-ask').onclick=()=>openVoiceCommand('text');main.querySelector('#dashboard-mic').onclick=()=>openVoiceCommand();
  main.querySelector('#dashboard-history').onclick=openArchive;
+ main.querySelector('#surprise-recipe').onclick=surpriseRecipe;
  main.querySelector('.dashboard-recipe-library').ontoggle=e=>{dashboardLibraryOpen=e.currentTarget.open};
  main.querySelector('.dashboard-ideas').ontoggle=e=>{dashboardIdeasOpen=e.currentTarget.open;if(dashboardIdeasOpen&&recipeAIReady===null)checkRecipeAI()};
  main.querySelectorAll('[data-recipe-choice]').forEach(b=>b.onclick=()=>{const id=b.dataset.recipeChoice;recipePreferences=id==='quick'?{...recipePreferences,quick:!recipePreferences.quick}:{...recipePreferences,mood:recipePreferences.mood===id?'any':id};try{localStorage.setItem('morzsa-recipe-preferences',JSON.stringify(recipePreferences))}catch{}recipeAIError='';renderRecipes();main.querySelector('[data-recipe-choice="'+id+'"]').focus({preventScroll:true})});

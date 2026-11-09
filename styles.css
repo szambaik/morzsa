@@ -470,3 +470,32 @@ nav button.active .overview-nav-icon img{filter:none;opacity:1}
 @media(prefers-reduced-transparency:reduce){nav{background:#fcf9f3;backdrop-filter:none;-webkit-backdrop-filter:none}}
 @media(prefers-reduced-motion:reduce){nav{backdrop-filter:none;-webkit-backdrop-filter:none}}
 @media(max-width:360px){.dashboard-stats>button{gap:6px;padding:12px 8px}.dashboard-stat-icon{display:none}.dashboard-welcome h1{font-size:27px}.dashboard-welcome>img{width:72px;height:68px}.dashboard-welcome .eyebrow{font-size:7px;letter-spacing:1px}.app[data-page=pantry] .ingredient-grid{gap:6px}.app[data-page=pantry] .ingredient-card{padding:2px}.app[data-page=pantry] .ingredient-card .ingredient-name{font-size:11px}}
+
+/* Morzsa sunshine: apricot light, warm porcelain and a recognisable orange accent. */
+:root{--bg:#fff9f0;--white:#fffdf8;--ink:#303e31;--green:#3c614b;--muted:#706e61;--line:#ebdfcd;--orange:#ce451e;--orange-ink:#a53417;--orange-soft:#ffe0cb;--sage:#e7efdf;--glass-surface:rgba(255,253,247,.52)}
+body{background:radial-gradient(ellipse at 95% 96%,#f5cbaa66,transparent 55%),radial-gradient(ellipse at 5% 12%,#ffddb644,transparent 45%),var(--bg);background-attachment:fixed}
+.app .brand{color:#303e31}.brand .brand-mark{width:38px;height:38px}
+.language-switch,#household-button{background:#ffffff80;border:1px solid #e8d7c2;border-radius:15px}
+#household-button{gap:6px;min-height:38px;box-shadow:inset 0 1px 0 #fff;color:#a83c20}
+.household-chevron{display:flex;align-items:center;justify-content:center;width:14px;height:16px;opacity:.65;transition:transform .18s ease}
+#household-button .household-chevron svg{display:block;width:12px;height:12px}
+#household-button[aria-expanded=true] .household-chevron{transform:rotate(180deg)}
+.language-switch button[aria-pressed=true]{background:#3c614b}
+nav{background:linear-gradient(135deg,#ffffffa6,#fffaf25e 45%,#fff5e88c);border:1px solid #ffffffd9;box-shadow:0 12px 35px #7443231c,0 2px 5px #7443230b,inset 0 1px 0 #fff,inset 0 -1px 0 #ffffff80;backdrop-filter:blur(24px) saturate(1.65);-webkit-backdrop-filter:blur(24px) saturate(1.65)}
+nav button.active:not(.shopping-nav),nav .shopping-nav.active{background:linear-gradient(145deg,#ffe4cce8,#ffd1afe6);color:#943517;box-shadow:inset 0 1px 0 #ffffffb3,0 2px 6px #d8662020}
+.dashboard-welcome{position:relative;padding:19px 16px 21px;margin:0 -2px 17px;border-radius:25px;background:linear-gradient(115deg,#ffebc8,#ffdcba 72%,#ffd0ab);border:1px solid #ffe0b9;box-shadow:inset 0 1px 0 #fff9}
+.dashboard-welcome h1{color:#8d321b;font-size:32px;letter-spacing:-1.4px}
+.dashboard-welcome .eyebrow{color:#905332;font-size:8px;letter-spacing:1px}
+.dashboard-welcome p{color:#805339}.dashboard-welcome>img{width:88px;height:82px;transform:rotate(-5deg)}
+.dashboard-stats>button{background:#f0f5e7;border-color:#e0e9d3}.dashboard-stats>button:nth-child(2){background:#fff0df;border-color:#f4dcc0}
+.dashboard-assistant{background:#fffdf4;border-color:#f0d7b8;box-shadow:0 2px 8px #7f471506}
+.dashboard-ideas{background:#fff0dc;border-color:#f2d8b7}.dashboard .recipe-choices button{background:#fffaf1;border-color:#e7c4a0;color:#943b21}.dashboard .recipe-choices button[aria-pressed=true]{background:var(--orange);color:white;border-color:var(--orange)}
+.surprise-button{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid #c84822;background:var(--orange);color:white;min-height:44px;padding:10px 13px;border-radius:16px;font-size:12px;font-weight:600;box-shadow:inset 0 1px 0 #ffffff30,0 3px 8px #c6531f16;transition:transform .18s ease}
+.surprise-button img{filter:brightness(0) invert(1)}.surprise-button:active{transform:scale(.96)}
+.surprise-caption{font-size:12px;color:var(--muted);margin:0 0 8px}.surprise-again{margin:0 0 8px;border-color:#e2bc96;color:var(--orange-ink);min-height:44px}
+.app[data-page=pantry] .ingredient-card{background:#fffdf7;border-color:#eddfca}.app[data-page=pantry] .ingredient-card.at-home{background:#f1f6e9;border-color:#e0e8d4}
+.app[data-page=pantry] .ingredient-card .home-action.selected{background:#dfebd4;color:#345139}.app[data-page=pantry] .ingredient-card .ingredient-plus.selected{background:#ffddc4;color:#a33718}
+@media(max-width:360px){.dashboard-welcome{padding:16px 12px}.dashboard-welcome h1{font-size:27px}.dashboard-welcome>img{width:66px;height:68px}.dashboard-welcome .eyebrow{font-size:7px}.surprise-button{padding:9px 10px;gap:5px;font-size:11px}}
+@supports not (backdrop-filter:blur(1px)){nav{background:#fffaf1}}
+@media(prefers-reduced-transparency:reduce){nav{background:#fffaf1;backdrop-filter:none;-webkit-backdrop-filter:none}}
+@media(prefers-reduced-motion:reduce){.household-chevron,.surprise-button{transition:none}.surprise-button:active{transform:none}nav{background:#fffaf1;backdrop-filter:none;-webkit-backdrop-filter:none}}
