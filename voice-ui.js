@@ -30,11 +30,11 @@ function showVoiceUndo(changes,context){
   else toast(say('Nem sikerült visszavonni. Ellenőrizd a készletet.','Could not undo. Check your pantry.'));
  };
 }
-async function openVoiceCommand(mode='voice',initialText=''){
+async function openVoiceCommand(mode='voice',initialText='',options={}){
  if(document.getElementById('voice-dialog')?.open||window.household?.busy)return;
  const say=(hu,en)=>language==='en'?en:hu,context=voiceContext(),launchPage=page;let destination=page==='shopping'?'list':'stock';
  document.getElementById('voice-dialog')?.remove();const q=document.createElement('dialog');q.id='voice-dialog';q.setAttribute('data-no-translate','');document.body.append(q);
- let closed=false,saving=false,recording=false,stream=null,recorder=null,timer=null,chunks=[],bytes=0,discard=false,operations=[],generation=0,conversation=[];
+ let closed=false,saving=false,recording=false,stream=null,recorder=null,timer=null,chunks=[],bytes=0,discard=false,operations=[],generation=0,conversation=options.history||[];
  const stopTracks=()=>{stream?.getTracks().forEach(t=>t.stop());stream=null;clearInterval(timer)};
  const close=()=>{if(!saving)q.close()};
  q.oncancel=e=>{if(saving)e.preventDefault()};
@@ -72,8 +72,9 @@ async function openVoiceCommand(mode='voice',initialText=''){
    recorder.start(250);recording=true;const start=Date.now();timer=setInterval(()=>{const seconds=Math.floor((Date.now()-start)/1000);const clock=q.querySelector('#voice-clock');if(clock)clock.textContent=seconds+' / 30 s';if(seconds>=30&&recorder.state==='recording')recorder.stop()},200);
   }catch(e){stopTracks();if(active())errorView(e)}
  }
- function requestContext(){return {assistant:true,destination,context:{uncertain:window.PantryReview?.uncertain()||[],stock:Object.keys(state.stock).filter(n=>state.stock[n]>0).slice(0,1000),cart:state.cart.slice(0,1000).map(i=>({name:i.name,quantity:i.quantity||1,unit:i.unit||productUnit(i.name)}))},history:conversation.slice(-6)}}
+ function requestContext(){return {assistant:true,...(options.onOutput?{companion:true}:{}),destination,context:{uncertain:window.PantryReview?.uncertain()||[],stock:Object.keys(state.stock).filter(n=>state.stock[n]>0).slice(0,1000),cart:state.cart.slice(0,1000).map(i=>({name:i.name,quantity:i.quantity||1,unit:i.unit||productUnit(i.name)}))},history:conversation.slice(-6)}}
  function receive(output){
+  if(options.onOutput){close();options.onOutput(output);return}
   operations=VoiceModel.resolve(output,[...catalog,...state.custom],productEnglish,QuickEntry).map(o=>({...o,enabled:true}));
   conversation.push({role:'user',text:output.transcript},{role:'model',text:output.answer||output.clarification||say('Módosításokat javasoltam, még nincsenek mentve.','Changes proposed, not yet saved.')});conversation=conversation.slice(-6);
   if(operations.length)review(output);else answerView(output);
@@ -114,16 +115,17 @@ async function openVoiceCommand(mode='voice',initialText=''){
    container.querySelectorAll('[data-unit]').forEach(e=>e.onchange=()=>{operations[e.dataset.unit].unit=e.value||null;update()});update();
   };
   function update(){container.querySelectorAll('[data-edit]').forEach(e=>{const o=operations[e.dataset.edit];e.querySelector('.voice-item-action').textContent=summary(o);e.closest('.voice-operation').classList.toggle('excluded',!o.enabled)});const selected=operations.filter(o=>o.enabled).map(o=>VoiceModel.defaults(o,state,productUnit));q.querySelector('#voice-apply').disabled=saving||!selected.length||selected.some(o=>!o.confirmed||o.action==='list_set'&&o.quantity!==null&&o.quantity<1&&!['kg','l'].includes(o.unit))||!VoiceModel.validate({transcript:'',clarification:'',operations:selected})}
-  q.querySelector('#voice-again').onclick=startView;
+  q.querySelector('#voice-again').onclick=options.output?close:startView;if(options.output)q.querySelector('#voice-again').textContent=say('Vissza','Back');
   q.querySelector('#voice-apply').onclick=async()=>{
-   if(!active()){errorView(Error('VOICE_CHANGED'));return}if(saving||window.household?.busy)return;
+   if(!active()){errorView(Error('VOICE_CHANGED'));return}if(saving||window.household?.busy)return;if(options.beforeApply&&!options.beforeApply(operations.filter(o=>o.enabled))){q.querySelector('#voice-feedback').textContent=say('Közben változott egy érintett termék. Ellenőrizd, majd mentsd újra.','An affected item changed. Review, then save again.');return}
    const selected=operations.filter(o=>o.enabled);if(!selected.length||selected.some(o=>!o.confirmed))return;
    saving=true;q.querySelectorAll('button,input,select').forEach(e=>e.disabled=true);
-   try{const plan=VoiceModel.plan(state,selected,[...catalog,...state.custom],productUnit);const ok=await saveVoiceState(plan.next);if(!ok)throw Error('VOICE_SAVE_FAILED');await window.PantryReview?.confirm(selected.filter(o=>o.action==='stock_add').map(o=>o.name));saving=false;close();homeUndo.length=0;render();showVoiceUndo(plan.changes,context);if(!plan.changes.length)toast(say('Már így szerepel a készletben és a listán.','Your pantry and list already match.'))}
+   try{const plan=VoiceModel.plan(state,selected,[...catalog,...state.custom],productUnit);const ok=await saveVoiceState(plan.next);if(!ok)throw Error('VOICE_SAVE_FAILED');await window.PantryReview?.confirm(selected.filter(o=>o.action==='stock_add').map(o=>o.name));saving=false;close();homeUndo.length=0;render();showVoiceUndo(plan.changes,context);options.onSaved?.(selected);if(!plan.changes.length)toast(say('Már így szerepel a készletben és a listán.','Your pantry and list already match.'))}
    catch(e){saving=false;q.querySelectorAll('button,input,select').forEach(e=>e.disabled=false);q.querySelector('#voice-feedback').textContent=say('Nem sikerült menteni. A javításaid megmaradtak; ellenőrizd és próbáld újra.','Could not save. Your edits are kept; review and try again.');update()}
   };
   paint();
  }
+ if(options.output){shell('');q.showModal();receive(options.output);return}
  shell('<p role="status">'+say('Hangfelismerés ellenőrzése…','Checking voice availability…')+'</p>');q.showModal();
  if(!window.household?.userId()){errorView(Error('VOICE_SIGN_IN_REQUIRED'));const button=q.querySelector('#voice-retry');button.textContent=say('Belépés','Sign in');button.onclick=()=>{close();document.getElementById('household-button').click()};return}
  if(mode==='voice'){await startRecording();return}

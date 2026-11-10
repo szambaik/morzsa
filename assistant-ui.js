@@ -9,7 +9,7 @@ window.MorzsaAssistant=(()=>{
   const dock=document.createElement('div');dock.className='assistant-dock';dock.setAttribute('data-no-translate','');
   const placeholder=page==='shopping'?say('Mit írjunk a listára?','What goes on the list?'):page==='pantry'?say('Mi változott otthon?','What changed at home?'):say('Mondd el Morzsának…','Tell Morzsa…');
   dock.innerHTML='<button class="assistant-open" data-assistant-text aria-label="'+say('Beszélgetés Morzsával','Chat with Morzsa')+'"><img src="assets/brands/morzsa.svg" width="25" height="25" alt=""><span>'+placeholder+'</span></button>'+(page==='pantry'?'<button class="assistant-manual" data-assistant-manual aria-label="'+say('Keresés és kézi felvétel','Search and add manually')+'">'+searchIcon+'</button>':'')+'<button class="assistant-mic" data-assistant-voice aria-label="'+say('Beszélgetés Morzsával hanggal','Talk to Morzsa by voice')+'">'+voiceMicIcon+'</button>';
-  dock.querySelector('[data-assistant-text]').onclick=()=>openVoiceCommand('text');dock.querySelector('[data-assistant-voice]').onclick=()=>openVoiceCommand();dock.querySelector('[data-assistant-manual]')?.addEventListener('click',openPantryEntry);main.append(dock);
+  dock.querySelector('[data-assistant-text]').onclick=()=>window.MorzsaCompanion?window.MorzsaCompanion.open():openVoiceCommand('text');dock.querySelector('[data-assistant-voice]').onclick=()=>openVoiceCommand();dock.querySelector('[data-assistant-manual]')?.addEventListener('click',openPantryEntry);main.append(dock);
  }
  const pantry=renderPantry,shopping=renderShopping,overview=renderDashboard;
  renderPantry=function(){pantry();mount()};renderShopping=function(){shopping();mount()};renderDashboard=function(){overview();mount()};

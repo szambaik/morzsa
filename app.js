@@ -7,7 +7,7 @@ const homeUndo=[];
 let homeUndoTimer;
 let shoppingDraft='',pantryDraft='';
 let pantryBatch=[],pantryListed=new Set();
-let page='shopping',category='Minden',stockView='home',search='' ,showSaved=false,currentId=null;const main=document.getElementById('main'),dialog=document.getElementById('detail');
+let page='chat',category='Minden',stockView='home',search='' ,showSaved=false,currentId=null;const main=document.getElementById('main'),dialog=document.getElementById('detail');
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function save(){try{localStorage.setItem(window.household?.storageKey()||'morzsa-v2',JSON.stringify(state))}catch{toast('A böngésző nem engedte a mentést.')}updateCount();window.PantryReview?.onStateChanged();window.household?.notify()}
 function toast(text){const el=document.getElementById('toast');el.textContent=text;el.classList.add('visible');clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.remove('visible'),2300)}
@@ -47,7 +47,7 @@ function missing(r){return r.ingredients.filter(([n])=>!state.stock[n])}
 function score(r){const liked=recipes.filter(x=>state.likes.includes(x.id));return (r.ingredients.length-missing(r).length)/r.ingredients.length*10+liked.reduce((sum,x)=>sum+r.tags.filter(t=>x.tags.includes(t)).length,0)*.5}
 function nextRecipe(){return [...recipes].filter(r=>!state.likes.includes(r.id)&&!state.skips.includes(r.id)).sort((a,b)=>score(b)-score(a))[0]}
 function hero(label,title,desc){return '<section class="hero"><div class="eyebrow">'+label+'</div><h1>'+title+'</h1><p class="subtitle">'+desc+'</p></section>'}
-function render(){document.querySelector('.app').dataset.page=page;document.querySelectorAll('nav button').forEach(b=>{b.classList.toggle('active',b.dataset.page===page);b.setAttribute('aria-current',b.dataset.page===page?'page':'false')});updateCount();if(page==='pantry')renderPantry();if(page==='overview')renderDashboard();if(page==='recipes')renderRecipes();if(page==='shopping')renderShopping();showHomeUndo()}
+function render(){document.querySelector('.app').dataset.page=page;window.MorzsaCompanion?.onNavigate();document.querySelectorAll('nav button').forEach(b=>{b.classList.toggle('active',b.dataset.page===page);b.setAttribute('aria-current',b.dataset.page===page?'page':'false')});updateCount();if(page==='chat')window.MorzsaCompanion?.render();if(page==='pantry')renderPantry();if(page==='overview')renderDashboard();if(page==='recipes')renderRecipes();if(page==='shopping')renderShopping();showHomeUndo()}
 const houseIcon='<svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5M5 9v12h5v-7h4v7h5V9"/></svg>';
 let categoryPage=0,categoryOffset=0,pantrySearchOpen=false,sortMode=state.sortMode==='alpha'?'alpha':'importance';
 function compareProducts(a,b){return sortMode==='alpha'?displayName(a.name).localeCompare(displayName(b.name),language):(householdPriority.get(a.name)??9999)-(householdPriority.get(b.name)??9999)||displayName(a.name).localeCompare(displayName(b.name),language)}
@@ -198,7 +198,7 @@ function renderShopping(){
  setupQuickEntry(actions);
 }
 function swipe(el,callback){let x=0,y=0,active=false;el.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'&&e.button!==0)return;if(e.target.closest('button')&&e.target.closest('button')!==el)return;x=e.clientX;y=e.clientY;active=true;el.setPointerCapture(e.pointerId)});el.addEventListener('pointermove',e=>{if(!active)return;const dx=e.clientX-x,dy=e.clientY-y;if(Math.abs(dy)>Math.abs(dx)&&Math.abs(dy)>15){active=false;el.style.transform='';return}if(Math.abs(dx)>15)el.style.transform='translateX('+Math.max(-90,Math.min(90,dx))+'px) rotate('+(dx/30)+'deg)'});const end=e=>{if(!active)return;active=false;el.style.transform='';const dx=e.clientX-x;if(Math.abs(dx)>65&&Math.abs(dx)>Math.abs(e.clientY-y)){callback(dx>0?1:-1)}};el.addEventListener('pointerup',end);el.addEventListener('pointercancel',()=>{active=false;el.style.transform=''})}
-main.addEventListener('click',e=>{if(e.target.closest('#saved-toggle')){showSaved=!showSaved;render()}}); document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{page=b.dataset.page;render();window.scrollTo({top:0,behavior:'instant'})});document.querySelector('.brand').onclick=e=>{e.preventDefault();page='shopping';render();window.scrollTo(0,0)};dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close()}});render();
+main.addEventListener('click',e=>{if(e.target.closest('#saved-toggle')){showSaved=!showSaved;render()}}); document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{page=b.dataset.page;render();window.scrollTo({top:0,behavior:'instant'})});document.querySelector('.brand').onclick=e=>{e.preventDefault();page='chat';render();window.scrollTo(0,0)};dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close()}});render();
 
 function commitState(next){
  try{localStorage.setItem(window.household?.storageKey()||'morzsa-v2',JSON.stringify(next))}catch{toast('Nem sikerült menteni. Semmit sem módosítottunk.');return false}
@@ -219,14 +219,18 @@ function showFinishPrompt(error=''){
 }
 async function completeShopping(includeUnchecked){
  if(purchaseSaving||window.household?.busy)return false;
+ const purchaseBefore=JSON.parse(JSON.stringify(state)),purchaseContext=typeof voiceContext==='function'?voiceContext():null;
  const next=ShoppingModel.complete(state,{includeUnchecked,id:crypto.randomUUID(),date:new Date().toISOString(),unitFor:productUnit,categoryFor:productCategory,knownNames:catalog.map(item=>item.name)});
  if(!next)return false;
  purchaseSaving=true;
  try{
   let saved;if(window.household?.active){state=next;saved=await window.household.notify()}else saved=commitState(next);
   if(!saved)return false;
+  if(purchaseContext!==voiceContext())return true;
   await window.PantryReview?.confirm(next.history[0].items.map(i=>i.name));
-  toast(language==='en'?'Shopping saved. Purchased items are now in your pantry.':'Vásárlás elmentve. A megvett tételek a készletbe kerültek.');renderShopping();return true;
+  if(purchaseContext!==voiceContext())return true;
+  window.MorzsaCompanion?.purchaseSaved(purchaseBefore,next,purchaseContext);
+  toast(language==='en'?'Shopping saved. Purchased items are now in your pantry.':'Vásárlás elmentve. A megvett tételek a készletbe kerültek.');render();return true;
  }finally{purchaseSaving=false}
 }
 function confirmClearCart(){

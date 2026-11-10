@@ -6,7 +6,7 @@ window.PantryReview=(()=>{
  const snapshot=name=>JSON.stringify([state.stock[name],household?.active?household.rows.find(r=>r.bucket==='stock'&&r.key===name)?.revision:null,checks[name]||null]);
  function mount(){
   main.querySelectorAll('.pantry-maintenance').forEach(e=>e.remove());document.getElementById('pantry-review-entry')?.remove();
-  if(!['pantry','overview'].includes(page))return;
+  window.MorzsaCompanion?.updateNudge();if(!['pantry','overview'].includes(page))return;
   const present=Object.keys(state.stock).filter(n=>state.stock[n]>0);if(!present.length)return;
   const items=context===key()&&available&&!loading?due():[],needs=new Set(items.map(i=>i.name));
   main.querySelectorAll('.ingredient-card').forEach(card=>{card.querySelector('.pantry-confidence')?.remove();const name=card.dataset.ingredient;card.classList.toggle('needs-review',needs.has(name));if(needs.has(name)){const label=document.createElement('small');label.className='pantry-confidence';label.setAttribute('data-no-translate','');label.textContent=say('Megvan még?','Still here?');card.querySelector('.ingredient-copy')?.append(label)}});
@@ -33,7 +33,7 @@ window.PantryReview=(()=>{
   const current=key(),undoContext=voiceContext(),plan=PantryReviewModel.removalPlan(state,names,alsoList,productUnit);
   if(!plan.changes.length)return true;
   const ok=await saveVoiceState(plan.next);if(current!==key())return false;if(!ok)return false;
-  lastRemoval={changes:plan.changes,context:current};homeUndo.length=0;onStateChanged();await refresh();render();showVoiceUndo(plan.changes,undoContext);
+  lastRemoval={changes:plan.changes,context:current};window.MorzsaCompanion?.removed(names);homeUndo.length=0;onStateChanged();await refresh();render();showVoiceUndo(plan.changes,undoContext);
   const notice=document.querySelector('#voice-undo>span');if(notice)notice.textContent=names.filter(n=>plan.changes.some(c=>c.bucket==='stock'&&c.key===n)).length+say(' tétel lekerült a készletből',' items removed from pantry');return true;
  }
  function openRemoval(){
@@ -75,5 +75,5 @@ window.PantryReview=(()=>{
  }
  const original=renderPantry;renderPantry=function(){original();mount()};
  refresh();document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh()});
- return {refresh,confirm,onStateChanged,mount,remove,openRemoval,open,uncertain:()=>due().map(x=>x.name)};
+ return {refresh,confirm,onStateChanged,mount,remove,openRemoval,open,candidates:()=>context===key()&&available&&!loading?due():[],uncertain:()=>due().map(x=>x.name)};
 })();

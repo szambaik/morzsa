@@ -9,7 +9,7 @@
  const outboxKey=()=> 'morzsa-cart-outbox-'+session?.user?.id+'-'+cloud.active;
  const persistCart=()=>{if(cartOutbox.length)localStorage.setItem(outboxKey(),JSON.stringify(cartOutbox));else localStorage.removeItem(outboxKey())};
  const overlayCart=rows=>HouseholdModel.applyCartIntents(HouseholdModel.decode(rows,state),cartOutbox);
- const paintCart=()=>{if(page==='shopping')refreshShoppingRows();else render();updateCount()};
+ const paintCart=()=>{if(page==='shopping')refreshShoppingRows();else render();window.MorzsaCompanion?.refreshQuick();updateCount()};
  function cartStatus(failed=false){const el=document.getElementById('cloud-status');el.dataset.cartSync='true';el.hidden=!cartOutbox.length;el.textContent=say(failed?'Mentésre vár · ':'Szinkronizálás…',failed?'Waiting to sync · ':'Syncing…');if(failed){const b=document.createElement('button');b.textContent=say('Újrapróbálás','Retry');b.onclick=()=>flushCart();el.append(b)}}
  cloud.editCart=(next,options={})=>{
   if(!cloud.cartInteractive)return false;
@@ -83,14 +83,15 @@
   }
   const rows=[];let offset=0;while(true){const part=await request('/rest/v1/household_records?household_id=eq.'+encodeURIComponent(hid)+'&select=bucket,key,value,revision&order=bucket,key&limit=1000&offset='+offset);rows.push(...part);if(part.length<1000)break;offset+=part.length}return rows;
  }
+ const blockingDialog=()=>document.querySelector('dialog[open]:not(#companion-quick):not(#companion-history)');
  const editingText=()=>document.activeElement?.matches('textarea,select,input:not([type=checkbox]):not([type=radio]):not([type=button])');
  function stopLive(){liveConnection?.close();liveConnection=null;clearTimeout(liveRefreshTimer);liveDirty=false}
- function queueLiveRefresh(){liveDirty=true;clearTimeout(liveRefreshTimer);liveRefreshTimer=setTimeout(async()=>{if(!cloud.active||document.hidden)return;if(cloud.busy||document.querySelector('dialog[open]')||editingText()){queueLiveRefresh();return}liveDirty=false;await refresh()},350)}
+ function queueLiveRefresh(){liveDirty=true;clearTimeout(liveRefreshTimer);liveRefreshTimer=setTimeout(async()=>{if(!cloud.active||document.hidden)return;if(cloud.busy||blockingDialog()||editingText()){queueLiveRefresh();return}liveDirty=false;await refresh()},350)}
  function startLive(){stopLive();if(!cloud.active||!session||typeof HouseholdLive==='undefined')return;liveConnection=HouseholdLive.connect({url:config.url,key:config.publishableKey,token:session.access_token,householdId:cloud.active,onChange:queueLiveRefresh,onReady:queueLiveRefresh})}
  document.addEventListener('visibilitychange',()=>{if(!document.hidden&&cloud.active)queueLiveRefresh()});
  window.addEventListener('online',()=>{if(cloud.active){startLive();queueLiveRefresh()}});
  async function refresh(){
-  if(!cloud.active||document.hidden||cloud.busy||q.open||document.querySelector('dialog[open]')||editingText())return;
+  if(!cloud.active||document.hidden||cloud.busy||q.open||blockingDialog()||editingText())return;
   cloud.busy=true;refreshing=true;
   try{
    const rows=await fetchRows();

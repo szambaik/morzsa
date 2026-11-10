@@ -45,12 +45,12 @@ const VoiceModel=(()=>{
  function undo(current,changes){
   const next=JSON.parse(JSON.stringify(current));let skipped=0;
   for(const c of [...changes].reverse()){
-   const value=c.bucket==='stock'?next.stock[c.key]:next[c.bucket].find(i=>i.name===c.key);
+   const value=c.bucket==='stock'?next.stock[c.key]:next[c.bucket].find(i=>(c.bucket==='history'?i.id:i.name)===c.key);
    if(JSON.stringify(value)!==JSON.stringify(c.after)){skipped++;continue}
    // Retain custom catalog entries; a concurrent item may still refer to them.
    if(c.bucket==='custom')continue;
    if(c.bucket==='stock'){if(c.before===undefined)delete next.stock[c.key];else Object.defineProperty(next.stock,c.key,{value:c.before,writable:true,enumerable:true,configurable:true})}
-   else{next[c.bucket]=next[c.bucket].filter(i=>i.name!==c.key);if(c.before!==undefined)next[c.bucket].push(c.before)}
+   else{next[c.bucket]=next[c.bucket].filter(i=>(c.bucket==='history'?i.id:i.name)!==c.key);if(c.before!==undefined)next[c.bucket].push(c.before)}
   }
   return {next,skipped};
  }
