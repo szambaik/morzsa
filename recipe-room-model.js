@@ -8,14 +8,14 @@ const RecipeRoomModel = (() => {
  const identity=r=>JSON.stringify([r.title,r.ingredients,r.steps]);
  const conversationKey=(user,home,lang)=>'morzsa-recipe-room-v1:'+JSON.stringify([user||'guest',home||'local',lang]);
  const favouritesKey=user=>'morzsa-recipe-favourites-v1:'+JSON.stringify(user||'guest');
- function messages(value){return (Array.isArray(value)?value:[]).filter(m=>m&&['user','model'].includes(m.role)&&text(m.text,4000)).slice(-20).map(m=>({role:m.role,text:m.text,recipes:(Array.isArray(m.recipes)?m.recipes:[]).map(recipe).filter(Boolean).slice(0,3)}))}
+ function messages(value){return (Array.isArray(value)?value:[]).filter(m=>m&&['user','model'].includes(m.role)&&text(m.text,4000)).slice(-20).map(m=>({role:m.role,text:m.text,...(m.role==='user'&&text(m.request,2000)?{request:m.request}:{}),recipes:(Array.isArray(m.recipes)?m.recipes:[]).map(recipe).filter(Boolean).slice(0,3)}))}
  function favourites(value){return (Array.isArray(value)?value:[]).map(recipe).filter(Boolean).filter((r,i,a)=>a.findIndex(x=>identity(x)===identity(r))===i).slice(0,100)}
  function toggle(saved,r){const key=identity(r);return saved.some(x=>identity(x)===key)?saved.filter(x=>identity(x)!==key):[r,...saved].slice(0,100)}
  function history(value){
   // Preserve complete recent turns within the edge request's 32KB envelope.
   const result=[];let bytes=0;
   for(const m of messages(value).slice(-6).reverse()){
-   let content=m.role==='model'?JSON.stringify({answer:m.text,recipes:m.recipes}):m.text;
+   let content=m.role==='model'?JSON.stringify({answer:m.text,recipes:m.recipes}):(m.request||m.text);
    if(content.length>4000)content=m.text.slice(0,500)+' '+m.recipes.map(r=>r.title+': '+r.ingredients.map(i=>i.name+' '+i.amount).join(', ')+'. '+r.steps.join(' ')).join(' | ');
    content=content.slice(0,4000);while(new TextEncoder().encode(content).length>4500)content=content.slice(0,-100);
    if(content.length>4000||bytes+new TextEncoder().encode(content).length>10000)break;

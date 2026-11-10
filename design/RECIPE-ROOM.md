@@ -40,3 +40,18 @@ npm test covers schema limits, conversation history, legacy requests, cache
 separation, account/household keys, idempotent list additions and concurrent cart
 edits. Browser journeys in tests/recipe-ai.browser.js use a mocked provider;
 they are separate from npm test. No image-generation provider is connected.
+
+## Ingredient crafting
+
+The optional “Kotyvasszunk!” / “Mix & discover” recipe view lets users choose up
+to six food-catalogue ingredients by tapping or dragging their illustrations
+into a bowl. Selection stays in memory, resets when account/household/language
+changes, and never marks a product as present or adds it to the shopping list.
+At-home filtering and bilingual search reuse the existing catalogue.
+
+Discover makes one explicit request through the existing authenticated recipe
+conversation endpoint. Its prompt distinguishes selected inspirations from the
+actual pantry. A concise combination is shown in chat; bounded instructions are
+retained with that user message for retries and follow-up context. Earlier,
+unrelated conversation turns do not influence a new crafting request. Results
+use the same recipe cards, favourites and idempotent shopping actions.
