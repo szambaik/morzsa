@@ -11,9 +11,9 @@
  const overlayCart=rows=>HouseholdModel.applyCartIntents(HouseholdModel.decode(rows,state),cartOutbox);
  const paintCart=()=>{if(page==='shopping')refreshShoppingRows();else render();updateCount()};
  function cartStatus(failed=false){const el=document.getElementById('cloud-status');el.dataset.cartSync='true';el.hidden=!cartOutbox.length;el.textContent=say(failed?'Mentésre vár · ':'Szinkronizálás…',failed?'Waiting to sync · ':'Syncing…');if(failed){const b=document.createElement('button');b.textContent=say('Újrapróbálás','Retry');b.onclick=()=>flushCart();el.append(b)}}
- cloud.editCart=next=>{
+ cloud.editCart=(next,options={})=>{
   if(!cloud.cartInteractive)return false;
-  const intent=HouseholdModel.cartIntent(state,next);if(!intent.cart.length&&!intent.custom.length)return true;
+  const intent=HouseholdModel.cartIntent(state,next);if(options.onlyIfMissing)intent.cart.forEach(op=>{if(op.create)op.onlyIfMissing=true});if(!intent.cart.length&&!intent.custom.length)return true;
   cartOutbox.push(intent);try{persistCart()}catch{cartOutbox.pop();toast(say('Nem sikerült helyben menteni.','Could not save on this device.'));return false}
   state=next;updateCount();clearTimeout(cartTimer);cartTimer=setTimeout(flushCart,120);return true;
  };

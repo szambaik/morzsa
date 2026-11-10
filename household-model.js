@@ -10,7 +10,7 @@ const HouseholdModel={
  applyCartIntents(base,intents){
   const next={...base,cart:base.cart.map(x=>({...x})),custom:[...base.custom]};
   for(const intent of intents){
-   for(const op of intent.cart){const i=next.cart.findIndex(x=>x.name===op.name);if(op.remove){if(i>=0)next.cart.splice(i,1)}else if(i>=0)next.cart[i]={...next.cart[i],...op.fields,name:op.name};else if(op.create)next.cart.push({...op.fields,name:op.name})}
+   for(const op of intent.cart){const i=next.cart.findIndex(x=>x.name===op.name);if(op.create&&op.onlyIfMissing&&i>=0)continue;if(op.remove){if(i>=0)next.cart.splice(i,1)}else if(i>=0)next.cart[i]={...next.cart[i],...op.fields,name:op.name};else if(op.create)next.cart.push({...op.fields,name:op.name})}
    for(const item of intent.custom)if(!next.custom.some(x=>x.name===item.name))next.custom.push(item);
   }return next;
  },

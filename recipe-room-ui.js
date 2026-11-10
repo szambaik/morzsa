@@ -1,0 +1,79 @@
+(() => {
+ const M=RecipeRoomModel,say=(hu,en)=>language==='en'?en:hu;
+ let key='',fkey='',messages=[],favourites=[],view='chat',draft='',busy=false,error='',serial=0;
+ let cardMap=new Map();
+ const currentKey=()=>M.conversationKey(window.household?.userId(),window.household?.active,language);
+ const read=(key,parse)=>{try{return parse(JSON.parse(localStorage.getItem(key)))}catch{return parse(null)}};
+ function sync(){
+  const next=currentKey();if(next===key)return;
+  serial++;if(detail.open)detail.close();key=next;fkey=M.favouritesKey(window.household?.userId());messages=read(key,M.messages);favourites=read(fkey,M.favourites);draft='';error='';busy=false;view='chat';
+ }
+ function persist(){try{localStorage.setItem(key,JSON.stringify(messages));return true}catch{toast(say('A beszélgetést most nem sikerült ezen az eszközön menteni.','Could not save this conversation on this device.'));return false}}
+ const resolved=new Map();let customRef;
+ function resolve(n){if(customRef!==state.custom){customRef=state.custom;resolved.clear()}if(!resolved.has(n))resolved.set(n,QuickEntry.match(n,[...catalog,...state.custom],productEnglish));return resolved.get(n)}
+ function favourite(r){return r.curated?state.likes.includes(r.curated):favourites.some(x=>M.identity(x)===M.identity(r))}
+ function curated(r){return {curated:r.id,title:language==='en'?englishText(r.name):r.name,summary:language==='en'?englishText(r.desc):r.desc,minutes:r.time,ingredients:r.ingredients.map(([name,amount])=>({name,amount})),steps:r.steps.map(s=>language==='en'?englishText(s):s)}}
+ function remember(r){const id=String(cardMap.size);cardMap.set(id,r);return id}
+ function art(r){const paths=[...new Set(r.ingredients.map(i=>productArtwork[resolve(i.name)]).filter(Boolean))].slice(0,3);return '<div class="room-art" aria-label="'+say('Hozzávalók illusztrációja','Ingredient illustration')+'">'+(paths.length?paths:['assets/illustrations/morzsa-mascot.webp']).map(p=>'<img src="'+p+'" alt="" loading="lazy" width="88" height="88">').join('')+'<small>'+say('Hozzávaló-illusztráció','Ingredient illustration')+'</small></div>'}
+ function missingItems(r){return M.addMissing(state,r,resolve,productUnit).cart.slice(state.cart.length)}
+ function card(r){const id=remember(r),atHome=r.ingredients.filter(i=>state.stock[resolve(i.name)]>0).length,need=missingItems(r).length;return '<article class="room-card">'+art(r)+'<div class="room-card-body"><div class="room-card-title"><button data-room-open="'+id+'"><h3>'+esc(r.title)+'</h3></button><button class="room-heart" data-room-save="'+id+'" aria-pressed="'+favourite(r)+'" aria-label="'+esc(say('Kedvenc: ','Favourite: ')+r.title)+'">'+(favourite(r)?'♥':'♡')+'</button></div><p class="room-meta">'+r.minutes+say(' perc · ',' min · ')+atHome+'/'+r.ingredients.length+say(' hozzávaló otthon',' ingredients at home')+'</p><p class="room-summary">'+esc(r.summary)+'</p><div class="room-card-actions"><button data-room-open="'+id+'">'+say('Recept →','View recipe →')+'</button><button data-room-add="'+id+'" '+(!need?'disabled':'')+'>'+(!need?say('Minden otthon vagy a listán','All at home or on list'):need+say(' hiányzó a listára',' missing to list'))+'</button></div></div></article>'}
+ function toggle(r){
+  if(r.curated){if(!commitState({...state,likes:favourite(r)?state.likes.filter(id=>id!==r.curated):[...state.likes,r.curated]}))return false}
+  else {if(!favourite(r)&&favourites.length>=100){toast(say('Már 100 kedvenc recepted van. Egyet vegyél ki az új mentése előtt.','You have 100 favourites. Remove one before saving another.'));return false}const next=M.toggle(favourites,M.recipe(r));try{localStorage.setItem(fkey,JSON.stringify(next));favourites=next}catch{toast(say('A kedvencet nem sikerült menteni.','Could not save the favourite.'));return false}}
+  return true;
+ }
+ function add(r){
+  let next=M.addMissing(state,r,resolve,productUnit),count=next.cart.length-state.cart.length;if(!count)return;
+  const known=new Set([...catalog,...state.custom].map(i=>i.name));next={...next,custom:[...state.custom,...next.cart.slice(state.cart.length).filter(i=>!known.has(i.name)).map(i=>({name:i.name,emoji:'🫙',category:'Saját tételek'}))]};
+  if(window.household?.active?window.household.editCart(next,{onlyIfMissing:true}):commitState(next)){basketFeedback();toast(count+say(' hozzávaló a listán · alapegységgel',' ingredients added · default units'));renderRoom()}else toast(say('A lista még szinkronizál. Próbáld újra.','The list is syncing. Try again.'));
+ }
+ function bind(root){
+  root.querySelectorAll('[data-room-open]').forEach(b=>{const r=cardMap.get(b.dataset.roomOpen);b.onclick=()=>open(r)});
+  root.querySelectorAll('[data-room-save]').forEach(b=>{const r=cardMap.get(b.dataset.roomSave);b.onclick=()=>{if(toggle(r)){renderRoom();if(root===detail)open(r)}}});
+  root.querySelectorAll('[data-room-add]').forEach(b=>{const r=cardMap.get(b.dataset.roomAdd);b.onclick=()=>{add(r);if(root===detail)open(r)}});
+ }
+ const detail=document.createElement('dialog');detail.id='room-detail';detail.setAttribute('data-no-translate','');document.body.append(detail);
+ function open(r){
+  if(!r)return;const id=remember(r),need=missingItems(r).length;
+  detail.innerHTML='<button class="close" aria-label="'+say('Bezárás','Close')+'">×</button>'+art(r)+'<p class="room-meta">'+r.minutes+say(' perc',' min')+'</p><h2>'+esc(r.title)+'</h2><p>'+esc(r.summary)+'</p><h3>'+say('Hozzávalók','Ingredients')+'</h3><ul>'+r.ingredients.map(i=>'<li>'+esc(displayName(resolve(i.name)))+' · '+esc(language==='en'?englishText(i.amount):i.amount)+' <small>'+ (state.stock[resolve(i.name)]>0?say('otthon','at home'):state.cart.some(x=>x.name===resolve(i.name))?say('a listán','on list'):say('hiányzik','missing'))+'</small></li>').join('')+'</ul><h3>'+say('Így készül','Method')+'</h3><ol>'+r.steps.map(s=>'<li>'+esc(s)+'</li>').join('')+'</ol><div class="room-detail-actions"><button class="small-button" data-room-save="'+id+'" aria-pressed="'+favourite(r)+'">'+(favourite(r)?say('♥ Kedvenc','♥ Favourite'):say('♡ Kedvencekhez','♡ Save favourite'))+'</button><button class="primary" data-room-add="'+id+'" '+(!need?'disabled':'')+'>'+ (need?need+say(' hiányzó a listára',' missing to list'):say('Minden otthon vagy a listán','All at home or on list'))+'</button><button class="small-button" id="room-discuss">'+say('Beszéljük meg →','Let’s talk about it →')+'</button></div><p class="room-footnote">'+say('Az otthonjelölés nem jelent biztos mennyiséget vagy frissességet.','At-home marks do not guarantee quantity or freshness.')+'</p>';
+  detail.querySelector('.close').onclick=()=>detail.close();bind(detail);
+  detail.querySelector('#room-discuss').onclick=()=>{if(busy){toast(say('Várd meg Morzsa válaszát.','Wait for Morzsa’s reply.'));return}messages=M.messages([...messages,{role:'user',text:say('Beszélgessünk erről a receptről.','Let’s discuss this recipe.'),recipes:[]},{role:'model',text:say('Erről a receptről beszélgetünk:','Let’s talk about this recipe:'),recipes:[M.recipe(r)]}]);persist();error='';view='chat';detail.close();renderRoom();const input=main.querySelector('#room-input');input.value=draft=say('Mivel helyettesíthetem a ','What could I use instead of ');input.focus();scrollEnd()};
+  if(!detail.open)detail.showModal();
+ }
+ function scrollEnd(){requestAnimationFrame(()=>main.querySelector('#room-end')?.scrollIntoView({behavior:'smooth',block:'end'}))}
+ function renderRoom(){
+  if(page!=='recipes')return;sync();cardMap=new Map();
+  const saved=[...favourites,...recipes.filter(r=>state.likes.includes(r.id)).map(curated)];
+  const starters=[['Gyors vacsora','Quick dinner','Mit főzzek ma 25 percen belül abból, ami otthon van?','What can I cook in 25 minutes with my pantry?'],['Valami édes','Something sweet','Valami édeset szeretnék az otthoni hozzávalókból.','I would like something sweet using my pantry.'],['Lepj meg','Surprise me','Lepj meg egy ötletes étellel, kevés plusz bevásárlással!','Surprise me with a creative meal that needs little extra shopping!']];
+  const savedHTML=()=>'<p class="room-footnote">'+say('A saját AI-receptjeid ezen az eszközön maradnak.','Your saved AI recipes stay on this device.')+'</p><div class="room-favourites">'+(saved.length?saved.map(card).join(''):'<div class="room-empty"><span>♡</span><h2>'+say('A jó receptek megérnek még egy kört.','Good recipes deserve another round.')+'</h2><p>'+say('Érintsd meg a szívet bármelyik receptnél. Itt megtalálod legközelebb.','Tap the heart on any recipe to find it here next time.')+'</p></div>')+'</div><details class="room-collection"><summary>'+say('Morzsa receptgyűjteménye','Morzsa recipe collection')+'</summary>'+recipes.map(r=>card(curated(r))).join('')+'</details>';
+  const welcome='<div class="room-welcome"><img src="assets/illustrations/morzsa-mascot.webp" width="104" height="92" alt=""><h2>'+say('Főzzünk ki valamit.','Let’s cook something up.')+'</h2><p>'+say('Mondd, mihez van kedved. A készletedből indulunk, és együtt alakítjuk a receptet.','Tell me what you fancy. We’ll start with your pantry and shape the recipe together.')+'</p><div class="room-starters">'+starters.map((s,i)=>'<button data-room-starter="'+i+'">'+s[language==='en'?1:0]+' ↗</button>').join('')+'</div></div>';
+  const chat=()=>'<div class="room-thread" aria-live="polite" aria-busy="'+busy+'">'+(!messages.length?welcome:messages.map(m=>'<div class="room-message '+m.role+'">'+(m.role==='model'?'<span class="room-speaker"><img src="assets/brands/morzsa.svg" width="20" height="20" alt="">Morzsa</span>':'')+'<p>'+esc(m.text)+'</p>'+m.recipes.map(card).join('')+'</div>').join(''))+(busy?'<div class="room-thinking" role="status"><img src="assets/brands/morzsa.svg" width="22" height="22" alt="">'+say('Morzsa főzi az ötletet…','Morzsa is cooking up an idea…')+'</div>':'')+(error?'<div class="room-error" role="alert"><p>'+esc(error)+'</p><button class="small-button" id="room-retry">'+say('Újrapróbálom','Try again')+'</button></div>':'')+'<div id="room-end"></div></div><div class="room-compose-wrap"><form id="room-compose"><textarea id="room-input" rows="1" maxlength="2000" aria-label="'+say('Üzenet Morzsának','Message Morzsa')+'" placeholder="'+say('Kérdezz Morzsától…','Ask Morzsa…')+'">'+esc(draft)+'</textarea><button type="submit" '+(busy?'disabled':'')+' aria-label="'+say('Üzenet küldése','Send message')+'">↑</button></form><div class="room-compose-note">'+(!window.household?.userId()?'<button id="room-login">'+say('Belépés az AI-beszélgetéshez','Sign in to chat with AI')+'</button>':'<span>'+say('AI · Google · beszélgetés ezen az eszközön','AI · Google · chat saved on this device')+'</span>')+'<button id="room-external">'+say('Másik AI ↗','Other AI ↗')+'</button></div></div>';
+  main.innerHTML='<section class="recipe-room" data-no-translate><div class="room-heading"><h1>'+say('Receptek','Recipes')+'</h1><button class="room-new" id="room-new" '+(busy?'disabled':'')+' aria-label="'+say('Új beszélgetés','New conversation')+'">＋</button></div><div class="room-switch" role="group" aria-label="'+say('Receptnézet','Recipe view')+'"><button data-room-view="chat" aria-pressed="'+(view==='chat')+'">'+say('Beszélgetés','Conversation')+'</button><button data-room-view="saved" aria-pressed="'+(view==='saved')+'">'+say('Kedvencek','Favourites')+(saved.length?' · '+saved.length:'')+'</button></div>'+(view==='saved'?savedHTML():chat())+'</section>';
+  main.querySelectorAll('[data-room-view]').forEach(b=>b.onclick=()=>{view=b.dataset.roomView;renderRoom();window.scrollTo(0,0)});
+  main.querySelector('#room-new').onclick=()=>{if(messages.length&&!confirm(say('Új beszélgetést kezdesz? A jelenlegi beszélgetés törlődik, a kedvenceid megmaradnak.','Start a new conversation? The current chat will be cleared; your favourites will stay.')))return;messages=[];draft='';error='';view='chat';persist();renderRoom()};
+  main.querySelectorAll('[data-room-starter]').forEach(b=>b.onclick=()=>send(starters[Number(b.dataset.roomStarter)][language==='en'?3:2]));
+  main.querySelector('#room-compose')?.addEventListener('submit',e=>{e.preventDefault();send(main.querySelector('#room-input').value)});
+  const input=main.querySelector('#room-input');if(input){input.oninput=()=>{draft=input.value;input.style.height='auto';input.style.height=Math.min(input.scrollHeight,112)+'px'};input.onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();send(input.value)}}}
+  main.querySelector('#room-login')?.addEventListener('click',()=>document.getElementById('household-button').click());
+  main.querySelector('#room-external')?.addEventListener('click',()=>openChatGPTIdeas());
+  main.querySelector('#room-retry')?.addEventListener('click',()=>send('',true));bind(main);viewport();
+ }
+ async function send(value,retry=false){
+  sync();const text=retry?messages.at(-1)?.text:String(value).trim();if(busy||!text||text.length>2000)return;
+  if(!window.household?.userId()){draft=text;renderRoom();document.getElementById('household-button').click();return}
+  const prior=retry?messages.slice(0,-1):messages,request=recipeRequest(),token=++serial,context=key;
+  if(!retry)messages=M.messages([...messages,{role:'user',text,recipes:[]}]);draft='';error='';busy=true;persist();renderRoom();scrollEnd();
+  try{
+   const result=await window.household.recipeIdeas({conversation:true,text,history:M.history(prior),names:request.names.slice(0,200),uncertain:request.uncertain.slice(0,200),language,preferences:{quick:false,mood:'any'}});
+   if(token!==serial||context!==currentKey())return;
+   const valid=Array.isArray(result.recipes)&&result.recipes.length<=3&&result.recipes.every(r=>M.recipe(r));
+   if(typeof result.answer!=='string'||!result.answer.trim()||result.answer.length>4000||!valid)throw Error('AI_INVALID_RESPONSE');
+   messages=M.messages([...messages,{role:'model',text:result.answer,recipes:result.recipes}]);persist();
+  }catch(e){if(token!==serial||context!==currentKey())return;const errors={AI_SIGN_IN_REQUIRED:['Lépj be újra a beszélgetéshez.','Sign in again to chat.'],AI_DAILY_LIMIT:['Az AI kerete most elfogyott. Próbáld később, vagy nyisd meg a Másik AI lehetőséget.','The AI quota is exhausted. Try later or choose Other AI.'],AI_NOT_CONFIGURED:['Az AI még nincs bekötve. A Másik AI lehetőséggel folytathatod.','AI is not connected yet. You can use Other AI.'],AI_SETUP_REQUIRED:['Az AI bekötése még nem teljes.','AI setup is not complete yet.']};error=(errors[e.message]||['Most nem érkezett válasz. Próbáljuk újra?','No response arrived. Try again?'])[language==='en'?1:0]}
+  finally{if(token===serial&&context===currentKey()){busy=false;renderRoom();scrollEnd()}}
+ }
+ function viewport(){const v=window.visualViewport,offset=v?Math.max(0,innerHeight-v.height-v.offsetTop):0;document.documentElement.style.setProperty('--room-keyboard',offset+'px');document.documentElement.classList.toggle('room-keyboard',page==='recipes'&&offset>120)}
+ window.visualViewport?.addEventListener('resize',viewport);window.visualViewport?.addEventListener('scroll',viewport);
+ window.addEventListener('morzsa-auth-change',()=>{sync();detail.close();renderRoom()});
+ window.RecipeRoom={render:renderRoom};
+})();

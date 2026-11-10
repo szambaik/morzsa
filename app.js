@@ -47,7 +47,7 @@ function missing(r){return r.ingredients.filter(([n])=>!state.stock[n])}
 function score(r){const liked=recipes.filter(x=>state.likes.includes(x.id));return (r.ingredients.length-missing(r).length)/r.ingredients.length*10+liked.reduce((sum,x)=>sum+r.tags.filter(t=>x.tags.includes(t)).length,0)*.5}
 function nextRecipe(){return [...recipes].filter(r=>!state.likes.includes(r.id)&&!state.skips.includes(r.id)).sort((a,b)=>score(b)-score(a))[0]}
 function hero(label,title,desc){return '<section class="hero"><div class="eyebrow">'+label+'</div><h1>'+title+'</h1><p class="subtitle">'+desc+'</p></section>'}
-function render(){document.querySelector('.app').dataset.page=page;document.querySelectorAll('nav button').forEach(b=>{b.classList.toggle('active',b.dataset.page===page);b.setAttribute('aria-current',b.dataset.page===page?'page':'false')});updateCount();if(page==='pantry')renderPantry();if(page==='recipes')renderRecipes();if(page==='shopping')renderShopping();showHomeUndo()}
+function render(){document.querySelector('.app').dataset.page=page;document.querySelectorAll('nav button').forEach(b=>{b.classList.toggle('active',b.dataset.page===page);b.setAttribute('aria-current',b.dataset.page===page?'page':'false')});updateCount();if(page==='pantry')renderPantry();if(page==='overview')renderDashboard();if(page==='recipes')renderRecipes();if(page==='shopping')renderShopping();showHomeUndo()}
 const houseIcon='<svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5M5 9v12h5v-7h4v7h5V9"/></svg>';
 let categoryPage=0,categoryOffset=0,pantrySearchOpen=false,sortMode=state.sortMode==='alpha'?'alpha':'importance';
 function compareProducts(a,b){return sortMode==='alpha'?displayName(a.name).localeCompare(displayName(b.name),language):(householdPriority.get(a.name)??9999)-(householdPriority.get(b.name)??9999)||displayName(a.name).localeCompare(displayName(b.name),language)}
@@ -107,36 +107,9 @@ function bindIngredientDrag(center){
 }
 function refreshCatalog(){const scroll=window.scrollY;renderPantry();window.scrollTo(0,scroll)}
 let recipePreferences=RecipePrompt.normalizePreferences();try{recipePreferences=RecipePrompt.normalizePreferences(JSON.parse(localStorage.getItem('morzsa-recipe-preferences'))||{})}catch{}
-let recipeAIReady=null,recipeAILoading=false,recipeAIError='',recipeAIGeneration=0;
-const recipeAIResults=new Map();
 function recipeRequest(){return RecipePrompt.build(state,catalog,productEnglish,language,recipePreferences,window.PantryReview?.uncertain()||[])}
-function recipeIntentCaption(){const en=language==='en',labels={any:en?'Varied ideas, fewer extra ingredients':'Változatos ötletek, kevés plusz hozzávaló',sweet:en?'Sweet treats and desserts':'Édes finomságok és desszertek',comfort:en?'Filling comfort food':'Laktató, otthonos főételek',light:en?'Light, vegetable-forward dishes':'Könnyű, zöldséges fogások',surprise:en?'A little culinary adventure':'Egy kis konyhai kaland'};return (recipePreferences.quick?(en?'Within 25 minutes · ':'25 percen belül · '):'')+labels[recipePreferences.mood]}
-function recipeContext(request=recipeRequest()){return JSON.stringify([window.household?.userId?.(),window.household?.active||'local',language,[...request.names].sort(),request.preferences,request.uncertain])}
-function recipeChoiceButtons(){const choices=[['quick','Gyors','Quick'],['sweet','Édes','Sweet'],['comfort','Laktató','Comfort food'],['light','Könnyű','Light'],['surprise','Lepj meg','Surprise me']];return '<div class="recipe-choices" role="group" aria-label="'+(language==='en'?'What are you in the mood for?':'Milyen ételhez van kedved?')+'">'+choices.map(([id,hu,en])=>'<button data-recipe-choice="'+id+'" aria-pressed="'+(id==='quick'?recipePreferences.quick:recipePreferences.mood===id)+'">'+(language==='en'?en:hu)+'</button>').join('')+'</div>'}
-function generatedRecipeCards(request){
- const result=recipeAIResults.get(recipeContext(request));if(!result)return '';
- const say=(hu,en)=>language==='en'?en:hu,atHome=new Set(request.names.map(QuickEntry.norm));
- return '<section class="generated-recipes" data-no-translate><h2>'+say('A készletedből, neked','From your pantry, for you')+'</h2><p class="helper">'+say('AI-javaslatok · 2 adag. Ellenőrizd a mennyiséget és a frissességet.','AI suggestions · serves 2. Check quantities and freshness.')+'</p>'+result.recipes.map(r=>'<details class="generated-recipe"><summary><span><strong>'+esc(r.title)+'</strong><small>'+r.minutes+say(' perc',' min')+'</small></span></summary><p>'+esc(r.summary)+'</p><ul>'+r.ingredients.map(i=>'<li>'+esc(i.name)+' · '+esc(i.amount)+(atHome.has(QuickEntry.norm(i.name))?'':' <small>'+say('(nincs otthon jelölve)','(not marked at home)')+'</small>')+'</li>').join('')+'</ul><ol>'+r.steps.map(step=>'<li>'+esc(step)+'</li>').join('')+'</ol></details>').join('')+'</section>';
-}
-async function checkRecipeAI(){
- recipeAIReady='checking';try{recipeAIReady=(await window.household.recipeAIStatus()).configured===true}catch{recipeAIReady=false}if(page==='recipes')renderRecipes();
-}
-async function generateRecipeIdeas(){
- if(recipeAILoading||recipeAIReady!==true)return;
- if(!window.household?.userId()){recipeAIError=language==='en'?'Sign in to request ideas inside Morzsa.':'Az appon belüli ajánlóhoz lépj be.';renderRecipes();document.getElementById('household-button').click();return}
- const request=recipeRequest(),key=recipeContext(request);if(!request.count)return;
- if(recipeAIResults.has(key)){recipeAIError='';renderRecipes();return}
- const generation=++recipeAIGeneration;recipeAILoading=true;recipeAIError='';renderRecipes();
- try{const result=await window.household.recipeIdeas({names:request.names,language,preferences:request.preferences,uncertain:request.uncertain});
-  if(!Array.isArray(result.recipes)||result.recipes.length!==3||!result.recipes.every(r=>typeof r.title==='string'&&Number.isInteger(r.minutes)&&Array.isArray(r.ingredients)&&Array.isArray(r.steps)))throw Error('AI_INVALID_RESPONSE');
-  if(generation===recipeAIGeneration&&key===recipeContext()){recipeAIResults.set(key,result);if(recipeAIResults.size>8)recipeAIResults.delete(recipeAIResults.keys().next().value)}
- }catch(e){if(generation===recipeAIGeneration&&key===recipeContext()){const messages={AI_SIGN_IN_REQUIRED:['Jelentkezz be újra az ajánló használatához.','Sign in again to use the suggestions.'],AI_DAILY_LIMIT:['Az AI mai kerete elfogyott. Próbáld később, vagy használd a külső AI-k egyikét.','The AI quota is exhausted. Try later or use an external AI.'],AI_SETUP_REQUIRED:['Az appon belüli AI bekötése még nincs kész.','The in-app AI setup is not complete yet.'],AI_NOT_CONFIGURED:['Az appon belüli AI még nincs bekapcsolva.','The in-app AI is not enabled yet.'],AI_INVALID_INPUT:['A készlet most túl nagy vagy nem olvasható. Használd a szerkeszthető külső AI-kérést.','The pantry is too large or could not be read. Use the editable external AI request.']};recipeAIError=(messages[e.message]||['Most nem érkezett használható válasz. Próbáld újra.','No usable response arrived. Please try again.'])[language==='en'?1:0]}}
- finally{if(generation===recipeAIGeneration){recipeAILoading=false;if(page==='recipes')renderRecipes()}}
-}
-window.addEventListener('morzsa-auth-change',()=>{recipeAIGeneration++;recipeAILoading=false;recipeAIError='';recipeAIResults.clear();if(page==='recipes')renderRecipes()});
-const voiceMicIcon='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="9" y="2" width="6" height="13" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3M8 22h8"/></svg>';
-// Preserve the recipes route for older clients and pending AI callbacks.
-let dashboardIdeasOpen=false,dashboardLibraryOpen=false;
+const dashboardMicIcon='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="9" y="2" width="6" height="13" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3M8 22h8"/></svg>';
+// The shopping list remains the launch screen; overview is an explicit destination.
 function dashboardGo(destination){page=destination;if(destination==='pantry'){stockView='home';category='Minden';search=''}render();window.scrollTo({top:0,behavior:'instant'})}
 const surpriseSeen=new Map();
 function surpriseRecipe(){
@@ -154,50 +127,15 @@ function dashboardRecipeRow(r){
  const image=productArtwork[r.ingredients[0][0]]||'assets/icons/oats.webp';
  return '<article class="idea-row"><button class="idea-open" data-recipe="'+r.id+'"><img class="dashboard-recipe-art" src="'+image+'" width="48" height="48" alt=""><span><strong>'+esc(language==='en'?englishText(r.name):r.name)+'</strong><small>'+r.time+say(' perc · ',' min · ')+available+'/'+r.ingredients.length+say(' hozzávaló otthon',' ingredients at home')+'</small></span></button><button class="idea-save" data-save-recipe="'+r.id+'" aria-pressed="'+state.likes.includes(r.id)+'" aria-label="'+esc(say('Kedvenc: ','Favourite: ')+(language==='en'?englishText(r.name):r.name))+'">'+(state.likes.includes(r.id)?'♥':'♡')+'</button></article>';
 }
-function renderRecipes(){
- const say=(hu,en)=>language==='en'?en:hu,request=recipeRequest(),{count}=request;
- const homeCount=Object.values(state.stock).filter(n=>n>0).length,pending=state.cart.filter(i=>!i.done);
- const ranked=[...recipes].filter(r=>!showSaved||state.likes.includes(r.id)).sort((a,b)=>missing(a).length/a.ingredients.length-missing(b).length/b.ingredients.length||missing(a).length-missing(b).length||a.time-b.time);
- const cartIcon=document.querySelector('.shopping-nav-icon').innerHTML;
- main.innerHTML=`<div class="dashboard" data-no-translate>
-  <section class="dashboard-welcome"><div><div class="eyebrow">${say('EGY KIS FIGYELEM AZ OTTHONODNAK','A LITTLE CARE FOR YOUR HOME')}</div><h1>${say('Jó itthon.','Good to be home.')}</h1><p>${say('Kevesebb fejben tartás. Több jó falat.','Less to remember. More to enjoy.')}</p></div><img src="assets/illustrations/morzsa-mascot.webp" alt="" width="90" height="72"></section>
-  <div class="dashboard-stats">
-   <button data-dashboard-go="pantry"><span class="dashboard-stat-icon">${houseIcon}</span><span><strong>${homeCount}</strong><span>${say('féle termék otthon','products at home')}</span></span><span aria-hidden="true">›</span></button>
-   <button data-dashboard-go="shopping"><span class="dashboard-stat-icon">${cartIcon}</span><span><strong>${pending.length}</strong><span>${say('tétel a listán','items to get')}</span></span><span aria-hidden="true">›</span></button>
-  </div>
-  <div id="dashboard-review-slot"></div>
-  <section class="dashboard-next"><div class="dashboard-section-title"><h2>${say('A következő apróság','One small next step')}</h2></div>
-   ${state.cart.length?`<button class="dashboard-next-action" data-dashboard-go="shopping"><span><strong>${pending.length?say('Indulhat a bevásárlás','Ready for your next shop'):say('Minden kipipálva','Everything checked off')}</strong><small>${pending.length?esc(pending.slice(0,3).map(i=>displayName(i.name)).join(', '))+(pending.length>3?'…':''):say('Fejezd be a vásárlást, és frissül a készlet.','Finish shopping to update your pantry.')}</small></span><span aria-hidden="true">→</span></button>`:`<button class="dashboard-next-action" data-dashboard-go="${homeCount?'shopping':'pantry'}"><span><strong>${homeCount?say('Mi hiányzik még?','Anything to pick up?'):say('Mi lapul a konyhádban?','What is in your kitchen?')}</strong><small>${homeCount?say('Írd a listára, vagy mondd el Morzsának.','Add it to your list, or tell Morzsa.'):say('Vegyél fel néhány dolgot, ami van otthon.','Start with a few things you have at home.')}</small></span><span aria-hidden="true">→</span></button>`}
-  </section>
-  <section class="dashboard-assistant"><button id="dashboard-ask"><img src="assets/brands/morzsa.svg" width="26" height="26" alt=""><span><strong>${say('Mondd el Morzsának','Tell Morzsa')}</strong><small>${say('„Elfogyott a tej. Mit főzzek ma?”','“We’re out of milk. What can I cook?”')}</small></span></button><button id="dashboard-mic" aria-label="${say('Beszélgetés Morzsával hanggal','Talk to Morzsa by voice')}">${voiceMicIcon}</button></section>
-  <section class="dashboard-meals"><div class="dashboard-section-title"><h2>${say('Valami finomat?','Something delicious?')}</h2><button class="surprise-button" id="surprise-recipe"><img src="assets/brands/morzsa.svg" width="17" height="17" alt="">${say('Lepj meg','Surprise me')}</button></div>
-   ${!count?'<p class="dashboard-note">'+say('Néhány kezdőötlet. A készleted felvétele után hozzád igazítjuk.','A few ideas to start. Add your pantry to personalize them.')+'</p>':''}
-   ${ranked.slice(0,2).map(dashboardRecipeRow).join('')}
-   ${!ranked.length?'<p class="dashboard-note">'+say('Még nincs elmentett kedvenced.','No saved favourites yet.')+'</p>':''}
-   <details class="dashboard-recipe-library" ${dashboardLibraryOpen?'open':''}><summary>${say('Receptek és kedvencek','Recipes & favourites')}</summary><button class="small-button" id="saved-toggle">${showSaved?say('Minden recept','All recipes'):say('Csak a kedvenceim','Only favourites')}</button>${ranked.slice(2).map(dashboardRecipeRow).join('')}</details>
-   <details class="dashboard-ideas" ${dashboardIdeasOpen?'open':''}><summary><img src="assets/brands/morzsa.svg" width="20" height="20" alt=""><span>${say('Inkább máshoz van kedved?','In the mood for something else?')}<small>${say('Kérj személyre szabott ötleteket','Ask for personalized ideas')}</small></span><span aria-hidden="true">⌄</span></summary><div class="dashboard-ideas-body">
-    ${recipeChoiceButtons()}<p class="idea-intent">${esc(recipeIntentCaption())}</p>
-    ${!count?'<button class="small-button" data-dashboard-go="pantry">'+say('Előbb felveszek pár alapanyagot','Add a few ingredients first')+'</button>':''}
-    <button class="primary full" id="generate-recipe-ideas" ${!count||recipeAILoading||recipeAIReady!==true?'disabled':''}>${recipeAILoading?say('Morzsa gondolkodik…','Morzsa is thinking…'):say('Kérek 3 ötletet','Give me 3 ideas')}</button>
-    <p class="ai-availability" role="status">${recipeAIReady===false?say('Az AI most nem elérhető. Lent a saját AI-odat is megnyithatod.','AI is unavailable right now. You can open your own AI below.'):recipeAIReady!==true?say('AI elérhetőségének ellenőrzése…','Checking AI availability…'):say('A készlet és a választásod a Google AI-hoz kerül.','Your pantry and preferences are sent to Google AI.')}</p>
-    ${recipeAIReady===false?'<button class="small-button" id="retry-recipe-ai">'+say('Újrapróbálom','Try again')+'</button>':''}<p class="recipe-ai-error" role="alert">${esc(recipeAIError)}</p>
-    ${generatedRecipeCards(request)}<details class="ai-external"><summary>${say('Megnyitás a saját AI-odban','Open in your own AI')}</summary><div class="ai-client-buttons">${['ChatGPT','Gemini','Claude'].map(client=>'<button data-ai-client="'+client+'">'+client+' ↗</button>').join('')}</div></details>
-   </div></details>
-  </section>
-  <button class="dashboard-history" id="dashboard-history">${say('Korábbi bevásárlások','Previous shopping trips')} <span aria-hidden="true">→</span></button>
- </div>`;
+function renderDashboard(){
+ const say=(hu,en)=>language==='en'?en:hu,homeCount=Object.values(state.stock).filter(n=>n>0).length,pending=state.cart.filter(x=>!x.done);
+ const recipe=[...recipes].sort((a,b)=>score(b)-score(a))[0],last=state.history[0];
+ main.innerHTML='<div class="dashboard calm-dashboard" data-no-translate><div class="daily-heading"><div><h1>'+say('Jó itthon.','Good to be home.')+'</h1><p>'+say('Egy kis segítség a mai naphoz.','A little help for today.')+'</p></div><img src="assets/illustrations/morzsa-mascot.webp" width="66" height="60" alt=""></div><div class="daily-counts"><button data-dashboard-go="pantry">'+homeCount+say(' termék otthon',' products at home')+'</button><span>·</span><button data-dashboard-go="shopping">'+pending.length+say(' tétel a listán',' items to get')+'</button></div><div id="dashboard-review-slot"></div><button class="daily-next" data-dashboard-go="'+(homeCount?'shopping':'pantry')+'"><strong>'+(!homeCount?say('Mi lapul a konyhádban?','What is in your kitchen?'):state.cart.length&&!pending.length?say('Minden kipipálva — befejezed?','All checked off — finish shopping?'):pending.length?say('A bevásárlólistád készen áll','Your shopping list is ready'):say('Mi hiányzik még?','Anything to pick up?'))+'</strong><span>'+(!homeCount?say('Vegyél fel néhány alapanyagot.','Add a few ingredients.'):pending.length?esc(pending.slice(0,3).map(i=>displayName(i.name)).join(', ')):say('Nyisd meg a listát','Open your list'))+' →</span></button><section class="dashboard-assistant"><button id="dashboard-ask"><img src="assets/brands/morzsa.svg" width="26" height="26" alt=""><span><strong>'+say('Mondd el Morzsának','Tell Morzsa')+'</strong><small>'+say('Kérdezz, vagy intézd el egy mondattal.','Ask a question, or say what you need.')+'</small></span></button><button id="dashboard-mic" aria-label="'+say('Beszélgetés Morzsával hanggal','Talk to Morzsa by voice')+'">'+dashboardMicIcon+'</button></section>'+(last?'<section class="daily-history"><h2>'+say('Legutóbbi bevásárlás','Last shopping trip')+'</h2><button id="dashboard-history">'+last.items.length+say(' termék · ',' products · ')+esc(new Date(last.date).toLocaleDateString(language==='en'?'en-GB':'hu-HU'))+' →</button></section>':'')+'<section class="dashboard-meals"><div class="dashboard-section-title"><h2>'+say('Valami finomat?','Something delicious?')+'</h2><button class="small-button" data-dashboard-go="recipes">'+say('Receptek →','Recipes →')+'</button></div>'+dashboardRecipeRow(recipe)+'<button class="surprise-button" id="surprise-recipe">'+say('Lepj meg','Surprise me')+'</button></section></div>';
  main.querySelectorAll('[data-dashboard-go]').forEach(b=>b.onclick=()=>dashboardGo(b.dataset.dashboardGo));
- main.querySelector('#dashboard-ask').onclick=()=>openVoiceCommand('text');main.querySelector('#dashboard-mic').onclick=()=>openVoiceCommand();
- main.querySelector('#dashboard-history').onclick=openArchive;
- main.querySelector('#surprise-recipe').onclick=surpriseRecipe;
- main.querySelector('.dashboard-recipe-library').ontoggle=e=>{dashboardLibraryOpen=e.currentTarget.open};
- main.querySelector('.dashboard-ideas').ontoggle=e=>{dashboardIdeasOpen=e.currentTarget.open;if(dashboardIdeasOpen&&recipeAIReady===null)checkRecipeAI()};
- main.querySelectorAll('[data-recipe-choice]').forEach(b=>b.onclick=()=>{const id=b.dataset.recipeChoice;recipePreferences=id==='quick'?{...recipePreferences,quick:!recipePreferences.quick}:{...recipePreferences,mood:recipePreferences.mood===id?'any':id};try{localStorage.setItem('morzsa-recipe-preferences',JSON.stringify(recipePreferences))}catch{}recipeAIError='';renderRecipes();main.querySelector('[data-recipe-choice="'+id+'"]').focus({preventScroll:true})});
- main.querySelector('#generate-recipe-ideas').onclick=generateRecipeIdeas;main.querySelector('#retry-recipe-ai')?.addEventListener('click',()=>{checkRecipeAI();renderRecipes()});if(dashboardIdeasOpen&&recipeAIReady===null)checkRecipeAI();
- main.querySelectorAll('[data-recipe]').forEach(b=>b.onclick=()=>openRecipe(b.dataset.recipe));
- main.querySelectorAll('[data-save-recipe]').forEach(b=>b.onclick=()=>{const id=b.dataset.saveRecipe;state.likes=state.likes.includes(id)?state.likes.filter(x=>x!==id):[...state.likes,id];save();render()});
- window.PantryReview?.mount();
+ main.querySelector('#dashboard-ask').onclick=()=>openVoiceCommand('text');main.querySelector('#dashboard-mic').onclick=()=>openVoiceCommand();main.querySelector('#dashboard-history')?.addEventListener('click',openArchive);main.querySelector('#surprise-recipe').onclick=surpriseRecipe;
+ main.querySelector('[data-recipe]').onclick=()=>openRecipe(recipe.id);main.querySelector('[data-save-recipe]').onclick=()=>{state.likes=state.likes.includes(recipe.id)?state.likes.filter(id=>id!==recipe.id):[...state.likes,recipe.id];save();render()};window.PantryReview?.mount();
 }
+function renderRecipes(){window.RecipeRoom?.render()}
 
 function vote(like){if(!currentId)return;(like?state.likes:state.skips).push(currentId);save();toast(like?'Elmentve a kedvenceid közé ♡':'Most kihagytuk.');render()}
 const chatRequests=new Map();let aiConfigured=false;
@@ -353,7 +291,7 @@ function setupPantryNavigation(){
  const heading=main.querySelector('.pantry-heading'),row=main.querySelector('.catalog-search-row'),sort=row.querySelector('#sort-toggle'),tools=heading.querySelector('.pantry-tools');
  heading.querySelector('span').remove();tools.append(sort);row.remove();main.querySelector('#add-item')?.remove();
  sort.setAttribute('data-no-translate','');sort.textContent=sortMode==='alpha'?(language==='en'?'Sort by relevance':'Relevancia szerinti rendezés'):(language==='en'?'Sort alphabetically':'ABC szerinti rendezés');sort.setAttribute('aria-label',sort.textContent);sort.removeAttribute('aria-pressed');
- const chatgpt=document.createElement('button');chatgpt.id='chatgpt-pantry';chatgpt.className='small-button';chatgpt.setAttribute('data-no-translate','');chatgpt.textContent=language==='en'?'Overview & recipes':'Áttekintés és receptek';chatgpt.onclick=()=>dashboardGo('recipes');tools.append(chatgpt);
+ const chatgpt=document.createElement('button');chatgpt.id='chatgpt-pantry';chatgpt.className='small-button';chatgpt.setAttribute('data-no-translate','');chatgpt.textContent=language==='en'?'Recipes':'Receptek';chatgpt.onclick=()=>dashboardGo('recipes');tools.append(chatgpt);
  const fab=document.createElement('button');fab.className='pantry-search-fab';fab.setAttribute('data-no-translate','');fab.innerHTML='<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><span>'+(language==='en'?'Search / add':'Keresés / felvétel')+'</span>';fab.onclick=openPantryEntry;main.append(fab);
  fab.style.bottom=(document.querySelector('nav').getBoundingClientRect().height+12)+'px';
  const voice=document.createElement('button');voice.className='pantry-voice-fab';voice.setAttribute('data-no-translate','');voice.setAttribute('aria-label',language==='en'?'Manage pantry by voice':'Készlet kezelése hanggal');voice.innerHTML='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="9" y="2" width="6" height="13" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3M8 22h8"/></svg>';voice.onclick=()=>openVoiceCommand();voice.style.bottom=fab.style.bottom;main.append(voice);
