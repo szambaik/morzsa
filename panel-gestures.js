@@ -13,7 +13,7 @@ const PanelGestures=(()=>{
   const point=e=>e.touches?.[0]||e.changedTouches?.[0]||e;
   function start(e){
    if(e.touches?.length>1||e.button>0||options.disabled?.())return;
-   const target=e.target;if(!options.edge&&target.closest('input,textarea,select,[data-close],.companion-quick-add,.companion-stock-item button,label'))return;
+   const target=e.target;if(!options.edge&&target.closest('button,a,input,textarea,select,[data-close],.companion-quick-add,label'))return;
    const scroll=target.closest('.companion-quick-items');if(scroll?.scrollTop>0)return;
    const p=point(e);drag={x:p.clientX,y:p.clientY,q:options.edge?null:element,locked:false,dx:0,dy:0};
   }
@@ -32,7 +32,7 @@ const PanelGestures=(()=>{
   element.addEventListener('touchstart',start,{passive:true});document.addEventListener('touchmove',move,{passive:false});document.addEventListener('touchend',()=>end());document.addEventListener('touchcancel',()=>end(true));
   element.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'){start(e);if(drag)element.setPointerCapture(e.pointerId)}});document.addEventListener('pointermove',e=>{if(e.pointerType==='mouse')move(e)});document.addEventListener('pointerup',e=>{if(e.pointerType==='mouse')end()});document.addEventListener('pointercancel',e=>{if(e.pointerType==='mouse')end(true)});
   element.addEventListener('click',e=>{if(suppress){e.preventDefault();e.stopImmediatePropagation()}},true);
-  if(!options.edge){element.addEventListener('close',()=>{drag=null;element.style.transform='';element.classList.remove('is-dragging')});element.addEventListener('click',e=>{if(e.target!==element||suppress)return;const r=element.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)element.close()})}
+  if(!options.edge){element.addEventListener('close',()=>{drag=null;element.style.transform='';element.classList.remove('is-dragging')});element.addEventListener('click',e=>{if(e.target!==element||suppress||options.disabled?.())return;const r=element.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)element.close()})}
  }
  return {intent,finish,bind};
 })();

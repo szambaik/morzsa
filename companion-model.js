@@ -9,6 +9,7 @@ const CompanionModel = (() => {
   return {version:1,active:threads.some(t=>t.id===value?.active)?value.active:threads[0]?.id,threads};
  }
  function history(messages,limit=6){return messages.slice(-Math.min(12,limit)).map(m=>({role:m.role,text:(m.text+(m.photo?' [Photo was attached; image is not available in this history.]':'')+(m.recipes?.length?' Recipes: '+JSON.stringify(m.recipes):'')+(m.result?' Change status: '+m.result:'')).slice(0,5000)}))}
+ function reviewPreview(reviews,stock,deferred={},now=Date.now()){return reviews.filter(i=>stock[i.name]>0&&!(deferred['review:'+i.name]>now)).slice(0,6)}
  function suggestion(state,reviews,removed=[],deferred={},now=Date.now()){
   const allowed=id=>!(deferred[id]>now),bought=state.cart.filter(i=>i.done);
   const id='bought:'+JSON.stringify(bought.map(i=>[i.name,i.quantity,i.unit]).sort());
@@ -23,6 +24,6 @@ const CompanionModel = (() => {
  function changes(before,after){
   const changes=[];for(const bucket of ['stock','cart','history']){const entries=s=>bucket==='stock'?Object.entries(s.stock):s[bucket].map(i=>[bucket==='history'?i.id:i.name,i]),a=new Map(entries(before)),b=new Map(entries(after));for(const key of new Set([...a.keys(),...b.keys()]))if(JSON.stringify(a.get(key))!==JSON.stringify(b.get(key)))changes.push({bucket,key,before:a.get(key),after:b.get(key)})}return changes;
  }
- return {thumbnail,key,fresh,normalize,history,suggestion,fingerprint,changes};
+ return {thumbnail,key,fresh,normalize,history,reviewPreview,suggestion,fingerprint,changes};
 })();
 if(typeof module!=='undefined')module.exports=CompanionModel;

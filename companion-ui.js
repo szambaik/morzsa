@@ -8,15 +8,23 @@ window.MorzsaCompanion=(()=>{
  const scope=()=>M.key(household?.userId(),household?.active,language),thread=()=>book.threads.find(t=>t.id===book.active);
  const icon=(name)=>({history:'☰',new:'＋',close:'×',arrow:'↑',cart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M2 3h3l3 13h11M6 6h15l-2 7H7"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg>',home:houseIcon,overview:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>'})[name];
  // Presentation only: full answers are saved immediately; old chats never replay.
+ let mentionIndex=null,mentionKey='';
+ function ingredientText(text){
+  const key=JSON.stringify(state.custom.map(i=>i.name));if(!mentionIndex||key!==mentionKey){mentionKey=key;mentionIndex=IngredientMentions.build([...catalog,...state.custom],productEnglish)}
+  return IngredientMentions.split(text,mentionIndex).map(part=>{
+   if(!part.name)return esc(part.text);const home=state.stock[part.name]>0,listed=state.cart.some(i=>i.name===part.name),status=say(home?'Van otthon':'Nincs megjelölve otthon',home?'At home':'Not marked at home')+(listed?say(' · A listán is',' · On the list'):'');
+   return '<button type="button" class="ingredient-mention '+(home?'at-home':'not-home')+'" data-mention="'+esc(part.name)+'" aria-label="'+esc(part.text+' · '+status)+'" title="'+esc(status)+'"><img src="'+(productArtwork[part.name]||'assets/icons/oats.webp')+'" alt="" width="18" height="18" loading="lazy">'+esc(part.text)+(listed?'<span class="mention-listed" aria-hidden="true">'+icon('cart')+'</span>':'')+'</button>';
+  }).join('');
+ }
  let reveal=null,revealFrame=0;
- function stopReveal(){cancelAnimationFrame(revealFrame);revealFrame=0;const el=main.querySelector('[data-answer-reveal]');if(el&&reveal)el.textContent=reveal.text;el?.classList.remove('is-revealing');reveal=null}
+ function stopReveal(){cancelAnimationFrame(revealFrame);revealFrame=0;const el=main.querySelector('[data-answer-reveal]');if(el&&reveal)el.closest('p').innerHTML=ingredientText(reveal.text);el?.classList.remove('is-revealing');reveal=null}
  function startReveal(){
   stopReveal();if(page!=='chat'||document.hidden||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   const text=thread().messages.at(-1).text;
   reveal={context,thread:book.active,text,index:thread().messages.length-1,parts:text.match(/\S+\s*|\s+/gu)||[],count:0,start:performance.now(),duration:Math.min(6000,Math.max(600,text.length*12))};
  }
  function answerText(m,i){
-  if(!reveal||m.role!=='model'||i!==reveal.index||book.active!==reveal.thread)return '<p>'+esc(m.text)+'</p>';
+  if(!reveal||m.role!=='model'||i!==reveal.index||book.active!==reveal.thread)return '<p>'+ingredientText(m.text)+'</p>';
   return '<p><span class="sr-only">'+esc(m.text)+'</span><span data-answer-reveal aria-hidden="true" class="is-revealing">'+esc(reveal.parts.slice(0,reveal.count).join(''))+'</span></p>';
  }
  function animateAnswer(){
@@ -48,7 +56,7 @@ window.MorzsaCompanion=(()=>{
  }
  function append(message){const t=thread();t.messages.push(message);t.updated=Date.now();if(!t.title&&message.role==='user')t.title=message.text.slice(0,60);persist()}
  function fresh(){if(busy||saving)return;attachment=null;retryAttachment=null;preparing=false;photoSerial++;stopReveal();sync();if(thread().messages.length){const t=M.fresh(crypto.randomUUID());book.threads.unshift(t);book.active=t.id}pending=null;draft='';error='';persist();closePanels();open()}
- function closePanels(){document.getElementById('companion-history')?.close();document.getElementById('companion-quick')?.close()}
+ function closePanels(){document.getElementById('companion-history')?.close();document.getElementById('companion-quick')?.close();document.getElementById('ingredient-action-dialog')?.close()}
  function open(text=''){page='chat';if(text)draft=text;render();window.scrollTo({top:0,behavior:'instant'});if(text)main.querySelector('#companion-input')?.focus()}
  function onNavigate(){sync();if(page!=='chat'){stopReveal();closePanels()}viewport()}
  function labels(o){const d=VoiceModel.defaults(o,state,productUnit);return ({stock_add:say('Készletbe','To pantry'),stock_remove:say('Elfogyott','Used up'),list_set:say('Listára','To list')})[o.action]+(o.action==='list_set'?' · '+d.quantity+' '+d.unit:'')}
@@ -142,6 +150,12 @@ window.MorzsaCompanion=(()=>{
  function updateNudge(){
   if(context!==scope())return;
   const host=main.querySelector('#companion-nudge');if(!host)return;const n=nudge();if(!n){host.innerHTML='';return}
+  if(n.type==='review'){
+   const items=M.reviewPreview(PantryReview.candidates(),state.stock,deferred);
+   host.innerHTML='<aside class="companion-nudge companion-review-preview"><div class="companion-speaker"><img src="assets/brands/morzsa.svg" width="18" height="18" alt="">'+say('Egy apróság…','One small thing…')+'</div><strong>'+say('Ezek megvannak még?','Still have these?')+'</strong><div class="review-preview-items">'+items.map(item=>'<button data-review-preview="'+esc(item.name)+'" aria-label="'+esc(displayName(item.name))+say(' ellenőrzése',' — review')+'"><img src="'+(productArtwork[item.name]||'assets/icons/oats.webp')+'" alt="" width="30" height="30"><span>'+esc(displayName(item.name))+'</span></button>').join('')+'</div><div class="companion-actions"><button data-review-open>'+say('Átnézem együtt','Review together')+'</button><button data-review-later>'+say('Most nem','Not now')+'</button></div></aside>';
+   host.querySelectorAll('[data-review-preview],[data-review-open]').forEach(b=>b.onclick=()=>{if(context===scope()&&!saving)PantryReview.open()});
+   host.querySelector('[data-review-later]').onclick=()=>{if(context!==scope())return;for(const item of items)deferred['review:'+item.name]=Date.now()+86400000;try{localStorage.setItem(context+':snooze',JSON.stringify(Object.fromEntries(Object.entries(deferred).filter(([,v])=>v>Date.now()).slice(-100))))}catch{}updateNudge()};return;
+  }
   const name=displayName(n.names[0]),title=n.type==='bought'?say('Megvolt a bevásárlás?','Finished shopping?'):n.type==='restock'?say('Felírjam a listára?','Add it to the list?'):name+say(' · megvan még?',' · still at home?');
   const text=n.type==='bought'?n.names.length+say(' kipipált tételt a készletbe tehetünk.',' checked items can move to your pantry.'):n.type==='restock'?name+say(' elfogyott. Gondoskodjunk az utánpótlásról?',' ran out. Shall we get some more?'):n.unknown?say('Ezt még nem ellenőriztük együtt.','We haven’t checked this together yet.'):say('Egy ideje nem erősítettétek meg.','It has been a while since you checked.');
   host.innerHTML='<aside class="companion-nudge"><div class="companion-speaker"><img src="assets/brands/morzsa.svg" width="18" height="18" alt="">'+say('Egy apróság…','One small thing…')+'</div><strong>'+esc(title)+'</strong><p>'+esc(text)+'</p><div class="companion-actions">'+(n.type==='review'?'<button data-nudge="keep">'+say('Van még','Still here')+'</button><button data-nudge="gone">'+say('Elfogyott','Used up')+'</button><button data-nudge="review">'+say('Többet átnézek','Review more')+'</button>':'<button data-nudge="'+(n.type==='bought'?'bought':'list')+'">'+(n.type==='bought'?say('Elpakoltam','Put away'):say('Listára','Add to list'))+'</button>')+'<button data-nudge="later">'+say('Most nem','Not now')+'</button></div></aside>';
@@ -165,6 +179,34 @@ window.MorzsaCompanion=(()=>{
   const ok=household?.active?household.editCart(next,{onlyIfMissing:true}):commitState(next);
   if(ok&&current===scope()){basketFeedback(name);toast(say('A listára került.','Added to list.'));if(!household?.active)showVoiceUndo([{bucket:'cart',key:name,before:undefined,after:next.cart.at(-1)}],undoContext);renderChat()}
  }
+ async function ingredientActions(name){
+  sync();if(![...catalog,...state.custom].some(i=>i.name===name))return;
+  const current=context;let q=document.getElementById('ingredient-action-dialog');if(!q){q=document.createElement('dialog');q.id='ingredient-action-dialog';q.setAttribute('data-no-translate','');q.setAttribute('aria-labelledby','ingredient-action-title');document.body.append(q);PanelGestures.bind(q,{axis:'y',disabled:()=>q.dataset.saving==='true'})}
+  if(q.dataset.saving)return;if(q.open)q.close();let working=false;
+  function paint(){
+   if(current!==scope()){q.close();return}const home=state.stock[name]>0,listed=state.cart.some(i=>i.name===name);
+   q.innerHTML='<div class="companion-sheet-handle" aria-hidden="true"></div><button class="close" aria-label="'+say('Bezárás','Close')+'">×</button><div class="ingredient-action-heading"><img src="'+(productArtwork[name]||'assets/icons/oats.webp')+'" alt="" width="52" height="52"><div><h2 id="ingredient-action-title">'+esc(displayName(name))+'</h2><p>'+say(home?'Van otthon':'Nincs megjelölve otthon',home?'At home':'Not marked at home')+(listed?say(' · A listán is',' · On the list'):'')+'</p></div></div><div class="ingredient-action-buttons"><button data-ingredient-list '+(listed?'disabled':'')+'>'+icon('cart')+say(listed?'Már a listán':'Listára teszem',listed?'Already on list':'Add to list')+'</button><button data-ingredient-stock '+(home?'disabled':'')+'>'+icon('home')+say(home?'Van otthon':'Van otthon',home?'At home':'Add to pantry')+'</button></div><p class="ingredient-action-error" role="status"></p>';
+   q.querySelector('.close').onclick=()=>{if(!working)q.close()};q.oncancel=e=>{if(working)e.preventDefault()};
+   q.querySelector('[data-ingredient-list]').onclick=()=>act('list');q.querySelector('[data-ingredient-stock]').onclick=()=>act('stock');
+  }
+  async function act(destination){
+   if(working||current!==scope())return;if(household?.busy||household?.cartPending){q.querySelector('.ingredient-action-error').textContent=say('A szinkronizálás még tart. Próbáld újra.','Still syncing. Try again.');return}
+   if(destination==='list'&&state.cart.some(i=>i.name===name)||destination==='stock'&&state.stock[name]>0){paint();return}
+   working=true;q.dataset.saving=String(true);q.querySelectorAll('button').forEach(b=>b.disabled=true);
+   try{if(destination==='list'){await addToList(name);if(current!==scope())return;if(!state.cart.some(i=>i.name===name))throw Error('save')}
+    else{const undoContext=voiceContext(),plan=VoiceModel.plan(state,[{action:'stock_add',name,quantity:null,unit:null}],[...catalog,...state.custom],productUnit);if(!await saveVoiceState(plan.next))throw Error('save');if(current!==scope())return;await PantryReview.confirm([name]);showVoiceUndo(plan.changes,undoContext);renderChat()}
+    if(current===scope())q.close();
+   }catch{if(current===scope()){paint();q.querySelector('.ingredient-action-error').textContent=say('Nem sikerült menteni. Próbáld újra.','Could not save. Try again.')}}finally{working=false;delete q.dataset.saving}
+  }
+  paint();q.showModal();
+ }
+ // Delegation also covers messages that finish streaming without a full rebind.
+ let mentionHold=null,heldName='',suppressMentionClickUntil=0;
+ const cancelMentionHold=()=>{clearTimeout(mentionHold);mentionHold=null};
+ main.addEventListener('pointerdown',e=>{const b=e.target.closest('[data-mention]');if(!b||e.button!==0)return;cancelMentionHold();const start={x:e.clientX,y:e.clientY},current=scope();heldName=b.dataset.mention;mentionHold=setTimeout(()=>{mentionHold=null;if(current!==scope()||!b.isConnected)return;suppressMentionClickUntil=Date.now()+700;ingredientActions(b.dataset.mention)},450);b.onpointermove=event=>{if(Math.hypot(event.clientX-start.x,event.clientY-start.y)>10)cancelMentionHold()}});
+ for(const event of ['pointerup','pointercancel','pointerleave'])main.addEventListener(event,cancelMentionHold);
+ main.addEventListener('click',e=>{const b=e.target.closest('[data-mention]');if(!b)return;e.preventDefault();cancelMentionHold();if(b.dataset.mention===heldName&&Date.now()<suppressMentionClickUntil)return;ingredientActions(b.dataset.mention)});
+ main.addEventListener('contextmenu',e=>{const b=e.target.closest('[data-mention]');if(!b)return;e.preventDefault();cancelMentionHold();if(Date.now()>=suppressMentionClickUntil)ingredientActions(b.dataset.mention)});
  function quick(destination){
   sync();const q=panel('companion-quick'),current=context;let query='';
   function paint(){
