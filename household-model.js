@@ -1,6 +1,7 @@
 // Pure shared-state conversion and per-record optimistic concurrency diff.
 const HouseholdModel={
  // Store field-level shopping intent, so a check never overwrites a partner's quantity.
+ mergeRecipeNeeds(before=[],added=[]){const result=[];for(const n of [...before,...added])if(n?.recipe&&!result.some(x=>JSON.stringify([x.recipe.title,x.recipe.ingredients,x.recipe.steps])===JSON.stringify([n.recipe.title,n.recipe.ingredients,n.recipe.steps])))result.push(n);return result.slice(0,3)},
  cartIntent(before,next){
   const old=new Map(before.cart.map(x=>[x.name,x])),fresh=new Map(next.cart.map(x=>[x.name,x])),cart=[];
   for(const [name,item] of old)if(!fresh.has(name))cart.push({name,remove:true});
@@ -10,7 +11,7 @@ const HouseholdModel={
  applyCartIntents(base,intents){
   const next={...base,cart:base.cart.map(x=>({...x})),custom:[...base.custom]};
   for(const intent of intents){
-   for(const op of intent.cart){const i=next.cart.findIndex(x=>x.name===op.name);if(op.create&&op.onlyIfMissing&&i>=0)continue;if(op.remove){if(i>=0)next.cart.splice(i,1)}else if(i>=0)next.cart[i]={...next.cart[i],...op.fields,name:op.name};else if(op.create)next.cart.push({...op.fields,name:op.name})}
+   for(const op of intent.cart){const i=next.cart.findIndex(x=>x.name===op.name);if(op.create&&op.onlyIfMissing&&i>=0){if(op.fields.recipeNeeds)next.cart[i]={...next.cart[i],recipeNeeds:this.mergeRecipeNeeds(next.cart[i].recipeNeeds,op.fields.recipeNeeds)};continue;}if(op.remove){if(i>=0)next.cart.splice(i,1)}else if(i>=0)next.cart[i]={...next.cart[i],...op.fields,...(op.fields.recipeNeeds?{recipeNeeds:this.mergeRecipeNeeds(next.cart[i].recipeNeeds,op.fields.recipeNeeds)}:{}),name:op.name};else if(op.create)next.cart.push({...op.fields,name:op.name})}
    for(const item of intent.custom)if(!next.custom.some(x=>x.name===item.name))next.custom.push(item);
   }return next;
  },

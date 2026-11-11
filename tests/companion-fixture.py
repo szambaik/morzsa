@@ -10,7 +10,7 @@ localStorage.setItem('morzsa-v2',JSON.stringify({stock:{Tej:2,Tojás:2,Liszt:2,A
 mock='''<script>
 window.household={active:null,busy:false,userId:()=> 'companion-fixture',storageKey:()=> 'morzsa-v2',notify:()=>Promise.resolve(true),voiceStatus:()=>Promise.resolve({configured:true,supportsImages:true,supportsStreaming:true}),voiceCommand:async payload=>{
 await new Promise(r=>setTimeout(r,300));const text=payload.text||'Elfogyott a tej. Írd a listára.';
-return {transcript:text,answer:text.includes('tej')?'A tejet kivehetjük a készletből és felírhatjuk a listára.':'Tojás, tej és liszt: ebből készíthetünk almás palacsintát. Ellenőrizd, hogy mindenből van-e elég.',clarification:'',operations:text.includes('tej')?[{action:'stock_remove',name:'Tej',quantity:null,unit:null},{action:'list_set',name:'Tej',quantity:null,unit:null}]:[],recipes:text.includes('tej')?[]:[{title:'Almás palacsinta',summary:'Egy gyors, otthonos édesség.',minutes:20,ingredients:[{name:'Tojás',amount:'2 db'},{name:'Liszt',amount:'120 g'},{name:'Tej',amount:'150 ml'},{name:'Alma',amount:'1 db'},{name:'Olaj',amount:'1 ek'}],steps:['Keverd simára a tésztát.','Reszeld bele az almát.','Süsd kis adagokban mindkét oldalát aranyszínűre.']}]};},updateLanguage:()=>{}};
+return {transcript:text,answer:text.includes('tej')?'A tejet kivehetjük a készletből és felírhatjuk a listára.':'## Ma legyen almás palacsinta\\n\\nGyors, otthonos édesség a készletedből.\\n\\n**Ezt nézd meg előtte:**\\n- Tojás, tej és liszt: van még elég?\\n- Az almát reszeld a tésztába.\\n\\nA pontos mennyiségeket lent, a receptnél találod.',clarification:'',operations:text.includes('tej')?[{action:'stock_remove',name:'Tej',quantity:null,unit:null},{action:'list_set',name:'Tej',quantity:null,unit:null}]:[],recipes:text.includes('tej')?[]:[{title:'Almás palacsinta',summary:'Egy gyors, otthonos édesség.',minutes:20,ingredients:[{name:'Tojás',amount:'2 db'},{name:'Liszt',amount:'120 g'},{name:'Tej',amount:'150 ml'},{name:'Alma',amount:'1 db'},{name:'Olaj',amount:'1 ek'}],steps:['Keverd simára a tésztát.','Reszeld bele az almát.','Süsd kis adagokban mindkét oldalát aranyszínűre.']}]};},updateLanguage:()=>{}};
 window.household.voiceCommandStream=async (p,onAnswer,signal)=>{const r=await window.household.voiceCommand(p);for(let i=8;i<r.answer.length+8;i+=8){if(signal?.aborted)throw new DOMException('Stopped','AbortError');onAnswer(r.answer.slice(0,i));await new Promise(resolve=>setTimeout(resolve,90))}return r};
 window.household.recipeIdeas=async p=>{const r=await window.household.voiceCommand({text:p.text});return {answer:r.answer,recipes:r.recipes}};
 document.getElementById('household-button').textContent='Tesztkonyha';
@@ -19,7 +19,7 @@ class Fixture(Handler):
  def do_GET(self):
   if self.path.split('?')[0]=='/':
    html=Path('index.html').read_text().replace('<script src="app.js',seed+'<script src="app.js')
-   html=re.sub(r'<script src="household.js[^>]*></script>',mock,html)
+   html=re.sub(r'<script src="household.js[^>]*></script>',lambda _:mock,html)
    body=html.encode();self.send_response(200);self.send_header('Content-Type','text/html; charset=utf-8');self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body)
   else:super().do_GET()
 port=int(sys.argv[1]) if len(sys.argv)>1 else 8777

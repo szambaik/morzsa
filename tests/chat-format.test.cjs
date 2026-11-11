@@ -1,0 +1,4 @@
+const {test}=require('node:test'),assert=require('node:assert/strict'),F=require('../chat-format');
+const escape=s=>s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+test('chat formats headings, emphasis, lists and paragraphs with escaped text',()=>{const html=F.render('## Vacsora\n\n**Hozzávalók**\n- Tojás\n- Tej\n\n1. Keverd össze.\n2. Süsd meg.\n\n<img src=x onerror=alert(1)>',escape);assert.match(html,/<h4>Vacsora<\/h4>/);assert.match(html,/<strong>Hozzávalók<\/strong>/);assert.match(html,/<ul><li>Tojás<\/li><li>Tej<\/li><\/ul>/);assert.match(html,/<ol>/);assert.ok(!html.includes('<img'));assert.ok(html.includes('&lt;img'))});
+test('inline ingredient rendering composes with Markdown and preserves ordinary line breaks',()=>{const html=F.render('**Tej**\nKeverd hozzá.',s=>s==='Tej'?'<button>Tej</button>':escape(s));assert.equal(html,'<p><strong><button>Tej</button></strong><br>Keverd hozzá.</p>')});
