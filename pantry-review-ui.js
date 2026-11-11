@@ -2,7 +2,7 @@
 window.PantryReview=(()=>{
  let checks={},previous={...state.stock},context=null,available=true,loading=false,generation=0,lastRemoval=null;
  const say=(hu,en)=>language==='en'?en:hu,key=()=>JSON.stringify([household?.userId(),household?.active||'local']);
- const due=()=>PantryReviewModel.due(state.stock,context===key()&&available?checks:{},productCategory,nonFoodCategories);
+ const due=()=>PantryReviewModel.due(state.stock,context===key()&&available?checks:{},productCategory,nonFoodCategories,Date.now(),n=>householdPriority.get(n)??9999);
  const snapshot=name=>JSON.stringify([state.stock[name],household?.active?household.rows.find(r=>r.bucket==='stock'&&r.key===name)?.revision:null,checks[name]||null]);
  function mount(){
   main.querySelectorAll('.pantry-maintenance').forEach(e=>e.remove());document.getElementById('pantry-review-entry')?.remove();
@@ -22,7 +22,8 @@ window.PantryReview=(()=>{
   }catch{if(token===generation&&current===key())available=false}finally{if(token===generation){loading=false;mount()}}
  }
  function onStateChanged(){if(!household?.active){let changed=false;for(const name of new Set([...Object.keys(previous),...Object.keys(state.stock)])){if(state.stock[name]>0&&!previous[name]){checks[name]=new Date().toISOString();changed=true}else if(!(state.stock[name]>0)&&checks[name]){delete checks[name];changed=true}}if(changed)try{localStorage.setItem('morzsa-pantry-review-local',JSON.stringify(checks))}catch{}previous={...state.stock};mount()}}
- async function confirm(names){
+ async function confirm(names,expected=null){
+  if(expected&&names.some(n=>expected.get(n)!==snapshot(n))){toast(say('Közben változott egy tétel. Nyisd meg újra az ellenőrzést.','An item changed. Reopen the review.'));return false}
   if(!names.length)return true;const current=key();try{if(!household?.active){const next={...checks};for(const name of names)if(state.stock[name]>0)next[name]=new Date().toISOString();localStorage.setItem('morzsa-pantry-review-local',JSON.stringify(next));checks=next}
    else{await household.confirmPantryReviews(names);if(current!==key())return false;await refresh()}mount();return true;
   }catch{toast(say('Az ellenőrzést nem sikerült menteni.','Could not save the check.'));return false}
@@ -51,27 +52,26 @@ window.PantryReview=(()=>{
   q.querySelector('#removal-apply').onclick=async()=>{if(saving||current!==key()||!selected.size)return;saving=true;update();q.querySelectorAll('input,button').forEach(e=>e.disabled=true);const ok=await remove([...selected.keys()],q.querySelector('#removal-list').checked,selected);saving=false;if(current!==key()){q.close();return}if(ok)q.close();else{selected.clear();q.querySelectorAll('input,button').forEach(e=>e.disabled=false);paint();q.querySelector('.removal-error').textContent=say('Nem mentettünk. Jelöld ki újra a tételeket.','Not saved. Select the items again.')}};
   paint();q.showModal();
  }
- async function open(){
+ function open(){
   if(loading||household?.busy||household?.cartPending)return;
   let q=document.getElementById('pantry-review-dialog');if(!q){q=document.createElement('dialog');q.id='pantry-review-dialog';q.setAttribute('data-no-translate','');document.body.append(q)}
-  const current=key(),batch=due().slice(0,5);let at=0,busy=false,undoStep=null;
-  const paint=()=>{
-   if(current!==key()){q.close();return}if(at>=batch.length){q.close();mount();toast(say('Áttekintés kész.','Review complete.'));return}
-   const item=batch[at];if(!(state.stock[item.name]>0)){at++;paint();return}const expected=new Map([[item.name,snapshot(item.name)]]);
-   q.innerHTML='<button class="close" aria-label="'+say('Bezárás','Close')+'">×</button><div class="eyebrow">'+(at+1)+' / '+batch.length+'</div><h2>'+say('Van még otthon?','Still at home?')+'</h2><div class="review-product"><img src="'+(productArtwork[item.name]||'assets/icons/oats.webp')+'" alt="" width="64" height="64"><strong>'+esc(displayName(item.name))+'</strong></div><p class="helper">'+(item.unknown?say('Ezt még nem ellenőriztük.','This has not been checked yet.'):say('Egy ideje nem erősítettétek meg.','It has been a while since you checked.'))+'</p><div class="review-choices"><button class="primary" data-review="gone">'+say('Elfogyott','Used up')+'</button><button class="small-button" data-review="list">'+say('Elfogyott, listára','Used up — add to list')+'</button><button class="small-button" data-review="keep">'+say('Van még','Still have it')+'</button></div><button class="small-button review-skip" data-review="skip">'+say('Most kihagyom','Skip for now')+'</button>'+(undoStep?'<button class="small-button review-undo" id="review-undo">'+say('Visszavonom a kivételt','Undo removal')+'</button>':'')+'<p class="review-error" role="status"></p>';
-   q.querySelector('.close').onclick=()=>{if(!busy)q.close()};q.oncancel=e=>{if(busy)e.preventDefault()};
-   q.querySelector('#review-undo')?.addEventListener('click',async()=>{
-    if(busy||current!==key()||household?.busy||household?.cartPending||!undoStep)return;
-    busy=true;q.querySelectorAll('button').forEach(b=>b.disabled=true);const result=VoiceModel.undo(state,undoStep.removal.changes),ok=await saveVoiceState(result.next);busy=false;
-    if(current!==key()){q.close();return}if(ok){at=undoStep.index;undoStep=null;clearInterval(voiceUndoTimer);document.getElementById('voice-undo')?.remove();onStateChanged();await refresh();render();paint();if(result.skipped)toast(say('A közben módosított tételeket megtartottuk.','Items changed since then were kept.'))}else{paint();q.querySelector('.review-error').textContent=say('Nem sikerült visszavonni.','Could not undo.')}
-   });
-   q.querySelectorAll('[data-review]').forEach(button=>button.onclick=async()=>{
-    if(busy||current!==key()||household?.busy||household?.cartPending)return;const action=button.dataset.review;if(action==='skip'){at++;paint();return}
-    busy=true;q.querySelectorAll('button').forEach(b=>b.disabled=true);let ok=false;
-    try{ok=action==='keep'?await confirm([item.name]):await remove([item.name],action==='list',expected)}catch{ok=false}finally{busy=false}
-    if(!q.open)return;if(ok){if(action!=='keep')undoStep={index:at,removal:lastRemoval};at++;paint();if(page==='pantry')renderPantry();else if(page==='overview')renderDashboard()}else{paint();q.querySelector('.review-error').textContent=say('Nem sikerült menteni. Ellenőrizd, és próbáld újra.','Not saved. Check and try again.')}
-   });
-  };paint();if(at<batch.length)q.showModal();
+  const current=key(),batch=due().slice(0,8),choices=new Map(),expected=new Map(batch.map(i=>[i.name,snapshot(i.name)]));let saving=false;
+  if(!batch.length){toast(say('Most minden frissen ellenőrzött.','Everything is up to date.'));return}
+  q.innerHTML='<button class="close" aria-label="'+say('Bezárás','Close')+'">×</button><h2>'+say('Megvan még?','Still at home?')+'</h2><p class="review-batch-caption">'+say('Régebben ellenőrzött, gyakran fogyó alapanyagok. Amit nem jelölsz, marad úgy, ahogy van.','Older checks and frequently used basics. Unselected items stay unchanged.')+'</p><button class="small-button" data-review-all>'+say('Mind megvan','All still here')+'</button><div class="review-batch-items">'+batch.map((item,i)=>'<div class="review-batch-row"><img src="'+(productArtwork[item.name]||'assets/icons/oats.webp')+'" alt="" width="34" height="34"><div><strong>'+esc(displayName(item.name))+'</strong><small>'+(item.unknown?say('Még nem ellenőrzött','Not checked yet'):Math.floor(item.age)+say(' napja ellenőrizve',' days since check'))+'</small></div><div class="review-batch-options"><button data-choice="keep" data-index="'+i+'" aria-pressed="false" aria-label="'+esc(displayName(item.name))+say(': van még',': still here')+'">'+say('Van még','Still here')+'</button><button data-choice="gone" data-index="'+i+'" aria-pressed="false" aria-label="'+esc(displayName(item.name))+say(': elfogyott',': used up')+'">'+say('Elfogyott','Used up')+'</button></div></div>').join('')+'</div><div class="review-batch-footer"><label><input type="checkbox" data-review-list> '+say('Az elfogyottakat a listára is','Also list used-up items')+'</label><button class="primary" data-review-save disabled>'+say('Mentés','Save')+'</button><p class="review-error" role="status"></p></div>';
+  const update=()=>{q.querySelectorAll('[data-choice]').forEach(b=>b.setAttribute('aria-pressed',choices.get(batch[Number(b.dataset.index)].name)===b.dataset.choice));const b=q.querySelector('[data-review-save]');b.disabled=saving||!choices.size;b.textContent=saving?say('Mentés…','Saving…'):say('Mentés','Save')+' · '+choices.size};
+  q.querySelectorAll('[data-choice]').forEach(b=>b.onclick=()=>{const name=batch[Number(b.dataset.index)].name;if(choices.get(name)===b.dataset.choice)choices.delete(name);else choices.set(name,b.dataset.choice);update()});
+  q.querySelector('[data-review-all]').onclick=()=>{batch.forEach(i=>choices.set(i.name,'keep'));update()};
+  q.querySelector('.close').onclick=()=>{if(!saving)q.close()};q.oncancel=e=>{if(saving)e.preventDefault()};
+  q.querySelector('[data-review-save]').onclick=async()=>{
+   if(saving||current!==key()||!choices.size||household?.busy||household?.cartPending)return;
+   const names=[...choices.keys()];if(names.some(n=>expected.get(n)!==snapshot(n))){q.querySelector('.review-error').textContent=say('Közben változott egy kijelölt tétel. Zárd be, és nyisd meg újra az ellenőrzést.','A selected item changed. Close and reopen this review.');return}
+   const keep=names.filter(n=>choices.get(n)==='keep'),gone=names.filter(n=>choices.get(n)==='gone'),alsoList=q.querySelector('[data-review-list]').checked;
+   saving=true;update();q.querySelectorAll('button,input').forEach(b=>b.disabled=true);let kept=false,ok=false;
+   try{kept=await confirm(keep,expected);if(kept&&current===key()){keep.forEach(n=>choices.delete(n));ok=gone.length?await remove(gone,alsoList,expected):true}}catch{ok=false}
+   saving=false;if(current!==key()){q.close();return}if(ok){q.close();mount();if(!gone.length)toast(keep.length+say(' termék megerősítve.',' products confirmed.'))}
+   else{q.querySelectorAll('button,input').forEach(b=>b.disabled=false);update();q.querySelector('.review-error').textContent=kept&&keep.length?say('A megmaradt termékeket megerősítettük. A kivétel nem sikerült; ellenőrizd újra.','Available items confirmed. Removal failed; review again.'):say('Nem sikerült menteni. Próbáld újra.','Could not save. Try again.')}
+  };
+  q.showModal();
  }
  const original=renderPantry;renderPantry=function(){original();mount()};
  refresh();document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh()});

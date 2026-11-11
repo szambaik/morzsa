@@ -8,7 +8,7 @@ const CompanionModel = (() => {
   let photos=0;for(const t of [...threads].sort((a,b)=>b.updated-a.updated))for(const m of [...t.messages].reverse())if(m.photo&&++photos>30)delete m.photo;
   return {version:1,active:threads.some(t=>t.id===value?.active)?value.active:threads[0]?.id,threads};
  }
- function history(messages){return messages.slice(-6).map(m=>({role:m.role,text:(m.text+(m.photo?' [Photo was attached; image is not available in this history.]':'')+(m.recipes?.length?' Recipes: '+JSON.stringify(m.recipes):'')+(m.result?' Change status: '+m.result:'')).slice(0,5000)}))}
+ function history(messages,limit=6){return messages.slice(-Math.min(12,limit)).map(m=>({role:m.role,text:(m.text+(m.photo?' [Photo was attached; image is not available in this history.]':'')+(m.recipes?.length?' Recipes: '+JSON.stringify(m.recipes):'')+(m.result?' Change status: '+m.result:'')).slice(0,5000)}))}
  function suggestion(state,reviews,removed=[],deferred={},now=Date.now()){
   const allowed=id=>!(deferred[id]>now),bought=state.cart.filter(i=>i.done);
   const id='bought:'+JSON.stringify(bought.map(i=>[i.name,i.quantity,i.unit]).sort());

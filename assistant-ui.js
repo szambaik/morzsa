@@ -4,7 +4,7 @@ window.MorzsaAssistant=(()=>{
  const searchIcon='<svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/></svg>';
  function mount(){
   if(!['overview','pantry','shopping'].includes(page))return;
-  if(page==='overview')main.querySelector('.dashboard-assistant')?.remove();
+  if(page==='overview'){main.querySelector('.dashboard-assistant')?.remove();main.querySelector('.assistant-dock')?.remove();return}
   main.querySelectorAll('.assistant-dock,.pantry-voice-fab,.pantry-search-fab').forEach(el=>el.remove());
   const dock=document.createElement('div');dock.className='assistant-dock';dock.setAttribute('data-no-translate','');
   const placeholder=page==='shopping'?say('Mit írjunk a listára?','What goes on the list?'):page==='pantry'?say('Mi változott otthon?','What changed at home?'):say('Mondd el Morzsának…','Tell Morzsa…');

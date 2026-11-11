@@ -40,6 +40,7 @@
  cloud.userId=()=>session?.user?.id||null;
  cloud.voiceStatus=()=>request('/functions/v1/voice-command',undefined,false);
  cloud.voiceCommand=payload=>{if(!session)throw Error('VOICE_SIGN_IN_REQUIRED');return request('/functions/v1/voice-command',payload,true,'POST',45000)};
+ cloud.voiceCommandStream=(payload,onAnswer,signal)=>{if(!session)throw Error('VOICE_SIGN_IN_REQUIRED');return request('/functions/v1/voice-command',{...payload,stream:true},true,'POST',45000,{onAnswer,signal})};
  cloud.recipeAIStatus=()=>request('/functions/v1/recipe-ideas',undefined,false);
  cloud.recipeIdeas=payload=>{if(!session)throw Error('AI_SIGN_IN_REQUIRED');return request('/functions/v1/recipe-ideas',payload,true,'POST',45000)};
  let liveConnection=null,liveRefreshTimer=null,liveDirty=false;
@@ -61,14 +62,16 @@
  let authPending=!!incomingLink||!!window.MorzsaNative,authNotice='';
  function status(hu,en){if(cartOutbox.length&&cartFailed){cartStatus(true);return}const el=document.getElementById('cloud-status');delete el.dataset.cartSync;el.textContent=say(hu,en);el.hidden=['Csak ezen az eszközön','Közös háztartás · szinkronizálva','Közös háztartás'].includes(hu)}
  function errorText(e){if(e.message?.includes('Invalid login credentials'))return say('Hibás email-cím vagy jelszó.','Incorrect email or password.');if(e.message?.includes('Email not confirmed'))return say('Előbb erősítsd meg az email-címedet a kapott levélben.','Confirm your email using the message in your inbox first.');if(e.message?.includes('Conflict'))return say('Valaki közben módosította a listát. Frissítettük; ismételd meg a műveletet.','Someone changed the list. It has been refreshed; repeat your action.');return e.message||say('Nem sikerült kapcsolódni.','Could not connect.')}
- async function request(path,body,auth=true,method=body===undefined?'GET':'POST',timeoutMs=20000){
+ async function request(path,body,auth=true,method=body===undefined?'GET':'POST',timeoutMs=20000,options={}){
   if(!configured)throw Error(say('A felhő még nincs bekötve.','Cloud is not configured yet.'));
   if(auth&&session&&session.expires_at*1000<Date.now()+60000){
    if(!refreshPromise){const previous=session,version=authVersion;refreshPromise=(async()=>{const r=await fetch(config.url+'/auth/v1/token?grant_type=refresh_token',{method:'POST',signal:AbortSignal.timeout(20000),headers:{apikey:config.publishableKey,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:previous.refresh_token})});const data=await r.json();if(!r.ok||version!==authVersion)throw Error(say('Jelentkezz be újra.','Please sign in again.'));await setSession(data)})().finally(()=>{refreshPromise=null})}await refreshPromise;
   }
-  const response=await fetch(config.url+path,{method,signal:AbortSignal.timeout(timeoutMs),headers:{apikey:config.publishableKey,'Content-Type':'application/json',...(auth&&session?{Authorization:'Bearer '+session.access_token}:{})},...(body===undefined?{}:{body:JSON.stringify(body)})});
+  const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),timeoutMs),abort=()=>controller.abort();options.signal?.addEventListener('abort',abort,{once:true});if(options.signal?.aborted)controller.abort();
+  try{const response=await fetch(config.url+path,{method,signal:controller.signal,headers:{apikey:config.publishableKey,'Content-Type':'application/json',...(auth&&session?{Authorization:'Bearer '+session.access_token}:{})},...(body===undefined?{}:{body:JSON.stringify(body)})});
+  if(response.ok&&options.onAnswer&&response.headers.get('Content-Type')?.includes('application/x-ndjson'))return await ChatStream.read(response,options.onAnswer);
   const text=await response.text();let data;try{data=text?JSON.parse(text):null}catch{throw Error('Invalid server response')}
-  if(!response.ok)throw Error(data?.message||data?.msg||data?.error_description||(typeof data?.error==='string'?data.error:'Request failed'));return data;
+  if(!response.ok)throw Error(data?.message||data?.msg||data?.error_description||(typeof data?.error==='string'?data.error:'Request failed'));return data;}finally{clearTimeout(timeout);options.signal?.removeEventListener('abort',abort)}
  }
  async function setSession(value){
   const previousUser=session?.user?.id,version=++authVersion;if(value&&!value.expires_at)value.expires_at=Math.floor(Date.now()/1000)+(value.expires_in||3600);

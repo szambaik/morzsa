@@ -2,8 +2,15 @@
 const PantryReviewModel=(()=>{
  const day=86400000;
  function interval(category){if(['Zöldségek','Gyümölcsök','Pékáru'].includes(category))return 5;if(['Tejtermék és tojás','Hús és felvágott','Hal és tengeri','Növényi alapok'].includes(category))return 7;if(category==='Fagyasztott')return 30;return 60}
- function due(stock,checks,categoryFor,excluded=new Set(),now=Date.now()){
-  return Object.keys(stock).filter(name=>stock[name]>0&&!excluded.has(categoryFor(name))).map(name=>{const at=Date.parse(checks[name]?.last_confirmed_at||checks[name]||'');return {name,unknown:!Number.isFinite(at),at,days:interval(categoryFor(name))}}).filter(x=>x.unknown||now-x.at>=x.days*day).sort((a,b)=>a.days-b.days||Number(b.unknown)-Number(a.unknown)||(a.at||0)-(b.at||0));
+ // Editorial estimates for consumption, not shelf life or measured personal habits.
+ const cycles={'Kenyér':3,'Zsemle':3,'Kifli':3,'Tej':4,'Joghurt':5,'Tejföl':7,'Tojás':10,'Vaj':21,'Sajt':10,'Paradicsom':5,'Paprika':7,'Uborka':5,'Saláta':4,'Banán':5,'Alma':10,'Krumpli':21,'Hagyma':21,'Fokhagyma':30,'Csirkemell':5,'Csirkecomb':5,'Sonka':5,'Rizs':45,'Tészta':30,'Olaj':60,'Liszt':60,'Cukor':90,'Só':120,'Kávé':21};
+ function due(stock,checks,categoryFor,excluded=new Set(),now=Date.now(),priorityFor=()=>9999){
+  return Object.keys(stock).filter(name=>stock[name]>0&&!excluded.has(categoryFor(name))).map(name=>{
+   const at=Date.parse(checks[name]?.last_confirmed_at||checks[name]||''),unknown=!Number.isFinite(at),days=cycles[name]||interval(categoryFor(name)),age=unknown?null:Math.max(0,(now-at)/day),importance=Math.max(0,1-Math.min(100,priorityFor(name))/100);
+   // Relative overdue age dominates, with a bounded preference for daily basics.
+   const score=(unknown?1.5:age/days)+Math.min(1,7/days)+importance*.65;
+   return {name,unknown,at,days,age,score};
+  }).filter(x=>x.unknown||x.age>=x.days).sort((a,b)=>b.score-a.score||(a.at||0)-(b.at||0)||a.name.localeCompare(b.name));
  }
  function removalPlan(current,names,alsoList,unitFor){
   const next=JSON.parse(JSON.stringify(current)),changes=[];
