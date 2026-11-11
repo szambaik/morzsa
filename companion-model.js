@@ -3,7 +3,7 @@ const CompanionModel = (() => {
  const key=(user,home,lang)=>'morzsa-companion-v1:'+JSON.stringify([user||'guest',home||'local',lang]);
  const fresh=(id,now=Date.now())=>({id,title:'',updated:now,messages:[]});
  function normalize(value,validRecipe=()=>null){
-  const threads=(Array.isArray(value?.threads)?value.threads:[]).filter(t=>t&&typeof t.id==='string').slice(0,20).map(t=>({id:t.id,title:String(t.title||'').slice(0,80),updated:Number(t.updated)||0,messages:(Array.isArray(t.messages)?t.messages:[]).filter(m=>m&&['user','model'].includes(m.role)&&typeof m.text==='string').slice(-40).map(m=>({role:m.role,text:m.text.slice(0,5000),recipes:(Array.isArray(m.recipes)?m.recipes:[]).map(validRecipe).filter(Boolean).slice(0,3),...(typeof m.result==='string'?{result:m.result.slice(0,500)}:{})}))}));
+  const threads=(Array.isArray(value?.threads)?value.threads:[]).filter(t=>t&&typeof t.id==='string').slice(0,20).map(t=>({id:t.id,title:String(t.title||'').slice(0,80),updated:Number(t.updated)||0,messages:(Array.isArray(t.messages)?t.messages:[]).filter(m=>m&&['user','model'].includes(m.role)&&typeof m.text==='string').slice(-40).map(m=>({role:m.role,text:m.text.slice(0,5000),...(m.provider==='recipes'?{provider:'recipes'}:{}),recipes:(Array.isArray(m.recipes)?m.recipes:[]).map(validRecipe).filter(Boolean).slice(0,3),...(typeof m.result==='string'?{result:m.result.slice(0,500)}:{})}))}));
   return {version:1,active:threads.some(t=>t.id===value?.active)?value.active:threads[0]?.id,threads};
  }
  function history(messages){return messages.slice(-6).map(m=>({role:m.role,text:(m.text+(m.recipes?.length?' Recipes: '+JSON.stringify(m.recipes):'')+(m.result?' Change status: '+m.result:'')).slice(0,5000)}))}

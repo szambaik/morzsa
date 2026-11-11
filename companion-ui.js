@@ -36,14 +36,14 @@ window.MorzsaCompanion=(()=>{
   pending=operations.length?{operations,output,stamp:fingerprint(operations),thread:book.active}:null;
  }
  function requestContext(){return {assistant:true,companion:true,destination:'stock',language,context:{stock:Object.keys(state.stock).filter(n=>state.stock[n]>0).slice(0,1000),cart:state.cart.slice(0,1000).map(i=>({name:i.name,quantity:i.quantity||1,unit:i.unit||productUnit(i.name)})),uncertain:(PantryReview?.uncertain()||[]).slice(0,1000)},history:M.history(thread().messages)}}
- async function send(value,retry=false){
+ async function send(value,retry=false,recipeRequestOnly=false){
   sync();const text=String(value).trim();if(!text||text.length>2000||busy||saving)return;
   if(!household?.userId()){draft=text;renderChat();document.getElementById('household-button').click();return}
   if(pending){toast(say('Előbb mentsd vagy vesd el az előző javaslatot.','Save or dismiss the previous proposal first.'));return}
-  const payload=requestContext();if(retry)payload.history=M.history(thread().messages.slice(0,-1));else append({role:'user',text,recipes:[]});
+  const recipeOnly=retry?thread().messages.at(-1)?.provider==='recipes':recipeRequestOnly;const payload=requestContext();if(retry)payload.history=M.history(thread().messages.slice(0,-1));else append({role:'user',text,recipes:[],...(recipeOnly?{provider:'recipes'}:{})});
   const current=context,id=++serial;busy=true;draft='';error='';quietUntil=Date.now()+600000;renderChat();scrollEnd();
-  try{const output=await household.voiceCommand({...payload,text});if(current!==scope()||id!==serial)return;receive(output,text)}
-  catch(e){if(current===scope()&&id===serial)error=voiceError(e)}
+  try{let output;if(recipeOnly){const pantry=recipeRequest();const r=await household.recipeIdeas({conversation:true,text,history:payload.history.map(m=>({...m,text:m.text.slice(0,4000)})),names:pantry.names.slice(0,200),uncertain:pantry.uncertain.slice(0,200),language,preferences:{quick:false,mood:'any'}});if(typeof r.answer!=='string'||!Array.isArray(r.recipes)||r.recipes.some(x=>!RecipeRoomModel.recipe(x)))throw Error('VOICE_INVALID_RESPONSE');output={transcript:text,answer:r.answer,recipes:r.recipes,clarification:'',operations:[]}}else output=await household.voiceCommand({...payload,text});if(current!==scope()||id!==serial)return;receive(output,text)}
+  catch(e){if(current===scope()&&id===serial)error=voiceError(Error(({AI_DAILY_LIMIT:'VOICE_DAILY_LIMIT',AI_SIGN_IN_REQUIRED:'VOICE_SIGN_IN_REQUIRED',AI_NOT_CONFIGURED:'VOICE_SETUP_REQUIRED',AI_SETUP_REQUIRED:'VOICE_SETUP_REQUIRED'})[e.message]||e.message))}
   finally{if(current===scope()&&id===serial){busy=false;renderChat();scrollEnd()}}
  }
  function voice(){
@@ -88,7 +88,7 @@ window.MorzsaCompanion=(()=>{
   main.querySelector('[data-login]')?.addEventListener('click',()=>document.getElementById('household-button').click());
   main.querySelector('[data-retry]')?.addEventListener('click',()=>send(thread().messages.at(-1)?.text||'',true));
   main.querySelectorAll('[data-quick]').forEach(b=>b.onclick=()=>quick(b.dataset.quick));main.querySelectorAll('[data-full]').forEach(b=>b.onclick=()=>dashboardGo(b.dataset.full));
-  main.querySelectorAll('[data-prompt]').forEach(b=>b.onclick=()=>send(({sweet:say('Valami édeset készítenék abból, ami otthon van. Adj egy receptet.','I want something sweet using my pantry. Give me a recipe.'),quick:say('Mi legyen a vacsora? Van rá 25 percem. Adj receptet.','What can I cook in 25 minutes? Give me a recipe.'),surprise:say('Lepj meg egy finom recepttel a készletemből!','Surprise me with a tasty recipe using my pantry!')})[b.dataset.prompt]));
+  main.querySelectorAll('[data-prompt]').forEach(b=>b.onclick=()=>send(({sweet:say('Valami édeset készítenék abból, ami otthon van. Adj egy receptet.','I want something sweet using my pantry. Give me a recipe.'),quick:say('Mi legyen a vacsora? Van rá 25 percem. Adj receptet.','What can I cook in 25 minutes? Give me a recipe.'),surprise:say('Lepj meg egy finom recepttel a készletemből!','Surprise me with a tasty recipe using my pantry!')})[b.dataset.prompt],false,true));
   main.querySelector('[data-companion-apply]')?.addEventListener('click',apply);main.querySelector('[data-companion-edit]')?.addEventListener('click',editProposal);main.querySelector('[data-companion-discard]')?.addEventListener('click',()=>{markResult(say('Elvetve, nem módosítottunk semmit.','Dismissed; nothing was changed.'));renderChat()});
   main.querySelectorAll('[data-recipe]').forEach(b=>b.onclick=()=>window.RecipeRoom?.open(cards[Number(b.dataset.recipe)]));
   updateNudge();viewport();

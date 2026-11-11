@@ -33,9 +33,10 @@ and the exact archive entry. Stock/list actions retain existing concurrency guar
 
 ## Deployment
 
-The frontend works with the existing voice-command endpoint: older deployments
-return text and operations. Structured recipe cards additionally need the updated
-function (the companion flag is opt-in; old clients keep the existing schema):
+The recipe starter buttons use the existing recipe-ideas endpoint and already
+return illustrated recipe cards. General text/voice uses voice-command: older
+deployments return text and operations. Structured recipe cards inside arbitrary
+text/voice replies additionally need the updated function (the companion flag is opt-in; old clients keep the existing schema):
 
     npx supabase functions deploy voice-command --project-ref cbgcugshwivxpaurzyqq
 
