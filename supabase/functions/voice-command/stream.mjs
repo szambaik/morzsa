@@ -18,7 +18,7 @@ export async function readGeminiStream(response,onAnswer,signal){
  const decoder=new TextDecoder();let buffer='',raw='',finish='',last='',total=0,completed=false;
  const consume=event=>{
   const text=event.split('\n').filter(l=>l.startsWith('data:')).map(l=>l.slice(5).trimStart()).join('\n');if(!text||text==='[DONE]')return;
-  const data=JSON.parse(text);if(data.error)throw Error('VOICE_PROVIDER_ERROR');const candidate=data.candidates?.[0];
+  const data=JSON.parse(text);if(data.error){const code=Number(data.error.code),status=['INVALID_ARGUMENT','UNAUTHENTICATED','PERMISSION_DENIED','RESOURCE_EXHAUSTED','INTERNAL','UNAVAILABLE','DEADLINE_EXCEEDED'].includes(data.error.status)?data.error.status:'UNKNOWN';console.warn(JSON.stringify({event:'morzsa_stream_provider_failure',code:Number.isInteger(code)?code:null,status}));throw Error(code===429?'VOICE_PROVIDER_LIMIT':[500,502,503,504].includes(code)?'VOICE_PROVIDER_BUSY':'VOICE_PROVIDER_ERROR')}const candidate=data.candidates?.[0];
   if(candidate?.finishReason)finish=candidate.finishReason;
   raw+=(candidate?.content?.parts||[]).filter(p=>!p.thought).map(p=>p.text||'').join('');if(raw.length>50000)throw Error('VOICE_INVALID_RESPONSE');
   const answer=partialAnswer(raw);if(answer!==last){last=answer;onAnswer(answer)}
@@ -33,7 +33,7 @@ export function streamedResponse(response,headers,validate){
  const body=new ReadableStream({async start(controller){
   const send=event=>{if(!cancelled)controller.enqueue(encoder.encode(JSON.stringify(event)+'\n'))};
   try{const output=await readGeminiStream(response,text=>{first??=Date.now()-started;send({type:'answer',text})},abort.signal);send({type:'done',output:validate(output)});console.info(JSON.stringify({event:'morzsa_stream_done',firstAnswerMs:first,totalMs:Date.now()-started}))}
-  catch(e){const error=['TimeoutError','AbortError'].includes(e.name)?'VOICE_TIMEOUT':['VOICE_INVALID_RESPONSE','VOICE_PROVIDER_ERROR'].includes(e.message)?e.message:'VOICE_UNAVAILABLE';console.warn(JSON.stringify({event:'morzsa_stream_error',error,firstAnswerMs:first,totalMs:Date.now()-started}));send({type:'error',error})}
+  catch(e){const error=['TimeoutError','AbortError'].includes(e.name)?'VOICE_TIMEOUT':['VOICE_INVALID_RESPONSE','VOICE_PROVIDER_ERROR','VOICE_PROVIDER_LIMIT','VOICE_PROVIDER_BUSY'].includes(e.message)?e.message:'VOICE_UNAVAILABLE';console.warn(JSON.stringify({event:'morzsa_stream_error',error,firstAnswerMs:first,totalMs:Date.now()-started}));send({type:'error',error})}
   finally{if(!cancelled)controller.close()}
  },cancel(){cancelled=true;abort.abort();}});
  return new Response(body,{headers:{...headers,'Content-Type':'application/x-ndjson','X-Accel-Buffering':'no'}});

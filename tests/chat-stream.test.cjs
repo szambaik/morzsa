@@ -6,3 +6,13 @@ test('partial answer parser does not expose recipe or operation data',async()=>{
 test('streaming only yields final output after validation; truncated output cannot be saved',async()=>{const {streamedResponse}=await import('../supabase/functions/voice-command/stream.mjs');const parts=[];assert.deepEqual(await Client.read(streamedResponse(provider(),{},v=>v),s=>parts.push(s)),output);assert.ok(parts.length);await assert.rejects(()=>Client.read(streamedResponse(provider(output,'MAX_TOKENS'),{},v=>v),()=>{}),/VOICE_INVALID_RESPONSE/);await assert.rejects(()=>Client.read(streamedResponse(provider(),{},()=>{throw Error('VOICE_INVALID_RESPONSE')}),()=>{}),/VOICE_INVALID_RESPONSE/);await assert.rejects(()=>Client.read(new Response('{"type":"answer","text":"partial"}\n'),()=>{}),/VOICE_INVALID_RESPONSE/)});
 test('streaming stays opt-in; companion context accepts twelve turns, old clients six',async()=>{const {normalizeInput,bodyFor}=await import('../supabase/functions/voice-command/handler.mjs');const history=Array(12).fill({role:'user',text:'hi'});assert.equal(normalizeInput({text:'Hi',stream:true}).stream,undefined);const modern=normalizeInput({assistant:true,companion:true,text:'Hi',stream:true,history});assert.equal(modern.stream,true);assert.equal(modern.history.length,12);assert.equal(bodyFor(modern).generationConfig.responseSchema.propertyOrdering[0],'answer');assert.throws(()=>normalizeInput({assistant:true,text:'Hi',history}))});
 test('gesture direction locks and thresholds reject taps and ordinary scrolling',()=>{assert.equal(Gesture.intent(3,2,'x'),'wait');assert.equal(Gesture.intent(15,70,'x'),'scroll');assert.equal(Gesture.intent(90,15,'x'),'drag');assert.equal(Gesture.intent(15,90,'y'),'drag');assert.equal(Gesture.finish(30,350),false);assert.equal(Gesture.finish(100,350),true)});
+
+test('Google SSE overload and quota errors stay distinct and never produce a final result',async()=>{
+ const {streamedResponse}=await import('../supabase/functions/voice-command/stream.mjs');
+ for(const [code,expected] of [[503,'VOICE_PROVIDER_BUSY'],[429,'VOICE_PROVIDER_LIMIT'],[400,'VOICE_PROVIDER_ERROR']]){
+  const response=new Response('data: '+JSON.stringify({error:{code,status:code===503?'UNAVAILABLE':'UNKNOWN',message:'private provider detail'}})+'\n\n');
+  let validated=false;
+  await assert.rejects(()=>Client.read(streamedResponse(response,{},v=>{validated=true;return v}),()=>{}),new RegExp(expected));
+  assert.equal(validated,false);
+ }
+});

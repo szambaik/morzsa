@@ -65,3 +65,20 @@ Recipe ingredients, availability, shopping-list actions and method expand inside
 the conversation. Cooking threads show the same controls inline, with a collapse
 button. The legacy recipe dialog remains a fallback for clients without the
 companion interface. No household schema or saved-history migration is required.
+
+### Provider overload after streaming headers
+
+Google can return HTTP 200, start SSE output and then emit an error event with
+code 503/UNAVAILABLE. This is overload, not request rejection or quota exhaustion.
+Stream errors now retain the busy/limit distinction and log only the numeric
+code plus an allowlisted status. Provider error messages are never logged.
+
+The second model attempt uses generateContent, then adapts the buffered result
+to the existing stream protocol. The primary still streams. The two-attempt,
+thirty-second bound and final output validation remain unchanged; clients need
+no migration. Fallback output arrives at once, rather than token by token.
+
+Production diagnostic on 2026-11-11 reproduced a Gemini 3.5 Flash Lite streaming
+503. The updated buffered fallback completed two synthetic recipe requests with
+valid output in 2.0s and 2.8s. This does not guarantee provider availability;
+buffered requests can also encounter overload.

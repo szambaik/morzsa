@@ -8,9 +8,9 @@ test('overloaded primary falls back once; same payload, one quota claim, validat
  const fn=createHandler(config,async(url,options)=>{
   if(url.endsWith('/user'))return Response.json({id:'12345678-1234-1234-1234-123456789012'});
   if(url.includes('/rpc/')){quota++;return Response.json(true)}
-  calls.push({url,options});return calls.length===1?new Response('{}',{status:503}):stream();
+  calls.push({url,options});return calls.length===1?new Response('{}',{status:503}):Response.json({candidates:[{finishReason:'STOP',content:{parts:[{text:JSON.stringify(output)}]}}]});
  });
- const parts=[],result=await Client.read(await fn(request()),s=>parts.push(s));assert.deepEqual(result,output);assert.equal(quota,1);assert.equal(calls.length,2);assert.match(calls[1].url,/gemini-3.5-flash-lite:streamGenerateContent/);assert.equal(calls[0].options.body,calls[1].options.body);assert.notEqual(calls[0].options.signal,calls[1].options.signal);assert.equal(parts.at(-1),output.answer);
+ const parts=[],result=await Client.read(await fn(request()),s=>parts.push(s));assert.deepEqual(result,output);assert.equal(quota,1);assert.equal(calls.length,2);assert.match(calls[1].url,/gemini-3.5-flash-lite:generateContent$/);assert.equal(calls[0].options.body,calls[1].options.body);assert.notEqual(calls[0].options.signal,calls[1].options.signal);assert.equal(parts.at(-1),output.answer);
 });
 test('healthy primary needs no fallback; malformed requests are not retried',async()=>{
  const {generate}=await import('../supabase/functions/voice-command/provider.mjs');let count=0;
