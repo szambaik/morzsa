@@ -569,3 +569,11 @@ nav .overview-nav-icon{display:flex;justify-content:center;align-items:center;he
 @keyframes companion-slide{from{transform:translateX(-100%)}to{transform:translateX(0)}}@keyframes companion-rise{from{transform:translateY(25px);opacity:.5}to{transform:none;opacity:1}}@keyframes companion-breathe{50%{opacity:.55}}
 @media(max-width:360px){.app[data-page=chat] header .brand{font-size:23px}.app[data-page=chat] .brand-mark{width:27px;height:27px}.app[data-page=chat] .header-controls{gap:4px}.companion-welcome{padding-top:18px}.companion-welcome h1{font-size:25px}.companion-tools{gap:5px}.companion-tools button{font-size:11px;padding:7px 9px}.companion-stock-item{grid-template-columns:30px minmax(0,1fr);padding:7px}.companion-stock-item>img{width:30px}.companion-stock-item button{font-size:11px;padding:6px}#companion-quick{padding:15px}}
 @media(prefers-reduced-motion:reduce){.companion-thinking,#companion-history,#companion-quick{animation:none}}
+
+/* Thumb-side shortcuts: identical, accessible hit areas with quiet count badges. */
+.companion-tools{justify-content:flex-end;gap:8px}
+.companion-tools button{position:relative;justify-content:center;width:46px;height:46px;min-height:46px;padding:11px;flex:none;border-radius:50%;background:#fffaf2e8}
+.companion-tools svg{width:21px;height:21px}
+.companion-tools small{position:absolute;right:-2px;top:-3px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:#f5ddc4;color:#874521;font-size:10px;line-height:17px;text-align:center;box-shadow:0 0 0 2px var(--bg)}
+.is-revealing::after{content:'';display:inline-block;width:5px;height:5px;margin:0 0 2px 5px;border-radius:50%;background:var(--orange);vertical-align:baseline}
+@media(prefers-reduced-motion:reduce){.is-revealing::after{display:none}}
