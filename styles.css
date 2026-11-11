@@ -584,3 +584,9 @@ nav .overview-nav-icon{display:flex;justify-content:center;align-items:center;he
 .companion-tools button{width:var(--companion-control-size);height:var(--companion-control-size);min-height:var(--companion-control-size);padding:10px}
 #companion-form{gap:var(--companion-control-gap);padding:var(--companion-compose-inset)}
 #companion-form button{width:var(--companion-control-size);height:var(--companion-control-size);min-height:var(--companion-control-size)}
+/* Photos keep the existing right-aligned microphone/send columns. */
+#companion-form [data-photo]{width:34px;flex-shrink:0;color:var(--muted);padding:6px}#companion-form [data-photo] svg{width:22px;height:22px}
+.companion-attachment{display:flex;align-items:center;gap:10px;padding:8px 10px;margin-bottom:6px;background:#fffaf2;border:1px solid #e4d6bf;border-radius:17px}.companion-attachment img{width:46px;height:46px;object-fit:cover;border-radius:10px}.companion-attachment span{flex:1;font-size:11px;color:var(--muted)}.companion-attachment button{border:0;background:transparent;min-width:44px;min-height:44px;font-size:23px;color:var(--ink)}
+.companion-user-photo{display:block;width:auto;max-width:100%;height:140px;object-fit:contain;border-radius:14px;margin-bottom:8px}
+.companion-dish{margin:0 0 12px}.companion-dish>img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:14px}.companion-dish figcaption{margin:5px 2px 0;font-size:9px;line-height:1.5;color:var(--muted)}.companion-dish a{color:inherit;text-underline-offset:2px}
+.companion-compose-wrap:has(.companion-attachment)~*{scroll-margin-bottom:260px}.companion:has(.companion-attachment) .companion-messages{padding-bottom:255px}

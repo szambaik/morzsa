@@ -35,6 +35,8 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Morzsa uses the camera when you choose to photograph food for the assistant.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Morzsa uses your microphone when you ask it to manage groceries by voice.</string>
 	<key>UIApplicationSceneManifest</key>

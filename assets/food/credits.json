@@ -1,0 +1,42 @@
+[
+  {
+    "id": "fried-rice",
+    "src": "assets/food/fried-rice.jpg",
+    "author": "Vyacheslav Argenberg",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Koh_Mak,_Thailand,_Fried_rice_with_seafood,_Thai_fried_rice.jpg"
+  },
+  {
+    "id": "pancake",
+    "src": "assets/food/pancake.jpg",
+    "author": "Mae Mu",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "source": "https://commons.wikimedia.org/wiki/File:Foodiesfeed.com_pouring-honey-on-pancakes-with-walnuts.jpg"
+  },
+  {
+    "id": "pasta",
+    "src": "assets/food/pasta.jpg",
+    "author": "David Adam Kess",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:(Pasta)_by_David_Adam_Kess_(pic.2).jpg"
+  },
+  {
+    "id": "roast-chicken",
+    "src": "assets/food/roast-chicken.jpg",
+    "author": "Evan Swigart from Chicago, USA",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Max%27s_Roasted_Chicken_-_Evan_Swigart.jpg"
+  },
+  {
+    "id": "soup",
+    "src": "assets/food/soup.jpg",
+    "author": "Petar Milošević",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Asparagus_soup_(spargelsuppe).jpg"
+  }
+]
