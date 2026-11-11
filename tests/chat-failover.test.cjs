@@ -10,7 +10,7 @@ test('overloaded primary falls back once; same payload, one quota claim, validat
   if(url.includes('/rpc/')){quota++;return Response.json(true)}
   calls.push({url,options});return calls.length===1?new Response('{}',{status:503}):stream();
  });
- const parts=[],result=await Client.read(await fn(request()),s=>parts.push(s));assert.deepEqual(result,output);assert.equal(quota,1);assert.equal(calls.length,2);assert.match(calls[1].url,/gemini-3.5-flash-lite:streamGenerateContent/);assert.equal(calls[0].options.body,calls[1].options.body);assert.equal(calls[0].options.signal,calls[1].options.signal);assert.equal(parts.at(-1),output.answer);
+ const parts=[],result=await Client.read(await fn(request()),s=>parts.push(s));assert.deepEqual(result,output);assert.equal(quota,1);assert.equal(calls.length,2);assert.match(calls[1].url,/gemini-3.5-flash-lite:streamGenerateContent/);assert.equal(calls[0].options.body,calls[1].options.body);assert.notEqual(calls[0].options.signal,calls[1].options.signal);assert.equal(parts.at(-1),output.answer);
 });
 test('healthy primary needs no fallback; malformed requests are not retried',async()=>{
  const {generate}=await import('../supabase/functions/voice-command/provider.mjs');let count=0;
@@ -35,4 +35,11 @@ test('combined schema avoids provider decoder limits while server validation kee
  assert.ok(body.generationConfig.responseSchema.required.includes('recipes'));
  assert.ok(!validOutput({...output,operations:Array(31).fill({action:'stock_add',name:'Tej',quantity:null,unit:null})}));
  assert.ok(!validOutput({...output,recipes:Array(4).fill({title:'Recept',summary:'Rövid',minutes:10,ingredients:[{name:'Tojás',amount:'1 db'}],steps:['Süsd meg.']})}));
+});
+
+test('a stalled primary leaves time for fallback instead of timing out the whole request',async()=>{
+ const {generate}=await import('../supabase/functions/voice-command/provider.mjs');let calls=0;
+ const response=await generate({}, {}, {...config,headerTimeoutMs:15,totalTimeoutMs:1000},async(url,{signal})=>{
+  calls++;if(calls===2)return Response.json({ok:true});return new Promise((resolve,reject)=>signal.addEventListener('abort',()=>reject(new DOMException('Timeout','AbortError')),{once:true}));
+ });assert.equal(calls,2);assert.deepEqual(await response.json(),{ok:true});
 });

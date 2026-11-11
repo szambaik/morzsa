@@ -29,11 +29,11 @@ export async function readGeminiStream(response,onAnswer,signal){
  }finally{signal?.removeEventListener('abort',cancel);if(!completed)await reader.cancel().catch(()=>{});reader.releaseLock()}
 }
 export function streamedResponse(response,headers,validate){
- const encoder=new TextEncoder(),abort=new AbortController();let cancelled=false;
+ const encoder=new TextEncoder(),abort=new AbortController(),started=Date.now();let cancelled=false,first=null;
  const body=new ReadableStream({async start(controller){
   const send=event=>{if(!cancelled)controller.enqueue(encoder.encode(JSON.stringify(event)+'\n'))};
-  try{const output=await readGeminiStream(response,text=>send({type:'answer',text}),abort.signal);send({type:'done',output:validate(output)})}
-  catch(e){send({type:'error',error:e.name==='TimeoutError'?'VOICE_TIMEOUT':['VOICE_INVALID_RESPONSE','VOICE_PROVIDER_ERROR'].includes(e.message)?e.message:'VOICE_UNAVAILABLE'})}
+  try{const output=await readGeminiStream(response,text=>{first??=Date.now()-started;send({type:'answer',text})},abort.signal);send({type:'done',output:validate(output)});console.info(JSON.stringify({event:'morzsa_stream_done',firstAnswerMs:first,totalMs:Date.now()-started}))}
+  catch(e){const error=['TimeoutError','AbortError'].includes(e.name)?'VOICE_TIMEOUT':['VOICE_INVALID_RESPONSE','VOICE_PROVIDER_ERROR'].includes(e.message)?e.message:'VOICE_UNAVAILABLE';console.warn(JSON.stringify({event:'morzsa_stream_error',error,firstAnswerMs:first,totalMs:Date.now()-started}));send({type:'error',error})}
   finally{if(!cancelled)controller.close()}
  },cancel(){cancelled=true;abort.abort();}});
  return new Response(body,{headers:{...headers,'Content-Type':'application/x-ndjson','X-Accel-Buffering':'no'}});

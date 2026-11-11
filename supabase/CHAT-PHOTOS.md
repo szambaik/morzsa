@@ -29,3 +29,39 @@ Verification: npm test, Python server tests, npm run build:web and npm run
 sync:mobile. tests/companion-fixture.py tests photo selection, preview, send and
 history without Google requests or shared-household writes. A signed-in live
 photo request is a separate smoke test.
+
+## Generated recipe images: proposed integration (not enabled)
+
+Use a separate authenticated image job, independent of voice-command/text
+streaming. Recommended model as of 2026-11-11: gemini-nano-banana-2.1 at 1K.
+Google lists $0.0336 per 1K output image, plus input and text/thinking tokens;
+there is no free API tier for this model. Cover plus four steps costs about
+$0.168 in image output. Billing must be configured by the project owner.
+
+Generate the cover after the text recipe arrives. Generate useful visual steps
+only when guided cooking is requested, prefetching the next step. Derive prompts
+from the canonical recipe quantities and steps; reuse prior reference images
+for consistent ingredients, cookware and presentation. Label generated images
+as illustrations. Save assets in household-isolated Supabase Storage and cache
+by recipe version, step and style. Keep an image failure separate from chat.
+
+Before enabling: implement authenticated jobs, Storage policies, atomic quota
+reservation and idempotency, concurrency limits, retry limits and a hard daily
+app spending cap. Do not expose the Google key to the frontend. Cloud billing
+alerts alone are not a spending cap. Existing chat/photo APIs remain compatible.
+
+Sources: https://aistudio.google.com/docs/image-generation and
+https://aistudio.google.com/docs/pricing
+
+## Chat latency and inline recipes
+
+voice-command now gives the primary model eight seconds to return headers
+before trying its fallback, within a shared thirty-second deadline. Gemini 3
+models use minimal thinking. Logs contain timing/model/status, not prompts.
+Once streaming starts, partial output is never replayed through another model.
+The UI retains an interrupted answer for review without applying partial changes.
+
+Recipe ingredients, availability, shopping-list actions and method expand inside
+the conversation. Cooking threads show the same controls inline, with a collapse
+button. The legacy recipe dialog remains a fallback for clients without the
+companion interface. No household schema or saved-history migration is required.
