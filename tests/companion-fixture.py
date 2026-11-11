@@ -5,7 +5,7 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from server import Handler, ThreadingHTTPServer
 seed='''<script>
 if(!localStorage.getItem('companion-fixture-seeded')){
-localStorage.setItem('morzsa-v2',JSON.stringify({stock:{Tej:2,Tojás:2,Liszt:2,Alma:2,Olaj:2},custom:[],cart:[{name:'Alma',quantity:1,unit:'kg',done:false}],likes:[],history:[],chats:{}}));localStorage.setItem('companion-fixture-seeded','1');}
+localStorage.setItem('morzsa-v2',JSON.stringify({stock:{Tej:2,Tojás:2,Liszt:2,Alma:2,Olaj:2,Kenyér:2,Joghurt:2,Paprika:2},custom:[],cart:[{name:'Alma',quantity:1,unit:'kg',done:false}],likes:[],history:[],chats:{}}));localStorage.setItem('companion-fixture-seeded','1');}
 </script>'''
 mock='''<script>
 window.household={active:null,busy:false,userId:()=> 'companion-fixture',storageKey:()=> 'morzsa-v2',notify:()=>Promise.resolve(true),voiceStatus:()=>Promise.resolve({configured:true,supportsImages:true,supportsStreaming:true}),voiceCommand:async payload=>{

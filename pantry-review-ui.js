@@ -52,26 +52,29 @@ window.PantryReview=(()=>{
   q.querySelector('#removal-apply').onclick=async()=>{if(saving||current!==key()||!selected.size)return;saving=true;update();q.querySelectorAll('input,button').forEach(e=>e.disabled=true);const ok=await remove([...selected.keys()],q.querySelector('#removal-list').checked,selected);saving=false;if(current!==key()){q.close();return}if(ok)q.close();else{selected.clear();q.querySelectorAll('input,button').forEach(e=>e.disabled=false);paint();q.querySelector('.removal-error').textContent=say('Nem mentettünk. Jelöld ki újra a tételeket.','Not saved. Select the items again.')}};
   paint();q.showModal();
  }
- function open(){
+ function open(options={}){
   if(loading||household?.busy||household?.cartPending)return;
-  let q=document.getElementById('pantry-review-dialog');if(!q){q=document.createElement('dialog');q.id='pantry-review-dialog';q.setAttribute('data-no-translate','');document.body.append(q)}
-  const current=key(),batch=due().slice(0,8),choices=new Map(),expected=new Map(batch.map(i=>[i.name,snapshot(i.name)]));let saving=false;
+  const inline=!!options.host;let q=inline?document.createElement('section'):document.getElementById('pantry-review-dialog');if(!q){q=document.createElement('dialog');q.id='pantry-review-dialog';q.setAttribute('data-no-translate','');document.body.append(q)}
+  if(inline){q.className='inline-pantry-review';q.setAttribute('data-inline-review','');options.host.replaceChildren(q)}
+  const close=()=>{if(inline){q.remove();options.onClose?.()}else q.close()};
+  const current=key(),batch=options.items||due().slice(0,8),choices=new Map(),expected=new Map(batch.map(i=>[i.name,snapshot(i.name)]));let saving=false;
   if(!batch.length){toast(say('Most minden frissen ellenőrzött.','Everything is up to date.'));return}
   q.innerHTML='<button class="close" aria-label="'+say('Bezárás','Close')+'">×</button><h2>'+say('Megvan még?','Still at home?')+'</h2><p class="review-batch-caption">'+say('Régebben ellenőrzött, gyakran fogyó alapanyagok. Amit nem jelölsz, marad úgy, ahogy van.','Older checks and frequently used basics. Unselected items stay unchanged.')+'</p><button class="small-button" data-review-all>'+say('Mind megvan','All still here')+'</button><div class="review-batch-items">'+batch.map((item,i)=>'<div class="review-batch-row"><img src="'+(productArtwork[item.name]||'assets/icons/oats.webp')+'" alt="" width="34" height="34"><div><strong>'+esc(displayName(item.name))+'</strong><small>'+(item.unknown?say('Még nem ellenőrzött','Not checked yet'):Math.floor(item.age)+say(' napja ellenőrizve',' days since check'))+'</small></div><div class="review-batch-options"><button data-choice="keep" data-index="'+i+'" aria-pressed="false" aria-label="'+esc(displayName(item.name))+say(': van még',': still here')+'">'+say('Van még','Still here')+'</button><button data-choice="gone" data-index="'+i+'" aria-pressed="false" aria-label="'+esc(displayName(item.name))+say(': elfogyott',': used up')+'">'+say('Elfogyott','Used up')+'</button></div></div>').join('')+'</div><div class="review-batch-footer"><label><input type="checkbox" data-review-list> '+say('Az elfogyottakat a listára is','Also list used-up items')+'</label><button class="primary" data-review-save disabled>'+say('Mentés','Save')+'</button><p class="review-error" role="status"></p></div>';
+  if(inline){q.querySelector('.review-batch-caption').textContent=say('Jelöld, ami megvan vagy elfogyott.','Mark what is still here or used up.');q.querySelectorAll('.review-batch-row small').forEach(e=>e.remove())}
   const update=()=>{q.querySelectorAll('[data-choice]').forEach(b=>b.setAttribute('aria-pressed',choices.get(batch[Number(b.dataset.index)].name)===b.dataset.choice));const b=q.querySelector('[data-review-save]');b.disabled=saving||!choices.size;b.textContent=saving?say('Mentés…','Saving…'):say('Mentés','Save')+' · '+choices.size};
   q.querySelectorAll('[data-choice]').forEach(b=>b.onclick=()=>{const name=batch[Number(b.dataset.index)].name;if(choices.get(name)===b.dataset.choice)choices.delete(name);else choices.set(name,b.dataset.choice);update()});
   q.querySelector('[data-review-all]').onclick=()=>{batch.forEach(i=>choices.set(i.name,'keep'));update()};
-  q.querySelector('.close').onclick=()=>{if(!saving)q.close()};q.oncancel=e=>{if(saving)e.preventDefault()};
+  q.querySelector('.close').onclick=()=>{if(!saving)close()};q.oncancel=e=>{if(saving)e.preventDefault()};
   q.querySelector('[data-review-save]').onclick=async()=>{
    if(saving||current!==key()||!choices.size||household?.busy||household?.cartPending)return;
    const names=[...choices.keys()];if(names.some(n=>expected.get(n)!==snapshot(n))){q.querySelector('.review-error').textContent=say('Közben változott egy kijelölt tétel. Zárd be, és nyisd meg újra az ellenőrzést.','A selected item changed. Close and reopen this review.');return}
    const keep=names.filter(n=>choices.get(n)==='keep'),gone=names.filter(n=>choices.get(n)==='gone'),alsoList=q.querySelector('[data-review-list]').checked;
    saving=true;update();q.querySelectorAll('button,input').forEach(b=>b.disabled=true);let kept=false,ok=false;
    try{kept=await confirm(keep,expected);if(kept&&current===key()){keep.forEach(n=>choices.delete(n));ok=gone.length?await remove(gone,alsoList,expected):true}}catch{ok=false}
-   saving=false;if(current!==key()){q.close();return}if(ok){q.close();mount();if(!gone.length)toast(keep.length+say(' termék megerősítve.',' products confirmed.'))}
+   saving=false;if(current!==key()){close();return}if(ok){close();mount();if(!gone.length)toast(keep.length+say(' termék megerősítve.',' products confirmed.'))}
    else{q.querySelectorAll('button,input').forEach(b=>b.disabled=false);update();q.querySelector('.review-error').textContent=kept&&keep.length?say('A megmaradt termékeket megerősítettük. A kivétel nem sikerült; ellenőrizd újra.','Available items confirmed. Removal failed; review again.'):say('Nem sikerült menteni. Próbáld újra.','Could not save. Try again.')}
   };
-  q.showModal();
+  if(!inline)q.showModal();
  }
  const original=renderPantry;renderPantry=function(){original();mount()};
  refresh();document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh()});

@@ -56,7 +56,7 @@ window.MorzsaCompanion=(()=>{
  }
  function append(message){const t=thread();t.messages.push(message);t.updated=Date.now();if(!t.title&&message.role==='user')t.title=message.text.slice(0,60);persist()}
  function fresh(){if(busy||saving)return;attachment=null;retryAttachment=null;preparing=false;photoSerial++;stopReveal();sync();if(thread().messages.length){const t=M.fresh(crypto.randomUUID());book.threads.unshift(t);book.active=t.id}pending=null;draft='';error='';persist();closePanels();open()}
- function closePanels(){document.getElementById('companion-history')?.close();document.getElementById('companion-quick')?.close();document.getElementById('ingredient-action-dialog')?.close()}
+ function closePanels(){document.getElementById('companion-history')?.close();document.getElementById('companion-quick')?.close();main.querySelector('.ingredient-inline-actions')?.remove()}
  function open(text=''){page='chat';if(text)draft=text;render();window.scrollTo({top:0,behavior:'instant'});if(text)main.querySelector('#companion-input')?.focus()}
  function onNavigate(){sync();if(page!=='chat'){stopReveal();closePanels()}viewport()}
  function labels(o){const d=VoiceModel.defaults(o,state,productUnit);return ({stock_add:say('Készletbe','To pantry'),stock_remove:say('Elfogyott','Used up'),list_set:say('Listára','To list')})[o.action]+(o.action==='list_set'?' · '+d.quantity+' '+d.unit:'')}
@@ -149,12 +149,10 @@ window.MorzsaCompanion=(()=>{
  function nudge(){if(busy||saving||pending)return null;const n=M.suggestion(state,PantryReview?.candidates()||[],removedNames,deferred);return n?.type==='review'&&Date.now()<quietUntil?null:n}
  function updateNudge(){
   if(context!==scope())return;
-  const host=main.querySelector('#companion-nudge');if(!host)return;const n=nudge();if(!n){host.innerHTML='';return}
+  const host=main.querySelector('#companion-nudge');if(!host||host.querySelector('[data-inline-review]'))return;const n=nudge();if(!n){host.innerHTML='';return}
   if(n.type==='review'){
-   const items=M.reviewPreview(PantryReview.candidates(),state.stock,deferred);
-   host.innerHTML='<aside class="companion-nudge companion-review-preview"><div class="companion-speaker"><img src="assets/brands/morzsa.svg" width="18" height="18" alt="">'+say('Egy apróság…','One small thing…')+'</div><strong>'+say('Ezek megvannak még?','Still have these?')+'</strong><div class="review-preview-items">'+items.map(item=>'<button data-review-preview="'+esc(item.name)+'" aria-label="'+esc(displayName(item.name))+say(' ellenőrzése',' — review')+'"><img src="'+(productArtwork[item.name]||'assets/icons/oats.webp')+'" alt="" width="30" height="30"><span>'+esc(displayName(item.name))+'</span></button>').join('')+'</div><div class="companion-actions"><button data-review-open>'+say('Átnézem együtt','Review together')+'</button><button data-review-later>'+say('Most nem','Not now')+'</button></div></aside>';
-   host.querySelectorAll('[data-review-preview],[data-review-open]').forEach(b=>b.onclick=()=>{if(context===scope()&&!saving)PantryReview.open()});
-   host.querySelector('[data-review-later]').onclick=()=>{if(context!==scope())return;for(const item of items)deferred['review:'+item.name]=Date.now()+86400000;try{localStorage.setItem(context+':snooze',JSON.stringify(Object.fromEntries(Object.entries(deferred).filter(([,v])=>v>Date.now()).slice(-100))))}catch{}updateNudge()};return;
+   const current=context,items=M.reviewPreview(PantryReview.candidates(),state.stock,deferred);
+   PantryReview.open({host,items,onClose:()=>{if(current!==scope())return;for(const item of items)deferred['review:'+item.name]=Date.now()+86400000;try{localStorage.setItem(context+':snooze',JSON.stringify(deferred))}catch{}updateNudge()}});return;
   }
   const name=displayName(n.names[0]),title=n.type==='bought'?say('Megvolt a bevásárlás?','Finished shopping?'):n.type==='restock'?say('Felírjam a listára?','Add it to the list?'):name+say(' · megvan még?',' · still at home?');
   const text=n.type==='bought'?n.names.length+say(' kipipált tételt a készletbe tehetünk.',' checked items can move to your pantry.'):n.type==='restock'?name+say(' elfogyott. Gondoskodjunk az utánpótlásról?',' ran out. Shall we get some more?'):n.unknown?say('Ezt még nem ellenőriztük együtt.','We haven’t checked this together yet.'):say('Egy ideje nem erősítettétek meg.','It has been a while since you checked.');
@@ -179,14 +177,15 @@ window.MorzsaCompanion=(()=>{
   const ok=household?.active?household.editCart(next,{onlyIfMissing:true}):commitState(next);
   if(ok&&current===scope()){basketFeedback(name);toast(say('A listára került.','Added to list.'));if(!household?.active)showVoiceUndo([{bucket:'cart',key:name,before:undefined,after:next.cart.at(-1)}],undoContext);renderChat()}
  }
- async function ingredientActions(name){
+ async function ingredientActions(name,anchor){
   sync();if(![...catalog,...state.custom].some(i=>i.name===name))return;
-  const current=context;let q=document.getElementById('ingredient-action-dialog');if(!q){q=document.createElement('dialog');q.id='ingredient-action-dialog';q.setAttribute('data-no-translate','');q.setAttribute('aria-labelledby','ingredient-action-title');document.body.append(q);PanelGestures.bind(q,{axis:'y',disabled:()=>q.dataset.saving==='true'})}
-  if(q.dataset.saving)return;if(q.open)q.close();let working=false;
+  const current=context,previous=main.querySelector('.ingredient-inline-actions');if(previous?.dataset.saving)return;
+  const same=previous?.dataset.name===name;previous?.remove();if(same||!anchor?.isConnected)return;
+  const q=document.createElement('section');q.className='ingredient-inline-actions';q.dataset.name=name;q.setAttribute('role','group');q.setAttribute('aria-label',displayName(name));anchor.closest('p').after(q);let working=false;
   function paint(){
-   if(current!==scope()){q.close();return}const home=state.stock[name]>0,listed=state.cart.some(i=>i.name===name);
+   if(current!==scope()){q.remove();return}const home=state.stock[name]>0,listed=state.cart.some(i=>i.name===name);
    q.innerHTML='<div class="companion-sheet-handle" aria-hidden="true"></div><button class="close" aria-label="'+say('Bezárás','Close')+'">×</button><div class="ingredient-action-heading"><img src="'+(productArtwork[name]||'assets/icons/oats.webp')+'" alt="" width="52" height="52"><div><h2 id="ingredient-action-title">'+esc(displayName(name))+'</h2><p>'+say(home?'Van otthon':'Nincs megjelölve otthon',home?'At home':'Not marked at home')+(listed?say(' · A listán is',' · On the list'):'')+'</p></div></div><div class="ingredient-action-buttons"><button data-ingredient-list '+(listed?'disabled':'')+'>'+icon('cart')+say(listed?'Már a listán':'Listára teszem',listed?'Already on list':'Add to list')+'</button><button data-ingredient-stock '+(home?'disabled':'')+'>'+icon('home')+say(home?'Van otthon':'Van otthon',home?'At home':'Add to pantry')+'</button></div><p class="ingredient-action-error" role="status"></p>';
-   q.querySelector('.close').onclick=()=>{if(!working)q.close()};q.oncancel=e=>{if(working)e.preventDefault()};
+   q.querySelector('.close').onclick=()=>{if(!working)q.remove()};q.oncancel=e=>{if(working)e.preventDefault()};
    q.querySelector('[data-ingredient-list]').onclick=()=>act('list');q.querySelector('[data-ingredient-stock]').onclick=()=>act('stock');
   }
   async function act(destination){
@@ -195,18 +194,18 @@ window.MorzsaCompanion=(()=>{
    working=true;q.dataset.saving=String(true);q.querySelectorAll('button').forEach(b=>b.disabled=true);
    try{if(destination==='list'){await addToList(name);if(current!==scope())return;if(!state.cart.some(i=>i.name===name))throw Error('save')}
     else{const undoContext=voiceContext(),plan=VoiceModel.plan(state,[{action:'stock_add',name,quantity:null,unit:null}],[...catalog,...state.custom],productUnit);if(!await saveVoiceState(plan.next))throw Error('save');if(current!==scope())return;await PantryReview.confirm([name]);showVoiceUndo(plan.changes,undoContext);renderChat()}
-    if(current===scope())q.close();
+    if(current===scope())q.remove();
    }catch{if(current===scope()){paint();q.querySelector('.ingredient-action-error').textContent=say('Nem sikerült menteni. Próbáld újra.','Could not save. Try again.')}}finally{working=false;delete q.dataset.saving}
   }
-  paint();q.showModal();
+  paint();
  }
  // Delegation also covers messages that finish streaming without a full rebind.
  let mentionHold=null,heldName='',suppressMentionClickUntil=0;
  const cancelMentionHold=()=>{clearTimeout(mentionHold);mentionHold=null};
- main.addEventListener('pointerdown',e=>{const b=e.target.closest('[data-mention]');if(!b||e.button!==0)return;cancelMentionHold();const start={x:e.clientX,y:e.clientY},current=scope();heldName=b.dataset.mention;mentionHold=setTimeout(()=>{mentionHold=null;if(current!==scope()||!b.isConnected)return;suppressMentionClickUntil=Date.now()+700;ingredientActions(b.dataset.mention)},450);b.onpointermove=event=>{if(Math.hypot(event.clientX-start.x,event.clientY-start.y)>10)cancelMentionHold()}});
+ main.addEventListener('pointerdown',e=>{const b=e.target.closest('[data-mention]');if(!b||e.button!==0)return;cancelMentionHold();const start={x:e.clientX,y:e.clientY},current=scope();heldName=b.dataset.mention;mentionHold=setTimeout(()=>{mentionHold=null;if(current!==scope()||!b.isConnected)return;suppressMentionClickUntil=Date.now()+700;ingredientActions(b.dataset.mention,b)},450);b.onpointermove=event=>{if(Math.hypot(event.clientX-start.x,event.clientY-start.y)>10)cancelMentionHold()}});
  for(const event of ['pointerup','pointercancel','pointerleave'])main.addEventListener(event,cancelMentionHold);
- main.addEventListener('click',e=>{const b=e.target.closest('[data-mention]');if(!b)return;e.preventDefault();cancelMentionHold();if(b.dataset.mention===heldName&&Date.now()<suppressMentionClickUntil)return;ingredientActions(b.dataset.mention)});
- main.addEventListener('contextmenu',e=>{const b=e.target.closest('[data-mention]');if(!b)return;e.preventDefault();cancelMentionHold();if(Date.now()>=suppressMentionClickUntil)ingredientActions(b.dataset.mention)});
+ main.addEventListener('click',e=>{const b=e.target.closest('[data-mention]');if(!b)return;e.preventDefault();cancelMentionHold();if(b.dataset.mention===heldName&&Date.now()<suppressMentionClickUntil)return;ingredientActions(b.dataset.mention,b)});
+ main.addEventListener('contextmenu',e=>{const b=e.target.closest('[data-mention]');if(!b)return;e.preventDefault();cancelMentionHold();if(Date.now()>=suppressMentionClickUntil)ingredientActions(b.dataset.mention,b)});
  function quick(destination){
   sync();const q=panel('companion-quick'),current=context;let query='';
   function paint(){
