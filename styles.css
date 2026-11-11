@@ -577,3 +577,10 @@ nav .overview-nav-icon{display:flex;justify-content:center;align-items:center;he
 .companion-tools small{position:absolute;right:-2px;top:-3px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:#f5ddc4;color:#874521;font-size:10px;line-height:17px;text-align:center;box-shadow:0 0 0 2px var(--bg)}
 .is-revealing::after{content:'';display:inline-block;width:5px;height:5px;margin:0 0 2px 5px;border-radius:50%;background:var(--orange);vertical-align:baseline}
 @media(prefers-reduced-motion:reduce){.is-revealing::after{display:none}}
+
+/* Both rows share control columns, measured from the composer's inner edge. */
+.companion-compose-wrap{--companion-control-size:44px;--companion-control-gap:8px;--companion-compose-inset:7px}
+.companion-tools{gap:var(--companion-control-gap);padding-inline-end:calc(var(--companion-compose-inset) + 1px)}
+.companion-tools button{width:var(--companion-control-size);height:var(--companion-control-size);min-height:var(--companion-control-size);padding:10px}
+#companion-form{gap:var(--companion-control-gap);padding:var(--companion-compose-inset)}
+#companion-form button{width:var(--companion-control-size);height:var(--companion-control-size);min-height:var(--companion-control-size)}
