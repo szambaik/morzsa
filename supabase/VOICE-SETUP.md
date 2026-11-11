@@ -49,3 +49,13 @@ A Google AI megkapja az aktuális háztartás jelenlévő termékneveit, a bevá
 Ha csak a termék neve szerepel, a készletnézetből indított kérés alapból készletbe vételt jelent; egy kifejezett cél („listára”) ezt felülírja. Kérdésből nem következtetünk változtatásra. A készlethez nincs szükség mennyiségre. Új listatételnél a hiányzó mennyiség 1, az egység a katalógus alapegysége (például krumpli: kg); egyedi terméknél db. Már listázott terméknél a meglévő mennyiség és egység marad, ha nincs új megadva. Kifejezetten más egység kérése mennyiség nélkül 1-re állít, nem értelmezi át a korábbi számot.
 
 A kompakt áttekintő sorai érintésre szerkeszthetők; ismeretlen terméknél a névellenőrzés rögtön nyitva van. A háttérfüggvény új answer mezője és az opcionális context/history/destination bemenet visszafelé kompatibilis. Régi kliensnek a csak szöveges választ clarification mezőben is visszaadjuk. Nincs adatbázis-migráció.
+
+## Chat reliability (2026-11-11)
+
+The companion schema omits nested array-size constraints from the Google request because the combined recipe and operation schema produced HTTP 400 INVALID_ARGUMENT. Server validation still rejects more than 3 recipes, 30 operations, 15 ingredients or 6 steps per recipe. Invalid or incomplete streams never become savable proposals.
+
+The primary remains gemini-3.1-flash-lite. On HTTP 429, 500/502/503/504 or model 404, one attempt with gemini-3.5-flash-lite is made in the same Google project and within the same 30-second provider deadline. Set VOICE_FALLBACK_MODEL to override it, or an empty value to disable failover. No retry occurs after streaming starts. A fallback attempt does not consume a second Morzsa daily-quota claim, but provider usage/quotas still apply.
+
+The client distinguishes Google request limits, overload, malformed responses and timeouts from Morzsa's own daily limit. Logs contain only provider model and HTTP status, never prompts, photographs, credentials or provider response bodies. The client allows 60 seconds for authentication, quota checks and provider processing.
+
+Validation: synthetic primary overload followed by validated fallback streaming; bounded retries; unchanged quota/mutation gates; live fixed cooking prompt produced validated recipe output from both primary and fallback models. No real household data was used for those live probes.

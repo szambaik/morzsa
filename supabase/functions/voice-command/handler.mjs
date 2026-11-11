@@ -1,3 +1,4 @@
+import { generate } from './provider.mjs';
 import { streamedResponse } from './stream.mjs';
 import { validRecipes, geminiBody } from '../recipe-ideas/handler.mjs';
 const actions=['stock_add','stock_remove','list_set'],units=['db','kg','g','l','ml','csomag','doboz','üveg','pohár'];
@@ -35,6 +36,12 @@ export function bodyFor(input){
   body.generationConfig.responseSchema.required.push('recipes');
   body.generationConfig.responseSchema.properties.recipes=geminiBody({conversation:true,language:input.language,mood:'any',names:[]}).generationConfig.responseSchema.properties.recipes;
   body.generationConfig.maxOutputTokens=6500;
+  // Nested array bounds make this combined recipe/operation schema fail Gemini's
+  // constrained decoder with INVALID_ARGUMENT. Keep the shape here; validOutput
+  // still enforces every array limit before anything becomes a saved proposal.
+  const simplify=schema=>{if(!schema||typeof schema!=='object')return;delete schema.minItems;delete schema.maxItems;for(const value of Object.values(schema))simplify(value)};
+  simplify(body.generationConfig.responseSchema);
+  body.systemInstruction.parts[0].text+=' Each recipe must have at most 15 ingredients and 6 concise steps, take 1–240 minutes, and use a short title and summary. At most 3 recipes and 30 operations.';
  }
  return body;
 }
@@ -52,7 +59,7 @@ export function createHandler(config,fetcher=fetch){return async request=>{
  if(origin)headers['Access-Control-Allow-Origin']=origin;headers['Access-Control-Allow-Headers']='authorization,apikey,content-type,x-client-info';headers['Access-Control-Allow-Methods']='GET,POST,OPTIONS';
  if(request.method==='OPTIONS')return new Response(null,{status:204,headers});
  const configured=!!(config.url&&config.publishableKey&&config.serviceKey&&config.geminiKey);
- if(request.method==='GET')return reply(200,{configured,supportsImages:true,supportsStreaming:true});
+ if(request.method==='GET')return reply(200,{configured,supportsImages:true,supportsStreaming:true,supportsFailover:true});
  if(request.method!=='POST')return reply(405,{error:'VOICE_METHOD_NOT_ALLOWED'});
  const auth=request.headers.get('authorization');if(!auth?.startsWith('Bearer '))return reply(401,{error:'VOICE_SIGN_IN_REQUIRED'});
  if(!configured||! /^[a-z0-9.-]+$/.test(config.model||'gemini-3.1-flash-lite'))return reply(503,{error:'VOICE_SETUP_REQUIRED'});
@@ -62,11 +69,10 @@ export function createHandler(config,fetcher=fetch){return async request=>{
   const input=await readInput(request);
   const quota=await fetcher(config.url+'/rest/v1/rpc/claim_voice_command',{method:'POST',headers:{apikey:config.serviceKey,Authorization:'Bearer '+config.serviceKey,'Content-Type':'application/json'},body:JSON.stringify({user_id:user.id}),signal:AbortSignal.timeout(10000)});
   if(!quota.ok)throw Error('VOICE_SETUP_REQUIRED');if(await quota.json()!==true)throw Error('VOICE_DAILY_LIMIT');
-  const response=await fetcher('https://generativelanguage.googleapis.com/v1beta/models/'+(config.model||'gemini-3.1-flash-lite')+(input.stream?':streamGenerateContent?alt=sse':':generateContent'),{method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':config.geminiKey},body:JSON.stringify(bodyFor(input)),signal:AbortSignal.timeout(30000)});
-  if(response.status===429)throw Error('VOICE_DAILY_LIMIT');if(!response.ok)throw Error('VOICE_PROVIDER_ERROR');
+  const response=await generate(input,bodyFor(input),config,fetcher);
   if(input.stream)return streamedResponse(response,headers,output=>finalOutput(output,input));
   const data=await response.json(),candidate=data.candidates?.[0];if(candidate?.finishReason!=='STOP')throw Error('VOICE_INVALID_RESPONSE');
   const raw=(candidate.content?.parts||[]).filter(p=>!p.thought).map(p=>p.text||'').join('');if(raw.length>(input.companion?50000:24000))throw Error('VOICE_INVALID_RESPONSE');let output;try{output=JSON.parse(raw)}catch{throw Error('VOICE_INVALID_RESPONSE')}
   if(!validOutput(output))throw Error('VOICE_INVALID_RESPONSE');return reply(200,finalOutput(output,input));
- }catch(e){const code=['VOICE_INVALID_INPUT','VOICE_SETUP_REQUIRED','VOICE_DAILY_LIMIT','VOICE_PROVIDER_ERROR','VOICE_INVALID_RESPONSE'].includes(e.message)?e.message:'VOICE_UNAVAILABLE';return reply(code==='VOICE_INVALID_INPUT'?400:code==='VOICE_DAILY_LIMIT'?429:code==='VOICE_SETUP_REQUIRED'?503:502,{error:code})}
+ }catch(e){const code=['VOICE_INVALID_INPUT','VOICE_SETUP_REQUIRED','VOICE_DAILY_LIMIT','VOICE_PROVIDER_ERROR','VOICE_PROVIDER_BUSY','VOICE_PROVIDER_LIMIT','VOICE_TIMEOUT','VOICE_INVALID_RESPONSE'].includes(e.message)?e.message:'VOICE_UNAVAILABLE';return reply(code==='VOICE_INVALID_INPUT'?400:['VOICE_DAILY_LIMIT','VOICE_PROVIDER_LIMIT'].includes(code)?429:code==='VOICE_SETUP_REQUIRED'?503:502,{error:code})}
 }}

@@ -33,7 +33,7 @@ export function streamedResponse(response,headers,validate){
  const body=new ReadableStream({async start(controller){
   const send=event=>{if(!cancelled)controller.enqueue(encoder.encode(JSON.stringify(event)+'\n'))};
   try{const output=await readGeminiStream(response,text=>send({type:'answer',text}),abort.signal);send({type:'done',output:validate(output)})}
-  catch(e){send({type:'error',error:['VOICE_INVALID_RESPONSE','VOICE_PROVIDER_ERROR'].includes(e.message)?e.message:'VOICE_UNAVAILABLE'})}
+  catch(e){send({type:'error',error:e.name==='TimeoutError'?'VOICE_TIMEOUT':['VOICE_INVALID_RESPONSE','VOICE_PROVIDER_ERROR'].includes(e.message)?e.message:'VOICE_UNAVAILABLE'})}
   finally{if(!cancelled)controller.close()}
  },cancel(){cancelled=true;abort.abort();}});
  return new Response(body,{headers:{...headers,'Content-Type':'application/x-ndjson','X-Accel-Buffering':'no'}});

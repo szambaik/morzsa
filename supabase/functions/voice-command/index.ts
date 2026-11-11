@@ -5,5 +5,6 @@ Deno.serve(createHandler({
  serviceKey:Deno.env.get('SUPABASE_SERVICE_ROLE_KEY'),
  geminiKey:Deno.env.get('GEMINI_API_KEY'),
  model:Deno.env.get('VOICE_MODEL')||'gemini-3.1-flash-lite',
+ fallbackModel:Deno.env.get('VOICE_FALLBACK_MODEL')??'gemini-3.5-flash-lite',
  origins:(Deno.env.get('VOICE_ORIGINS')||'https://szambaik.github.io,capacitor://localhost,https://localhost').split(',')
 }));
