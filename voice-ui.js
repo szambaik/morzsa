@@ -76,7 +76,7 @@ async function openVoiceCommand(mode='voice',initialText='',options={}){
    recorder.start(250);recording=true;const start=Date.now();timer=setInterval(()=>{const seconds=Math.floor((Date.now()-start)/1000);const clock=q.querySelector('#voice-clock');if(clock)clock.textContent=seconds+' / 30 s';if(seconds>=30&&recorder.state==='recording')recorder.stop()},200);
   }catch(e){stopTracks();if(active())errorView(e)}
  }
- function requestContext(){return {assistant:true,...(options.onOutput?{companion:true}:{}),destination,context:{...(options.cookingRecipe?{cookingRecipe:options.cookingRecipe}:{}),uncertain:window.PantryReview?.uncertain()||[],stock:Object.keys(state.stock).filter(n=>state.stock[n]>0).slice(0,1000),cart:state.cart.slice(0,1000).map(i=>({name:i.name,quantity:i.quantity||1,unit:i.unit||productUnit(i.name)}))},history:conversation.slice(-6)}}
+ function requestContext(){return {assistant:true,...(options.onOutput?{companion:true}:{}),destination,context:{...(options.cookingRecipe?{cookingRecipe:options.cookingRecipe,...(Number.isInteger(options.cookingStep)?{cookingStep:options.cookingStep}:{})}:{}),uncertain:window.PantryReview?.uncertain()||[],stock:Object.keys(state.stock).filter(n=>state.stock[n]>0).slice(0,1000),cart:state.cart.slice(0,1000).map(i=>({name:i.name,quantity:i.quantity||1,unit:i.unit||productUnit(i.name)}))},history:conversation.slice(-6)}}
  function receive(output){
   if(options.onOutput){close();options.onOutput(output);return}
   operations=VoiceModel.resolve(output,[...catalog,...state.custom],productEnglish,QuickEntry).map(o=>({...o,enabled:true}));

@@ -28,3 +28,22 @@ test('cooking context is validated, sent every turn, and separate from legacy re
  assert.throws(()=>normalizeInput({...request,companion:false}),/INVALID_INPUT/);assert.throws(()=>normalizeInput({...request,context:{cookingRecipe:{...recipe,steps:['x'.repeat(501)]}}}),/INVALID_INPUT/);
  const legacy=normalizeInput({assistant:true,text:'Help',context:{recipe:{name:'Palacsinta',ingredients:recipe.ingredients,steps:recipe.steps}}});assert.match(bodyFor(legacy).systemInstruction.parts[0].text,/Return NO operations/);
 });
+test('recipe progress defaults safely, survives saves and resume, and stays isolated by cooking session',()=>{
+ let b=M.startRecipe(M.workspace(null,R.recipe,1),recipe,'cook1',R.recipe,2);
+ assert.equal(b.threads[1].cookingStep,0);
+ b=M.workspace(b,R.recipe);assert.equal(b.threads[1].cookingStep,0);
+ const before=JSON.stringify(b);const moved=M.setCookingStep(b,'cook1',1,R.recipe);assert.equal(JSON.stringify(b),before);assert.equal(moved.threads[1].cookingStep,1);
+ assert.equal(M.workspace(JSON.parse(JSON.stringify(moved)),R.recipe).threads[1].cookingStep,1);
+ assert.equal(M.startRecipe(moved,recipe,'unused',R.recipe).threads[1].cookingStep,1);
+ assert.throws(()=>M.setCookingStep(moved,'cook1',2,R.recipe),/INVALID_COOKING_STEP/);assert.throws(()=>M.setCookingStep(moved,'cook1',-1,R.recipe),/INVALID_COOKING_STEP/);assert.throws(()=>M.setCookingStep(moved,'morzsa-main',0,R.recipe),/INVALID_COOKING_STEP/);
+ const bad={...moved,threads:moved.threads.map(t=>({...t,cookingStep:999}))};assert.equal(M.workspace(bad,R.recipe).threads[1].cookingStep,0);
+ const completed=M.finishRecipe(moved,'cook1',R.recipe,'Done: ',5);const next=M.startRecipe(completed,recipe,'cook2',R.recipe,6);assert.equal(M.workspace(next,R.recipe).threads[1].cookingStep,0);assert.equal(next.threads[2].cookingStep,1);
+});
+test('the selected cooking step reaches AI context, old clients stay valid and invalid indices are rejected',async()=>{
+ const {normalizeInput,bodyFor}=await import('../supabase/functions/voice-command/handler.mjs');
+ const request={assistant:true,companion:true,text:'Mennyi ideig?',context:{cookingRecipe:recipe,cookingStep:1}};
+ const normalized=normalizeInput(request);assert.equal(normalized.context.cookingStep,1);assert.match(bodyFor(normalized).systemInstruction.parts[0].text,/currently selected cooking step 2: Süsd meg/);
+ assert.equal(normalizeInput({...request,context:{cookingRecipe:recipe}}).context.cookingStep,undefined);
+ for(const index of [-1,2,1.5,'1'])assert.throws(()=>normalizeInput({...request,context:{...request.context,cookingStep:index}}),/INVALID_INPUT/);
+ assert.throws(()=>normalizeInput({...request,context:{cookingStep:0}}),/INVALID_INPUT/);
+});

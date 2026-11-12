@@ -50,6 +50,7 @@
   detail.querySelector('.close').onclick=()=>{if(modal)detail.close();else detail.hidden=true};bind(detail);detail.querySelector('[data-room-save]').onclick=()=>{if(toggle(r))renderDetail(r,detail,modal)};
   if(!modal){detail.querySelector('.close')?.remove();detail.querySelector('.recipe-detail-photo')?.remove();detail.querySelector('.room-art')?.remove();detail.querySelector('.room-meta')?.remove();detail.querySelector('h2')?.remove();const summary=detail.querySelector('p');if(summary?.textContent===r.summary)summary.remove();detail.querySelector('small.room-footnote')?.remove();}
   detail.querySelector('#room-discuss').onclick=()=>{if(busy){toast(say('Várd meg Morzsa válaszát.','Wait for Morzsa’s reply.'));return}if(window.MorzsaCompanion){if(window.MorzsaCompanion.discuss(r)&&modal)detail.close();return}messages=M.messages([...messages,{role:'user',text:say('Beszélgessünk erről a receptről.','Let’s discuss this recipe.'),recipes:[]},{role:'model',text:say('Erről a receptről beszélgetünk:','Let’s talk about this recipe:'),recipes:[M.recipe(r)]}]);persist();error='';view='chat';detail.close();renderRoom();const input=main.querySelector('#room-input');input.value=draft=say('Mivel helyettesíthetem a ','What could I use instead of ');input.focus();scrollEnd()};
+  if(detail.dataset.ingredientsOnly==='true'){detail.querySelector('.recipe-method')?.remove();detail.querySelector('.room-detail-actions')?.remove()}
   detail.querySelectorAll('.recipe-method li').forEach((li,i)=>{const host=document.createElement('div');li.append(host);window.RecipeImages?.mount(host,r,i)});
   if(!modal&&detail.id==='cooking-ingredients')detail.querySelector('#room-discuss')?.remove();
   if(modal&&!detail.open)detail.showModal();
@@ -90,5 +91,5 @@
  function viewport(){const v=window.visualViewport,offset=v?Math.max(0,innerHeight-v.height-v.offsetTop):0;document.documentElement.style.setProperty('--room-keyboard',offset+'px');document.documentElement.classList.toggle('room-keyboard',page==='recipes'&&offset>120)}
  window.visualViewport?.addEventListener('resize',viewport);window.visualViewport?.addEventListener('scroll',viewport);
  window.addEventListener('morzsa-auth-change',()=>{sync();detail.close();renderRoom()});
- window.RecipeRoom={render:renderRoom,open,sourceMarkup,mount:(host,r)=>renderDetail(r,host,false)};
+ window.RecipeRoom={render:renderRoom,open,sourceMarkup,mount:(host,r,options={})=>{if(!host)return;host.dataset.ingredientsOnly=String(options.ingredientsOnly===true);renderDetail(r,host,false)}};
 })();
