@@ -13,13 +13,14 @@ const PanelGestures=(()=>{
   const point=e=>e.touches?.[0]||e.changedTouches?.[0]||e;
   function start(e){
    if(e.touches?.length>1||e.button>0||options.disabled?.())return;
-   const target=e.target;if(!options.edge&&target.closest('button,a,input,textarea,select,[data-close],.companion-quick-add,label'))return;
+   const target=e.target;if(options.ignoreControls&&target.closest('button,a,input,textarea,select,label'))return;
+   if(!options.edge&&!options.allowControls&&target.closest('button,a,input,textarea,select,[data-close],.companion-quick-add,label'))return;
    const scroll=target.closest('.companion-quick-items');if(scroll?.scrollTop>0)return;
    const p=point(e);drag={x:p.clientX,y:p.clientY,q:options.edge?null:element,locked:false,dx:0,dy:0};
   }
   function move(e){
    if(!drag)return;if(e.touches?.length>1){end(true);return}const p=point(e),dx=p.clientX-drag.x,dy=p.clientY-drag.y,axis=options.axis;
-   if(!drag.locked){const decision=intent(dx,dy,axis);if(decision==='wait')return;if(decision==='scroll'||(options.edge&&dx<0)||(axis==='y'&&dy<0)){drag=null;return}drag.locked=true;drag.q=drag.q||options.open();if(!drag.q){drag=null;return}drag.q.classList.add('is-dragging')}
+   if(!drag.locked){const decision=intent(dx,dy,axis);if(decision==='wait')return;if(decision==='scroll'||(options.edge&&dx<0)||(axis==='y'&&dy<0)){drag=null;return}drag.locked=true;drag.q=drag.q||options.open();if(!drag.q){drag=null;return}if(e.pointerType==='mouse'&&options.allowControls)element.setPointerCapture(e.pointerId);drag.q.classList.add('is-dragging')}
    if(e.cancelable)e.preventDefault();drag.dx=dx;drag.dy=dy;const q=drag.q,w=q.getBoundingClientRect().width;
    q.style.transform=axis==='x'?'translateX('+Math.max(-w,Math.min(0,options.edge?dx-w:dx))+'px)':'translateY('+Math.max(0,dy)+'px)';
   }
@@ -30,7 +31,7 @@ const PanelGestures=(()=>{
    settle(d.q,options.axis,options.axis==='x'?-size:size,close);
   }
   element.addEventListener('touchstart',start,{passive:true});document.addEventListener('touchmove',move,{passive:false});document.addEventListener('touchend',()=>end());document.addEventListener('touchcancel',()=>end(true));
-  element.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'){start(e);if(drag)element.setPointerCapture(e.pointerId)}});document.addEventListener('pointermove',e=>{if(e.pointerType==='mouse')move(e)});document.addEventListener('pointerup',e=>{if(e.pointerType==='mouse')end()});document.addEventListener('pointercancel',e=>{if(e.pointerType==='mouse')end(true)});
+  element.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'){start(e);if(drag&&!options.allowControls)element.setPointerCapture(e.pointerId)}});document.addEventListener('pointermove',e=>{if(e.pointerType==='mouse')move(e)});document.addEventListener('pointerup',e=>{if(e.pointerType==='mouse')end()});document.addEventListener('pointercancel',e=>{if(e.pointerType==='mouse')end(true)});
   element.addEventListener('click',e=>{if(suppress){e.preventDefault();e.stopImmediatePropagation()}},true);
   if(!options.edge){element.addEventListener('close',()=>{drag=null;element.style.transform='';element.classList.remove('is-dragging')});element.addEventListener('click',e=>{if(e.target!==element||suppress||options.disabled?.())return;const r=element.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)element.close()})}
  }

@@ -15,6 +15,12 @@ if(location.search.includes('cooking')&&!localStorage.getItem('cooking-guide-fix
  if(location.search.includes('named')){r.stepTitles=['A palacsintatészta összeállítása','Az alma előkészítése','Az almás palacsinták sütése'];r.steps=['Üsd a tojásokat egy tálba, majd öntsd hozzá a tejet. Keverd bele a lisztet apránként, hogy ne legyen csomós. Sűrű, de még kanállal adagolható tésztát kapj.','Mosd meg az almát, távolítsd el a magházát, majd reszeld le. Forgasd a tésztába, hogy egyenletesen eloszoljon.','Melegíts kevés olajat egy serpenyőben közepes lángon. Kanalazz bele kisebb adagokat, és süsd körülbelül 2–3 percig oldalanként. Akkor fordítsd meg, amikor a széle szilárdul; a közepe is süljön át.'];}
  localStorage.setItem('morzsa-companion-v2:'+JSON.stringify(['companion-fixture','local','hu']),JSON.stringify({version:2,active:'morzsa-main',threads:[{id:'morzsa-main',kind:'main',updated:now,messages:[{role:'model',text:'Készítsünk almás palacsintát!',createdAt:now,recipes:[r]}]},{id:'cooking-fixture',kind:'recipe',title:r.title,recipe:r,status:'active',updated:now,messages:Array.from({length:12},(_,i)=>({role:i%2?'model':'user',text:i%2?'Ezt a receptet együtt alakítjuk.':'Főzési kérdés '+(i+1),createdAt:now+i}))}]}));localStorage.setItem('cooking-guide-fixture-seeded','1');
 }
+if(location.search.includes('history')&&!localStorage.getItem('history-rail-fixture-seeded')){
+ const now=Date.now(),r={title:'Almás palacsinta',summary:'Egy gyors, otthonos édesség két főre.',minutes:20,ingredients:[{name:'Tej',amount:'150 ml'},{name:'Liszt',amount:'120 g'}],steps:['Keverd össze a tésztát.','Süsd aranyszínűre.']};
+ const titles=['Mit vigyek az irodába?','Gyors vacsora péntekre','Mit főzzünk hétvégén?','Sütés a gyerekekkel','Bevásárlás a hétre','Nincs itthon tojás','Szezonális ötletek'];
+ const threads=[{id:'morzsa-main',kind:'main',title:'A konyhánk',updated:now-8000,messages:[]},...titles.map((title,i)=>({id:'chat-'+i,kind:'chat',title,updated:now-i*1000,messages:[{role:'user',text:title,createdAt:now},{role:'model',text:'Nézzünk egy könnyen dobozolható, másnap is finom sütit. Egy almás muffin jó választás lehet.',createdAt:now}]})),{id:'cook-active',kind:'recipe',title:r.title,recipe:r,status:'active',updated:now,parentId:'chat-0',messages:[]},{id:'cook-completed',kind:'recipe',title:'Korábbi palacsintasütés',recipe:r,status:'completed',updated:now-10000,messages:[]}];
+ localStorage.setItem('morzsa-companion-v4:'+JSON.stringify(['companion-fixture','local','hu']),JSON.stringify({version:4,active:'chat-0',threads}));localStorage.setItem('history-rail-fixture-seeded','1');
+}
 </script>'''
 mock='''<script>
 window.household={active:null,busy:false,userId:()=> 'companion-fixture',storageKey:()=> 'morzsa-v2',notify:()=>Promise.resolve(true),voiceStatus:()=>Promise.resolve({configured:true,supportsImages:true,supportsStreaming:true}),voiceCommand:async payload=>{
@@ -28,7 +34,10 @@ document.getElementById('household-button').textContent='Tesztkonyha';
 </script>'''
 class Fixture(Handler):
  def do_GET(self):
-  if self.path.split('?')[0]=='/':
+  if self.path.split('?')[0]=='/mobile-preview':
+   width=320 if '320' in self.path else 390
+   body=('<!doctype html><html><head><title>Mobile QA</title></head><body style="margin:0;background:#ddd"><iframe title="Morzsa mobile QA" src="/?history" style="display:block;width:'+str(width)+'px;height:844px;border:0"></iframe></body></html>').encode();self.send_response(200);self.send_header('Content-Type','text/html; charset=utf-8');self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body)
+  elif self.path.split('?')[0]=='/':
    html=Path('index.html').read_text().replace('<script src="app.js',seed+'<script src="app.js')
    html=re.sub(r'<script src="household.js[^>]*></script>',lambda _:mock,html)
    body=html.encode();self.send_response(200);self.send_header('Content-Type','text/html; charset=utf-8');self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body)

@@ -117,3 +117,18 @@
  .app[data-page=shopping] #add-cart {max-width:720px;width:100%;margin:16px auto 0}
  .app[data-page=shopping] #restock {max-width:720px;justify-self:center}
 }
+
+@media(min-width:1000px){
+ .app[data-page=chat]{padding-left:296px}
+ .app[data-page=chat] header{margin-left:-260px}
+ .app[data-page=chat] nav,.app[data-page=chat] .companion-header-history{display:none}
+ .app[data-page=chat] .companion{max-width:880px}
+ .app[data-page=chat] .companion-compose-wrap{left:calc(50% + 130px);width:calc(100% - 332px);max-width:880px;--companion-backdrop-offset:130px}
+ #companion-history-rail:not([hidden]){display:flex;flex-direction:column;position:fixed;left:max(24px,calc((100vw - 1320px)/2 + 24px));top:112px;bottom:24px;width:248px;padding:20px 12px 12px;border:1px solid #e8dcc9;border-radius:24px;background:#fffaf2b3;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);z-index:13;color:var(--ink)}
+ #companion-history-rail .companion-panel-head{padding-inline:10px}
+ #companion-history-rail button{font-family:inherit;cursor:pointer}
+ #companion-history-rail .companion-history-items button{border:0;background:transparent;border-radius:14px;text-align:left;color:var(--ink)}
+ #companion-history-rail .companion-history-items button[aria-current=true]{background:#ebeedd}
+ #companion-history-rail .companion-history-items button:hover{background:#f3eadb}
+ #companion-history-rail .companion-history-items small{display:block;font-size:10px;color:var(--muted);margin-top:5px}
+}

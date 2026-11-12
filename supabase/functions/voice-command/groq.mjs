@@ -1,7 +1,7 @@
 import {partialAnswer,readGeminiStream} from './stream.mjs';
 import {generate} from './provider.mjs';
 export function groqBody(body,model){
- const history=body.contents.slice(0,-1).slice(-6).map(m=>({role:m.role==='model'?'assistant':'user',content:m.parts.map(p=>p.text||'').join('\n').slice(0,1500)}));
+ const history=body.contents.slice(0,-1).slice(-12).map(m=>({role:m.role==='model'?'assistant':'user',content:m.parts.map(p=>p.text||'').join('\n').slice(0,m.role==='user'?5000:3000)}));
  return {model,stream:true,reasoning_effort:'low',max_completion_tokens:3000,response_format:{type:'json_object'},messages:[{role:'system',content:body.systemInstruction.parts.map(p=>p.text).join('\n')+' IMPORTANT examples: Current message: Elfogyott a tej, tedd a listára. => operations MUST contain stock_remove Tej AND list_set Tej (both with null quantity/unit). Current message: Van még tej? => operations []. Current message: Vettem tojást. => stock_add Tojás. In answer NEVER say an operation is already done. Say Javaslom / Mentés után instead; the app has not saved anything. Echo current message in transcript. Return one JSON object, answer first. Follow this output schema: '+JSON.stringify(body.generationConfig.responseSchema)},...history,{role:'user',content:body.contents.at(-1).parts.map(p=>p.text||'').join('\n')}]};
 }
 async function readGroq(response,onAnswer,signal){
