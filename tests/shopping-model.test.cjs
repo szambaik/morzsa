@@ -18,3 +18,16 @@ test('shared completion is one existing-format revision-checked batch and does n
  const changes=household.diff(rows,shopping.complete(source,{...options,includeUnchecked:false}));
  assert(changes.some(x=>x.bucket==='cart'&&x.key==='Tej'&&x.value===null&&x.expected===7));assert(!changes.some(x=>x.bucket==='cart'&&x.key==='Alma'));assert(changes.some(x=>x.bucket==='history'&&x.key==='new'));assert(!JSON.stringify(changes).includes('private'));
 });
+test('unchecked custom reminders survive both finish modes, including old custom records',()=>{
+ const source=base();source.custom=[{name:'Különleges tea',category:'Saját tételek'},{name:'Ajándék',category:'Saját tételek'}];
+ source.cart.push({name:'Különleges tea',quantity:2,unit:'doboz',source:'Saját tétel',note:'ha látod'}, {name:'Ajándék',quantity:1,done:true});
+ source.cart[1].source='Saját tétel';
+ const categoryFor=n=>source.custom.some(i=>i.name===n)?'Saját tételek':'Gyümölcsök';
+ const all=shopping.complete(source,{...options,categoryFor,includeUnchecked:true});
+ assert.deepEqual(all.cart,[source.cart[2]]);assert.equal(all.stock.Ajándék,2);assert.equal(all.stock.Alma,2);assert.equal(all.stock['Különleges tea'],undefined);
+ assert.equal(all.history[0].items.length,3);assert.deepEqual(all.likes,source.likes);assert.deepEqual(all.chats,source.chats);
+ assert.equal(shopping.complete(all,{...options,categoryFor,includeUnchecked:true}),null);
+ const checked=shopping.complete(source,{...options,categoryFor,includeUnchecked:false});assert.deepEqual(checked.cart,[source.cart[1],source.cart[2]]);
+ const rows=[...household.encode(source).values()].map(r=>({...r,revision:5}));
+ const changes=household.diff(rows,all);assert(!changes.some(c=>c.bucket==='cart'&&c.key==='Különleges tea'));assert(changes.some(c=>c.bucket==='cart'&&c.key==='Ajándék'&&c.expected===5));
+});

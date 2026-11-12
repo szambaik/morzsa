@@ -78,3 +78,114 @@ final result: passed
 - Injected stalled server response: several checks, an uncheck and quantity change completed before releasing the response; existing row nodes stayed intact.
 - Concurrent partner quantity change generated a revision conflict; rebase preserved it and saved the latest checks. Background-read overlap, pending reload/retry, and queued quick entry passed.
 - Existing local/shared checkout, category collapse/reopen, account and household switching, and Realtime regression suites passed. 52 Node tests and five SQL suites passed. Server/network behavior is simulated in browser tests; physical two-phone testing remains user validation.
+
+## Kitchen library and interactive introduction — 2026-11-12
+
+This review supersedes earlier launch-screen/navigation descriptions above.
+The current launch destination is Morzsa. Navigation order is Overview, Pantry,
+Morzsa, Shopping, Recipes. Existing stores and RPC contracts are preserved.
+
+### Visual sources and evidence
+
+- Selected interactive source: design/navigation-exploration-2026-11-12/companion.html,
+  served at http://127.0.0.1:8793/companion.html. Source recipe capture:
+  design/library-refinement-2026-11-12/qa/recipes-source-card-full.png.
+- User-selected pantry reference: codex-clipboard-8a24b9ea-702c-48f8-952b-046006f1fba6.png
+  in the user attachment temporary directory. Original size 378 × 679 pixels.
+- Implementation: isolated companion fixture at http://127.0.0.1:8796/;
+  actual application at http://127.0.0.1:8797/.
+- Phone CSS viewports: 390 × 676 and 320 × 676. Fixture screenshots originally
+  1280 × 720 with an unscaled iframe at the upper left; evidence copies crop
+  the phone area, without reproducing device chrome.
+- The source's viewport override produced a 375 × 650 capture, normalized to
+  390 × 676 for comparison. Pantry comparison removes the implementation's
+  76px app header and compares corresponding content regions at 378px width.
+  This is a content comparison, not a pixel-exact comparison of browser chrome.
+- Full-view paired evidence, opened together and reviewed:
+  qa/pantry-comparison.png, qa/recipe-comparison.png, qa/intro-comparison.png
+  under design/library-refinement-2026-11-12/.
+- Focused card comparison: qa/recipe-card-comparison.png. Source and implemented
+  cards use different recipe text, so height differences from wrapping are expected.
+- Final implementation captures: qa/pantry-current-final.png,
+  qa/recipes-current-final.png, qa/pantry-current-320.png,
+  qa/recipes-current-320.png, qa/kitchens-final-320.png,
+  qa/history-final.png, qa/chat-focused-final.png.
+- Actual application introduction: qa/onboarding-live-1.png and
+  qa/onboarding-live-2.png. Fixture evidence also covers all three screens,
+  final quick-entry action, and 320px introduction.
+- Evidence files and original user references remain local; no user screenshots
+  are included in the public commit.
+
+### Findings and comparison history
+
+- [P2, fixed] Product illustrations were constrained by legacy CSS. Specific
+  image rules now show the original catalog artwork at the intended size.
+- [P2, fixed] Generated covers inherited rotation and width limits from ingredient
+  art; image mounting also stripped the layout class. Preserve host classes and
+  override the generated image crop. Final card comparison shows a straight,
+  full-width cover with a readable caption.
+- [P2, fixed] Hiding an empty image host prevented its IntersectionObserver from
+  checking the server cache. Keep the host over the fallback artwork with no
+  interactive contents. Fresh library loads now display cached covers; library
+  requests use create:false and never spend an image generation allowance.
+- [P2, fixed] Recipe buttons diverged from the selected source. The primary action
+  now uses terracotta, a white source arrow and a compact width; the heart is
+  separately aligned on the right. Confirmed in the paired final card capture.
+- [P2, fixed] The introduction's second screen placed Next below the fold. Shorten
+  the copy, remove the repeated mascot on steps two/three, and pin the footer.
+  Hide mobile navigation during the tutorial. All actions remain visible at 320px.
+- [P2, fixed] A full composer and quick actions obscured too much library content.
+  Non-chat screens retain the two quick-add actions; the full composer stays in
+  chat. The new pantry comparison shows the first row unobstructed.
+- [P2, fixed] Repeated kitchen headings added clutter. One title now introduces
+  own/shared kitchen tiles; administration lives in expandable sections.
+- No remaining actionable P0/P1/P2 issues in this scope.
+
+### Required fidelity surfaces
+
+- Typography: existing Sora headings and Inter body; compact 21px recipe titles,
+  readable 13–15px instructional copy, and short Hungarian/English labels.
+- Spacing: three pantry columns, 44px minimum action targets, 18px phone gutters,
+  compact primary recipe action, fixed tutorial footer, independently scrolling
+  longer library content. Production's app header and five-tab navigation are
+  intentionally retained, although the pantry reference crops them out.
+- Colors: cream, sage and forest from Kitchen Companion plus the selected warm
+  orange background treatment. Terracotta primary recipe/tutorial actions.
+  At-home state and shopping-list state are independent and explicitly labeled.
+- Assets: real Morzsa mascot, existing food artwork and sourced outline SVG icons.
+  Cached recipe image replaces the labeled ingredient artwork when available.
+  No new placeholder photos or code-drawn illustrations.
+- Content: library includes all started recipe conversations in the current
+  user/household/language scope, including completed ones; favorites remain separate.
+  Review timing indicates presence confidence, not a claimed food expiry date.
+  Tutorial demos do not enter real household data.
+
+### Interaction and compatibility verification
+
+- In the in-app browser: tutorial next/back/skip, pantry demo toggle, shopping demo
+  check, final opening of real pantry entry, replay from kitchen menu, 320px layout.
+- Actual application first-use introduction and demo toggle verified separately
+  from the mock fixture. Normal fixture reload after completion does not force
+  introduction on an existing save; old morzsa-v1 remains supported.
+- Right swipe starting on plain assistant text opens history; left swipe dismisses
+  it. New chat is at the bottom on mobile, with source icons in history.
+- Own/shared kitchen switching verified using real household UI and local mock
+  REST responses, with no live household mutations. Invite form expands correctly.
+- Bulk comma/Enter pantry addition, independent home/list states, recipe favorite
+  saving and reopening the existing cooking thread verified in the fixture.
+- Browser error logs on final fixture views were empty.
+- 155 JavaScript tests, six SQL suites and eight Python server tests passed.
+  They cover legacy formats, unchanged data, repeated completion, shared conflicts,
+  milk's exact 24-hour review boundary and repeated confirmation timestamp reset.
+- Web build and Capacitor sync are validated after final changes. No claim of a
+  physical-device test, a live AI-provider response, or live email delivery is made.
+- Chat/recipe history remains scoped local browser data; this change does not add
+  cloud history synchronization. Existing membership/owner-only rules are retained.
+
+### Follow-up polish
+
+- [P3] A larger mascot master export would allow higher-density hero illustrations.
+- [P3] Observe a first-time nontechnical tester completing pantry setup to assess
+  understanding, beyond the verified control behavior.
+
+final result: passed

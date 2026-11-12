@@ -159,13 +159,28 @@
   section.querySelector('#skip-pantry-copy')?.addEventListener('click',()=>{if(menuBusy||cloud.busy)return;newHouseholdId=null;q.close()});
   b.onclick=()=>run(b,async()=>{select.disabled=true;try{const added=await copyPantry(select.value);if(added===undefined)return;newHouseholdId=null;await open();const message=document.getElementById('local-pantry-feedback');if(message)message.textContent=added?say(added+' terméket otthonra jelöltünk a közös készletben.',added+(added===1?' item marked':' items marked')+' at home in the shared pantry.'):say('Nincs új otthonjelölés: a forrás üres, vagy a termékek már megvannak.','No new items: the source is empty or its items are already at home.');}finally{select.disabled=false}});
  }
+ function organizeKitchens(body,houses){
+  const icon=name=>'<img class="workspace-icon" src="assets/ui/'+name+'.svg" alt="" width="22" height="22">';
+  const account=body.querySelector('p'),signout=body.querySelector('#cloud-signout'),create=body.querySelector('#create-house'),copy=body.querySelector('.local-pantry-import'),invite=body.querySelector('#invite-email'),sent=body.querySelector('#sent-invitations'),help=invite?.nextElementSibling;
+  account?.remove();
+  const choices=document.createElement('section');choices.className='kitchen-choices';choices.innerHTML='<p class="helper">'+say('Válassz, melyik készletet és listát használod.','Choose the pantry and list you want to use.')+'</p>';
+  let own=body.querySelector('#cloud-disconnect');if(!own){own=document.createElement('button');own.id='cloud-disconnect';own.onclick=()=>{if(!menuBusy&&!cloud.busy)q.close()}}
+  own.className='kitchen-choice';own.setAttribute('aria-pressed',String(!cloud.active));own.innerHTML=icon('house')+'<span><strong>'+say('Saját konyha','My kitchen')+'</strong><small>'+say('Csak ezen az eszközön','Only on this device')+'</small></span>'+(!cloud.active?icon('check'):'');choices.append(own);
+  for(const b of body.querySelectorAll('[data-house]')){const h=houses.find(h=>h.id===b.dataset.house);b.className='kitchen-choice';b.setAttribute('aria-pressed',String(cloud.active===h.id));b.innerHTML=icon('house')+'<span><strong>'+esc(h.name)+'</strong><small>'+say('Közös konyha', 'Shared kitchen')+'</small></span>'+(cloud.active===h.id?icon('check'):'');choices.append(b)}
+  body.querySelector('#incoming-invitations')?.after(choices);
+  const wrap=(node,title,open=false)=>{const d=document.createElement('details');d.className='kitchen-section';d.open=open;d.innerHTML='<summary>'+title+icon('chevron-right')+'</summary>';d.append(node);body.append(d);return d};
+  if(invite){const group=wrap(invite,icon('plus')+say('Meghívás ebbe a konyhába','Invite to this kitchen'));if(help)group.append(help);if(sent)group.append(sent)}
+  if(create){const input=create.querySelector('input');input.placeholder=say('Például: Otthon','For example: Home');create.querySelector('label').firstChild.textContent=say('Konyha neve','Kitchen name');wrap(create,icon('plus')+say('Új közös konyha','New shared kitchen'))}
+  if(copy)wrap(copy,say('Készlet átmásolása','Copy pantry'),!!newHouseholdId);
+  if(signout){const group=document.createElement('details');group.className='kitchen-section kitchen-account';group.innerHTML='<summary>'+say('Fiók','Account')+icon('chevron-right')+'</summary>';if(account)group.append(account);group.append(signout);body.append(group)}
+ }
  function positionHouseholdMenu(){
   const anchor=document.getElementById('household-button').getBoundingClientRect(),v=window.visualViewport,offset=v?.offsetTop||0,height=v?.height||innerHeight,width=Math.min(360,innerWidth-24),top=Math.max(offset+8,Math.min(anchor.bottom+8,offset+height-180));
   q.style.width=width+'px';q.style.left=Math.max(12,Math.min(anchor.right-width,innerWidth-width-12))+'px';q.style.top=top+'px';q.style.maxHeight=Math.max(140,offset+height-top-12)+'px';
  }
  async function open(){
-  q.innerHTML='<button class="close" aria-label="'+say('Bezárás','Close')+'">×</button><h2>'+say('Közös háztartás','Shared household')+'</h2><p class="household-error" role="alert"></p><div id="household-body"></div>';
-  q.querySelector('.close').onclick=()=>q.close();q.classList.add('household-menu');positionHouseholdMenu();if(!q.open)q.showModal();document.getElementById('household-button').setAttribute('aria-expanded','true');const body=q.querySelector('#household-body');
+  q.innerHTML='<button class="close" aria-label="'+say('Bezárás','Close')+'">×</button><h2>'+say('Konyháim','My kitchens')+'</h2><p class="household-error" role="alert"></p><div id="household-body"></div>';
+  q.querySelector('.close').onclick=()=>q.close();const guide=document.createElement('button');guide.className='kitchen-help';guide.textContent=say('Hogyan használjam?','How do I use this?');guide.onclick=()=>{q.close();window.MorzsaOnboarding?.open()};q.querySelector('h2').after(guide);q.classList.add('household-menu');positionHouseholdMenu();if(!q.open)q.showModal();document.getElementById('household-button').setAttribute('aria-expanded','true');const body=q.querySelector('#household-body');
   if(!configured){body.innerHTML='<p>'+say('A közös háztartás előkészítve. A bejelentkezéshez és megosztáshoz még be kell kötni a felhőszolgáltatást.','Shared households are prepared. Connect the cloud service to enable sign-in and sharing.')+'</p><p>'+say('Addig a készleted és listád csak ezen a böngészőn mentődik.','Until then, your pantry and list are saved in this browser only.')+'</p>';return}
   if(authPending){body.innerHTML='<p role="status">'+say('Belépési link ellenőrzése…','Checking your sign-in link…')+'</p>';return}
   if(recoveryMode){paintPasswordReset(body);return}
@@ -184,11 +199,12 @@
     if(!inviteUnavailable)await paintSentInvitations(cloud.active);
    }
    }
+   organizeKitchens(body,houses);
   }catch(e){q.querySelector('.household-error').textContent=errorText(e)}
  }
  function paintInviteBadge(){
   paintAccount();
-  const button=document.getElementById('household-button'),name=switchingName?switchingName+'…':cloud.active?(houseNames.get(cloud.active)||say('Közös háztartás','Shared household')):session?say('Saját készlet','My pantry'):say('Belépés','Sign in');
+  const button=document.getElementById('household-button'),name=switchingName?switchingName+'…':cloud.active?(houseNames.get(cloud.active)||say('Közös háztartás','Shared household')):session?say('Saját konyha','My kitchen'):say('Belépés','Sign in');
   button.setAttribute('data-no-translate','');button.title=name;button.setAttribute('aria-haspopup','dialog');
   button.innerHTML='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5M5 9v12h5v-7h4v7h5V9"/></svg><span class="household-name">'+esc(name)+'</span><span class="household-chevron" aria-hidden="true"><svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m4 6 4 4 4-4"/></svg></span>';
   button.setAttribute('aria-label',say('Fiók és háztartás: ','Account and household: ')+name+(invitations.length?' · '+invitations.length+' '+say('meghívás','invitations'):''));

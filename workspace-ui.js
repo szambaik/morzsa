@@ -17,7 +17,7 @@ window.MorzsaWorkspace=(()=>{
   const desktop=matchMedia('(min-width:1000px)').matches;sidebar.hidden=!desktop;
   const navHost=desktop?sidebar.querySelector('.workspace-navigation'):mobileParent;if(nav.parentElement!==navHost)navHost.append(nav);
   const rail=document.getElementById('companion-history-rail');if(rail&&rail.parentElement!==sidebar.querySelector('.workspace-history'))sidebar.querySelector('.workspace-history').append(rail);
-  const local=main.querySelector('.companion-compose-wrap,.room-compose-wrap');dock.hidden=!!local;
+  const local=main.querySelector('.companion-compose-wrap,.room-compose-wrap');dock.hidden=!!local;dock.classList.toggle('workspace-quick-only',page!=='chat');
   if(local){let fast=local.querySelector('.workspace-fast-actions');if(!fast){local.insertAdjacentHTML('afterbegin',fastMarkup());bindFast(local);}}
   else if(!dock.querySelector('form')||dockLanguage!==language){dockLanguage=language;const value=dock.querySelector('input')?.value||'';dock.innerHTML=fastMarkup()+'<form class="workspace-composer"><input aria-label="'+say('Üzenet Morzsának','Message Morzsa')+'" placeholder="'+say('Kérdezz Morzsától…','Ask Morzsa…')+'" maxlength="2000"><button type="button" data-workspace-voice aria-label="'+say('Kérdezés hanggal','Ask by voice')+'">'+glyph('mic')+'</button><button type="submit" aria-label="'+say('Küldés','Send')+'">'+glyph('arrow-up')+'</button></form>';dock.querySelector('input').value=value;bindFast(dock);
    dock.querySelector('form').onsubmit=e=>{e.preventDefault();const input=dock.querySelector('input'),text=input.value.trim();if(text&&window.MorzsaCompanion.ask(text)!==false)input.value=''};
@@ -26,10 +26,11 @@ window.MorzsaWorkspace=(()=>{
   document.body.classList.toggle('workspace-chat',page==='chat');document.body.classList.toggle('workspace-local-compose',!!local);
   document.documentElement.style.setProperty('--workspace-nav-height',desktop?'0px':nav.getBoundingClientRect().height+'px');
   if(quick?.open&&entryContext!==voiceContext())quick.close();
+  window.MorzsaOnboarding?.mount();document.body.classList.toggle('introduction-active',!!main.querySelector('.morzsa-introduction'));
  }
- function openEntry(destination){
+ function openEntry(destination,initialDraft){
   if(working)return;
-  const nextContext=voiceContext();if(entryContext!==nextContext){names=[];draft='';entryContext=nextContext}target=destination;
+  const nextContext=voiceContext();if(entryContext!==nextContext){names=[];draft='';entryContext=nextContext}target=destination;if(typeof initialDraft==='string')draft=initialDraft;
   if(!quick){quick=document.createElement('dialog');quick.id='workspace-entry';quick.setAttribute('data-no-translate','');document.body.append(quick);PanelGestures.bind(quick,{axis:'y',disabled:()=>working});}
   quick.innerHTML='<div class="workspace-sheet-handle" aria-hidden="true"></div><div class="workspace-entry-head"><h2>'+say('Gyors felvétel','Quick add')+'</h2><button type="button" data-entry-close aria-label="'+say('Bezárás','Close')+'">'+glyph('x')+'</button></div><div class="workspace-entry-target" role="group" aria-label="'+say('Hová kerüljön?','Destination')+'"><button data-entry-target="stock">'+glyph('house')+say('Készletbe','To pantry')+'</button><button data-entry-target="cart">'+glyph('shopping-cart')+say('Listára','To list')+'</button></div><form><input role="combobox" aria-label="'+say('Termékek gyors felvétele','Quickly add products')+'" aria-autocomplete="list" aria-controls="workspace-entry-options" aria-expanded="false" placeholder="'+say('Tej, kenyér, alma…','Milk, bread, apples…')+'" autocomplete="off" enterkeyhint="done" maxlength="2000"></form><div id="workspace-entry-options" role="listbox"></div><div class="workspace-entry-batch"></div><p class="workspace-entry-hint">'+say('Vessző vagy Enter: még egy tétel. Pontos mennyiség nem kell.','Comma or Enter: another item. Exact quantities are optional.')+'</p><p class="workspace-entry-status" role="status"></p><button class="primary workspace-entry-save" type="button">'+glyph('plus')+say('Hozzáadom','Add')+'</button>';
   const input=quick.querySelector('input'),options=quick.querySelector('#workspace-entry-options'),status=quick.querySelector('.workspace-entry-status');input.value=draft;let choices=[],active=-1;

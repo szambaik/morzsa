@@ -2,8 +2,8 @@
 const PantryReviewModel=(()=>{
  const day=86400000;
  function interval(category){if(['Zöldségek','Gyümölcsök','Pékáru'].includes(category))return 5;if(['Tejtermék és tojás','Hús és felvágott','Hal és tengeri','Növényi alapok'].includes(category))return 7;if(category==='Fagyasztott')return 30;return 60}
- // Editorial estimates for consumption, not shelf life or measured personal habits.
- const cycles={'Kenyér':3,'Zsemle':3,'Kifli':3,'Tej':4,'Joghurt':5,'Tejföl':7,'Tojás':10,'Vaj':21,'Sajt':10,'Paradicsom':5,'Paprika':7,'Uborka':5,'Saláta':4,'Banán':5,'Alma':10,'Krumpli':21,'Hagyma':21,'Fokhagyma':30,'Csirkemell':5,'Csirkecomb':5,'Sonka':5,'Rizs':45,'Tészta':30,'Olaj':60,'Liszt':60,'Cukor':90,'Só':120,'Kávé':21};
+ // Reminder windows restart at the latest confirmation; these are not expiry dates.
+ const cycles={'Kenyér':1,'Zsemle':1,'Kifli':1,'Tej':1,'Joghurt':2,'Tejföl':7,'Tojás':10,'Vaj':21,'Sajt':10,'Paradicsom':5,'Paprika':7,'Uborka':5,'Saláta':4,'Banán':5,'Alma':10,'Krumpli':21,'Hagyma':21,'Fokhagyma':30,'Csirkemell':5,'Csirkecomb':5,'Sonka':5,'Rizs':45,'Tészta':30,'Olaj':60,'Liszt':60,'Cukor':90,'Só':120,'Kávé':21};
  function due(stock,checks,categoryFor,excluded=new Set(),now=Date.now(),priorityFor=()=>9999){
   return Object.keys(stock).filter(name=>stock[name]>0&&!excluded.has(categoryFor(name))).map(name=>{
    const at=Date.parse(checks[name]?.last_confirmed_at||checks[name]||''),unknown=!Number.isFinite(at),days=cycles[name]||interval(categoryFor(name)),age=unknown?null:Math.max(0,(now-at)/day),importance=Math.max(0,1-Math.min(100,priorityFor(name))/100);

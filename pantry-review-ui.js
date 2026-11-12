@@ -12,7 +12,7 @@ window.PantryReview=(()=>{
   main.querySelectorAll('.ingredient-card').forEach(card=>{card.querySelector('.pantry-confidence')?.remove();const name=card.dataset.ingredient;card.classList.toggle('needs-review',needs.has(name));if(needs.has(name)){const label=document.createElement('small');label.className='pantry-confidence';label.setAttribute('data-no-translate','');label.textContent=say('Megvan még?','Still here?');card.querySelector('.ingredient-copy')?.append(label)}});
   const box=document.createElement('section');box.className='pantry-maintenance'+(items.length?' needs-review':'');box.setAttribute('data-no-translate','');
   box.innerHTML=(items.length?'<div class="maintenance-heading"><span class="maintenance-mark" aria-hidden="true">↻</span><div><strong>'+say('Megvan még otthon?','Still in your pantry?')+'</strong><p>'+items.length+say(' termék vár ellenőrzésre',items.length===1?' product to check':' products to check')+'</p></div><button id="pantry-review-entry">'+say('Átnézem','Review')+' →</button></div>':'')+'<button class="pantry-used-up" data-open-used-up><span aria-hidden="true">−</span>'+say('Mi fogyott el?','What ran out?')+'<small>'+say('Több tétel egyszerre','Remove several items')+'</small></button>';
-  if(page==='overview')main.querySelector('#dashboard-review-slot')?.append(box);else main.querySelector('.pantry-heading')?.after(box);
+  if(page==='overview')main.querySelector('#dashboard-review-slot')?.append(box);else main.querySelector('.pantry-tools')?.append(box);
   box.querySelector('#pantry-review-entry')?.addEventListener('click',open);box.querySelector('[data-open-used-up]').onclick=openRemoval;
  }
  async function refresh(){
@@ -77,6 +77,7 @@ window.PantryReview=(()=>{
   if(!inline)q.showModal();
  }
  const original=renderPantry;renderPantry=function(){original();mount()};
+ setInterval(()=>{if(!document.hidden)mount()},60000);
  refresh();document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh()});
  return {refresh,confirm,onStateChanged,mount,remove,openRemoval,open,candidates:()=>context===key()&&available&&!loading?due():[],uncertain:()=>due().map(x=>x.name)};
 })();

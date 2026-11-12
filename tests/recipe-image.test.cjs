@@ -54,3 +54,10 @@ test('a late cache miss from the chat card creates the cooking cover once',async
  const hero=host();images.mount(hero,recipe,-1,{autoCreate:true,hero:true});completeLookup({status:'missing'});
  await new Promise(resolve=>setImmediate(resolve));assert.deepEqual(calls.map(c=>c.create),[false,true]);assert.equal(hero.dataset.imageStatus,'ready');
 });
+test('library covers preserve their layout class and never generate images on cache miss',async()=>{
+ const vm=require('node:vm'),fs=require('node:fs');let calls=[];
+ const card={className:'room-image-cache',isConnected:true,children:[],dataset:{},replaceChildren(){this.children=[]},append(...nodes){this.children.push(...nodes)}};
+ const context={window:{MORZSA_CLOUD:{url:'https://test.supabase.co'}},household:{active:null,userId:()=> 'test',recipeImage:async input=>{calls.push(input);return {status:'missing'}}},language:'hu',document:{createElement:tag=>({tag})},IntersectionObserver:class{constructor(cb){this.callback=cb}observe(){this.callback([{isIntersecting:true}])}disconnect(){}}};
+ vm.runInNewContext(fs.readFileSync('recipe-images.js','utf8'),context);context.window.RecipeImages.enqueue([recipe]);context.window.RecipeImages.mount(card,recipe,-1,{cacheOnly:true});
+ await new Promise(resolve=>setImmediate(resolve));assert.equal(calls.length,1);assert.equal(calls[0].create,false);assert.equal(card.children.length,0);assert.match(card.className,/room-image-cache/);assert.match(card.className,/generated-recipe-image/);
+});

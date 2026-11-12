@@ -1,9 +1,13 @@
 """Isolated manual QA: fake AI, local test storage, no Supabase writes. Port 8777."""
-import sys, re
+import sys, re, json
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from server import Handler, ThreadingHTTPServer
 seed='''<script>
+if(location.search.includes('intro')){localStorage.removeItem('morzsa-introduction-v1');localStorage.removeItem('morzsa-v1');localStorage.removeItem('morzsa-v2');}
+
+if(location.search.includes('pantrytarget')&&!localStorage.getItem('pantry-target-seeded')){localStorage.setItem('morzsa-v2',JSON.stringify({stock:{Tej:2,Tojás:2,Kenyér:2,Alma:2,Liszt:2},custom:[],cart:[{name:'Alma',quantity:1,done:false}],likes:[],history:[],chats:{}}));localStorage.setItem('companion-fixture-seeded','1');localStorage.setItem('pantry-target-seeded','1');localStorage.setItem('morzsa-pantry-review-local',JSON.stringify(Object.fromEntries(['Tej','Tojás','Kenyér','Alma','Liszt'].map(n=>[n,new Date().toISOString()]))));}
+
 if(!localStorage.getItem('companion-fixture-seeded')){
 localStorage.setItem('morzsa-v2',JSON.stringify({stock:{Tej:2,Tojás:2,Liszt:2,Alma:2,Olaj:2,Kenyér:2,Joghurt:2,Paprika:2},custom:[],cart:[{name:'Alma',quantity:1,unit:'kg',done:false}],likes:[],history:[],chats:{}}));localStorage.setItem('companion-fixture-seeded','1');}
 if(location.search.includes('days')&&!localStorage.getItem('chat-days-fixture-seeded')){
@@ -35,19 +39,31 @@ if(location.search.includes('savefail'))commitState=()=>false;
 </script>'''
 class Fixture(Handler):
  def do_GET(self):
-  if self.path.split('?')[0]=='/design-comparison':
+  if self.path.startswith('/rest/v1/households?'):
+   homes=[{'id':'qa-home','name':'Otthon','owner_id':'qa-member'}];body=json.dumps(homes).encode();self.send_response(200);self.send_header('Content-Type','application/json');self.end_headers();self.wfile.write(body)
+  elif self.path.startswith('/rest/v1/'):
+   self.send_response(200);self.send_header('Content-Type','application/json');self.end_headers();self.wfile.write(b'[]')
+  elif self.path.split('?')[0]=='/design-comparison':
    body=('<!doctype html><html><head><title>Selected concept / production</title></head><body style="margin:0;background:#ddd;display:flex;gap:20px"><iframe title="Selected Kitchen Companion" src="http://127.0.0.1:8793/companion.html" style="width:390px;height:676px;border:0"></iframe><iframe title="Production Kitchen Companion" src="/" style="width:390px;height:676px;border:0"></iframe></body></html>').encode();self.send_response(200);self.send_header('Content-Type','text/html; charset=utf-8');self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body)
   elif self.path.split('?')[0]=='/mobile-preview':
    width=320 if '320' in self.path else 390
    height=676 if 'compact' in self.path else 844
-   body=('<!doctype html><html><head><title>Mobile QA</title></head><body style="margin:0;background:#ddd"><iframe title="Morzsa mobile QA" src="/" style="display:block;width:'+str(width)+'px;height:'+str(height)+'px;border:0"></iframe></body></html>').encode();self.send_response(200);self.send_header('Content-Type','text/html; charset=utf-8');self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body)
+   body=('<!doctype html><html><head><title>Mobile QA</title></head><body style="margin:0;background:#ddd"><iframe title="Morzsa mobile QA" src="/?history&amp;pantrytarget'+('&amp;'+self.path.split('?',1)[1].replace('&','&amp;') if '?' in self.path else '')+'" style="display:block;width:'+str(width)+'px;height:'+str(height)+'px;border:0"></iframe></body></html>').encode();self.send_response(200);self.send_header('Content-Type','text/html; charset=utf-8');self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body)
   elif self.path.split('?')[0]=='/':
    html=Path('index.html').read_text().replace('<script src="app.js',seed+'<script src="app.js')
-   html=re.sub(r'<script src="household.js[^>]*></script>',lambda _:mock,html)
+   if 'intro' in self.path:html=html.replace('<script src="onboarding.js', '<script>localStorage.removeItem("morzsa-v1");localStorage.removeItem("morzsa-v2");localStorage.removeItem("morzsa-introduction-v1");</script><script src="onboarding.js')
+   if 'kitchens' in self.path:
+    html=re.sub(r'<script src="household-config.js[^>]*></script>',lambda _:'<script>window.MORZSA_CLOUD={url:location.origin,publishableKey:"qa"};localStorage.setItem("morzsa-session",JSON.stringify({access_token:"qa-token",expires_at:9999999999,user:{id:"qa-member",email:"test@example.com"}}));localStorage.setItem("morzsa-last-household-qa-member",JSON.stringify({id:null}));</script>',html)
+   else:html=re.sub(r'<script src="household.js[^>]*></script>',lambda _:mock,html)
+   if 'recipes' in self.path:html=html.replace('</body>','<script>page="recipes";render();</script></body>')
    body=html.encode();self.send_response(200);self.send_header('Content-Type','text/html; charset=utf-8');self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body)
   elif self.path.split('?')[0]=='/storage/v1/object/sign/fixture-pancake.jpg':
    body=Path('assets/food/pancake.jpg').read_bytes();self.send_response(200);self.send_header('Content-Type','image/jpeg');self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body)
   else:super().do_GET()
+ def do_POST(self):
+  if self.path.startswith('/rest/v1/rpc/'):
+   self.rfile.read(int(self.headers.get('Content-Length','0')));self.send_response(200);self.send_header('Content-Type','application/json');self.end_headers();self.wfile.write(b'[]')
+  else:super().do_POST()
 port=int(sys.argv[1]) if len(sys.argv)>1 else 8777
 server=ThreadingHTTPServer(('127.0.0.1',port),Fixture)
 print(f'Companion QA: http://127.0.0.1:{port}/',flush=True)
