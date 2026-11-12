@@ -44,3 +44,13 @@ test('the cooking hero reuses the chat cover with named steps and loads it eager
  const hero=host();images.mount(hero,{...recipe,stepTitles:['Tészta összeállítása']},-1,{autoCreate:true,hero:true});
  await new Promise(resolve=>setImmediate(resolve));assert.equal(calls.length,1);assert.equal(hero.children[0].src,card.children[0].src);assert.equal(hero.children[0].loading,'eager');assert.equal(hero.children[0].fetchPriority,'high');assert.equal(hero.dataset.imageStatus,'ready');
 });
+
+test('a late cache miss from the chat card creates the cooking cover once',async()=>{
+ const vm=require('node:vm'),fs=require('node:fs');let calls=[],completeLookup;
+ const host=()=>({isConnected:true,children:[],dataset:{},replaceChildren(){this.children=[]},append(...nodes){this.children.push(...nodes)}});
+ const context={window:{MORZSA_CLOUD:{url:'https://test.supabase.co'}},household:{active:null,userId:()=> 'test',recipeImage:input=>{calls.push(input);return input.create?Promise.resolve({status:'ready',url:'https://test.supabase.co/storage/v1/object/sign/cover'}):new Promise(resolve=>completeLookup=resolve)}},language:'hu',document:{createElement:tag=>({tag})},IntersectionObserver:class{constructor(cb){this.callback=cb}observe(){this.callback([{isIntersecting:true}])}disconnect(){}}};
+ vm.runInNewContext(fs.readFileSync('recipe-images.js','utf8'),context);
+ const images=context.window.RecipeImages;images.mount(host(),recipe);await new Promise(resolve=>setImmediate(resolve));
+ const hero=host();images.mount(hero,recipe,-1,{autoCreate:true,hero:true});completeLookup({status:'missing'});
+ await new Promise(resolve=>setImmediate(resolve));assert.deepEqual(calls.map(c=>c.create),[false,true]);assert.equal(hero.dataset.imageStatus,'ready');
+});
