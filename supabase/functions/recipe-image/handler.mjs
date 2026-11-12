@@ -1,0 +1,67 @@
+import {validRecipes} from '../recipe-ideas/handler.mjs';
+export function imageInput(value){
+ if(!value||!validRecipes({answer:'ok',recipes:[value.recipe]},true))throw Error('IMAGE_INVALID_INPUT');
+ const r=value.recipe,step=value.step??-1;
+ if(!Number.isInteger(step)||step< -1||step>=r.steps.length)throw Error('IMAGE_INVALID_INPUT');
+ return {recipe:{title:r.title,summary:r.summary,minutes:r.minutes,ingredients:r.ingredients.map(i=>({name:i.name,amount:i.amount})),steps:r.steps},step,create:value.create===true};
+}
+export function imagePrompt({recipe:r,step}){
+ return ('Editorial food photograph for a home cooking assistant. Warm natural light, cream ceramic plate, clean kitchen, realistic ingredients and portions. No text, letters, logos or collage. '+(step<0?'Show the finished dish, appetizing close-up. ':'Show only this preparation stage: '+r.steps[step]+'. ')+'Recipe (Hungarian or English): '+r.title+'. '+r.summary+'. Ingredients: '+r.ingredients.map(i=>i.amount+' '+i.name).join(', ')).slice(0,2000);
+}
+export async function cloudImage(input,config,fetcher=fetch){
+ if(config.model!=='@cf/black-forest-labs/flux-1-schnell'||!/^[a-f0-9]{32}$/i.test(config.account||''))throw Error('IMAGE_SETUP_REQUIRED');
+ const r=await fetcher('https://api.cloudflare.com/client/v4/accounts/'+config.account+'/ai/run/'+config.model,{method:'POST',headers:{Authorization:'Bearer '+config.token,'Content-Type':'application/json'},body:JSON.stringify({prompt:imagePrompt(input),steps:4}),signal:AbortSignal.timeout(45000)});
+ if(!r.ok){await r.body?.cancel();throw Error(r.status===429?'IMAGE_LIMIT':[401,403].includes(r.status)?'IMAGE_SETUP_REQUIRED':'IMAGE_UNAVAILABLE')}
+ const data=await r.json(),encoded=data.result?.image;
+ if(data.success===false||typeof encoded!=='string'||encoded.length>7000000)throw Error('IMAGE_UNAVAILABLE');
+ const bytes=Uint8Array.from(atob(encoded),c=>c.charCodeAt(0));
+ const png=bytes[0]===137&&bytes[1]===80&&bytes[2]===78&&bytes[3]===71,jpeg=bytes[0]===255&&bytes[1]===216;
+ if(!png&&!jpeg)throw Error('IMAGE_UNAVAILABLE');
+ return {bytes,type:png?'image/png':'image/jpeg',ext:png?'png':'jpg'};
+}
+export function createHandler(config,fetcher=fetch){return async request=>{
+ const origin=request.headers.get('origin')||'',headers={'Content-Type':'application/json','Cache-Control':'no-store',Vary:'Origin'};
+ const reply=(status,data)=>Response.json(data,{status,headers});
+ if(origin&&!config.origins.includes(origin))return reply(403,{error:'IMAGE_ORIGIN_DENIED'});
+ if(origin)headers['Access-Control-Allow-Origin']=origin;
+ headers['Access-Control-Allow-Headers']='authorization,apikey,content-type,x-client-info';headers['Access-Control-Allow-Methods']='POST,OPTIONS';
+ if(request.method==='OPTIONS')return new Response(null,{status:204,headers});
+ if(request.method!=='POST')return reply(405,{error:'IMAGE_METHOD_NOT_ALLOWED'});
+ if(!config.account||!config.token||!config.serviceKey)return reply(503,{error:'IMAGE_SETUP_REQUIRED'});
+ const auth=request.headers.get('authorization');if(!auth?.startsWith('Bearer '))return reply(401,{error:'IMAGE_SIGN_IN_REQUIRED'});
+ let jobFilter='',db,lease;
+ try{
+  const u=await fetcher(config.url+'/auth/v1/user',{headers:{apikey:config.publishableKey,Authorization:auth},signal:AbortSignal.timeout(10000)});
+  if(!u.ok)return reply(401,{error:'IMAGE_SIGN_IN_REQUIRED'});const user=await u.json();if(!/^[a-f0-9-]{36}$/i.test(user.id||''))return reply(401,{error:'IMAGE_SIGN_IN_REQUIRED'});
+  if(Number(request.headers.get('content-length'))>20000)throw Error('IMAGE_INVALID_INPUT');
+  const reader=request.body?.getReader();if(!reader)throw Error('IMAGE_INVALID_INPUT');let size=0,text='';const decoder=new TextDecoder();
+  try{while(true){const {done,value}=await reader.read();if(done)break;size+=value.length;if(size>20000)throw Error('IMAGE_INVALID_INPUT');text+=decoder.decode(value,{stream:true})}text+=decoder.decode()}finally{await reader.cancel().catch(()=>{});reader.releaseLock()}
+  let input;try{input=imageInput(JSON.parse(text))}catch{throw Error('IMAGE_INVALID_INPUT')}
+  const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(JSON.stringify({v:1,model:config.model,recipe:input.recipe,step:input.step}))),key=Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,'0')).join('');
+  const dbHeaders={apikey:config.serviceKey,Authorization:'Bearer '+config.serviceKey,'Content-Type':'application/json'};
+  db=(path,options={})=>fetcher(config.url+'/rest/v1/'+path,{...options,headers:{...dbHeaders,...options.headers},signal:AbortSignal.timeout(10000)});
+  jobFilter='recipe_image_jobs?owner_id=eq.'+user.id+'&cache_key=eq.'+key;
+  const lookup=async()=>{const r=await db(jobFilter+'&select=state,asset_path');if(!r.ok)throw Error('IMAGE_SETUP_REQUIRED');return (await r.json())[0]};
+  const ready=async job=>{
+   if(!job.asset_path?.startsWith(user.id+'/'+key+'/'))throw Error('IMAGE_UNAVAILABLE');
+   const r=await fetcher(config.url+'/storage/v1/object/sign/recipe-images/'+job.asset_path,{method:'POST',headers:dbHeaders,body:JSON.stringify({expiresIn:7200}),signal:AbortSignal.timeout(10000)});
+   if(!r.ok)throw Error('IMAGE_UNAVAILABLE');const data=await r.json();
+   if(typeof data.signedURL!=='string'||!data.signedURL.startsWith('/object/sign/'))throw Error('IMAGE_UNAVAILABLE');
+   return reply(200,{status:'ready',url:config.url+'/storage/v1'+data.signedURL,expiresAt:Date.now()+7100000});
+  };
+  const cached=await lookup();if(cached?.state==='ready')return await ready(cached);
+  if(!input.create)return reply(200,{status:cached?.state==='pending'?'pending':'missing'});
+  const claim=await db('rpc/claim_recipe_image',{method:'POST',body:JSON.stringify({user_id:user.id,image_key:key})});if(!claim.ok)throw Error('IMAGE_SETUP_REQUIRED');const job=await claim.json();
+  if(job.status==='ready')return await ready(await lookup());
+  if(job.status==='pending')return reply(202,{status:'pending'});
+  if(job.status==='limit')return reply(429,{error:'IMAGE_LIMIT'});
+  if(job.status!=='claimed')return reply(503,{error:'IMAGE_UNAVAILABLE'});lease=job.lease;
+  const img=await cloudImage(input,config,fetcher),path=user.id+'/'+key+'/'+lease+'.'+img.ext;
+  const saved=await fetcher(config.url+'/storage/v1/object/recipe-images/'+path,{method:'POST',headers:{...dbHeaders,'Content-Type':img.type},body:img.bytes,signal:AbortSignal.timeout(10000)});if(!saved.ok)throw Error('IMAGE_UNAVAILABLE');
+  const updated=await db(jobFilter+'&lease=eq.'+lease,{method:'PATCH',headers:{Prefer:'return=representation'},body:JSON.stringify({state:'ready',asset_path:path,updated_at:new Date().toISOString()})});if(!updated.ok||!(await updated.json()).length)throw Error('IMAGE_UNAVAILABLE');
+  lease=null;return await ready({asset_path:path});
+ }catch(e){
+  if(lease&&db)try{await db(jobFilter+'&lease=eq.'+lease,{method:'PATCH',body:JSON.stringify({state:'failed',updated_at:new Date().toISOString()})})}catch{}
+  const error=['IMAGE_INVALID_INPUT','IMAGE_LIMIT','IMAGE_SETUP_REQUIRED'].includes(e.message)?e.message:'IMAGE_UNAVAILABLE';console.warn(JSON.stringify({event:'morzsa_image_error',error}));return reply(error==='IMAGE_INVALID_INPUT'?400:error==='IMAGE_LIMIT'?429:503,{error});
+ }
+}}

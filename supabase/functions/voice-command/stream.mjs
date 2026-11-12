@@ -38,3 +38,14 @@ export function streamedResponse(response,headers,validate){
  },cancel(){cancelled=true;abort.abort();}});
  return new Response(body,{headers:{...headers,'Content-Type':'application/x-ndjson','X-Accel-Buffering':'no'}});
 }
+
+export function outputResponse(produce,headers){
+ const encoder=new TextEncoder(),abort=new AbortController();let cancelled=false;
+ const body=new ReadableStream({async start(c){
+  const send=v=>{if(!cancelled)c.enqueue(encoder.encode(JSON.stringify(v)+'\n'))};
+  try{const output=await produce(text=>send({type:'answer',text}),abort.signal);if(!abort.signal.aborted)send({type:'done',output})}
+  catch(e){const error=['VOICE_PROVIDER_LIMIT','VOICE_PROVIDER_BUSY','VOICE_SETUP_REQUIRED','VOICE_PROVIDER_ERROR','VOICE_INVALID_RESPONSE','VOICE_TIMEOUT'].includes(e.message)?e.message:['TimeoutError','AbortError'].includes(e.name)?'VOICE_TIMEOUT':'VOICE_UNAVAILABLE';send({type:'error',error})}
+  finally{if(!cancelled)c.close()}
+ },cancel(){cancelled=true;abort.abort()}});
+ return new Response(body,{headers:{...headers,'Content-Type':'application/x-ndjson','X-Accel-Buffering':'no'}});
+}

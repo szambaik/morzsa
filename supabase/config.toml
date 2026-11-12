@@ -7,3 +7,6 @@ verify_jwt = false
 [functions.voice-command]
 # Authenticated POST is validated inside the handler; GET/OPTIONS are public.
 verify_jwt = false
+
+[functions.recipe-image]
+verify_jwt = false

@@ -1,5 +1,6 @@
 import { generate } from './provider.mjs';
-import { streamedResponse } from './stream.mjs';
+import { textOutput } from './groq.mjs';
+import { streamedResponse,outputResponse } from './stream.mjs';
 import { validRecipes, geminiBody } from '../recipe-ideas/handler.mjs';
 const actions=['stock_add','stock_remove','list_set'],units=['db','kg','g','l','ml','csomag','doboz','üveg','pohár'];
 export function validOutput(v){return v&&(v.recipes===undefined||validRecipes({answer:'ok',recipes:v.recipes},true))&&(v.answer===undefined||typeof v.answer==='string'&&v.answer.length<=5000)&&typeof v.transcript==='string'&&v.transcript.length<=3000&&typeof v.clarification==='string'&&v.clarification.length<=500&&Array.isArray(v.operations)&&v.operations.length<=30&&v.operations.every(o=>o&&actions.includes(o.action)&&typeof o.name==='string'&&o.name.trim().length>0&&o.name.length<=80&&!/[\u0000-\u001f]/.test(o.name)&&!['__proto__','constructor','prototype'].includes(o.name.trim())&&(o.quantity===null||Number.isFinite(o.quantity)&&o.quantity>0&&o.quantity<=999)&&(o.unit===null||units.includes(o.unit)))}
@@ -60,8 +61,8 @@ export function createHandler(config,fetcher=fetch){return async request=>{
  if(origin&&!(config.origins||[]).includes(origin))return reply(403,{error:'VOICE_ORIGIN_DENIED'});
  if(origin)headers['Access-Control-Allow-Origin']=origin;headers['Access-Control-Allow-Headers']='authorization,apikey,content-type,x-client-info';headers['Access-Control-Allow-Methods']='GET,POST,OPTIONS';
  if(request.method==='OPTIONS')return new Response(null,{status:204,headers});
- const configured=!!(config.url&&config.publishableKey&&config.serviceKey&&config.geminiKey);
- if(request.method==='GET')return reply(200,{configured,supportsImages:true,supportsStreaming:true,supportsFailover:true});
+ const configured=!!(config.url&&config.publishableKey&&config.serviceKey&&(config.geminiKey||config.groqKey));
+ if(request.method==='GET')return reply(200,{configured,supportsImages:!!config.geminiKey,supportsStreaming:true,supportsFailover:true,textProvider:config.groqKey?'groq':'google'});
  if(request.method!=='POST')return reply(405,{error:'VOICE_METHOD_NOT_ALLOWED'});
  const auth=request.headers.get('authorization');if(!auth?.startsWith('Bearer '))return reply(401,{error:'VOICE_SIGN_IN_REQUIRED'});
  if(!configured||! /^[a-z0-9.-]+$/.test(config.model||'gemini-3.1-flash-lite'))return reply(503,{error:'VOICE_SETUP_REQUIRED'});
@@ -71,6 +72,7 @@ export function createHandler(config,fetcher=fetch){return async request=>{
   const input=await readInput(request);
   const quota=await fetcher(config.url+'/rest/v1/rpc/claim_voice_command',{method:'POST',headers:{apikey:config.serviceKey,Authorization:'Bearer '+config.serviceKey,'Content-Type':'application/json'},body:JSON.stringify({user_id:user.id}),signal:AbortSignal.timeout(10000)});
   if(!quota.ok)throw Error('VOICE_SETUP_REQUIRED');if(await quota.json()!==true)throw Error('VOICE_DAILY_LIMIT');
+  if(config.groqKey&&input.text&&!input.image&&!input.audio){const produce=(onAnswer,signal)=>textOutput(input,bodyFor(input),config,fetcher,onAnswer,o=>finalOutput(o,input),signal);if(input.stream)return outputResponse(produce,headers);return reply(200,await produce(()=>{},request.signal))}
   const response=await generate(input,bodyFor(input),config,fetcher);
   if(input.stream)return streamedResponse(response,headers,output=>finalOutput(output,input));
   const data=await response.json(),candidate=data.candidates?.[0];if(candidate?.finishReason!=='STOP')throw Error('VOICE_INVALID_RESPONSE');

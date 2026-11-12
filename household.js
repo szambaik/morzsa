@@ -41,6 +41,7 @@
  cloud.voiceStatus=()=>request('/functions/v1/voice-command',undefined,false);
  cloud.voiceCommand=payload=>{if(!session)throw Error('VOICE_SIGN_IN_REQUIRED');return request('/functions/v1/voice-command',payload,true,'POST',60000)};
  cloud.voiceCommandStream=(payload,onAnswer,signal)=>{if(!session)throw Error('VOICE_SIGN_IN_REQUIRED');return request('/functions/v1/voice-command',{...payload,stream:true},true,'POST',60000,{onAnswer,signal})};
+ cloud.recipeImage=payload=>{if(!session)throw Error('IMAGE_SIGN_IN_REQUIRED');return request('/functions/v1/recipe-image',payload,true,'POST',70000)};
  cloud.recipeAIStatus=()=>request('/functions/v1/recipe-ideas',undefined,false);
  cloud.recipeIdeas=payload=>{if(!session)throw Error('AI_SIGN_IN_REQUIRED');return request('/functions/v1/recipe-ideas',payload,true,'POST',45000)};
  let liveConnection=null,liveRefreshTimer=null,liveDirty=false;
