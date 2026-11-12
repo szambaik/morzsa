@@ -6,6 +6,10 @@ from server import Handler, ThreadingHTTPServer
 seed='''<script>
 if(!localStorage.getItem('companion-fixture-seeded')){
 localStorage.setItem('morzsa-v2',JSON.stringify({stock:{Tej:2,Tojás:2,Liszt:2,Alma:2,Olaj:2,Kenyér:2,Joghurt:2,Paprika:2},custom:[],cart:[{name:'Alma',quantity:1,unit:'kg',done:false}],likes:[],history:[],chats:{}}));localStorage.setItem('companion-fixture-seeded','1');}
+if(location.search.includes('days')&&!localStorage.getItem('chat-days-fixture-seeded')){
+ const now=Date.now(),yesterday=new Date();yesterday.setDate(yesterday.getDate()-1);
+ localStorage.setItem('morzsa-companion-v2:'+JSON.stringify(['companion-fixture','local','hu']),JSON.stringify({version:2,active:'morzsa-main',threads:[{id:'morzsa-main',kind:'main',updated:now,messages:[{role:'user',text:'Egy régi, dátum nélküli üzenet.'},{role:'user',text:'Tegnap paradicsomlevest főztünk.',createdAt:yesterday.getTime()},{role:'model',text:'Legközelebb bazsalikommal is kipróbálhatod.',createdAt:yesterday.getTime()},{role:'user',text:'Ma valami gyors vacsorát szeretnék.',createdAt:now},{role:'model',text:'Nézzünk körül a készletben!',createdAt:now}]}]}));localStorage.setItem('chat-days-fixture-seeded','1');
+}
 </script>'''
 mock='''<script>
 window.household={active:null,busy:false,userId:()=> 'companion-fixture',storageKey:()=> 'morzsa-v2',notify:()=>Promise.resolve(true),voiceStatus:()=>Promise.resolve({configured:true,supportsImages:true,supportsStreaming:true}),voiceCommand:async payload=>{

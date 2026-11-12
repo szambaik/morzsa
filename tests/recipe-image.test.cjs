@@ -21,3 +21,11 @@ test('image reservation is repeatable, private, deduplicated and globally capped
  for(let i=1;i<=20;i++)assert.equal((await claim(2,i)).status,'claimed');for(let i=1;i<=10;i++)assert.equal((await claim(3,i)).status,'claimed');assert.equal((await claim(3,11)).status,'limit');
  await db.query("update public.recipe_image_jobs set state='ready',asset_path='cached' where owner_id=$1 and cache_key=$2",['12345678-1234-1234-1234-000000000001','1'.padStart(64,'0')]);assert.equal((await claim(1,1)).status,'ready');await db.close();
 });
+test('Hungarian recipes and step context are translated before image generation; bad prompts fail closed',async()=>{
+ const {cloudImage,IMAGE_PROMPT_VERSION}=await import('../supabase/functions/recipe-image/handler.mjs');
+ const porridge={...recipe,title:'Prémium zabkása',summary:'Krémes reggeli',ingredients:[{name:'Zabpehely',amount:'50 g'},{name:'Tej',amount:'200 ml'}],steps:['Főzd krémesre a zabot a tejben.']};
+ const config={model:'@cf/black-forest-labs/flux-1-schnell',account:'a'.repeat(32),token:'cf',groqKey:'groq'};let calls=[];
+ const fetcher=async(url,options)=>{const body=JSON.parse(options.body);calls.push({url,body});if(url.includes('groq.com'))return Response.json({choices:[{message:{content:JSON.stringify({dish:'Creamy oatmeal porridge',scene:'A bowl of creamy cooked rolled oats and milk, with the soft oatmeal texture clearly visible. A simple breakfast without extra toppings.'})}}]});return Response.json({success:true,result:{image:Buffer.from([255,216,255,0]).toString('base64')}})};
+ await cloudImage({recipe:porridge,step:0},config,fetcher);assert.equal(calls.length,2);assert.equal(JSON.parse(calls[0].body.messages[1].content).step,0);assert.match(calls[0].body.messages[1].content,/zabkása/);assert.match(calls[1].body.prompt,/oatmeal porridge/);assert.doesNotMatch(calls[1].body.prompt,/cream ceramic plate|Recipe \(Hungarian/);assert.equal(IMAGE_PROMPT_VERSION,2);
+ let cloudCalls=0;await assert.rejects(()=>cloudImage({recipe:porridge,step:-1},config,async url=>{if(!url.includes('groq.com'))cloudCalls++;return Response.json({choices:[{message:{content:'{"dish":"x","scene":""}'}}]})}),/IMAGE_UNAVAILABLE/);assert.equal(cloudCalls,0);
+});

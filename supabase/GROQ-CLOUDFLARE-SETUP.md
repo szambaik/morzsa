@@ -44,3 +44,12 @@ Verification: 128 Node tests plus SQL compatibility suites; web bundle and mobil
 sync. Synthetic live Groq recipe ~969ms, mutation ~507ms, Cloudflare image ~1506ms.
 Complete image generation/store/sign/cache retrieval passed: two requests made one
 Cloudflare call, signed asset HTTP 200. These timings are individual observations.
+
+Recipe-image prompt correction: recipe-image also reads GROQ_API_KEY / GROQ_MODEL.
+After a cache miss and quota reservation, Groq translates the title, ingredients
+and cooking method into a specific English dish/scene description for FLUX.
+This adds one short text request per generated image, not per cache lookup.
+If translation fails, image generation stops instead of substituting a generic
+meal. Prompt cache version 2 prevents earlier mismatched images from being
+reused; old assets are preserved. Images are still illustrations, not verified
+photographs of the exact recipe.
