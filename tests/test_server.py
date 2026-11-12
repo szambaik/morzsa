@@ -1,6 +1,7 @@
 import importlib.util
 import io
 import json
+import re
 import threading
 import unittest
 from pathlib import Path
@@ -50,6 +51,13 @@ class Tests(unittest.TestCase):
         for path in ('/.env', '/.env.example', '/server.py', '/%2eenv', '/assets/../.env'):
             with self.assertRaises(HTTPError) as error: urlopen(self.base + path)
             self.assertEqual(error.exception.code, 404)
+
+    def test_every_entry_script_can_load_in_the_local_preview(self):
+        html = (Path(__file__).parents[1] / 'index.html').read_text()
+        for script in re.findall(r'<script src="([^"]+)"', html):
+            with self.subTest(script=script), urlopen(self.base + '/' + script) as response:
+                self.assertEqual(response.status, 200)
+                self.assertGreater(len(response.read()), 0)
 
     def test_missing_key_is_honest(self):
         request = Request(self.base + '/api/chat', data=json.dumps(BODY).encode(),

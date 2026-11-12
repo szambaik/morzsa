@@ -47,3 +47,31 @@ test('the selected cooking step reaches AI context, old clients stay valid and i
  for(const index of [-1,2,1.5,'1'])assert.throws(()=>normalizeInput({...request,context:{...request.context,cookingStep:index}}),/INVALID_INPUT/);
  assert.throws(()=>normalizeInput({...request,context:{cookingStep:0}}),/INVALID_INPUT/);
 });
+
+test('named steps survive old-save loading, recipe resume and favourites without changing recipe identity',()=>{
+ const named={...recipe,stepTitles:['A tészta összeállítása','A palacsinták sütése']};
+ assert.deepEqual(R.recipe(recipe),recipe);assert.deepEqual(R.recipe(named),named);
+ assert.equal(R.identity(named),R.identity(recipe));
+ let b=M.startRecipe(M.workspace(null,R.recipe,1),named,'named',R.recipe,2);
+ b=M.workspace(JSON.parse(JSON.stringify(b)),R.recipe);assert.deepEqual(b.threads[1].recipe,named);
+ assert.equal(M.startRecipe(b,recipe,'duplicate',R.recipe).active,'named');
+ assert.equal(R.favourites([recipe,named]).length,1);
+ assert.equal(R.stepTitle(named,1),'A palacsinták sütése');assert.equal(R.stepTitle(recipe,1),'Süsd meg');
+ assert.equal(R.recipe({...recipe,stepTitles:['Hiányos']}),null);
+ assert.equal(R.recipe({...named,stepTitles:['x'.repeat(81),'Sütés']}),null);
+});
+test('AI accepts legacy recipes and bounded names, and requests detailed named instructions for new recipes',async()=>{
+ const {validRecipes,geminiBody}=await import('../supabase/functions/recipe-ideas/handler.mjs');
+ const {normalizeInput,bodyFor}=await import('../supabase/functions/voice-command/handler.mjs');
+ const named={...recipe,stepTitles:['Tészta készítése','Palacsinta sütése']};
+ assert(validRecipes({answer:'ok',recipes:[recipe]},true));assert(validRecipes({answer:'ok',recipes:[named]},true));
+ assert(!validRecipes({answer:'ok',recipes:[{...named,stepTitles:['Sütés']}]},true));
+ const input=normalizeInput({assistant:true,companion:true,text:'Mivel kezdjem?',context:{cookingRecipe:named,cookingStep:0}});
+ assert.deepEqual(input.context.cookingRecipe,named);
+ for(const body of [bodyFor(input),geminiBody({conversation:true,language:'hu',names:[],mood:'any'})]){
+  assert.match(body.systemInstruction.parts[0].text,/2–4 clear sentences/);
+  assert.match(body.systemInstruction.parts[0].text,/doneness cue/);
+  const schema=body.generationConfig.responseSchema.properties.recipes.items;
+  assert(schema.required.includes('stepTitles'));assert.equal(schema.properties.steps.items.type,'STRING');
+ }
+});

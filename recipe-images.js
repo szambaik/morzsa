@@ -2,17 +2,17 @@
 window.RecipeImages=(()=>{
  const entries=new Map(),auto=new Set();let queue=Promise.resolve();
  const scope=()=>household?.userId()+'|'+(household?.active||'local');
- const key=(r,step)=>scope()+'|'+JSON.stringify(r)+'|'+step;
+ const key=(r,step)=>scope()+'|'+JSON.stringify({title:r.title,summary:r.summary,minutes:r.minutes,ingredients:r.ingredients.map(i=>({name:i.name,amount:i.amount})),steps:r.steps})+'|'+step;
  const say=(hu,en)=>language==='en'?en:hu;
  function enqueue(recipes){for(const r of recipes||[])auto.add(key(r,-1))}
- function mount(host,recipe,step=-1){
+ function mount(host,recipe,step=-1,options={}){
   if(!host||!household?.userId()||!household.recipeImage)return;
   const id=key(recipe,step);let entry=entries.get(id);if(!entry||entry.expiresAt&&entry.expiresAt<Date.now()){entry={status:'new'};entries.set(id,entry)}
   const live=()=>host.isConnected&&key(recipe,step)===id;
   const paint=()=>{
-   if(!live()){entry.views?.delete(host);return}host.replaceChildren();host.className='generated-recipe-image';
+   if(!live()){entry.views?.delete(host);return}host.replaceChildren();host.className='generated-recipe-image';host.dataset.imageStatus=entry.status;
    if(entry.status==='ready'){
-    const img=document.createElement('img');img.src=entry.url;img.alt=say(step<0?'AI-illusztráció a recepthez':'AI-illusztráció a főzési lépéshez',step<0?'AI recipe illustration':'AI cooking step illustration');img.loading='lazy';img.width=640;img.height=480;
+    const img=document.createElement('img');img.src=entry.url;img.alt=recipe.title+' · '+say(step<0?'AI-illusztráció a recepthez':'AI-illusztráció a főzési lépéshez',step<0?'AI recipe illustration':'AI cooking step illustration');img.loading=options.hero?'eager':'lazy';if(options.hero)img.fetchPriority='high';img.width=640;img.height=480;
     img.onerror=()=>{entry.status='failed';paint()};const caption=document.createElement('small');caption.textContent=say('AI-illusztráció · Morzsa','AI illustration · Morzsa');host.append(img,caption);return;
    }
    const b=document.createElement('button');b.type='button';b.className='small-button';b.disabled=entry.status==='loading';
@@ -36,7 +36,7 @@ window.RecipeImages=(()=>{
   }
   paint();
   if(entry.status==='new'){
-   const observer=new IntersectionObserver(items=>{if(items.some(i=>i.isIntersecting)){observer.disconnect();const create=auto.delete(id);load(create)}},{rootMargin:'100px'});observer.observe(host);
+   const observer=new IntersectionObserver(items=>{if(items.some(i=>i.isIntersecting)){observer.disconnect();const queued=auto.delete(id);load(queued||options.autoCreate===true)}},{rootMargin:'100px'});observer.observe(host);
   }
  }
  return {mount,enqueue};

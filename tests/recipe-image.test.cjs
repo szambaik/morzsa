@@ -29,3 +29,18 @@ test('Hungarian recipes and step context are translated before image generation;
  await cloudImage({recipe:porridge,step:0},config,fetcher);assert.equal(calls.length,2);assert.equal(JSON.parse(calls[0].body.messages[1].content).step,0);assert.match(calls[0].body.messages[1].content,/zabkása/);assert.match(calls[1].body.prompt,/oatmeal porridge/);assert.doesNotMatch(calls[1].body.prompt,/cream ceramic plate|Recipe \(Hungarian/);assert.equal(IMAGE_PROMPT_VERSION,2);
  let cloudCalls=0;await assert.rejects(()=>cloudImage({recipe:porridge,step:-1},config,async url=>{if(!url.includes('groq.com'))cloudCalls++;return Response.json({choices:[{message:{content:'{"dish":"x","scene":""}'}}]})}),/IMAGE_UNAVAILABLE/);assert.equal(cloudCalls,0);
 });
+
+test('recipe title metadata leaves the image cache input unchanged',async()=>{
+ const {imageInput}=await import('../supabase/functions/recipe-image/handler.mjs');
+ assert.deepEqual(imageInput({recipe:{...recipe,stepTitles:['A tészta összeállítása']}}),imageInput({recipe}));
+});
+test('the cooking hero reuses the chat cover with named steps and loads it eagerly',async()=>{
+ const vm=require('node:vm'),fs=require('node:fs');let calls=[];
+ const host=()=>({isConnected:true,children:[],dataset:{},replaceChildren(){this.children=[]},append(...nodes){this.children.push(...nodes)}});
+ const context={window:{MORZSA_CLOUD:{url:'https://test.supabase.co'}},household:{active:null,userId:()=> 'test',recipeImage:async input=>{calls.push(input);return {status:'ready',url:'https://test.supabase.co/storage/v1/object/sign/cover',expiresAt:Date.now()+60000}}},language:'hu',document:{createElement:tag=>({tag})},IntersectionObserver:class{constructor(callback){this.callback=callback}observe(){this.callback([{isIntersecting:true}])}disconnect(){}},console};
+ vm.runInNewContext(fs.readFileSync('recipe-images.js','utf8'),context);
+ const images=context.window.RecipeImages,card=host();images.enqueue([recipe]);images.mount(card,recipe);
+ await new Promise(resolve=>setImmediate(resolve));assert.equal(calls.length,1);assert.equal(calls[0].create,true);
+ const hero=host();images.mount(hero,{...recipe,stepTitles:['Tészta összeállítása']},-1,{autoCreate:true,hero:true});
+ await new Promise(resolve=>setImmediate(resolve));assert.equal(calls.length,1);assert.equal(hero.children[0].src,card.children[0].src);assert.equal(hero.children[0].loading,'eager');assert.equal(hero.children[0].fetchPriority,'high');assert.equal(hero.dataset.imageStatus,'ready');
+});

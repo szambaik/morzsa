@@ -3,7 +3,14 @@ const RecipeRoomModel = (() => {
  const text=(s,n)=>typeof s==='string'&&s.trim()&&s.length<=n;
  function recipe(r){
   if(!r||!text(r.title,100)||!text(r.summary,400)||!Number.isInteger(r.minutes)||r.minutes<1||r.minutes>240||!Array.isArray(r.ingredients)||!r.ingredients.length||r.ingredients.length>15||!r.ingredients.every(i=>text(i?.name,80)&&text(i.amount,80))||!Array.isArray(r.steps)||!r.steps.length||r.steps.length>6||!r.steps.every(s=>text(s,500)))return null;
-  return {title:r.title,summary:r.summary,minutes:r.minutes,ingredients:r.ingredients.map(i=>({name:i.name,amount:i.amount})),steps:[...r.steps]};
+  if(r.stepTitles!==undefined&&(!Array.isArray(r.stepTitles)||r.stepTitles.length!==r.steps.length||!r.stepTitles.every(s=>text(s,80))))return null;
+  return {title:r.title,summary:r.summary,minutes:r.minutes,ingredients:r.ingredients.map(i=>({name:i.name,amount:i.amount})),steps:[...r.steps],...(r.stepTitles?{stepTitles:[...r.stepTitles]}:{})};
+ }
+ function stepTitle(r,index){
+  if(text(r.stepTitles?.[index],80))return r.stepTitles[index].trim();
+  // Old saves keep their exact method; the first action provides a useful label.
+  const action=(r.steps[index]||'').trim().replace(/^\d+[.)]\s*/, '').split(/[.!?;\n]/)[0];
+  return action.length<=80?action:action.slice(0,77).replace(/\s+\S*$/, '')+'…';
  }
  const identity=r=>JSON.stringify([r.title,r.ingredients,r.steps]);
  const conversationKey=(user,home,lang)=>'morzsa-recipe-room-v1:'+JSON.stringify([user||'guest',home||'local',lang]);
@@ -28,6 +35,6 @@ const RecipeRoomModel = (() => {
   const added=[];for(const i of r.ingredients){const name=resolve(i.name),key=norm(name);if(stock.has(key)||known.has(key))continue;known.add(key);added.push({name,source:r.title,quantity:1,unit:unitFor(name),done:false})}
   return {...source,cart:[...source.cart,...added]};
  }
- return {recipe,identity,conversationKey,favouritesKey,messages,favourites,toggle,history,addMissing};
+ return {recipe,stepTitle,identity,conversationKey,favouritesKey,messages,favourites,toggle,history,addMissing};
 })();
 if(typeof module!=='undefined')module.exports=RecipeRoomModel;

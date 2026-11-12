@@ -12,6 +12,7 @@ if(location.search.includes('days')&&!localStorage.getItem('chat-days-fixture-se
 }
 if(location.search.includes('cooking')&&!localStorage.getItem('cooking-guide-fixture-seeded')){
  const now=Date.now(),r={title:'Almás palacsinta',summary:'Egy gyors, otthonos édesség két főre.',minutes:20,ingredients:[{name:'Tojás',amount:'2 db'},{name:'Liszt',amount:'120 g'},{name:'Tej',amount:'150 ml'},{name:'Alma',amount:'1 db'},{name:'Olaj',amount:'1 ek'}],steps:['Keverd simára a tojást, tejet és lisztet.','Reszeld bele az almát, és keverd át.','Süsd kis adagokban, közepes lángon, mindkét oldalát aranyszínűre.']};
+ if(location.search.includes('named')){r.stepTitles=['A palacsintatészta összeállítása','Az alma előkészítése','Az almás palacsinták sütése'];r.steps=['Üsd a tojásokat egy tálba, majd öntsd hozzá a tejet. Keverd bele a lisztet apránként, hogy ne legyen csomós. Sűrű, de még kanállal adagolható tésztát kapj.','Mosd meg az almát, távolítsd el a magházát, majd reszeld le. Forgasd a tésztába, hogy egyenletesen eloszoljon.','Melegíts kevés olajat egy serpenyőben közepes lángon. Kanalazz bele kisebb adagokat, és süsd körülbelül 2–3 percig oldalanként. Akkor fordítsd meg, amikor a széle szilárdul; a közepe is süljön át.'];}
  localStorage.setItem('morzsa-companion-v2:'+JSON.stringify(['companion-fixture','local','hu']),JSON.stringify({version:2,active:'morzsa-main',threads:[{id:'morzsa-main',kind:'main',updated:now,messages:[{role:'model',text:'Készítsünk almás palacsintát!',createdAt:now,recipes:[r]}]},{id:'cooking-fixture',kind:'recipe',title:r.title,recipe:r,status:'active',updated:now,messages:Array.from({length:12},(_,i)=>({role:i%2?'model':'user',text:i%2?'Ezt a receptet együtt alakítjuk.':'Főzési kérdés '+(i+1),createdAt:now+i}))}]}));localStorage.setItem('cooking-guide-fixture-seeded','1');
 }
 </script>'''
@@ -19,6 +20,8 @@ mock='''<script>
 window.household={active:null,busy:false,userId:()=> 'companion-fixture',storageKey:()=> 'morzsa-v2',notify:()=>Promise.resolve(true),voiceStatus:()=>Promise.resolve({configured:true,supportsImages:true,supportsStreaming:true}),voiceCommand:async payload=>{
 await new Promise(r=>setTimeout(r,300));const text=payload.text||'Elfogyott a tej. Írd a listára.';
 return {transcript:text,answer:text.includes('tej')?'A tejet kivehetjük a készletből és felírhatjuk a listára.':'## Ma legyen almás palacsinta\\n\\nGyors, otthonos édesség a készletedből.\\n\\n**Ezt nézd meg előtte:**\\n- Tojás, tej és liszt: van még elég?\\n- Az almát reszeld a tésztába.\\n\\nA pontos mennyiségeket lent, a receptnél találod.',clarification:'',operations:text.includes('tej')?[{action:'stock_remove',name:'Tej',quantity:null,unit:null},{action:'list_set',name:'Tej',quantity:null,unit:null}]:[],recipes:text.includes('tej')?[]:[{title:'Almás palacsinta',summary:'Egy gyors, otthonos édesség.',minutes:20,ingredients:[{name:'Tojás',amount:'2 db'},{name:'Liszt',amount:'120 g'},{name:'Tej',amount:'150 ml'},{name:'Alma',amount:'1 db'},{name:'Olaj',amount:'1 ek'}],steps:['Keverd simára a tésztát.','Reszeld bele az almát.','Süsd kis adagokban mindkét oldalát aranyszínűre.']}]};},updateLanguage:()=>{}};
+window.MORZSA_CLOUD={url:location.origin};
+window.household.recipeImage=async ()=>{await new Promise(resolve=>setTimeout(resolve,300));if(location.search.includes('imagefail'))throw Error('IMAGE_UNAVAILABLE');return {status:'ready',url:location.origin+'/storage/v1/object/sign/fixture-pancake.jpg',expiresAt:Date.now()+3600000}};
 window.household.voiceCommandStream=async (p,onAnswer,signal)=>{const r=await window.household.voiceCommand(p);for(let i=8;i<r.answer.length+8;i+=8){if(signal?.aborted)throw new DOMException('Stopped','AbortError');onAnswer(r.answer.slice(0,i));await new Promise(resolve=>setTimeout(resolve,90))}return r};
 window.household.recipeIdeas=async p=>{const r=await window.household.voiceCommand({text:p.text});return {answer:r.answer,recipes:r.recipes}};
 document.getElementById('household-button').textContent='Tesztkonyha';
@@ -29,6 +32,8 @@ class Fixture(Handler):
    html=Path('index.html').read_text().replace('<script src="app.js',seed+'<script src="app.js')
    html=re.sub(r'<script src="household.js[^>]*></script>',lambda _:mock,html)
    body=html.encode();self.send_response(200);self.send_header('Content-Type','text/html; charset=utf-8');self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body)
+  elif self.path.split('?')[0]=='/storage/v1/object/sign/fixture-pancake.jpg':
+   body=Path('assets/food/pancake.jpg').read_bytes();self.send_response(200);self.send_header('Content-Type','image/jpeg');self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body)
   else:super().do_GET()
 port=int(sys.argv[1]) if len(sys.argv)>1 else 8777
 server=ThreadingHTTPServer(('127.0.0.1',port),Fixture)
