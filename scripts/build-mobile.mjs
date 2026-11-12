@@ -7,6 +7,7 @@ let html=await readFile(path.join(root,'index.html'),'utf8');
 const files=new Set([...html.matchAll(/(?:src|href)="([^"?#]+)(?:[?#][^"]*)?"/g)].map(m=>m[1]).filter(p=>/^[\w-]+\.(js|css)$/.test(p)));
 // Only entry-point runtime files and curated artwork belong in the application.
 for(const file of files)await cp(path.join(root,file),path.join(dest,file));
+for(const notice of ['LICENSE','ASSET-LICENSE.md'])await cp(path.join(root,notice),path.join(dest,notice));
 await cp(path.join(root,'assets'),path.join(dest,'assets'),{recursive:true,filter:src=>!path.basename(src).startsWith('.')});
 if(native)await build({entryPoints:[path.join(root,'mobile/bridge.js')],bundle:true,format:'iife',outfile:path.join(dest,'native-bridge.js'),target:['safari15','chrome100'],minify:true});
 if(native)html=html.replace('<script src="catalog.js','<script src="native-bridge.js"></script><script src="catalog.js');

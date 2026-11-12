@@ -31,12 +31,16 @@ window.household.recipeImage=async ()=>{await new Promise(resolve=>setTimeout(re
 window.household.voiceCommandStream=async (p,onAnswer,signal)=>{const r=await window.household.voiceCommand(p);for(let i=8;i<r.answer.length+8;i+=8){if(signal?.aborted)throw new DOMException('Stopped','AbortError');onAnswer(r.answer.slice(0,i));await new Promise(resolve=>setTimeout(resolve,90))}return r};
 window.household.recipeIdeas=async p=>{const r=await window.household.voiceCommand({text:p.text});return {answer:r.answer,recipes:r.recipes}};
 document.getElementById('household-button').textContent='Tesztkonyha';
+if(location.search.includes('savefail'))commitState=()=>false;
 </script>'''
 class Fixture(Handler):
  def do_GET(self):
-  if self.path.split('?')[0]=='/mobile-preview':
+  if self.path.split('?')[0]=='/design-comparison':
+   body=('<!doctype html><html><head><title>Selected concept / production</title></head><body style="margin:0;background:#ddd;display:flex;gap:20px"><iframe title="Selected Kitchen Companion" src="http://127.0.0.1:8793/companion.html" style="width:390px;height:676px;border:0"></iframe><iframe title="Production Kitchen Companion" src="/" style="width:390px;height:676px;border:0"></iframe></body></html>').encode();self.send_response(200);self.send_header('Content-Type','text/html; charset=utf-8');self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body)
+  elif self.path.split('?')[0]=='/mobile-preview':
    width=320 if '320' in self.path else 390
-   body=('<!doctype html><html><head><title>Mobile QA</title></head><body style="margin:0;background:#ddd"><iframe title="Morzsa mobile QA" src="/?history" style="display:block;width:'+str(width)+'px;height:844px;border:0"></iframe></body></html>').encode();self.send_response(200);self.send_header('Content-Type','text/html; charset=utf-8');self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body)
+   height=676 if 'compact' in self.path else 844
+   body=('<!doctype html><html><head><title>Mobile QA</title></head><body style="margin:0;background:#ddd"><iframe title="Morzsa mobile QA" src="/" style="display:block;width:'+str(width)+'px;height:'+str(height)+'px;border:0"></iframe></body></html>').encode();self.send_response(200);self.send_header('Content-Type','text/html; charset=utf-8');self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body)
   elif self.path.split('?')[0]=='/':
    html=Path('index.html').read_text().replace('<script src="app.js',seed+'<script src="app.js')
    html=re.sub(r'<script src="household.js[^>]*></script>',lambda _:mock,html)

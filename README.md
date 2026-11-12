@@ -1,5 +1,16 @@
 # Morzsa — mobilos webapp
 
+## Licenc
+
+A Morzsa publikus, **nem kereskedelmi használatra elérhető forráskódú** projekt.
+Saját használatra, tanulásra és nem kereskedelmi tesztelésre módosítható és
+továbbadható a [LICENSE](LICENSE) feltételeivel. Kereskedelmi felhasználáshoz
+(például fizetős app, előfizetés, reklámos szolgáltatás vagy fizetős ügyfélprojekt)
+a projektgazda külön írásos engedélye szükséges: [szambaik](https://github.com/szambaik).
+Ez nem OSI szerinti open-source licenc. A márka és képek szabályai az
+[ASSET-LICENSE.md](ASSET-LICENSE.md) fájlban vannak; a külső csomagok és képek
+eredeti licencei megmaradnak.
+
 ## Indítás
 
 A mappában futtasd: python3 server.py

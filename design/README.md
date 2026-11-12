@@ -1,5 +1,13 @@
 # Morzsa – vizuális irány, 2026-10-30
 
+## Aktuális irány, 2026-11-12
+
+A felhasználó az első Kitchen Companion koncepciót választotta, a harmadik
+Soft Glass meleg gradiensével. Az aktuális döntések és a megvalósítás:
+[Kitchen Companion](kitchen-companion-2026-11-12/README.md).
+Menüsorrend: Áttekintés, Készlet, Morzsa, Lista, Receptek; a középső Morzsa az
+induló nézet. A későbbi döntések felülírják az alábbi korábbi indulóképernyő-leírásokat.
+
 A felhasználó által átadott [design board](morzsa-design-board.png) az arculat forrása.
 
 ## Átvett elemek

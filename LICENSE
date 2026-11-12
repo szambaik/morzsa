@@ -1,0 +1,62 @@
+Morzsa Non-Commercial Source License, Version 1.0
+
+Copyright (c) 2026 the Morzsa project author (GitHub: szambaik)
+
+1. Scope
+This license applies to original source code and project materials in this
+repository for which the project author holds the relevant rights, except where
+a file has a separate license or ASSET-LICENSE.md states otherwise. Third-party
+software and assets retain their own licenses. This license does not grant
+rights that the project author does not hold.
+
+2. Non-commercial permission
+You may use, study, copy, modify and redistribute the covered materials for
+personal, educational, research and other non-commercial purposes, including
+running a free deployment, provided that neither the use nor the distribution
+is primarily intended for or directed toward commercial advantage or monetary
+compensation. A free deployment used to promote a business or support a paid
+product is commercial use under this license.
+
+3. Conditions
+You must retain this license, copyright notices and third-party notices in all
+copies and distributions, identify your modifications, and distribute covered
+materials and your modifications to them under these same conditions. You may
+not impose additional restrictions that prevent recipients from exercising the
+permissions granted here. You may not present a modified or unofficial version
+as an official Morzsa release or imply endorsement by the project author.
+
+4. Commercial use requires separate written permission
+Commercial use of the covered materials is not permitted under this license.
+This includes sale or resale, paid applications or services, subscription-based
+or advertising-funded deployments, commercial redistribution, and incorporating
+the covered materials into paid client work or a commercial product. For a
+separate commercial license, contact the project author through:
+https://github.com/szambaik
+
+5. Brand and assets
+This license grants no trademark rights or right to use the Morzsa name, logo
+or mascot to market an unofficial product. See ASSET-LICENSE.md for original
+artwork and separately licensed third-party images. Descriptive attribution to
+the original project is permitted without implying affiliation or endorsement.
+
+6. Hosting platform permissions
+Nothing in this license limits permissions separately granted to a hosting
+platform or its users by applicable platform terms, including GitHub's rights
+to display and fork public repositories. Public visibility alone is not a
+commercial license.
+
+7. Termination
+The permissions granted here terminate automatically if you violate these
+conditions. Termination does not affect permissions already granted to other
+recipients who comply with this license. Contact the project author to resolve
+a violation and obtain reinstatement.
+
+8. Disclaimer
+THE COVERED MATERIALS ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+PARTICULAR PURPOSE AND NON-INFRINGEMENT. TO THE MAXIMUM EXTENT PERMITTED BY
+APPLICABLE LAW, THE AUTHORS SHALL NOT BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY ARISING FROM USE OF THE MATERIALS.
+
+This is a source-available license with a non-commercial restriction. It is not
+an OSI-approved open-source license.
