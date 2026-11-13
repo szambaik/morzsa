@@ -104,11 +104,11 @@ window.MorzsaCompanion=(()=>{
  function discuss(r){
   sync();if(!canSwitch())return false;let next;
   try{next=M.startRecipe(book,r,crypto.randomUUID(),RecipeRoomModel.recipe)}catch{toast(say('Most nem nyitható új receptbeszélgetés.','Cannot open another recipe conversation right now.'));return false}
-  drafts.set(book.active,{text:draft,attachment,retryAttachment});book=next;expandedRecipes=new Set();recipeDetails=false;const saved=drafts.get(book.active);draft=saved?.text||'';attachment=saved?.attachment||null;retryAttachment=saved?.retryAttachment||null;photoSerial++;stopReveal();error='';failedAnswer='';persist();closePanels();open();return true;
+  drafts.set(book.active,{text:draft,attachment,retryAttachment});book=next;expandedRecipes=new Set();recipeDetails=false;const saved=drafts.get(book.active);draft=saved?.text||'';attachment=saved?.attachment||null;retryAttachment=saved?.retryAttachment||null;photoSerial++;stopReveal();error='';failedAnswer='';persist();window.KitchenIntelligence?.recordRecipe('recipe_started',thread().recipe.title,thread().id);closePanels();open();return true;
  }
  function finishCooking(){
   if(!isCooking()||!canSwitch())return;const t=thread();if(t.status==='completed')return;
-  book=M.finishRecipe(book,t.id,RecipeRoomModel.recipe,say('Lezárt főzés: ','Cooking session finished: '));persist();goMain();
+  book=M.finishRecipe(book,t.id,RecipeRoomModel.recipe,say('Lezárt főzés: ','Cooking session finished: '));persist();window.KitchenIntelligence?.recordRecipe('recipe_completed',t.recipe.title,t.id);goMain();
  }
  function closePanels(){document.getElementById('companion-history')?.close();document.getElementById('companion-quick')?.close();main.querySelector('.ingredient-inline-actions')?.remove()}
  function open(text=''){page='chat';if(text)draft=text;render();window.scrollTo({top:0,behavior:'instant'});if(text)main.querySelector('#companion-input')?.focus()}
@@ -124,7 +124,7 @@ window.MorzsaCompanion=(()=>{
   window.RecipeImages?.enqueue((output.recipes||[]).map(RecipeRoomModel.recipe).filter(Boolean));
   pending=operations.length?{operations,output,stamp:fingerprint(operations),thread:book.active}:null;startReveal(shown);
  }
- function requestContext(){return {assistant:true,companion:true,destination:'stock',language,context:{...(isCooking()?{cookingRecipe:thread().recipe,cookingStep:thread().cookingStep||0}:{}),stock:Object.keys(state.stock).filter(n=>state.stock[n]>0).slice(0,1000),cart:state.cart.slice(0,1000).map(i=>({name:i.name,quantity:i.quantity||1,unit:i.unit||productUnit(i.name)})),uncertain:(PantryReview?.uncertain()||[]).slice(0,1000)},history:M.history(M.currentMessages(thread()),12)}}
+ function requestContext(){return {assistant:true,companion:true,destination:'stock',language,context:{...(window.KitchenIntelligence?.context(book)||{}),...(isCooking()?{cookingRecipe:thread().recipe,cookingStep:thread().cookingStep||0}:{}),stock:Object.keys(state.stock).filter(n=>state.stock[n]>0).slice(0,1000),cart:state.cart.slice(0,1000).map(i=>({name:i.name,quantity:i.quantity||1,unit:i.unit||productUnit(i.name)})),uncertain:(PantryReview?.uncertain()||[]).slice(0,1000)},history:M.history(M.currentMessages(thread()),12)}}
  async function send(value,retry=false,recipeRequestOnly=false){
   sync();const selected=retry?retryAttachment:attachment;const text=String(value).trim()||(selected?say('Mit látsz a képen? Miben segíthet a főzésnél?','What can you see in this photo? How could I use it for cooking?'):'');if(!text||text.length>2000||busy||saving||preparing)return;
   if(!household?.userId()){draft=text;renderChat();document.getElementById('household-button').click();return}
@@ -280,36 +280,37 @@ window.MorzsaCompanion=(()=>{
   const q=panel('companion-history');q.innerHTML=historyMarkup();bindHistory(q);if(!q.open)q.showModal();return q;
  }
  function removed(names){sync();removedNames=[...new Set([...names,...removedNames])].slice(0,10);updateNudge()}
- function nudge(){if(isCooking()||busy||saving||pending)return null;const n=M.suggestion(state,PantryReview?.candidates()||[],removedNames,deferred);return n?.type==='review'&&Date.now()<quietUntil?null:n}
+ function nudge(){if(isCooking()||busy||saving||pending)return null;const existing=M.suggestion(state,PantryReview?.candidates()||[],removedNames,deferred),refill=typeof KitchenModel==='undefined'?null:KitchenModel.shoppingSuggestion(state,deferred),n=['bought','restock'].includes(existing?.type)?existing:refill||existing;return ['review','low','recurring'].includes(n?.type)&&Date.now()<quietUntil?null:n}
  function updateNudge(){
   if(context!==scope())return;
   const host=main.querySelector('#companion-nudge');if(!host||host.querySelector('[data-inline-review]'))return;const n=nudge();if(!n){host.innerHTML='';return}
   if(n.type==='review'){
-   const current=context,items=M.reviewPreview(PantryReview.candidates(),state.stock,deferred);
-   PantryReview.open({host,items,onClose:()=>{if(current!==scope())return;for(const item of items)deferred['review:'+item.name]=Date.now()+86400000;try{localStorage.setItem(context+':snooze',JSON.stringify(deferred))}catch{}updateNudge()}});return;
+   const current=context,all=M.reviewPreview(PantryReview.candidates(),state.stock,deferred),items=all.slice(0,3);
+   PantryReview.open({host,items,onClose:()=>{if(current!==scope())return;for(const item of items)deferred['review:'+item.name]=Date.now()+86400000;try{localStorage.setItem(context+':snooze',JSON.stringify(deferred))}catch{}updateNudge()}});
+   if(all.length>items.length){const more=document.createElement('button');more.className='small-button review-more';more.textContent=say('Többet átnézek','Review more');more.onclick=()=>PantryReview.open({items:all});host.querySelector('[data-inline-review]')?.append(more)}return;
   }
-  const name=displayName(n.names[0]),title=n.type==='bought'?say('Megvolt a bevásárlás?','Finished shopping?'):n.type==='restock'?say('Felírjam a listára?','Add it to the list?'):name+say(' · megvan még?',' · still at home?');
-  const text=n.type==='bought'?n.names.length+say(' kipipált tételt a készletbe tehetünk.',' checked items can move to your pantry.'):n.type==='restock'?name+say(' elfogyott. Gondoskodjunk az utánpótlásról?',' ran out. Shall we get some more?'):n.unknown?say('Ezt még nem ellenőriztük együtt.','We haven’t checked this together yet.'):say('Egy ideje nem erősítettétek meg.','It has been a while since you checked.');
+  const name=n.names.map(displayName).join(', '),title=n.type==='bought'?say('Megvolt a bevásárlás?','Finished shopping?'):['restock','low','recurring'].includes(n.type)?say('Felírjam a listára?','Add it to the list?'):name+say(' · megvan még?',' · still at home?');
+  const text=n.type==='bought'?n.names.length+say(' kipipált tételt a készletbe tehetünk.',' checked items can move to your pantry.'):n.type==='low'?name+say(' · kevésnek jelöltétek.',' · marked as running low.'):n.type==='recurring'?name+say(' · többször vettétek mostanában, és most elfogyottnak jelöltétek.',' · bought repeatedly recently and now marked as used up.'):n.type==='restock'?name+say(' elfogyott. Gondoskodjunk az utánpótlásról?',' ran out. Shall we get some more?'):n.unknown?say('Ezt még nem ellenőriztük együtt.','We haven’t checked this together yet.'):say('Egy ideje nem erősítettétek meg.','It has been a while since you checked.');
   host.innerHTML='<aside class="companion-nudge"><div class="companion-speaker"><img src="assets/brands/morzsa.svg" width="18" height="18" alt="">'+say('Egy apróság…','One small thing…')+'</div><strong>'+esc(title)+'</strong><p>'+esc(text)+'</p><div class="companion-actions">'+(n.type==='review'?'<button data-nudge="keep">'+say('Van még','Still here')+'</button><button data-nudge="gone">'+say('Elfogyott','Used up')+'</button><button data-nudge="review">'+say('Többet átnézek','Review more')+'</button>':'<button data-nudge="'+(n.type==='bought'?'bought':'list')+'">'+(n.type==='bought'?say('Elpakoltam','Put away'):say('Listára','Add to list'))+'</button>')+'<button data-nudge="later">'+say('Most nem','Not now')+'</button></div></aside>';
   host.querySelectorAll('[data-nudge]').forEach(b=>b.onclick=async()=>{
    if(context!==scope()||saving||household?.busy||household?.cartPending||nudge()?.id!==n.id)return;
-   if(b.dataset.nudge==='later'){deferred[n.id]=Date.now()+86400000;try{localStorage.setItem(context+':snooze',JSON.stringify(Object.fromEntries(Object.entries(deferred).filter(([,v])=>v>Date.now()).slice(-100))))}catch{}updateNudge();return}
+   if(b.dataset.nudge==='later'){deferred[n.id]=Date.now()+86400000;if(['low','recurring'].includes(n.type))n.names.forEach(name=>deferred['refill:'+name]=Date.now()+86400000);try{localStorage.setItem(context+':snooze',JSON.stringify(Object.fromEntries(Object.entries(deferred).filter(([,v])=>v>Date.now()).slice(-100))))}catch{}updateNudge();return}
    if(b.dataset.nudge==='review'){PantryReview.open();return}
    const current=context;host.querySelectorAll('button').forEach(x=>x.disabled=true);
    if(b.dataset.nudge==='keep')await PantryReview.confirm(n.names);
    if(b.dataset.nudge==='gone')await PantryReview.remove(n.names);
-   if(b.dataset.nudge==='list')await addToList(n.names[0]);
+   if(b.dataset.nudge==='list')await addToList(n.names);
    if(b.dataset.nudge==='bought'){await completeShopping(false);if(page==='chat')renderChat()}
    if(current===scope())updateNudge();
   });
  }
  async function addToList(name){
-  if(state.cart.some(i=>i.name===name))return;
-  const next={...state,cart:[...state.cart,{name,quantity:1,unit:productUnit(name),done:false,source:'Morzsa'}]};
+  const names=(Array.isArray(name)?name:[name]).filter(n=>!state.cart.some(i=>i.name===n));if(!names.length)return;
+  const plan=WorkspaceEntry.plan(state,names,'cart',catalog,productUnit,QuickEntry.norm),next=plan.next;
   const current=context,undoContext=voiceContext();
   if(household?.busy||household?.cartPending)return;
   const ok=household?.active?household.editCart(next,{onlyIfMissing:true}):commitState(next);
-  if(ok&&current===scope()){basketFeedback(name);toast(say('A listára került.','Added to list.'));if(!household?.active)showVoiceUndo([{bucket:'cart',key:name,before:undefined,after:next.cart.at(-1)}],undoContext);renderChat()}
+  if(ok&&current===scope()){basketFeedback(names[0]);toast(say('A listára került.','Added to list.'));if(!household?.active)showVoiceUndo(names.map(n=>({bucket:'cart',key:n,before:undefined,after:next.cart.find(i=>i.name===n)})),undoContext);renderChat()}
  }
  async function ingredientActions(name,anchor){
   sync();if(![...catalog,...state.custom].some(i=>i.name===name))return;

@@ -362,3 +362,21 @@ button:focus-visible,summary:focus-visible,a:focus-visible,input:focus-visible,t
 #workspace-connection-note{font-size:12px;line-height:1.5;margin:0 16px 12px;padding:10px 12px;background:var(--orange-soft);border-radius:12px}
 @media(max-width:350px){.app[data-page=pantry] .ingredient-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.daily-counts button{padding:13px}.pantry-state-options button{font-size:12px}}
 @media(min-width:1000px){.app[data-page=pantry] .ingredient-grid{grid-template-columns:repeat(5,minmax(0,1fr))}.daily-counts button{min-height:126px}.calm-dashboard .dashboard-meals{max-width:720px}}
+.recipe-library-tools{flex-wrap:wrap}
+.kitchen-preferences-entry{display:inline-flex;align-items:center;gap:7px;min-height:44px}
+#kitchen-preferences{width:calc(100% - 28px);max-width:430px;max-height:calc(100dvh - 32px);overflow:auto;padding:24px;border:1px solid var(--line);border-radius:24px;background:var(--white);color:var(--ink)}
+#kitchen-preferences h2{font-size:21px;margin:12px 0}
+#kitchen-preferences p{font-size:13px;line-height:1.6;color:var(--muted)}
+#kitchen-preferences form{display:grid;gap:15px;margin-top:20px}
+#kitchen-preferences label{display:grid;gap:7px;font-size:13px;font-weight:600}
+#kitchen-preferences input,#kitchen-preferences select{width:100%;min-height:44px;border:1px solid var(--line);border-radius:10px;background:var(--white);font:inherit;padding:10px;color:var(--ink)}
+#kitchen-preferences [type=submit]{min-height:48px}
+#kitchen-preferences .kitchen-preferences-error{color:#8d422f;margin:0}
+.kitchen-activity{margin:20px 0;border-top:1px solid var(--line);font-size:13px}
+.kitchen-activity summary{min-height:44px;display:flex;align-items:center;cursor:pointer;color:var(--muted)}
+.kitchen-activity-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.kitchen-activity-row div{min-width:0;display:grid;gap:4px}
+.kitchen-activity-row strong{overflow-wrap:anywhere;font-size:13px}
+.kitchen-activity-row span,.kitchen-activity-row small{font-size:11px;line-height:1.5;color:var(--muted)}
+.kitchen-activity-row small{flex:none;max-width:110px;text-align:right}
+.review-more{min-height:44px;width:100%;margin-top:8px}

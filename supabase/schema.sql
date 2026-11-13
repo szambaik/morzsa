@@ -73,7 +73,7 @@ declare c jsonb; actual bigint; begin
  for c in select * from jsonb_array_elements(changes) loop
   if octet_length(c::text)>100000 then raise exception 'Item too large';end if;
   if c->'value' is not null and c->'value'<>'null'::jsonb then
-   if c->>'bucket'='stock' and c->'value' not in ('0'::jsonb,'2'::jsonb) then raise exception 'Invalid stock';end if;
+   if c->>'bucket'='stock' and c->'value' not in ('0'::jsonb,'1'::jsonb,'2'::jsonb) then raise exception 'Invalid stock';end if;
    if c->>'bucket' in ('cart','custom') and (jsonb_typeof(c->'value')<>'object' or c->'value'->>'name' is distinct from c->>'key') then raise exception 'Invalid product';end if;
    if c->>'bucket'='cart' and (coalesce((c->'value'->>'quantity')::numeric,1)<1 or coalesce((c->'value'->>'quantity')::numeric,1)>100000) then raise exception 'Invalid quantity';end if;
    if c->>'bucket'='custom' and c->'value'->>'category' is distinct from 'Saját tételek' then raise exception 'Invalid custom category';end if;

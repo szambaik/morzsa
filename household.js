@@ -30,7 +30,7 @@
     }
     cartOutbox.splice(0,batch.length);persistCart();state=overlayCart(cloud.rows);localStorage.setItem(cloud.storageKey(),JSON.stringify(state));paintCart();
    }
-   status('Közös háztartás · szinkronizálva','Shared household · synced');
+   window.KitchenIntelligence?.refresh();status('Közös háztartás · szinkronizálva','Shared household · synced');
   }catch{cartFailed=true;cartStatus(true)}
   finally{clearTimeout(indicator);cloud.busy=false;cartSync=false;if(!cartFailed&&cartOutbox.length)cartTimer=setTimeout(flushCart,120)}
  }
@@ -38,6 +38,9 @@
  cloud.readPantryReviews=()=>request('/rest/v1/household_pantry_reviews?household_id=eq.'+encodeURIComponent(cloud.active)+'&select=product_name,last_confirmed_at,stock_revision');
  cloud.confirmPantryReviews=names=>rpc('confirm_pantry_items',{hid:cloud.active,items:names.map(name=>({name,revision:cloud.rows.find(r=>r.bucket==='stock'&&r.key===name)?.revision}))});
  cloud.userId=()=>session?.user?.id||null;
+ cloud.readKitchenIntelligence=async()=>{const hid=encodeURIComponent(cloud.active),[preferences,events,cooked]=await Promise.all([request('/rest/v1/household_kitchen_preferences?household_id=eq.'+hid+'&select=key,value,revision'),request('/rest/v1/household_kitchen_events?household_id=eq.'+hid+'&select=id,actor_id,created_at,event_type,subject,item_count&order=id.desc&limit=12'),request('/rest/v1/household_kitchen_events?household_id=eq.'+hid+'&event_type=eq.recipe_completed&select=event_type,subject,created_at&order=id.desc&limit=8')]);return {preferences,events,cooked}};
+ cloud.saveKitchenPreferences=changes=>rpc('set_kitchen_preferences',{hid:cloud.active,changes});
+ cloud.recordKitchenRecipe=(kind,title,client_id)=>rpc('record_kitchen_recipe',{hid:cloud.active,kind,title,client_id});
  cloud.voiceStatus=()=>request('/functions/v1/voice-command',undefined,false);
  cloud.voiceCommand=payload=>{if(!session)throw Error('VOICE_SIGN_IN_REQUIRED');return request('/functions/v1/voice-command',payload,true,'POST',60000)};
  cloud.voiceCommandStream=(payload,onAnswer,signal)=>{if(!session)throw Error('VOICE_SIGN_IN_REQUIRED');return request('/functions/v1/voice-command',{...payload,stream:true},true,'POST',60000,{onAnswer,signal})};
@@ -91,7 +94,7 @@
  const editingText=()=>document.activeElement?.matches('textarea,select,input:not([type=checkbox]):not([type=radio]):not([type=button])');
  function stopLive(){liveConnection?.close();liveConnection=null;clearTimeout(liveRefreshTimer);liveDirty=false}
  function queueLiveRefresh(){liveDirty=true;clearTimeout(liveRefreshTimer);liveRefreshTimer=setTimeout(async()=>{if(!cloud.active||document.hidden)return;if(cloud.busy||blockingDialog()||editingText()){queueLiveRefresh();return}liveDirty=false;await refresh()},350)}
- function startLive(){stopLive();if(!cloud.active||!session||typeof HouseholdLive==='undefined')return;liveConnection=HouseholdLive.connect({url:config.url,key:config.publishableKey,token:session.access_token,householdId:cloud.active,onChange:queueLiveRefresh,onReady:queueLiveRefresh})}
+ function startLive(){stopLive();if(!cloud.active||!session||typeof HouseholdLive==='undefined')return;liveConnection=HouseholdLive.connect({url:config.url,key:config.publishableKey,token:session.access_token,householdId:cloud.active,extraTables:window.KitchenIntelligence?.realtimeTables()||[],onChange:queueLiveRefresh,onReady:queueLiveRefresh})}
  document.addEventListener('visibilitychange',()=>{if(!document.hidden&&cloud.active)queueLiveRefresh()});
  window.addEventListener('online',()=>{if(cloud.active){startLive();queueLiveRefresh()}});
  async function refresh(){
@@ -110,7 +113,7 @@
      requestAnimationFrame(()=>document.querySelectorAll('[data-ingredient]').forEach(el=>{if(changed.includes(el.dataset.ingredient)){el.classList.add('shared-change');setTimeout(()=>el.classList.remove('shared-change'),1500)}}));
     }
    }
-   window.PantryReview?.refresh();status('Közös háztartás · szinkronizálva','Shared household · synced');
+   window.PantryReview?.refresh();window.KitchenIntelligence?.refresh();status('Közös háztartás · szinkronizálva','Shared household · synced');
   }catch(e){status('Szinkronizálás sikertelen','Sync failed')}finally{cloud.busy=false;refreshing=false;if(cartOutbox.length&&!cartFailed)cartTimer=setTimeout(flushCart,0)}
  }
 
@@ -120,7 +123,7 @@
   if(cloud.busy){state=HouseholdModel.decode(cloud.rows,state);render();toast(say('Mentés folyamatban, próbáld újra.','Saving in progress; try again.'));return}
   const changes=HouseholdModel.diff(cloud.rows,state);if(!changes.length)return true;
   const draft=JSON.stringify(state),hid=cloud.active;try{localStorage.setItem('morzsa-pending-'+hid,draft)}catch{state=HouseholdModel.decode(cloud.rows,state);render();toast(say('A böngésző nem tudta menteni a változtatást.','The browser could not save this change.'));return}cloud.busy=true;status('Mentés…','Saving…');
-  try{await rpc('apply_household_changes',{hid,changes});cloud.rows=await fetchRows();state=HouseholdModel.decode(cloud.rows,state);localStorage.setItem(cloud.storageKey(),JSON.stringify(state));localStorage.removeItem('morzsa-pending-'+hid);render();window.PantryReview?.refresh();status('Közös háztartás · szinkronizálva','Shared household · synced');return true}
+  try{await rpc('apply_household_changes',{hid,changes});cloud.rows=await fetchRows();state=HouseholdModel.decode(cloud.rows,state);localStorage.setItem(cloud.storageKey(),JSON.stringify(state));localStorage.removeItem('morzsa-pending-'+hid);render();window.PantryReview?.refresh();window.KitchenIntelligence?.refresh();status('Közös háztartás · szinkronizálva','Shared household · synced');return true}
   catch(e){try{cloud.rows=await fetchRows()}catch{}state=HouseholdModel.decode(cloud.rows,state);render();status('Nem sikerült menteni · ismételd meg','Not saved · repeat your action');toast(errorText(e));return false}
   finally{cloud.busy=false}
  }

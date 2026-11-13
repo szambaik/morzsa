@@ -67,7 +67,7 @@
  .cooking-guide:has(#cooking-ingredients) .cooking-steps {grid-area:steps}
  .cooking-step {padding:18px 16px;gap:12px}
  .cooking-step p {font-size:15px}
- .cooking-dock {max-width:640px;margin-left:auto}
+ .cooking-dock {max-width:none;width:100%;margin-left:0}
 
  .app[data-page=pantry] .ingredient-grid {grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
  .app[data-page=pantry] .ingredient-card {padding:8px;min-height:112px;border-radius:18px}
@@ -109,13 +109,13 @@
  #cooking-resume {left:auto;right:max(36px,calc((100vw - 1320px)/2 + 36px));transform:none;bottom:24px;width:360px}
 }
 
-@media (min-width:1200px) {
- .app[data-page=shopping] #main {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 28px;align-items:start}
- .app[data-page=shopping] #main>:not(.shopping-group) {grid-column:1/-1}
+@media (min-width:1000px) {
+ .app[data-page=shopping] #main {display:block;width:100%;max-width:760px;margin-inline:auto}
  .app[data-page=shopping] .shopping-group {margin:0 0 12px;padding:12px 16px;border:1px solid var(--line);border-radius:20px;background:#fffdf780}
  .app[data-page=shopping] .shopping-group>summary {margin-bottom:8px}
- .app[data-page=shopping] #add-cart {max-width:720px;width:100%;margin:16px auto 0}
- .app[data-page=shopping] #restock {max-width:720px;justify-self:center}
+ .app[data-page=shopping] #add-cart {max-width:none;width:100%;margin:16px 0 0}
+ .app[data-page=shopping] .quick-entry {max-width:none;width:100%}
+ .app[data-page=shopping] #restock {max-width:none;width:100%}
 }
 
 @media(min-width:1000px){

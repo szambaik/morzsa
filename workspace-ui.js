@@ -27,6 +27,7 @@ window.MorzsaWorkspace=(()=>{
   document.documentElement.style.setProperty('--workspace-nav-height',desktop?'0px':nav.getBoundingClientRect().height+'px');
   if(quick?.open&&entryContext!==voiceContext())quick.close();
   window.MorzsaOnboarding?.mount();document.body.classList.toggle('introduction-active',!!main.querySelector('.morzsa-introduction'));
+   window.KitchenIntelligence?.mount();
  }
  function openEntry(destination,initialDraft){
   if(working)return;

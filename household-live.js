@@ -8,7 +8,7 @@ const HouseholdLive=(()=>{
   for(const r of [...next,...previous])if(['stock','cart','custom'].includes(r.bucket)&&before.get(r.bucket+':'+r.key)!==after.get(r.bucket+':'+r.key)&&!names.includes(r.key))names.push(r.key);
   return names;
  }
- function connect({url,key,token,householdId,onChange,onReady=()=>{},WebSocketImpl=WebSocket,schedule=setTimeout,cancel=clearTimeout,repeat=setInterval,stopRepeat=clearInterval}){
+ function connect({url,key,token,householdId,onChange,onReady=()=>{},extraTables=[],WebSocketImpl=WebSocket,schedule=setTimeout,cancel=clearTimeout,repeat=setInterval,stopRepeat=clearInterval}){
   let stopped=false,socket=null,retry=null,pulse=null,attempt=0,ref=0,awaiting=null;
   const topic='realtime:morzsa:'+householdId;
   const send=(event,payload={},messageTopic=topic)=>{const id=String(++ref);if(socket?.readyState===1)socket.send(JSON.stringify({topic:messageTopic,event,payload,ref:id,join_ref:messageTopic===topic?'1':null}));return id};
@@ -16,7 +16,7 @@ const HouseholdLive=(()=>{
    if(stopped)return;ref=0;awaiting=null;
    try{socket=new WebSocketImpl(url.replace(/^http/,'ws')+'/realtime/v1/websocket?apikey='+encodeURIComponent(key)+'&vsn=1.0.0')}catch{reconnect();return}
    const current=socket;
-   socket.onopen=()=>{if(stopped||socket!==current)return;send('phx_join',{config:{broadcast:{ack:false,self:false},presence:{key:''},postgres_changes:[{event:'*',schema:'public',table:'household_records',filter:'household_id=eq.'+householdId},{event:'*',schema:'public',table:'household_pantry_reviews',filter:'household_id=eq.'+householdId}]},access_token:token});
+   socket.onopen=()=>{if(stopped||socket!==current)return;send('phx_join',{config:{broadcast:{ack:false,self:false},presence:{key:''},postgres_changes:[{event:'*',schema:'public',table:'household_records',filter:'household_id=eq.'+householdId},{event:'*',schema:'public',table:'household_pantry_reviews',filter:'household_id=eq.'+householdId},...extraTables.filter(t=>['household_kitchen_preferences','household_kitchen_events'].includes(t)).map(table=>({event:'*',schema:'public',table,filter:'household_id=eq.'+householdId}))]},access_token:token});
     pulse=repeat(()=>{if(awaiting){current.close();return}awaiting=send('heartbeat',{},'phoenix')},20000);
    };
    socket.onmessage=e=>{if(stopped||socket!==current)return;let message;try{message=JSON.parse(e.data)}catch{return}

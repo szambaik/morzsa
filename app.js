@@ -46,7 +46,7 @@ function bindAddButton(button,name){
  button.onclick=()=>{cancel();if(held){held=false;return}const found=state.cart.find(x=>x.name.toLocaleLowerCase('hu')===name.toLocaleLowerCase('hu'));if(found){if(commitState({...state,cart:state.cart.filter(x=>x!==found)})){toast(name+' lekerült a listáról.');refreshCatalog()}}else if(addCart(name)){toast(name+' a listára került.');refreshCatalog()}};
 }
 function missing(r){return r.ingredients.filter(([n])=>!state.stock[n])}
-function score(r){const liked=recipes.filter(x=>state.likes.includes(x.id));return (r.ingredients.length-missing(r).length)/r.ingredients.length*10+liked.reduce((sum,x)=>sum+r.tags.filter(t=>x.tags.includes(t)).length,0)*.5}
+function score(r){const liked=recipes.filter(x=>state.likes.includes(x.id));return (r.ingredients.length-missing(r).length)/r.ingredients.length*10+liked.reduce((sum,x)=>sum+r.tags.filter(t=>x.tags.includes(t)).length,0)*.5-(window.KitchenIntelligence?.recentTitles().includes(r.name)?2:0)}
 function nextRecipe(){return [...recipes].filter(r=>!state.likes.includes(r.id)&&!state.skips.includes(r.id)).sort((a,b)=>score(b)-score(a))[0]}
 function hero(label,title,desc){return '<section class="hero"><div class="eyebrow">'+label+'</div><h1>'+title+'</h1><p class="subtitle">'+desc+'</p></section>'}
 function render(){document.querySelector('.app').dataset.page=page;window.MorzsaCompanion?.onNavigate();document.querySelectorAll('nav button').forEach(b=>{b.classList.toggle('active',b.dataset.page===page);b.setAttribute('aria-current',b.dataset.page===page?'page':'false')});updateCount();if(page==='chat')window.MorzsaCompanion?.render();if(page==='pantry')renderPantry();if(page==='overview')renderDashboard();if(page==='recipes')renderRecipes();if(page==='shopping')renderShopping();showHomeUndo();window.MorzsaWorkspace?.mount()}
@@ -116,8 +116,8 @@ function dashboardGo(destination){page=destination;if(destination==='pantry'){st
 const surpriseSeen=new Map();
 function surpriseRecipe(){
  const key=JSON.stringify([window.household?.active||'local',Object.entries(state.stock).filter(([,v])=>v>0).map(([n])=>n).sort()]);
- const seen=surpriseSeen.get(key)||[],chosen=SurpriseRecipe.choose(recipes,state.stock,seen);
- if(!chosen)return;
+ const seen=surpriseSeen.get(key)||[],eligible=window.KitchenIntelligence?.eligibleRecipes(recipes)||recipes,chosen=SurpriseRecipe.choose(eligible,state.stock,seen);
+ if(!chosen){window.MorzsaCompanion?.ask(language==='en'?'Suggest a meal using my pantry and cooking preferences.':'Ajánlj egy ételt a készletemből, a főzési ízlésem alapján.');return}
  surpriseSeen.set(key,[...seen,chosen.id].slice(-recipes.length));if(surpriseSeen.size>8)surpriseSeen.delete(surpriseSeen.keys().next().value);
  openRecipe(chosen.id);
  const next=document.createElement('button');next.className='surprise-again small-button';next.setAttribute('data-no-translate','');next.textContent=language==='en'?'Another idea':'Másik ötlet';next.onclick=surpriseRecipe;
@@ -125,13 +125,14 @@ function surpriseRecipe(){
  dialog.querySelector('h2').after(label,next);
 }
 function dashboardRecipeRow(r){
+ if(!r)return '<button class="small-button" data-dashboard-go="recipes">'+(language==='en'?'Find a recipe for our preferences':'Keressünk az ízlésünkhöz illő receptet')+'</button>';
  const say=(hu,en)=>language==='en'?en:hu,available=r.ingredients.length-missing(r).length;
  const image=productArtwork[r.ingredients[0][0]]||'assets/icons/oats.webp';
  return '<article class="idea-row"><button class="idea-open" data-recipe="'+r.id+'"><img class="dashboard-recipe-art" src="'+image+'" width="48" height="48" alt=""><span><strong>'+esc(language==='en'?englishText(r.name):r.name)+'</strong><small>'+r.time+say(' perc · ',' min · ')+available+'/'+r.ingredients.length+say(' hozzávaló otthon',' ingredients at home')+'</small></span></button><button class="idea-save" data-save-recipe="'+r.id+'" aria-pressed="'+state.likes.includes(r.id)+'" aria-label="'+esc(say('Kedvenc: ','Favourite: ')+(language==='en'?englishText(r.name):r.name))+'">'+(state.likes.includes(r.id)?'♥':'♡')+'</button></article>';
 }
 function renderDashboard(){
  const say=(hu,en)=>language==='en'?en:hu,homeCount=Object.values(state.stock).filter(n=>n>0).length,low=Object.values(state.stock).filter(n=>n>0&&n<=1).length,pending=state.cart.filter(x=>!x.done);
- const recipe=[...recipes].sort((a,b)=>score(b)-score(a))[0],last=state.history[0];
+ const recipe=[...(window.KitchenIntelligence?.eligibleRecipes(recipes)||recipes)].sort((a,b)=>score(b)-score(a))[0],last=state.history[0];
  main.innerHTML='<div class="dashboard calm-dashboard" data-no-translate><div class="daily-heading"><div><h1>'+say('Jó itthon.','Good to be home.')+'</h1><p>'+say('A konyhátok, egy pillantással.','Your kitchen at a glance.')+'</p></div><img src="assets/illustrations/morzsa-mascot.webp" width="66" height="60" alt=""></div><div class="daily-counts"><button data-dashboard-go="pantry"><strong>'+homeCount+'</strong><span>'+say('Otthon','At home')+'</span><small>'+say(low?low+' alapanyagból kevés':'Mi van a konyhában?',low?low+' ingredients running low':'What’s in your kitchen?')+'</small></button><button data-dashboard-go="shopping"><strong>'+pending.length+'</strong><span>'+say('Listán','On your list')+'</span><small>'+say(pending.length?'Ennyit kell még beszerezni':'Most nincs hiányzó tétel',pending.length?'Still to pick up':'Nothing to pick up')+'</small></button></div><section class="dashboard-meals"><div class="dashboard-section-title"><h2>'+say('Mit főzzünk ma?','What shall we cook today?')+'</h2><button class="small-button" data-dashboard-go="recipes">'+say('Receptek →','Recipes →')+'</button></div>'+dashboardRecipeRow(recipe)+'<button class="surprise-button" id="surprise-recipe">'+say('Lepj meg','Surprise me')+'</button></section>'+(!homeCount||state.cart.length?'<button class="daily-next" data-dashboard-go="'+(homeCount?'shopping':'pantry')+'"><strong>'+(!homeCount?say('Mi lapul a konyhádban?','What is in your kitchen?'):!pending.length?say('Minden kipipálva · befejezed?','All checked off · finish shopping?'):say('A következő bevásárlás','Your next shopping trip'))+'</strong><span>'+(!homeCount?say('Vegyél fel néhány alapanyagot.','Add a few ingredients.'):pending.length?esc(pending.slice(0,3).map(i=>displayName(i.name)).join(', ')):say('Vásárlás befejezése','Finish shopping'))+' →</span></button>':'')+'<div id="dashboard-review-slot"></div>'+(last?'<details class="daily-history"><summary>'+say('Legutóbbi bevásárlás','Last shopping trip')+'</summary><button id="dashboard-history">'+last.items.length+say(' termék · ',' products · ')+esc(new Date(last.date).toLocaleDateString(language==='en'?'en-GB':'hu-HU'))+' →</button></details>':'')+'</div>';
  main.querySelectorAll('[data-dashboard-go]').forEach(b=>b.onclick=()=>dashboardGo(b.dataset.dashboardGo));
  main.querySelector('#dashboard-history')?.addEventListener('click',openArchive);main.querySelector('#surprise-recipe').onclick=surpriseRecipe;
