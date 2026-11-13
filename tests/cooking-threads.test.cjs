@@ -1,6 +1,17 @@
 const {test}=require('node:test'),assert=require('node:assert/strict');
 const M=require('../companion-model'),R=require('../recipe-room-model');
 const recipe={title:'Palacsinta',summary:'Gyors édesség.',minutes:20,ingredients:[{name:'Tej',amount:'250 ml'},{name:'Tojás',amount:'2 db'}],steps:['Keverd össze.','Süsd meg.']};
+test('explicit step completion persists independently of navigation and changes no household state',()=>{
+ const book=M.startRecipe(M.workspace(null,R.recipe,1),recipe,'cook1',R.recipe,2),before=JSON.stringify(book);
+ const navigated=M.setCookingStep(book,'cook1',1,R.recipe);assert.deepEqual(navigated.threads[1].completedSteps,[]);
+ const done=M.completeCookingStep(book,'cook1',0,R.recipe);assert.deepEqual(done.threads[1].completedSteps,[0]);assert.equal(done.threads[1].cookingStep,1);assert.equal(JSON.stringify(book),before);
+ assert.deepEqual(M.workspace(JSON.parse(JSON.stringify(done)),R.recipe).threads[1].completedSteps,[0]);
+ assert.deepEqual(M.completeCookingStep(done,'cook1',0,R.recipe).threads[1].completedSteps,[0]);
+ const ended=M.completeCookingStep(done,'cook1',1,R.recipe);assert.deepEqual(ended.threads[1].completedSteps,[0,1]);assert.equal(ended.threads[1].status,'active');
+ const invalid={...ended,threads:ended.threads.map(t=>({...t,completedSteps:[0,0,-1,2,'1']}))};assert.deepEqual(M.workspace(invalid,R.recipe).threads[1].completedSteps,[0]);
+ assert.throws(()=>M.completeCookingStep(done,'cook1',99,R.recipe),/INVALID_COOKING_STEP/);
+ assert.throws(()=>M.completeCookingStep(M.finishRecipe(done,'cook1',R.recipe,'Done: '),'cook1',0,R.recipe),/INVALID_COOKING_STEP/);
+});
 test('migration preserves old conversations, is repeatable and uses isolated v2 storage',()=>{
  const old={active:'old',threads:[{id:'old',title:'Tegnap',messages:[{role:'user',text:'Vacsora?'}]}]},before=JSON.stringify(old);
  const b=M.workspace(old,R.recipe,1);assert.equal(b.threads[0].kind,'main');assert.equal(b.threads[1].kind,'legacy');assert.equal(b.threads[1].messages[0].text,'Vacsora?');assert.deepEqual(M.workspace(b,R.recipe),b);assert.equal(JSON.stringify(old),before);

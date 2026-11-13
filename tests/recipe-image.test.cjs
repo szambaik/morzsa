@@ -1,5 +1,14 @@
 const {test}=require('node:test'),assert=require('node:assert/strict');
 const recipe={title:'Palacsinta',summary:'Finom',minutes:20,ingredients:[{name:'Liszt',amount:'100 g'}],steps:['Keverd össze.']};
+test('automatic step images wait for visibility and never regenerate on chat rerender after a miss',async()=>{
+ const vm=require('node:vm'),fs=require('node:fs');let calls=[],observers=[];
+ const host=()=>({isConnected:true,children:[],dataset:{},replaceChildren(){this.children=[]},append(...nodes){this.children.push(...nodes)}});
+ const context={window:{},household:{active:null,userId:()=> 'test',recipeImage:async input=>{calls.push(input);return {status:'missing'}}},language:'hu',document:{createElement:tag=>({tag})},IntersectionObserver:class{constructor(cb){observers.push(cb)}observe(){}disconnect(){}}};
+ vm.runInNewContext(fs.readFileSync('recipe-images.js','utf8'),context);const images=context.window.RecipeImages,first=host();images.mount(first,recipe,0,{autoCreate:true});
+ assert.equal(calls.length,0);observers[0]([{isIntersecting:true}]);await new Promise(resolve=>setImmediate(resolve));assert.equal(calls.length,1);assert.equal(calls[0].create,true);assert.equal(calls[0].step,0);
+ const remount=host();images.mount(remount,recipe,0,{autoCreate:true});await new Promise(resolve=>setImmediate(resolve));assert.equal(calls.length,1);
+ await remount.children[0].onclick();assert.equal(calls.length,2);assert.equal(calls[1].create,true);
+});
 test('images require valid recipes and bounded steps, never a paid model fallback',async()=>{
  const {imageInput,cloudImage}=await import('../supabase/functions/recipe-image/handler.mjs');
  assert.equal(imageInput({recipe}).step,-1);assert.throws(()=>imageInput({recipe,step:1}));assert.throws(()=>imageInput({recipe:{}}));

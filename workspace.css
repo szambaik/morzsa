@@ -380,3 +380,48 @@ button:focus-visible,summary:focus-visible,a:focus-visible,input:focus-visible,t
 .kitchen-activity-row span,.kitchen-activity-row small{font-size:11px;line-height:1.5;color:var(--muted)}
 .kitchen-activity-row small{flex:none;max-width:110px;text-align:right}
 .review-more{min-height:44px;width:100%;margin-top:8px}
+/* Cooking has one active task; other steps and household tools stay reachable. */
+.workspace-cooking .cooking-step[hidden]{display:none}
+.workspace-cooking .cooking-step{display:block;padding:20px 18px;background:var(--white);border:1px solid #cbd4ba;box-shadow:none}
+.workspace-cooking .cooking-step h3{font:650 21px/1.4 Sora,system-ui,sans-serif;margin:0 0 14px}
+.workspace-cooking .cooking-step p{font-size:16px;line-height:1.8}
+.workspace-cooking .cooking-complete{display:block;width:100%;min-height:48px;margin-top:22px;border:0;border-radius:13px;background:var(--green);color:var(--white);font:600 14px/1.4 Inter,system-ui,sans-serif;padding:12px 16px}
+.cooking-step-completed{display:block;margin-top:10px;color:var(--green);font-size:12px}
+.cooking-outline{margin:14px 0 0;padding:2px 0}
+.cooking-outline summary{display:flex;align-items:center;gap:10px;min-height:44px;font-size:13px;cursor:pointer;color:var(--muted)}
+.cooking-outline summary::before{content:'+';font-size:18px}
+.cooking-outline[open] summary::before{content:'−'}
+.cooking-outline summary small{margin-left:auto;font-size:11px}
+.cooking-outline ol{list-style:none;padding:0;margin:0}
+.cooking-outline button{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;text-align:left;border:0;background:transparent;border-radius:10px;padding:8px;font-size:13px}
+.cooking-outline button span{display:grid;place-items:center;width:26px;min-width:26px;color:var(--green)}
+.cooking-outline button[aria-current=step]{background:var(--sage);font-weight:600}
+.workspace-cooking .cooking-dock{box-shadow:none;border:0;background:transparent;padding-inline:0;margin-bottom:4px}
+.workspace-cooking .companion-disclosure{font-size:10px}
+.recipe-ingredient-row[data-availability=home] small{color:var(--green)}
+.recipe-ingredient-row[data-availability=out] small{color:#91442b}
+.recipe-ingredient-row[data-availability=unknown] small,.recipe-ingredient-row[data-availability=low] small{color:#805d24}
+.recipe-ingredient-actions button{min-height:44px;max-width:152px;white-space:normal;font-size:11px}
+.recipe-ingredient-actions button[data-recipe-home]{background:transparent;border-color:transparent;color:var(--muted)}
+.recipe-ingredient-row[data-availability=unknown] [data-recipe-home],.recipe-ingredient-row[data-availability=out] [data-recipe-home]{color:var(--green)}
+.recipe-ingredient-row[data-availability=out] [data-recipe-list]{background:var(--orange-soft);border-color:#e3b899;color:#763813}
+@media(min-width:1000px){
+ .workspace-cooking .app[data-page=chat] .companion{max-width:1080px}
+ .workspace-cooking .companion-compose-wrap{max-width:1080px}
+ .workspace-cooking .cooking-guide:has(#cooking-ingredients){grid-template-columns:minmax(0,1fr) minmax(280px,330px);gap:0 24px}
+ .workspace-cooking .cooking-flow{grid-area:steps;min-width:0}
+ .workspace-cooking .cooking-flow .cooking-steps{display:block}
+ .workspace-cooking #workspace-sidebar .companion-history-items,.workspace-cooking #workspace-sidebar .companion-new,.workspace-cooking #workspace-sidebar .history-privacy{display:none}
+ .workspace-cooking #workspace-sidebar #companion-history-rail{flex:none}
+ .workspace-cooking #workspace-sidebar [data-cooking-history]{min-height:44px;min-width:44px;background:transparent;border:0;border-radius:10px;padding:10px}
+ .workspace-cooking #workspace-sidebar [data-cooking-history] img{width:20px;height:20px}
+ .workspace-cooking #cooking-ingredients .room-footnote{display:none}
+}
+@media(max-width:600px){
+ .workspace-cooking .cooking-step{padding:18px 15px}
+ .workspace-cooking .cooking-step h3{font-size:19px}
+ .workspace-cooking .cooking-step p{font-size:15px}
+ .recipe-ingredient-actions button{max-width:122px}
+}
+
+.ingredient-mention.uncertain{color:#805d24;background:#eee6d2;border-color:#dfcfac}

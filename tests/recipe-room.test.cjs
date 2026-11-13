@@ -1,5 +1,14 @@
 const test=require('node:test'),assert=require('node:assert/strict'),M=require('../recipe-room-model');
 const r={title:'Tejes rizs',summary:'Egyszerű desszert.',minutes:20,ingredients:[{name:'Tej',amount:'1 l'},{name:'Rizs',amount:'200 g'},{name:'Cukor',amount:'2 ek'}],steps:['Főzd puhára.']};
+test('ingredient availability distinguishes missing, low, stale and never checked stock',()=>{
+ const stock={Tej:2,Rizs:1,Cukor:0};assert.equal(M.ingredientStatus(stock,'Tej'),'home');assert.equal(M.ingredientStatus(stock,'Rizs'),'low');assert.equal(M.ingredientStatus(stock,'Cukor'),'out');
+ assert.equal(M.ingredientStatus(stock,'Liszt'),'unknown');assert.equal(M.ingredientStatus(stock,'Tej',['Tej']),'unknown');assert.equal(stock.Tej,2);
+});
+test('automatic step illustrations select at most two useful techniques without changing old recipe saves',()=>{
+ const recipe={...r,steps:['Mérd ki a lisztet.','Hajtsd félbe a tésztát.','Formázz gombócokat.','Süsd aranybarnára.']},before=JSON.stringify(recipe);
+ assert.deepEqual(M.visualSteps(recipe),[1,2]);assert.equal(JSON.stringify(recipe),before);assert.deepEqual(M.visualSteps(r),[]);
+ assert.deepEqual(M.visualSteps({...r,steps:['Measure flour.','Roll out the dough.','Cook until golden brown.']}),[1,2]);
+});
 test('room accepts only bounded recipe data and removes unexpected model fields',()=>{assert.deepEqual(M.recipe({...r,operations:[{delete:true}],image:'https://evil.example'}),r);assert.equal(M.recipe({...r,minutes:-1}),null);assert.equal(M.recipe({...r,ingredients:[]}),null);assert.deepEqual(M.favourites([r,r,null]),[r])});
 test('room storage separates household, account and language without touching legacy saves',()=>{const keys=[M.conversationKey(null,null,'hu'),M.conversationKey('a',null,'hu'),M.conversationKey('a','home','hu'),M.conversationKey('a','home','en')];assert.equal(new Set(keys).size,4);assert(keys.every(k=>k.startsWith('morzsa-recipe-room-v1:')));assert.notEqual(M.favouritesKey('a'),M.favouritesKey('b'));assert.deepEqual(M.toggle(M.toggle([],r),r),[])});
 test('adding missing ingredients is idempotent, preserves quantities and unrelated state',()=>{const source={stock:{Tej:2},cart:[{name:'Rizs',quantity:3,done:true,unit:'kg'}],custom:[],likes:['old'],chats:{old:[]},history:[{id:'history'}]},before=JSON.stringify(source),resolve=n=>n==='Sugar'?'Cukor':n;const next=M.addMissing(source,{...r,ingredients:[...r.ingredients,{name:'Sugar',amount:'1 tbsp'}]},resolve,()=> 'csomag');assert.equal(next.cart.length,2);assert.equal(next.cart[0].quantity,3);assert.equal(next.cart[0].done,true);assert.equal(next.cart[1].name,'Cukor');assert.equal(next.cart[1].quantity,1);assert.deepEqual(M.addMissing(next,r,resolve,()=> 'csomag'),next);assert.equal(JSON.stringify(source),before);assert.equal(next.history,source.history);assert.equal(next.stock,source.stock)});

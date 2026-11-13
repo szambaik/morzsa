@@ -12,6 +12,16 @@ const RecipeRoomModel = (() => {
   const action=(r.steps[index]||'').trim().replace(/^\d+[.)]\s*/, '').split(/[.!?;\n]/)[0];
   return action.length<=80?action:action.slice(0,77).replace(/\s+\S*$/, '')+'…';
  }
+ // Only a couple of visually useful techniques get automatic illustrations.
+ // Measuring, ordinary mixing and waiting retain their manual image action.
+ function visualSteps(r){
+  const useful=/hajtogat|hajtsd|form[aá]z|gomb[oó]c|ny[uú]jt|tekercs|tekerd|aranybarn|pir[ií]ts|k[ée]reg|habos|kr[ée]mes|s[űu]r[űu]|fold|shape|roll out|golden|brown|crust|whip|creamy|thicken/i;
+  return (r.steps||[]).map((s,i)=>useful.test(s)?i:-1).filter(i=>i>=0).slice(0,2);
+ }
+ function ingredientStatus(stock,name,uncertain=[]){
+  if(!Object.hasOwn(stock,name)||uncertain.includes(name))return 'unknown';
+  return stock[name]===0?'out':stock[name]===1?'low':stock[name]>1?'home':'unknown';
+ }
  const identity=r=>JSON.stringify([r.title,r.ingredients,r.steps]);
  const conversationKey=(user,home,lang)=>'morzsa-recipe-room-v1:'+JSON.stringify([user||'guest',home||'local',lang]);
  const favouritesKey=user=>'morzsa-recipe-favourites-v1:'+JSON.stringify(user||'guest');
@@ -35,6 +45,6 @@ const RecipeRoomModel = (() => {
   const added=[];for(const i of r.ingredients){const name=resolve(i.name),key=norm(name);if(stock.has(key)||known.has(key))continue;known.add(key);added.push({name,source:r.title,quantity:1,unit:unitFor(name),done:false})}
   return {...source,cart:[...source.cart,...added]};
  }
- return {recipe,stepTitle,identity,conversationKey,favouritesKey,messages,favourites,toggle,history,addMissing};
+ return {recipe,stepTitle,visualSteps,ingredientStatus,identity,conversationKey,favouritesKey,messages,favourites,toggle,history,addMissing};
 })();
 if(typeof module!=='undefined')module.exports=RecipeRoomModel;

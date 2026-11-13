@@ -4,7 +4,7 @@ const CompanionModel = (() => {
  const key=(user,home,lang)=>'morzsa-companion-v1:'+JSON.stringify([user||'guest',home||'local',lang]);
  const fresh=(id,now=Date.now())=>({id,title:'',updated:now,messages:[]});
  function normalize(value,validRecipe=()=>null,maxThreads=20){
-  const threads=(Array.isArray(value?.threads)?value.threads:[]).filter(t=>t&&typeof t.id==='string').slice(0,maxThreads).map(t=>({id:t.id,title:String(t.title||'').slice(0,80),updated:Number(t.updated)||0,...(Number.isFinite(t.archivedAt)&&t.archivedAt>0?{archivedAt:t.archivedAt}:{}),...(['main','chat','recipe','legacy'].includes(t.kind)?{kind:t.kind}:{}),...(t.kind==='recipe'&&validRecipe(t.recipe)?{recipe:validRecipe(t.recipe),status:t.status==='completed'?'completed':'active',...(typeof t.parentId==='string'?{parentId:t.parentId}:{}),cookingStep:Number.isInteger(t.cookingStep)&&t.cookingStep>=0&&t.cookingStep<t.recipe.steps.length?t.cookingStep:0}:{}),messages:(Array.isArray(t.messages)?t.messages:[]).filter(m=>m&&['user','model'].includes(m.role)&&typeof m.text==='string').slice(['main','chat'].includes(t.kind)?0:-40).map(m=>({role:m.role,text:m.text.slice(0,5000),...(Number.isFinite(m.createdAt)&&m.createdAt>0?{createdAt:m.createdAt}:{}),...(m.archived===true?{archived:true}:{}),...(m.role==='user'&&thumbnail(m.photo)?{photo:m.photo}:{}),...(m.provider==='recipes'?{provider:'recipes'}:{}),recipes:(Array.isArray(m.recipes)?m.recipes:[]).map(validRecipe).filter(Boolean).slice(0,3),...(typeof m.result==='string'?{result:m.result.slice(0,500)}:{})}))}));
+  const threads=(Array.isArray(value?.threads)?value.threads:[]).filter(t=>t&&typeof t.id==='string').slice(0,maxThreads).map(t=>({id:t.id,title:String(t.title||'').slice(0,80),updated:Number(t.updated)||0,...(Number.isFinite(t.archivedAt)&&t.archivedAt>0?{archivedAt:t.archivedAt}:{}),...(['main','chat','recipe','legacy'].includes(t.kind)?{kind:t.kind}:{}),...(t.kind==='recipe'&&validRecipe(t.recipe)?{recipe:validRecipe(t.recipe),status:t.status==='completed'?'completed':'active',...(typeof t.parentId==='string'?{parentId:t.parentId}:{}),completedSteps:[...new Set((Array.isArray(t.completedSteps)?t.completedSteps:[]).filter(i=>Number.isInteger(i)&&i>=0&&i<t.recipe.steps.length))].sort((a,b)=>a-b),cookingStep:Number.isInteger(t.cookingStep)&&t.cookingStep>=0&&t.cookingStep<t.recipe.steps.length?t.cookingStep:0}:{}),messages:(Array.isArray(t.messages)?t.messages:[]).filter(m=>m&&['user','model'].includes(m.role)&&typeof m.text==='string').slice(['main','chat'].includes(t.kind)?0:-40).map(m=>({role:m.role,text:m.text.slice(0,5000),...(Number.isFinite(m.createdAt)&&m.createdAt>0?{createdAt:m.createdAt}:{}),...(m.archived===true?{archived:true}:{}),...(m.role==='user'&&thumbnail(m.photo)?{photo:m.photo}:{}),...(m.provider==='recipes'?{provider:'recipes'}:{}),recipes:(Array.isArray(m.recipes)?m.recipes:[]).map(validRecipe).filter(Boolean).slice(0,3),...(typeof m.result==='string'?{result:m.result.slice(0,500)}:{})}))}));
   let photos=0;for(const t of [...threads].sort((a,b)=>b.updated-a.updated))for(const m of [...t.messages].reverse())if(m.photo&&++photos>30)delete m.photo;
   return {version:1,active:threads.some(t=>t.id===value?.active)?value.active:threads[0]?.id,threads};
  }
@@ -48,6 +48,11 @@ const CompanionModel = (() => {
   if(!t||t.kind!=='recipe'||!Number.isInteger(index)||index<0||index>=t.recipe.steps.length)throw Error('INVALID_COOKING_STEP');
   t.cookingStep=index;return next;
  }
+ function completeCookingStep(book,id,index,validRecipe){
+  const next=workspace(book,validRecipe),t=next.threads.find(t=>t.id===id);
+  if(!t||t.kind!=='recipe'||t.status!=='active'||!Number.isInteger(index)||index<0||index>=t.recipe.steps.length)throw Error('INVALID_COOKING_STEP');
+  t.completedSteps=[...new Set([...(t.completedSteps||[]),index])].sort((a,b)=>a-b);t.cookingStep=Math.min(index+1,t.recipe.steps.length-1);return next;
+ }
  function finishRecipe(book,id,validRecipe,label,now=Date.now()){
   const next=workspace(book,validRecipe,now),t=next.threads.find(t=>t.id===id);
   if(!t||t.kind!=='recipe'||t.status==='completed')return next;
@@ -88,6 +93,6 @@ const CompanionModel = (() => {
  function changes(before,after){
   const changes=[];for(const bucket of ['stock','cart','history']){const entries=s=>bucket==='stock'?Object.entries(s.stock):s[bucket].map(i=>[bucket==='history'?i.id:i.name,i]),a=new Map(entries(before)),b=new Map(entries(after));for(const key of new Set([...a.keys(),...b.keys()]))if(JSON.stringify(a.get(key))!==JSON.stringify(b.get(key)))changes.push({bucket,key,before:a.get(key),after:b.get(key)})}return changes;
  }
- return {thumbnail,key,fresh,normalize,previousWorkspaceKey,dailyWorkspaceKey,workspaceKey,workspace,startChat,archiveThread,historyGroups,dayKey,dayGroups,currentMessages,archiveMain,startRecipe,setCookingStep,finishRecipe,recipeKey,history,reviewPreview,suggestion,fingerprint,changes};
+ return {thumbnail,key,fresh,normalize,previousWorkspaceKey,dailyWorkspaceKey,workspaceKey,workspace,startChat,archiveThread,historyGroups,dayKey,dayGroups,currentMessages,archiveMain,startRecipe,setCookingStep,completeCookingStep,finishRecipe,recipeKey,history,reviewPreview,suggestion,fingerprint,changes};
 })();
 if(typeof module!=='undefined')module.exports=CompanionModel;
