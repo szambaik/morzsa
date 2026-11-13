@@ -316,3 +316,49 @@ button:focus-visible,summary:focus-visible,a:focus-visible,input:focus-visible,t
 .companion .companion-recipe .recipe-chat-cook{background:var(--orange);border-color:var(--orange);color:var(--white);font-weight:600}
 .companion .companion-recipe .recipe-chat-cook img{filter:brightness(0) invert(1)}
 .room-card .room-image-cache.generated-recipe-image small{right:auto;width:fit-content;max-width:calc(100% - 20px);opacity:1}
+/* UX review: one clear action per surface; details appear when requested. */
+.app[data-page=pantry] .ingredient-card,.app[data-page=pantry] .ingredient-card.at-home{grid-template-columns:1fr;grid-template-rows:minmax(110px,1fr) 44px;min-height:167px;padding:5px;border-color:var(--line)}
+.app[data-page=pantry] .pantry-item-details{grid-column:1;grid-row:1;border:0;border-radius:9px;background:transparent;padding:3px;align-items:center;justify-content:center;cursor:pointer;width:100%;color:var(--ink)}
+.app[data-page=pantry] .pantry-item-details .ingredient-copy{gap:3px;min-height:32px;display:flex;align-items:center;justify-content:center}
+.app[data-page=pantry] .pantry-availability-select{grid-column:1;grid-row:2;width:100%;min-width:0;min-height:44px;border:0;border-radius:9px;background:var(--sage);font:600 12px/1.4 Inter,system-ui,sans-serif;padding:7px 3px;color:var(--ink);cursor:pointer}
+.app[data-page=pantry] .availability-low .pantry-availability-select{background:var(--orange-soft);color:#763813}
+.app[data-page=pantry] .availability-out .pantry-availability-select{background:#f3e5dd;color:#833e2d}
+.app[data-page=pantry] .availability-unknown .pantry-availability-select{background:#f0eee6;color:var(--muted);font-weight:500}
+.ingredient-listed{display:inline-flex;align-items:center;gap:4px;font-size:11px;line-height:1.4;color:var(--muted)}
+#pantry-item-dialog{width:calc(100% - 32px);max-width:430px;border:1px solid var(--line);border-radius:24px;background:var(--white);padding:24px}
+.pantry-detail-art{display:block;object-fit:contain;margin:0 auto}
+#pantry-item-dialog h2,#pantry-item-dialog p{text-align:center}
+.pantry-state-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:22px 0}
+.pantry-state-options button{min-height:48px;background:transparent;border:1px solid var(--line);border-radius:12px;padding:8px 4px;font-size:13px}
+.pantry-state-options [aria-pressed=true]{background:var(--sage);border-color:#9bac8b;color:var(--green)}
+#pantry-item-dialog [data-pantry-list]{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px}
+#pantry-item-dialog [data-pantry-quantity]{margin-top:8px;min-height:44px}
+.app[data-page=shopping] .list-row{display:grid;grid-template-columns:32px minmax(0,1fr) auto;gap:9px;min-height:56px;padding:6px 0;border:0;border-bottom:1px solid #dcded085;background:transparent}
+.app[data-page=shopping] .list-item-copy label{display:flex;align-items:center;min-height:44px;font-size:15px;line-height:1.45;cursor:pointer}
+.app[data-page=shopping] .list-row>.quantity-badge{min-width:44px;min-height:44px;max-width:105px;padding:7px 8px;font-size:12px;font-weight:400;background:transparent;border:0;color:var(--muted);text-align:right}
+.quantity-remove{min-height:44px;border:0;background:transparent;color:#8d422f;margin-top:12px;font-size:13px}
+.daily-counts{display:grid!important;grid-template-columns:1fr 1fr;gap:12px;margin:22px 0!important}
+.daily-counts button{display:flex;flex-direction:column;align-items:flex-start;gap:5px;border:1px solid var(--line);background:var(--sage);border-radius:18px;min-height:114px;padding:16px;text-align:left}
+.daily-counts button:last-child{background:#efe5d6}
+.daily-counts strong{font:650 30px/1 Sora,system-ui,sans-serif;letter-spacing:-1px}
+.daily-counts span{font-size:14px;font-weight:600}
+.daily-counts small{font-size:11px;line-height:1.4;color:var(--muted)}
+.calm-dashboard .dashboard-meals{margin:22px 0;padding:0;background:transparent;border:0}
+.calm-dashboard .daily-next{margin:18px 0;background:var(--white);box-shadow:none;border:1px solid var(--line);border-radius:16px;padding:16px;min-height:70px}
+.calm-dashboard #dashboard-review-slot .pantry-maintenance{margin:20px 0;padding:12px;border:1px solid var(--line);border-radius:16px;background:var(--sage)}
+.calm-dashboard #dashboard-review-slot .maintenance-heading{display:flex;align-items:center;gap:10px}
+.calm-dashboard #dashboard-review-slot .maintenance-heading p{font-size:12px;line-height:1.5}
+.calm-dashboard #dashboard-review-slot .maintenance-heading button{margin-left:auto;flex:none;min-height:44px}
+.calm-dashboard .daily-history{padding:12px 0;border-top:1px solid var(--line);margin-top:20px;font-size:13px}
+.calm-dashboard .daily-history summary{min-height:44px;display:flex;align-items:center;cursor:pointer;color:var(--muted)}
+.calm-dashboard .daily-history button{min-height:44px;width:100%;text-align:left;border:0;background:transparent}
+.workspace-fast-actions{gap:8px}
+.workspace-context-assistant{color:var(--green)}
+#workspace-assistant[data-context=pantry] .workspace-fast-actions,#workspace-assistant[data-context=shopping] .workspace-fast-actions{justify-content:flex-end}
+#workspace-assistant[data-context=pantry] .workspace-context-assistant,#workspace-assistant[data-context=shopping] .workspace-context-assistant{border:0;background:var(--sage);box-shadow:none}
+.ai-content-label{display:block!important;font:600 10px/1.5 Inter,system-ui,sans-serif;letter-spacing:.6px;text-transform:uppercase;color:var(--orange-ink);margin:0 0 10px}
+.companion-proposal>.ai-content-label{margin:0 0 9px;padding:0;border:0}
+.companion-result.action-receipt{display:block;padding:11px 14px;background:var(--sage);border:1px solid #c7d2bc;border-radius:12px;color:var(--green);font-size:12px;line-height:1.65;margin-top:14px}
+#workspace-connection-note{font-size:12px;line-height:1.5;margin:0 16px 12px;padding:10px 12px;background:var(--orange-soft);border-radius:12px}
+@media(max-width:350px){.app[data-page=pantry] .ingredient-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.daily-counts button{padding:13px}.pantry-state-options button{font-size:12px}}
+@media(min-width:1000px){.app[data-page=pantry] .ingredient-grid{grid-template-columns:repeat(5,minmax(0,1fr))}.daily-counts button{min-height:126px}.calm-dashboard .dashboard-meals{max-width:720px}}

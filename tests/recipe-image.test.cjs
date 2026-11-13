@@ -61,3 +61,45 @@ test('library covers preserve their layout class and never generate images on ca
  vm.runInNewContext(fs.readFileSync('recipe-images.js','utf8'),context);context.window.RecipeImages.enqueue([recipe]);context.window.RecipeImages.mount(card,recipe,-1,{cacheOnly:true});
  await new Promise(resolve=>setImmediate(resolve));assert.equal(calls.length,1);assert.equal(calls[0].create,false);assert.equal(card.children.length,0);assert.match(card.className,/room-image-cache/);assert.match(card.className,/generated-recipe-image/);
 });
+
+function imageApiFixture({cached=true,claim='claimed',failLookup=false,failSign=false,groqStatus=200}={}){
+ const calls=[],owner='12345678-1234-1234-1234-123456789012',lease='23456789-1234-1234-1234-123456789012';let lookupFailed=false,signFailed=false,key;
+ const config={url:'https://test.supabase.co',publishableKey:'anon',serviceKey:'service',account:'a'.repeat(32),token:'cf',groqKey:'groq',model:'@cf/black-forest-labs/flux-1-schnell',origins:['https://app']};
+ const fetcher=async(url,options={})=>{calls.push({url,method:options.method||'GET'});
+  if(url.endsWith('/auth/v1/user'))return Response.json({id:owner});
+  if(url.includes('/rest/v1/recipe_image_jobs?')){key=new URL(url).searchParams.get('cache_key').slice(3);if(options.method==='PATCH')return Response.json([{}]);if(failLookup&&!lookupFailed){lookupFailed=true;return Response.json({}, {status:503})}return Response.json(cached?[{state:'ready',asset_path:owner+'/'+key+'/'+lease+'.jpg'}]:[])}
+  if(url.endsWith('/rpc/claim_recipe_image'))return Response.json({status:claim,lease});
+  if(url.includes('groq.com'))return groqStatus!==200?Response.json({}, {status:groqStatus}):Response.json({choices:[{message:{content:JSON.stringify({dish:'Pancakes',scene:'A stack of thin golden home-cooked pancakes on a simple plate with a soft, delicate texture and no additional toppings.'})}}]});
+  if(url.includes('cloudflare.com'))return Response.json({success:true,result:{image:Buffer.from([255,216,255,0]).toString('base64')}});
+  if(url.includes('/storage/v1/object/sign/')){if(failSign&&!signFailed){signFailed=true;return Response.json({}, {status:503})}return Response.json({signedURL:'/object/sign/recipe-images/'+owner+'/'+key+'/'+lease+'.jpg?token=test'})}
+  if(url.includes('/storage/v1/object/recipe-images/'))return Response.json({});
+  throw Error('Unexpected test route');
+ };
+ return {config,fetcher,calls,request:create=>new Request('https://function',{method:'POST',headers:{origin:'https://app',Authorization:'Bearer user'},body:JSON.stringify({recipe,step:-1,create})})};
+}
+test('cached images recover from one transient lookup and signing failure without generating again',async()=>{
+ const {createHandler}=await import('../supabase/functions/recipe-image/handler.mjs');const f=imageApiFixture({failLookup:true,failSign:true});const response=await createHandler(f.config,f.fetcher)(f.request(true));
+ assert.equal(response.status,200);assert.ok((await response.json()).url.startsWith('https://test.supabase.co/storage/v1/object/sign/recipe-images/'));
+ assert.equal(f.calls.filter(c=>c.url.includes('recipe_image_jobs')).length,2);assert.equal(f.calls.filter(c=>c.url.includes('object/sign')).length,2);assert.equal(f.calls.some(c=>c.url.includes('cloudflare')||c.url.includes('groq')||c.url.includes('claim_recipe_image')),false);
+});
+test('complete image generation uploads privately and signs the ready image',async()=>{
+ const {createHandler}=await import('../supabase/functions/recipe-image/handler.mjs');const f=imageApiFixture({cached:false});const response=await createHandler(f.config,f.fetcher)(f.request(true));
+ assert.equal(response.status,200);assert.equal((await response.json()).status,'ready');
+ for(const route of ['groq.com','cloudflare.com','/storage/v1/object/recipe-images/','/storage/v1/object/sign/'])assert.equal(f.calls.filter(c=>c.url.includes(route)).length,1);
+ assert.equal(f.calls.filter(c=>c.method==='PATCH').length,1);
+});
+test('cooldown and provider quota stay distinct from the app daily quota without repeat generation',async()=>{
+ const {createHandler}=await import('../supabase/functions/recipe-image/handler.mjs');
+ const f=imageApiFixture({cached:false,claim:'cooldown'});let response=await createHandler(f.config,f.fetcher)(f.request(true));assert.equal(response.status,429);assert.deepEqual(await response.json(),{error:'IMAGE_COOLDOWN',retryAfter:60});assert.equal(f.calls.some(c=>c.url.includes('groq')),false);
+ const busy=imageApiFixture({cached:false,groqStatus:429});response=await createHandler(busy.config,busy.fetcher)(busy.request(true));assert.equal(response.status,429);assert.equal((await response.json()).error,'IMAGE_PROVIDER_LIMIT');assert.equal(busy.calls.filter(c=>c.url.includes('groq')).length,1);assert.equal(busy.calls.some(c=>c.url.includes('cloudflare')),false);
+});
+test('frontend explains cooldown, blocks repeated clicks, then enables a manual retry',async()=>{
+ const vm=require('node:vm'),fs=require('node:fs');let calls=0,retryTimer;const host={isConnected:true,children:[],dataset:{},replaceChildren(){this.children=[]},append(...nodes){this.children.push(...nodes)}};
+ const context={window:{MORZSA_CLOUD:{url:'https://test.supabase.co'}},household:{active:null,userId:()=> 'test',recipeImage:async()=>{calls++;throw Object.assign(Error('IMAGE_COOLDOWN'),{retryAfter:60})}},language:'hu',document:{createElement:tag=>({tag})},IntersectionObserver:class{constructor(cb){this.cb=cb}observe(){this.cb([{isIntersecting:true}])}disconnect(){}},setTimeout:fn=>retryTimer=fn};
+ vm.runInNewContext(fs.readFileSync('recipe-images.js','utf8'),context);context.window.RecipeImages.mount(host,recipe);await new Promise(resolve=>setImmediate(resolve));assert.equal(host.dataset.imageStatus,'failed');assert.equal(host.children[0].disabled,true);assert.match(host.children[1].textContent,/Várj egy percet/);await host.children[0].onclick();assert.equal(calls,1);retryTimer();assert.equal(host.children[0].disabled,false);assert.equal(calls,1);
+});
+test('a broken image link refreshes the cache without consuming another generation',async()=>{
+ const vm=require('node:vm'),fs=require('node:fs');const inputs=[];const host={isConnected:true,children:[],dataset:{},replaceChildren(){this.children=[]},append(...nodes){this.children.push(...nodes)}};
+ const context={window:{MORZSA_CLOUD:{url:'https://test.supabase.co'}},household:{active:null,userId:()=> 'test',recipeImage:async input=>{inputs.push(input);return {status:'ready',url:'https://test.supabase.co/storage/v1/object/sign/cover'}}},language:'hu',document:{createElement:tag=>({tag})},IntersectionObserver:class{constructor(cb){this.cb=cb}observe(){this.cb([{isIntersecting:true}])}disconnect(){}}};
+ vm.runInNewContext(fs.readFileSync('recipe-images.js','utf8'),context);context.window.RecipeImages.mount(host,recipe,-1,{autoCreate:true});await new Promise(resolve=>setImmediate(resolve));host.children[0].onerror();assert.match(host.children[1].textContent,/Frissítsd a kép linkjét/);await host.children[0].onclick();assert.deepEqual(inputs.map(i=>i.create),[true,false]);assert.equal(host.dataset.imageStatus,'ready');
+});

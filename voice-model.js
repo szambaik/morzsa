@@ -25,7 +25,7 @@ const VoiceModel=(()=>{
    const name=op.name.trim(),known=[...items,...next.custom].find(i=>norm(i.name)===norm(name));
    if(known&&known.name!==name)throw Error('VOICE_NAME_CHANGED');
    if(op.action==='stock_add'||op.action==='stock_remove'){
-    const after=op.action==='stock_add'?(next.stock[name]>0?next.stock[name]:2):0,before=Object.hasOwn(next.stock,name)?next.stock[name]:undefined;
+    const after=op.action==='stock_add'?(next.stock[name]>1?next.stock[name]:2):0,before=Object.hasOwn(next.stock,name)?next.stock[name]:undefined;
     if((before||0)!==after)Object.defineProperty(next.stock,name,{value:after,writable:true,enumerable:true,configurable:true});
    }else{
     const found=next.cart.find(i=>norm(i.name)===norm(name));

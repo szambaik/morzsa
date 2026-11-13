@@ -10,8 +10,8 @@ window.MorzsaWorkspace=(()=>{
  sidebar.querySelector('a').onclick=e=>{e.preventDefault();window.MorzsaCompanion.open()};document.body.append(sidebar);
  const dock=document.createElement('section');dock.id='workspace-assistant';dock.hidden=true;dock.setAttribute('data-no-translate','');document.body.append(dock);
  let dockLanguage='',quick=null,names=[],draft='',target='stock',entryContext='',working=false;
- const fastMarkup=()=>'<div class="workspace-fast-actions" role="group" aria-label="'+say('Gyors hozzáadás','Quick add')+'"><button type="button" data-workspace-add="stock">'+glyph('house')+say('Készletbe','To pantry')+glyph('plus')+'</button><button type="button" data-workspace-add="cart">'+glyph('shopping-cart')+say('Listára','To list')+glyph('plus')+'</button></div>';
- function bindFast(host){host.querySelectorAll('[data-workspace-add]').forEach(b=>b.onclick=()=>openEntry(b.dataset.workspaceAdd))}
+ const fastMarkup=()=>'<div class="workspace-fast-actions" role="group" aria-label="'+say('Gyors műveletek','Quick actions')+'">'+(!['pantry','shopping'].includes(page)?'<button type="button" data-workspace-add="stock">'+glyph('plus')+say('Hozzáadás','Quick add')+'</button>':'')+(page!=='chat'?'<button class="workspace-context-assistant" type="button" data-workspace-assistant><img src="assets/brands/morzsa.svg" alt="" width="23" height="23">'+say('Kérdezz Morzsától','Ask Morzsa')+'</button>':'')+'</div>';
+ function bindFast(host){host.querySelectorAll('[data-workspace-add]').forEach(b=>b.onclick=()=>openEntry(b.dataset.workspaceAdd));host.querySelector('[data-workspace-assistant]')?.addEventListener('click',()=>window.MorzsaCompanion.openContext(page))}
  function mount(){
   for(const [index,destination] of order.entries()){const button=nav.querySelector('[data-page="'+destination+'"]');if(nav.children[index]!==button)nav.insertBefore(button,nav.children[index]||null);const labels={overview:say('Áttekintés','Overview'),pantry:say('Készlet','Pantry'),chat:'Morzsa',shopping:say('Lista','List'),recipes:say('Receptek','Recipes')};for(const node of button.childNodes)if(node.nodeType===Node.TEXT_NODE&&node.textContent.trim())node.textContent=labels[destination]+' ';const span=button.querySelector('span');if(navIcons[destination]&&!span.querySelector('.workspace-icon'))span.innerHTML=glyph(navIcons[destination]);}
   const desktop=matchMedia('(min-width:1000px)').matches;sidebar.hidden=!desktop;
@@ -19,11 +19,11 @@ window.MorzsaWorkspace=(()=>{
   const rail=document.getElementById('companion-history-rail');if(rail&&rail.parentElement!==sidebar.querySelector('.workspace-history'))sidebar.querySelector('.workspace-history').append(rail);
   const local=main.querySelector('.companion-compose-wrap,.room-compose-wrap');dock.hidden=!!local;dock.classList.toggle('workspace-quick-only',page!=='chat');
   if(local){let fast=local.querySelector('.workspace-fast-actions');if(!fast){local.insertAdjacentHTML('afterbegin',fastMarkup());bindFast(local);}}
-  else if(!dock.querySelector('form')||dockLanguage!==language){dockLanguage=language;const value=dock.querySelector('input')?.value||'';dock.innerHTML=fastMarkup()+'<form class="workspace-composer"><input aria-label="'+say('Üzenet Morzsának','Message Morzsa')+'" placeholder="'+say('Kérdezz Morzsától…','Ask Morzsa…')+'" maxlength="2000"><button type="button" data-workspace-voice aria-label="'+say('Kérdezés hanggal','Ask by voice')+'">'+glyph('mic')+'</button><button type="submit" aria-label="'+say('Küldés','Send')+'">'+glyph('arrow-up')+'</button></form>';dock.querySelector('input').value=value;bindFast(dock);
+  else if(!dock.querySelector('form')||dockLanguage!==language+'|'+page){dockLanguage=language+'|'+page;const value=dock.querySelector('input')?.value||'';dock.innerHTML=fastMarkup()+'<form class="workspace-composer"><input aria-label="'+say('Üzenet Morzsának','Message Morzsa')+'" placeholder="'+say('Kérdezz Morzsától…','Ask Morzsa…')+'" maxlength="2000"><button type="button" data-workspace-voice aria-label="'+say('Kérdezés hanggal','Ask by voice')+'">'+glyph('mic')+'</button><button type="submit" aria-label="'+say('Küldés','Send')+'">'+glyph('arrow-up')+'</button></form>';dock.querySelector('input').value=value;bindFast(dock);
    dock.querySelector('form').onsubmit=e=>{e.preventDefault();const input=dock.querySelector('input'),text=input.value.trim();if(text&&window.MorzsaCompanion.ask(text)!==false)input.value=''};
    dock.querySelector('[data-workspace-voice]').onclick=()=>window.MorzsaCompanion.voice();
   }
-  document.body.classList.toggle('workspace-chat',page==='chat');document.body.classList.toggle('workspace-local-compose',!!local);
+  document.body.classList.toggle('workspace-chat',page==='chat');dock.dataset.context=page;document.body.classList.toggle('workspace-local-compose',!!local);
   document.documentElement.style.setProperty('--workspace-nav-height',desktop?'0px':nav.getBoundingClientRect().height+'px');
   if(quick?.open&&entryContext!==voiceContext())quick.close();
   window.MorzsaOnboarding?.mount();document.body.classList.toggle('introduction-active',!!main.querySelector('.morzsa-introduction'));
@@ -60,6 +60,8 @@ window.MorzsaWorkspace=(()=>{
   quick.onclose=()=>{draft=input.value;window.visualViewport?.removeEventListener('resize',position);window.visualViewport?.removeEventListener('scroll',position)};
   paint();if(!quick.open)quick.showModal();position();window.visualViewport?.addEventListener('resize',position);window.visualViewport?.addEventListener('scroll',position);input.focus({preventScroll:true});
  }
+ function connectionNote(){let note=document.getElementById('workspace-connection-note');if(!note){note=document.createElement('div');note.id='workspace-connection-note';note.setAttribute('role','status');note.setAttribute('data-no-translate','');document.querySelector('.app header').after(note)}note.hidden=navigator.onLine!==false;note.textContent=say('Nincs internet. Az AI és a közös konyha frissítése szünetel.','No internet. AI and shared kitchen updates are unavailable.')}
+ window.addEventListener('offline',connectionNote);window.addEventListener('online',connectionNote);connectionNote();
  window.addEventListener('resize',mount);
  mount();return {mount,quick:openEntry};
 })();

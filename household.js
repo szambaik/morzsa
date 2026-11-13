@@ -72,7 +72,7 @@
   try{const response=await fetch(config.url+path,{method,signal:controller.signal,headers:{apikey:config.publishableKey,'Content-Type':'application/json',...(auth&&session?{Authorization:'Bearer '+session.access_token}:{})},...(body===undefined?{}:{body:JSON.stringify(body)})});
   if(response.ok&&options.onAnswer&&response.headers.get('Content-Type')?.includes('application/x-ndjson'))return await ChatStream.read(response,options.onAnswer);
   const text=await response.text();let data;try{data=text?JSON.parse(text):null}catch{throw Error('Invalid server response')}
-  if(!response.ok)throw Error(data?.message||data?.msg||data?.error_description||(typeof data?.error==='string'?data.error:'Request failed'));return data;}catch(e){if(controller.signal.aborted&&!options.signal?.aborted&&path==='/functions/v1/voice-command')throw Error('VOICE_TIMEOUT');throw e}finally{clearTimeout(timeout);options.signal?.removeEventListener('abort',abort)}
+  if(!response.ok)throw Object.assign(Error(data?.message||data?.msg||data?.error_description||(typeof data?.error==='string'?data.error:'Request failed')),path==='/functions/v1/recipe-image'?{httpStatus:response.status,retryAfter:data?.retryAfter}:{});return data;}catch(e){if(controller.signal.aborted&&!options.signal?.aborted&&path==='/functions/v1/voice-command')throw Error('VOICE_TIMEOUT');if(controller.signal.aborted&&path==='/functions/v1/recipe-image')throw Error('IMAGE_TIMEOUT');throw e}finally{clearTimeout(timeout);options.signal?.removeEventListener('abort',abort)}
  }
  async function setSession(value){
   const previousUser=session?.user?.id,version=++authVersion;if(value&&!value.expires_at)value.expires_at=Math.floor(Date.now()/1000)+(value.expires_in||3600);

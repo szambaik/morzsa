@@ -14,13 +14,18 @@ const WorkspaceEntry=(()=>{
   for(const raw of names){
    const name=[...items,...next.custom].find(i=>norm(i.name)===norm(raw))?.name||raw;
    if(![...items,...next.custom].some(i=>norm(i.name)===norm(name)))next.custom.push({name,emoji:'🫙',category:'Saját tételek'});
-   if(target==='stock'){if(!(next.stock[name]>0)){next.stock[name]=2;changed.push(name)}}
+   if(target==='stock'){if(!(next.stock[name]>1)){next.stock[name]=2;changed.push(name)}}
    else{const existing=next.cart.find(i=>norm(i.name)===norm(name));
     if(!existing){next.cart.push({name,quantity:1,unit:unit(name),done:false,source:'Gyors felvétel'});changed.push(name)}
     else if(existing.done){existing.done=false;changed.push(name)}
    }
   }return {next,changed};
  }
- return {collect,plan};
+ function availability(value,known=true){return value>1?'home':value>0?'low':known?'out':'unknown'}
+ function availabilityPlan(before,name,value){
+  if(![0,1,2].includes(value)||typeof name!=='string'||!name.trim()||['__proto__','constructor','prototype'].includes(name))throw Error('Invalid availability');
+  return {...before,stock:{...before.stock,[name]:value}};
+ }
+ return {collect,plan,availability,availabilityPlan};
 })();
 if(typeof module!=='undefined')module.exports=WorkspaceEntry;
