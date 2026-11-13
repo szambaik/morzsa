@@ -1,0 +1,140 @@
+{
+  "seed": 20261113,
+  "startDate": "2026-11-13T12:00:00Z",
+  "days": 2,
+  "mode": "replay",
+  "maxExternalCalls": 0,
+  "maxEstimatedUsd": 1,
+  "households": [
+    {
+      "id": "A",
+      "name": "Elfoglalt pár",
+      "members": [
+        {
+          "id": "a",
+          "style": "rövid, chatben intéz mindent",
+          "confidence": "magas",
+          "patience": "alacsony"
+        },
+        {
+          "id": "b",
+          "style": "rendszertelen vásárló, feledékeny",
+          "confidence": "közepes",
+          "patience": "közepes"
+        }
+      ]
+    },
+    {
+      "id": "B",
+      "name": "Spontán főzők",
+      "members": [
+        {
+          "id": "a",
+          "style": "inspirációt keres, improvizál",
+          "confidence": "magas",
+          "patience": "közepes"
+        },
+        {
+          "id": "b",
+          "style": "helyettesítéseket kér, nem mér",
+          "confidence": "közepes",
+          "patience": "közepes"
+        }
+      ]
+    },
+    {
+      "id": "C",
+      "name": "Szétszórt háztartás",
+      "members": [
+        {
+          "id": "a",
+          "style": "megismétli a kéréseit",
+          "confidence": "közepes",
+          "patience": "alacsony"
+        },
+        {
+          "id": "b",
+          "style": "nem olvassa a partner változásait",
+          "confidence": "közepes",
+          "patience": "alacsony"
+        }
+      ]
+    },
+    {
+      "id": "D",
+      "name": "Kényelem az első",
+      "members": [
+        {
+          "id": "a",
+          "style": "rövid bemondás, mennyiségek nélkül",
+          "confidence": "alacsony",
+          "patience": "alacsony"
+        },
+        {
+          "id": "b",
+          "style": "közvetlenül szerkeszt, bizonytalan készlet",
+          "confidence": "alacsony",
+          "patience": "közepes"
+        }
+      ]
+    },
+    {
+      "id": "E",
+      "name": "Tervezők",
+      "members": [
+        {
+          "id": "a",
+          "style": "főzés előtt végigolvassa a receptet",
+          "confidence": "közepes",
+          "patience": "magas"
+        },
+        {
+          "id": "b",
+          "style": "listáról vásárol, élelmiszerpazarlást kerül",
+          "confidence": "magas",
+          "patience": "közepes"
+        }
+      ]
+    },
+    {
+      "id": "F",
+      "name": "Türelmetlenek",
+      "members": [
+        {
+          "id": "a",
+          "style": "nem olvas súgót, könnyen feladja",
+          "confidence": "alacsony",
+          "patience": "nagyon alacsony"
+        },
+        {
+          "id": "b",
+          "style": "hibázik, visszavonást keres",
+          "confidence": "közepes",
+          "patience": "alacsony"
+        }
+      ]
+    }
+  ],
+  "uiSessions": [
+    {
+      "actor": "A/a",
+      "url": "http://127.0.0.1:8811/simulation-preview",
+      "goals": [
+        "Az elfogyott tej kerüljön ki a készletből és a listára.",
+        "Kenyér kell; ellenőrizd, hogy ne legyen kétszer a listán."
+      ],
+      "maxActions": 18,
+      "maxBrowserCalls": 15
+    },
+    {
+      "actor": "E/a",
+      "url": "http://127.0.0.1:8812/simulation-preview",
+      "goals": [
+        "Válassz receptet és olvasd át az egészet a főzés előtt.",
+        "Kezdj főzni, találd meg a hozzávalókat és jelöld, ha valamelyik hiányzik."
+      ],
+      "maxActions": 18,
+      "maxBrowserCalls": 15
+    }
+  ]
+}

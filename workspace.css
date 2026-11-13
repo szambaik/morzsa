@@ -425,3 +425,21 @@ button:focus-visible,summary:focus-visible,a:focus-visible,input:focus-visible,t
 }
 
 .ingredient-mention.uncertain{color:#805d24;background:#eee6d2;border-color:#dfcfac}
+/* Read the whole method first, then opt into an uncluttered cooking step. */
+.cooking-view-toggle{display:flex;gap:6px;padding:5px;background:var(--sage);border-radius:16px;margin:24px 0 16px;grid-column:1/-1}
+.cooking-view-toggle button{display:flex;align-items:center;justify-content:center;gap:8px;flex:1;min-height:48px;border:0;border-radius:12px;background:transparent;color:var(--green);font:600 14px/1.4 Inter,system-ui,sans-serif}
+.cooking-view-toggle button[aria-pressed=true]{background:var(--green);color:var(--white);box-shadow:0 2px 6px #203f3215}
+.cooking-view-toggle button[aria-pressed=true] img{filter:brightness(0) invert(1)}
+.workspace-cooking .cooking-steps{display:grid;gap:16px;list-style:none;padding:0}
+.cooking-step-number{color:var(--muted);font-size:16px}
+.cooking-export{display:flex;gap:12px;padding:8px 20px 16px}
+.cooking-export button{display:inline-flex;align-items:center;gap:7px;min-height:44px;border:0;background:transparent;font:500 13px/1.4 Inter,system-ui,sans-serif;color:var(--green);padding:8px}
+.recipe-ingredient-row .recipe-ingredient-actions{display:flex;flex-direction:row;gap:4px;align-items:center;flex:none}
+.recipe-ingredient-row .recipe-ingredient-actions button{display:grid;place-items:center;min-width:44px;width:44px;max-width:44px;height:44px;padding:10px;border-radius:12px}
+.recipe-ingredient-actions .workspace-icon{width:20px;height:20px}
+.recipe-ingredient-row>div:not(.recipe-ingredient-actions){min-width:0}
+.recipe-ingredient-row strong{overflow-wrap:anywhere}
+.room-card-actions{flex-wrap:wrap}
+@media(min-width:1000px){.workspace-cooking .cooking-flow .cooking-steps{display:grid;gap:16px}}
+
+@media(min-width:1000px){.workspace-cooking .cooking-guide:has(#cooking-ingredients){grid-template-areas:'summary summary' 'view view' 'method ingredients-heading' 'steps ingredients'}.cooking-view-toggle{grid-area:view}}

@@ -1,0 +1,78 @@
+{
+  "actor": "actor-a",
+  "persona": "Busy Hungarian adult familiar with chat apps; wants fast household edits; does not read manuals",
+  "session_type": "independent simulated-user UX session; synthetic data and canned AI",
+  "limits": {
+    "max_purposeful_ui_actions": 18,
+    "max_browser_tool_calls": 15,
+    "max_tasks": 2
+  },
+  "counts": {
+    "purposeful_ui_actions": 2,
+    "browser_tool_calls": 4,
+    "tasks_attempted": 1,
+    "tasks_completed": 0
+  },
+  "elapsed": {
+    "approx_seconds": 150,
+    "note": "Includes tool-availability diagnosis; active UI interaction was roughly 30 seconds. No reliable per-action stopwatch was captured."
+  },
+  "actions": [
+    {
+      "index": 1,
+      "task": 1,
+      "action": "Entered: Elfogyott a tej. Vedd ki a készletből és tedd a bevásárlólistára.",
+      "reason": "Chat composer is familiar to simulated persona."
+    },
+    {
+      "index": 2,
+      "task": 1,
+      "action": "Clicked Küldés",
+      "observed": "Thinking status followed by an unsaved proposal."
+    }
+  ],
+  "observed_outcomes": [
+    {
+      "task": 1,
+      "status": "interrupted_before_save",
+      "visible_evidence": "Morzsa reply: A tejet kivehetjük a készletből és felírhatjuk a listára. Proposal labels: Javaslat, nincs mentve; Tej / Elfogyott; Tej / Listára · 1 l; Mentés / Pontosítás / Mégsem.",
+      "claim_limit": "Removal from pantry and addition to shopping list were not performed or verified."
+    },
+    {
+      "task": 2,
+      "status": "not_started",
+      "claim_limit": "Existing shopping list and bread deduplication were not observed."
+    }
+  ],
+  "confusion": [
+    {
+      "severity": "minor",
+      "observation": "Initial viewport displays dinner prompts and a Megvan még? panel above the chat composer; lower controls and bottom navigation are outside the initial screenshot.",
+      "simulated_interpretation": "A rushed chat-oriented person may initially see cooking as the primary purpose and overlook direct household maintenance."
+    },
+    {
+      "severity": "none",
+      "observation": "Unsaved change proposal clearly contains both requested milk operations with a Mentés button.",
+      "simulated_interpretation": "The proposal distinguishes suggestion from a saved result clearly."
+    }
+  ],
+  "suggestions": [
+    {
+      "severity": "minor",
+      "suggestion": "Consider keeping chat entry and a visible route to Lista within the initial mobile viewport for quick household edits.",
+      "evidence": "01-initial.png",
+      "confidence": "simulated personal interpretation only"
+    }
+  ],
+  "blocker": {
+    "type": "tool_availability",
+    "severity": "session_blocking",
+    "description": "After four CUA browser calls, direct CUA tool was no longer callable/visible and deferred-tool discovery did not contain CUA. Stopped without using a different browser tool.",
+    "is_product_finding": false
+  },
+  "evidence_files": [
+    "01-initial.png"
+  ],
+  "evidence_limit": "Initial screenshot saved from exact returned bytes and visually inspected via view_image. Proposal observed in fresh DOM snapshot but outcome screenshot could not be captured after browser tool disappeared.",
+  "real_human_usability_claim": false
+}

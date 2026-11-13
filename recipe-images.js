@@ -59,5 +59,12 @@ window.RecipeImages=(()=>{
    const observer=new IntersectionObserver(items=>{if(items.some(i=>i.isIntersecting)){observer.disconnect();if(!live()||entry.views.get(host)!==paint)return;const queued=auto.delete(id),create=!options.cacheOnly&&(queued||options.autoCreate===true)&&!autoCreated.has(id);if(create)autoCreated.add(id);load(create)}},{rootMargin:'100px'});observer.observe(host);
   }
  }
- return {mount,enqueue};
+ async function cachedCover(recipe){
+  const id=key(recipe,-1),entry=entries.get(id);if(entry?.status!=='ready'||entry.expiresAt<Date.now())return '';
+  const response=await fetch(entry.url,{signal:AbortSignal.timeout(4000)});
+  if(!response.ok||Number(response.headers.get('content-length'))>3000000)return '';
+  const blob=await response.blob();if(blob.size>3000000||!['image/png','image/jpeg','image/webp'].includes(blob.type)||key(recipe,-1)!==id)return '';
+  return await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(blob)});
+ }
+ return {mount,enqueue,cachedCover};
 })();

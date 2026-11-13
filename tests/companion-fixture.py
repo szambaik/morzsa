@@ -64,7 +64,8 @@ class Fixture(Handler):
   if self.path.startswith('/rest/v1/rpc/'):
    self.rfile.read(int(self.headers.get('Content-Length','0')));self.send_response(200);self.send_header('Content-Type','application/json');self.end_headers();self.wfile.write(b'[]')
   else:super().do_POST()
-port=int(sys.argv[1]) if len(sys.argv)>1 else 8777
-server=ThreadingHTTPServer(('127.0.0.1',port),Fixture)
-print(f'Companion QA: http://127.0.0.1:{port}/',flush=True)
-server.serve_forever()
+if __name__ == '__main__':
+ port=int(sys.argv[1]) if len(sys.argv)>1 else 8777
+ server=ThreadingHTTPServer(('127.0.0.1',port),Fixture)
+ print(f'Companion QA: http://127.0.0.1:{port}/',flush=True)
+ server.serve_forever()

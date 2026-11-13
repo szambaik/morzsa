@@ -1,0 +1,51 @@
+{
+  "actor": "E/a",
+  "type": "independent simulated-user session",
+  "browserCalls": 10,
+  "uiActions": 6,
+  "tasksCompleted": 0,
+  "tasksAttempted": 2,
+  "termination": "Browser and file tools became unavailable in actor; not a product failure",
+  "actions": [
+    {
+      "index": 1,
+      "action": "Receptek",
+      "result": "Recipe library opened"
+    },
+    {
+      "index": 2,
+      "action": "Morzsa receptgyűjteménye",
+      "result": "Collection expanded; ingredient ratio and share/download controls visible"
+    },
+    {
+      "index": 3,
+      "action": "Click recipe title",
+      "result": "No navigation"
+    },
+    {
+      "index": 4,
+      "action": "Főzzünk együtt",
+      "result": "Cooking view opened; full recipe selected; 0/3 complete"
+    },
+    {
+      "index": 5,
+      "action": "Scroll one page",
+      "result": "First two method steps visible"
+    },
+    {
+      "index": 6,
+      "action": "Scroll 0.65 page",
+      "result": "Three steps observed in accessibility state; 0/3 complete"
+    }
+  ],
+  "screenshots": [
+    "01-recipe-open.jpg",
+    "02-recipe-method.jpg"
+  ],
+  "evidenceVerification": "Saved screenshot copies inspected by parent with view_image; matches reported screens",
+  "limits": [
+    "Canned replies and images",
+    "Ingredient editing and sharing not completed",
+    "Not real human research"
+  ]
+}

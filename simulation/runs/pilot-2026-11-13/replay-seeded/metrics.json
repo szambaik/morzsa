@@ -1,0 +1,19 @@
+{
+  "runId": "replay-seeded",
+  "seed": 20261113,
+  "mode": "offline model/RPC replay",
+  "households": 6,
+  "actors": 12,
+  "simulatedDays": 2,
+  "events": 48,
+  "invariants": {
+    "passed": 114,
+    "total": 114
+  },
+  "aiIntentAccuracy": null,
+  "uiTaskCompletion": null,
+  "realtimeNetworkTested": false,
+  "externalApiCalls": 0,
+  "externalApiCostUsd": 0,
+  "failures": []
+}

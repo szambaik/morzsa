@@ -3,6 +3,8 @@ import {App} from '@capacitor/app';
 import {Browser} from '@capacitor/browser';
 import {Keyboard} from '@capacitor/keyboard';
 import {Clipboard} from '@capacitor/clipboard';
+import {Share} from '@capacitor/share';
+import {Filesystem,Directory,Encoding} from '@capacitor/filesystem';
 import {Network} from '@capacitor/network';
 import {SecureStoragePlugin} from 'capacitor-secure-storage-plugin';
 import {createVault} from './vault.mjs';
@@ -18,6 +20,12 @@ if(Capacitor.isNativePlatform()){
   callback,
   loadSession:()=>vault.loadSession(),saveSession:value=>vault.saveSession(value),
   copyText:text=>Clipboard.write({string:text}),
+  shareText:payload=>Share.share({...payload,dialogTitle:payload.title}),
+  async exportRecipe({name,content,title}){
+   if(!/^morzsa-[a-z0-9-]{0,64}\.html$/.test(name)||content.length>4500000)throw Error('Invalid recipe export');
+   const file=await Filesystem.writeFile({path:name,data:content,directory:Directory.Cache,encoding:Encoding.UTF8});
+   await Share.share({title,files:[file.uri],dialogTitle:title});
+  },
   openExternal:async href=>{const url=new URL(href);if(url.protocol!=='https:')throw Error('Unsupported link');await Browser.open({url:url.href})},
   async signIn(url){
    const bytes=crypto.getRandomValues(new Uint8Array(32)),verifier=Array.from(bytes,b=>b.toString(16).padStart(2,'0')).join('');
