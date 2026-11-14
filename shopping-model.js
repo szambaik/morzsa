@@ -5,7 +5,7 @@ const ShoppingModel={
   const purchased=source.cart.filter(bought);
   if(!purchased.length)return null;
   const next=JSON.parse(JSON.stringify(source));
-  const items=purchased.map(item=>({...item,done:true,quantity:item.quantity||1,unit:item.unit||unitFor(item.name),category:categoryFor(item.name)}));
+  const items=purchased.map(item=>({...item,done:true,quantity:item.quantity||1,unit:item.unit||unitFor(item.name),category:categoryFor(item.name,item)}));
   const recipeSnapshots=[];
   for(const item of items)if(Array.isArray(item.recipeNeeds))item.recipeNeeds=item.recipeNeeds.map(n=>{if(!n?.recipe)return n;const encoded=JSON.stringify(n.recipe);let index=recipeSnapshots.findIndex(r=>JSON.stringify(r)===encoded);if(index<0){index=recipeSnapshots.length;recipeSnapshots.push(n.recipe)}const {recipe,...rest}=n;return {...rest,title:recipe.title,recipeIndex:index}});
   next.history.unshift({id,date,kind:'purchase',items,...(recipeSnapshots.length?{recipeSnapshots}:{})});

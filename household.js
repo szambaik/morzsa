@@ -13,7 +13,7 @@
  function cartStatus(failed=false){const el=document.getElementById('cloud-status');el.dataset.cartSync='true';el.hidden=!cartOutbox.length;el.textContent=say(failed?'Mentésre vár · ':'Szinkronizálás…',failed?'Waiting to sync · ':'Syncing…');if(failed){const b=document.createElement('button');b.textContent=say('Újrapróbálás','Retry');b.onclick=()=>flushCart();el.append(b)}}
  cloud.editCart=(next,options={})=>{
   if(!cloud.cartInteractive)return false;
-  const intent=HouseholdModel.cartIntent(state,next);if(options.onlyIfMissing)intent.cart.forEach(op=>{if(op.create)op.onlyIfMissing=true});if(!intent.cart.length&&!intent.custom.length)return true;
+  const intent=HouseholdModel.cartIntent(state,next);if(options.onlyIfMissing)intent.cart.forEach(op=>{if(op.create)op.onlyIfMissing=true});if(options.expected)intent.cart.forEach(op=>{if(options.expected[op.name])op.when=options.expected[op.name]});if(!intent.cart.length&&!intent.custom.length)return true;
   cartOutbox.push(intent);try{persistCart()}catch{cartOutbox.pop();toast(say('Nem sikerült helyben menteni.','Could not save on this device.'));return false}
   state=next;updateCount();clearTimeout(cartTimer);cartTimer=setTimeout(flushCart,120);return true;
  };
@@ -24,8 +24,8 @@
    if(cartFailed)cloud.rows=await fetchRows(hid,true);cartFailed=false;
    while(cartOutbox.length){const batch=cartOutbox.slice();let done=false;
     for(let attempt=0;attempt<3&&!done;attempt++){
-     const target=HouseholdModel.applyCartIntents(HouseholdModel.decode(cloud.rows,state),batch),changes=HouseholdModel.diff(cloud.rows,target);
-     try{if(changes.length)await rpc('apply_household_changes',{hid,changes});cloud.rows=await fetchRows(hid,false);done=true}
+     const rejected=[],target=HouseholdModel.applyCartIntents(HouseholdModel.decode(cloud.rows,state),batch,name=>rejected.push(name)),changes=HouseholdModel.diff(cloud.rows,target);
+     try{if(changes.length)await rpc('apply_household_changes',{hid,changes});cloud.rows=await fetchRows(hid,false);done=true;if(rejected.length)toast(say('A közben módosult tételeknél a friss listát tartottuk meg.','For changed items, the latest shared list was kept.'))}
      catch(e){if(!e.message?.includes('Conflict')||attempt===2)throw e;cloud.rows=await fetchRows(hid,true)}
     }
     cartOutbox.splice(0,batch.length);persistCart();state=overlayCart(cloud.rows);localStorage.setItem(cloud.storageKey(),JSON.stringify(state));paintCart();
@@ -269,7 +269,7 @@
  q.addEventListener('click',e=>{if(e.target===q){const r=q.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)q.close()}});
  window.addEventListener('resize',()=>{if(q.open)positionHouseholdMenu()});window.visualViewport?.addEventListener('resize',()=>{if(q.open)positionHouseholdMenu()});
  // Freeze mutations until a write is acknowledged; other devices use revision checks.
- for(const event of ['click','submit','pointerdown','keydown'])document.addEventListener(event,e=>{const cartAction=e.target.closest('[data-cart],[data-step],[data-delete],.list-row label,#add-cart');if(cloud.cartInteractive&&cartAction)return;if((cloud.busy||cartOutbox.length)&&e.target.closest('#main,#quantity-dialog,#clear-dialog,#history-dialog')){e.preventDefault();e.stopImmediatePropagation()}},true);
+ for(const event of ['click','submit','pointerdown','keydown'])document.addEventListener(event,e=>{const cartAction=e.target.closest('[data-cart],[data-step],[data-delete],.list-row label,#add-cart,[data-check-item],#shopping-mode-add,#shopping-action-feedback');if(cloud.cartInteractive&&cartAction)return;if((cloud.busy||cartOutbox.length)&&e.target.closest('#main,#quantity-dialog,#clear-dialog,#history-dialog')){e.preventDefault();e.stopImmediatePropagation()}},true);
  window.addEventListener('online',()=>{if(cartOutbox.length)flushCart();else refresh()});document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh()});
  paintInviteBadge();window.PantryReview?.refresh();status('Csak ezen az eszközön','This device only');
  async function start(){try{if(window.MorzsaNative)session=await window.MorzsaNative.loadSession();authPending=!!incomingLink;if(incomingLink)await receiveLink();else await restoreHousehold();await window.MorzsaNative?.onAuth(nativeAuth);if(q.open)await open()}catch{authPending=false;authNotice=say('A biztonságos bejelentkezést nem sikerült betölteni. Nyisd meg újra az appot.','Could not load secure sign-in. Reopen the app.');status(authNotice,authNotice);await open()}}
