@@ -2,6 +2,8 @@
 
 Tervezési állapot: 2026. november 14. Ez megvalósítási terv; az alábbi új recepttáblák még nem települtek.
 
+Kapcsolódó terv: [Privát és háztartással megosztott beszélgetések](CONVERSATION-PERSISTENCE-PLAN.md). A receptkatalógus, a személyes receptkönyv és a chat külön jogosultságot kap; egyik megosztása nem osztja meg automatikusan a másikat.
+
 ## Döntés
 
 A teljes elkészült receptet és a hozzá tartozó képeket tartósan mentsük. Új megnyitás, másik készülék, kedvencből indítás és ismételt főzés ne indítson új generálást. A recept új változatát csak érdemi módosítás vagy kifejezett kérés hozza létre. A recept ajánlhatósága, a hiányzó hozzávalók és a bevásárlási mennyiségek mindig az aktuális készletből számolódjanak.
@@ -27,6 +29,22 @@ A szerkesztett katalógus bejelentkezés nélkül is olvasható. Publikus, jóv�
 Additív metadata: publication_status (draft/published/withdrawn), címkék, stabil published_version_id és publikálási idő. Egy célzott, RLS-sel védett published_recipe_feed csak az azonosítót, címet, időt, adagot, címkéket, thumbnailt és fix receptverziót adja vissza. A teljes hozzávaló-/lépéslista csak megnyitáskor töltődik be. A privát tulajdonosi és chatadatok nem részei ennek az olvasási felületnek.
 
 A kártya, a megnyitott recept és a főzési session ugyanarra a változatlan receptverzióra hivatkozik. Új megnyitáskor a cím, borítókép, hozzávalók és lépések azonosak. Egy kért helyettesítés/adagváltozat külön személyes vagy konyhai változat, nem írja át a katalógusreceptet vagy mások főzését.
+
+### Alapadatbázis és igény szerinti képgenerálás
+
+A kiinduló receptadatbázist egyszer importáljuk a backendbe. A jelenlegi saját receptek használhatók első seedként; külső adatforrás csak az adott szöveg/kép tárolását és alkalmazásbeli felhasználását engedő feltételekkel, rögzített forrással és licenccel kerülhet be. Az import validálja a hozzávalókat, elnevezett lépéseket, mennyiségeket és stabil azonosítókat. A feed ezt az adatbázist olvassa; betöltéskor nem külső recept-API-t vagy szöveggenerálást hív.
+
+1. Feed megnyitásakor a mentett borító/thumbnail töltődik be. Ha még nincs kép, a meglévő Morzsa-illusztráció ad helyőrzőt. Pusztán görgetés vagy előtöltés nem indít fizetős generálást.
+2. Első receptmegnyitáskor a kliens a publikált receptverzió és a `cover` azonosító alapján kéri a képet. A backend az adatbázisban tárolt receptből állítja össze a promptot; a kliens nem küldhet tetszőleges promptot/modellt a katalógusgeneráló végpontra.
+3. Ha már kész a kép, azt kapja vissza. Egyébként az atomikus claim egyetlen jobot hoz létre. Tíz párhuzamos megnyitás ugyanahhoz a jobhoz csatlakozik; nem tíz generálást indít.
+4. A backend feltölti a fájlt, regisztrálja a stabil assetazonosítót és létrehozza a kis thumbnailt. Csak sikeres fájlmentés után jelöli késznek a jobot. A recept és a lépések közben kép nélkül is használhatók.
+5. Minden későbbi látogató ugyanazt a katalógusképet használja. Releváns lépésképek ugyanígy, csak az adott lépéshez érkezve készülnek. A képek nem járnak le; a jogosultsági link és a generálási lease lejárata külön fogalom.
+
+A katalógus cache-scope-ja globális és egy publikált receptverzióhoz kötött; nem a mostani `owner_id` szerinti személyes cache. A közös katalógus borítójának minőségét a szerver konfigurálja, Free/Plus váltáskor nem változik meg. Egy külön kért prémium vagy személyes változat saját assetreferenciát kap. Az első felhasználó nem lesz a közös kép tulajdonosa.
+
+Nyilvános feed olvasható bejelentkezés nélkül; hiányzó kép generálását kezdetben csak bejelentkezett, jogosult kérés vagy admin-előkészítés indítsa. Publikált receptazonosító-ellenőrzés, személyes és globális napi generálási keret, költségplafon, korlátozott párhuzamosság és hibakategória szerinti cooldown szükséges. Keretkimerüléskor marad az olvasható recept és a helyőrző; nincs automatikus végtelen újrapróbálás. Lejárt jobnál előbb ellenőrizzük a már elkészült fájlt vagy ismert provider-jobot; ha a provider kimenetele bizonytalan, ne indítsunk vakon második fizetős hívást.
+
+Első képes benyomáshoz legfeljebb 8–12 nyitókártya borítója előkészíthető egyszeri, külön kerettel; a teljes adatbázis előre illusztrálása nem szükséges. A mentett receptverzió borítóreferenciája az első sikeres generálás után rögzül. Prompt- vagy modellfrissítés önmagában nem indít új generálást: a verzió meglévő referenciáját mindig előbb olvassuk.
 
 ## A Receptek felülete és a feed sorrendje
 
