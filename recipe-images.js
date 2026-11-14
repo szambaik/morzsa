@@ -1,10 +1,14 @@
 // Recipe images are fetched independently; no image state enters saved chat data.
 window.RecipeImages=(()=>{
  const entries=new Map(),auto=new Set(),autoCreated=new Set();let queue=Promise.resolve();
- const scope=()=>household?.userId()+'|'+(household?.active||'local');
+ const scope=()=>household?.userId()+'|'+(household?.active||'local')+'|'+(window.AIMode?.get()||'free');
  const key=(r,step)=>scope()+'|'+JSON.stringify({title:r.title,summary:r.summary,minutes:r.minutes,ingredients:r.ingredients.map(i=>({name:i.name,amount:i.amount})),steps:r.steps})+'|'+step;
  const say=(hu,en)=>language==='en'?en:hu;
  const errors={
+  PLUS_API_QUOTA:['Az OpenAI API-keretét vagy számlázását aktiválni kell a képekhez.','Activate the OpenAI API balance or billing to generate images.'],
+  PLUS_SETUP_REQUIRED:['A Plus képekhez még be kell kötni az OpenAI-szolgáltatást.','OpenAI needs to be configured for Plus images.'],
+  PLUS_ACCESS_REQUIRED:['Ehhez a fiókhoz vagy konyhához még nincs Plus-hozzáférés. Az ingyenes mód választható a chatben.','Plus access is not enabled for this account or kitchen. Select Free in the chat.'],
+  PLUS_LIMIT:['A Plus keret elfogyott. Folytathatod ingyenes módban.','The Plus allowance is used up. You can continue in Free mode.'],
   IMAGE_TIMEOUT:['A kép lekérése túl sokáig tartott. Próbáld újra.','The image request timed out. Try again.'],
   IMAGE_SETUP_REQUIRED:['A képszolgáltatás beállítását ellenőrizni kell.','The image service configuration needs checking.'],
   IMAGE_SIGN_IN_REQUIRED:['A képhez jelentkezz be újra.','Sign in again to load the image.'],

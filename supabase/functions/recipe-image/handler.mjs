@@ -46,7 +46,7 @@ export function createHandler(config,fetcher=fetch){return async request=>{
  headers['Access-Control-Allow-Headers']='authorization,apikey,content-type,x-client-info';headers['Access-Control-Allow-Methods']='POST,OPTIONS';
  if(request.method==='OPTIONS')return new Response(null,{status:204,headers});
  if(request.method!=='POST')return reply(405,{error:'IMAGE_METHOD_NOT_ALLOWED'});
- if(!config.account||!config.token||!config.serviceKey)return reply(503,{error:'IMAGE_SETUP_REQUIRED'});
+ if((!config.generateImage&&(!config.account||!config.token))||!config.serviceKey)return reply(503,{error:'IMAGE_SETUP_REQUIRED'});
  const auth=request.headers.get('authorization');if(!auth?.startsWith('Bearer '))return reply(401,{error:'IMAGE_SIGN_IN_REQUIRED'});
  let jobFilter='',db,lease,stage='auth';
  try{
@@ -82,7 +82,7 @@ export function createHandler(config,fetcher=fetch){return async request=>{
   if(job.status==='limit')return reply(429,{error:'IMAGE_LIMIT'});
   if(job.status!=='claimed')return reply(503,{error:'IMAGE_UNAVAILABLE'});lease=job.lease;
   stage='generate';
-  const img=await cloudImage(input,config,fetcher),path=user.id+'/'+key+'/'+lease+'.'+img.ext;
+  const img=await (config.generateImage?config.generateImage(input):cloudImage(input,config,fetcher)),path=user.id+'/'+key+'/'+lease+'.'+img.ext;
   stage='upload';
   const saved=await fetcher(config.url+'/storage/v1/object/recipe-images/'+path,{method:'POST',headers:{...dbHeaders,'Content-Type':img.type},body:img.bytes,signal:AbortSignal.timeout(10000)});if(!saved.ok)throw imageError('IMAGE_UNAVAILABLE','upload',saved.status);
   stage='save';
@@ -90,7 +90,7 @@ export function createHandler(config,fetcher=fetch){return async request=>{
   lease=null;return await ready({asset_path:path});
  }catch(e){
   if(lease&&db)try{await db(jobFilter+'&lease=eq.'+lease,{method:'PATCH',body:JSON.stringify({state:'failed',updated_at:new Date().toISOString()})})}catch{}
-  const error=['IMAGE_INVALID_INPUT','IMAGE_LIMIT','IMAGE_PROVIDER_LIMIT','IMAGE_SETUP_REQUIRED'].includes(e.message)?e.message:['AbortError','TimeoutError'].includes(e.name)?'IMAGE_TIMEOUT':'IMAGE_UNAVAILABLE';
+  const error=['PLUS_API_QUOTA','PLUS_LIMIT','PLUS_ACCESS_REQUIRED','PLUS_REQUEST_PENDING','PLUS_SETUP_REQUIRED','IMAGE_INVALID_INPUT','IMAGE_LIMIT','IMAGE_PROVIDER_LIMIT','IMAGE_SETUP_REQUIRED'].includes(e.message)?e.message:['AbortError','TimeoutError'].includes(e.name)?'IMAGE_TIMEOUT':'IMAGE_UNAVAILABLE';
   // Never log credentials, signed URLs, recipe contents or raw provider messages.
   console.warn(JSON.stringify({event:'morzsa_image_error',error,stage:e.stage||stage,...(e.httpStatus?{httpStatus:e.httpStatus}:{})}));
   return reply(error==='IMAGE_INVALID_INPUT'?400:['IMAGE_LIMIT','IMAGE_PROVIDER_LIMIT'].includes(error)?429:503,{error,...(error==='IMAGE_PROVIDER_LIMIT'?{retryAfter:60}:{})});

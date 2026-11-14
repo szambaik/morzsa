@@ -10,3 +10,7 @@ verify_jwt = false
 
 [functions.recipe-image]
 verify_jwt = false
+
+[functions.plus-assistant]
+# Access tokens, kitchen membership, Plus grants and budgets checked in the handler.
+verify_jwt = false

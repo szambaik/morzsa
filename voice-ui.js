@@ -3,6 +3,11 @@ const voiceContext=()=>JSON.stringify([window.household?.userId(),window.househo
 async function saveVoiceState(next){if(window.household?.busy||window.household?.cartPending)return false;if(window.household?.active){state=next;return !!await window.household.notify()}return commitState(next)}
 function voiceError(error){
  const en=language==='en',messages={
+ PLUS_API_QUOTA:['Az OpenAI API-kerete elfogyott, vagy még nincs aktiválva a számlázás. Ellenőrizd az API-projekt Billing oldalát; a ChatGPT-előfizetés külön szolgáltatás.','Your OpenAI API balance is exhausted or billing is not activated. Check the API project’s Billing page; a ChatGPT subscription is separate.'],
+ PLUS_SETUP_REQUIRED:['A Plus módhoz még be kell kötni az OpenAI API-kulcsot és a szerveroldali funkciót. Addig a chatben választhatsz ingyenes módot.','Plus needs the OpenAI API key and server function configured. You can select Free in the chat.'],
+ PLUS_ACCESS_REQUIRED:['A fiókodhoz vagy konyhádhoz még nincs Plus-hozzáférés beállítva. A chatben választhatod az ingyenes módot.','Plus access is not enabled for your account or kitchen yet. Select Free in the chat.'],
+ PLUS_LIMIT:['A Plus használati keret elfogyott. A chatben ingyenes módra válthatsz.','Your Plus allowance is used up. Switch to Free in the chat.'],
+ PLUS_REQUEST_PENDING:['Ez a kérés vagy hangbeszélgetés már folyamatban van. Várj, vagy fejezd be az előzőt.','This request or voice conversation is already in progress. Wait or end the previous one.'],
  VOICE_SIGN_IN_REQUIRED:['Morzsa AI-segítségéhez előbb lépj be.','Sign in to use Morzsa’s AI assistant.'],
  VOICE_SETUP_REQUIRED:['A hangfelismerés még nincs bekötve. Addig használd a szöveges felvételt.','Voice is not configured yet. You can use text entry in the meantime.'],
  VOICE_DAILY_LIMIT:['Mára elfogyott az asszisztens kerete. A kézi felvétel továbbra is használható.','The daily assistant limit has been reached. Manual entry is still available.'],
@@ -35,6 +40,7 @@ function showVoiceUndo(changes,context){
  };
 }
 async function openVoiceCommand(mode='voice',initialText='',options={}){
+ if(mode==='voice'&&!options.output&&window.AIMode?.isPlus()&&window.MorzsaRealtime){window.MorzsaCompanion?.voice();return}
  if(document.getElementById('voice-dialog')?.open||window.household?.busy)return;
  const say=(hu,en)=>language==='en'?en:hu,context=voiceContext(),launchPage=page;let destination=page==='shopping'?'list':'stock';
  document.getElementById('voice-dialog')?.remove();const q=document.createElement('dialog');q.id='voice-dialog';q.setAttribute('data-no-translate','');document.body.append(q);

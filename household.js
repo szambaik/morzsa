@@ -45,12 +45,16 @@
  cloud.startShoppingSession=sid=>rpc('start_shopping_session',{hid:cloud.active,sid});
  cloud.saveShoppingRoute=(categories,expected)=>rpc('set_shopping_route',{hid:cloud.active,categories,expected});
  cloud.finishShoppingSession=async(sid,purchased,allow_unchecked)=>{const hid=cloud.active,archive=await rpc('finish_shopping_session',{hid,sid,purchased,allow_unchecked});if(hid!==cloud.active)return archive;cloud.rows=await fetchRows(hid);state=overlayCart(cloud.rows);localStorage.setItem(cloud.storageKey(),JSON.stringify(state));return archive};
- cloud.voiceStatus=()=>request('/functions/v1/voice-command',undefined,false);
- cloud.voiceCommand=payload=>{if(!session)throw Error('VOICE_SIGN_IN_REQUIRED');return request('/functions/v1/voice-command',payload,true,'POST',60000)};
- cloud.voiceCommandStream=(payload,onAnswer,signal)=>{if(!session)throw Error('VOICE_SIGN_IN_REQUIRED');return request('/functions/v1/voice-command',{...payload,stream:true},true,'POST',60000,{onAnswer,signal})};
- cloud.recipeImage=payload=>{if(!session)throw Error('IMAGE_SIGN_IN_REQUIRED');return request('/functions/v1/recipe-image',payload,true,'POST',70000)};
- cloud.recipeAIStatus=()=>request('/functions/v1/recipe-ideas',undefined,false);
- cloud.recipeIdeas=payload=>{if(!session)throw Error('AI_SIGN_IN_REQUIRED');return request('/functions/v1/recipe-ideas',payload,true,'POST',45000)};
+ const plusPayload=(task,payload)=>({...payload,task,householdId:cloud.active,requestId:payload.requestId||crypto.randomUUID()});
+ cloud.plusStatus=()=>request('/functions/v1/plus-assistant'+(cloud.active?'?householdId='+encodeURIComponent(cloud.active):''),undefined,!!session);
+ cloud.realtimeStart=payload=>request('/functions/v1/plus-assistant',plusPayload('connect',payload),true,'POST',30000);
+ cloud.realtimeEnd=requestId=>request('/functions/v1/plus-assistant',plusPayload('end',{requestId}),true,'POST',15000);
+ cloud.voiceStatus=()=>window.AIMode?.isPlus()?cloud.plusStatus():request('/functions/v1/voice-command',undefined,false);
+ cloud.voiceCommand=payload=>{if(!session)throw Error('VOICE_SIGN_IN_REQUIRED');return request(window.AIMode?.isPlus()?'/functions/v1/plus-assistant':'/functions/v1/voice-command',window.AIMode?.isPlus()?plusPayload('chat',payload):payload,true,'POST',60000)};
+ cloud.voiceCommandStream=(payload,onAnswer,signal)=>{if(!session)throw Error('VOICE_SIGN_IN_REQUIRED');return request(window.AIMode?.isPlus()?'/functions/v1/plus-assistant':'/functions/v1/voice-command',window.AIMode?.isPlus()?plusPayload('chat',{...payload,stream:true}):{...payload,stream:true},true,'POST',60000,{onAnswer,signal})};
+ cloud.recipeImage=payload=>{if(!session)throw Error('IMAGE_SIGN_IN_REQUIRED');return request(window.AIMode?.isPlus()?'/functions/v1/plus-assistant':'/functions/v1/recipe-image',window.AIMode?.isPlus()?plusPayload('image',payload):payload,true,'POST',85000)};
+ cloud.recipeAIStatus=()=>window.AIMode?.isPlus()?cloud.plusStatus():request('/functions/v1/recipe-ideas',undefined,false);
+ cloud.recipeIdeas=async payload=>{if(!session)throw Error('AI_SIGN_IN_REQUIRED');if(!window.AIMode?.isPlus())return request('/functions/v1/recipe-ideas',payload,true,'POST',45000);const result=await cloud.voiceCommand({assistant:true,companion:true,text:payload.text||'Adj egy receptet a készletből.',language:payload.language,context:{stock:payload.names||[],uncertain:payload.uncertain||[],cart:[]},history:payload.history||[]});return {answer:result.answer,recipes:result.recipes||[]}};
  let liveConnection=null,liveRefreshTimer=null,liveDirty=false;
  let localBackup=null,authEmail='',authMode='login',recoveryMode=false,pollTimer,invitations=[],inviteUnavailable=false,inviteLoading=false;
  const houseNames=new Map();let switchingName='',menuBusy=false,newHouseholdId=null;
@@ -79,6 +83,7 @@
   try{const response=await fetch(config.url+path,{method,signal:controller.signal,headers:{apikey:config.publishableKey,'Content-Type':'application/json',...(auth&&session?{Authorization:'Bearer '+session.access_token}:{})},...(body===undefined?{}:{body:JSON.stringify(body)})});
   if(response.ok&&options.onAnswer&&response.headers.get('Content-Type')?.includes('application/x-ndjson'))return await ChatStream.read(response,options.onAnswer);
   const text=await response.text();let data;try{data=text?JSON.parse(text):null}catch{throw Error('Invalid server response')}
+  if(!response.ok&&path.startsWith('/functions/v1/plus-assistant')&&response.status===404)throw Error('PLUS_SETUP_REQUIRED');
   if(!response.ok)throw Object.assign(Error(data?.message||data?.msg||data?.error_description||(typeof data?.error==='string'?data.error:'Request failed')),path==='/functions/v1/recipe-image'?{httpStatus:response.status,retryAfter:data?.retryAfter}:{});return data;}catch(e){if(controller.signal.aborted&&!options.signal?.aborted&&path==='/functions/v1/voice-command')throw Error('VOICE_TIMEOUT');if(controller.signal.aborted&&path==='/functions/v1/recipe-image')throw Error('IMAGE_TIMEOUT');throw e}finally{clearTimeout(timeout);options.signal?.removeEventListener('abort',abort)}
  }
  async function setSession(value){
@@ -269,7 +274,7 @@
  q.addEventListener('click',e=>{if(e.target===q){const r=q.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)q.close()}});
  window.addEventListener('resize',()=>{if(q.open)positionHouseholdMenu()});window.visualViewport?.addEventListener('resize',()=>{if(q.open)positionHouseholdMenu()});
  // Freeze mutations until a write is acknowledged; other devices use revision checks.
- for(const event of ['click','submit','pointerdown','keydown'])document.addEventListener(event,e=>{const cartAction=e.target.closest('[data-cart],[data-step],[data-delete],.list-row label,#add-cart,[data-check-item],#shopping-mode-add,#shopping-action-feedback');if(cloud.cartInteractive&&cartAction)return;if((cloud.busy||cartOutbox.length)&&e.target.closest('#main,#quantity-dialog,#clear-dialog,#history-dialog')){e.preventDefault();e.stopImmediatePropagation()}},true);
+ for(const event of ['click','submit','pointerdown','keydown'])document.addEventListener(event,e=>{const cartAction=e.target.closest('[data-cart],[data-step],[data-delete],.list-row label,#add-cart,[data-check-item],[data-edit-item],#shopping-mode-add,#shopping-action-feedback');if(cloud.cartInteractive&&cartAction)return;if((cloud.busy||cartOutbox.length)&&e.target.closest('#main,#quantity-dialog,#clear-dialog,#history-dialog')){e.preventDefault();e.stopImmediatePropagation()}},true);
  window.addEventListener('online',()=>{if(cartOutbox.length)flushCart();else refresh()});document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh()});
  paintInviteBadge();window.PantryReview?.refresh();status('Csak ezen az eszközön','This device only');
  async function start(){try{if(window.MorzsaNative)session=await window.MorzsaNative.loadSession();authPending=!!incomingLink;if(incomingLink)await receiveLink();else await restoreHousehold();await window.MorzsaNative?.onAuth(nativeAuth);if(q.open)await open()}catch{authPending=false;authNotice=say('A biztonságos bejelentkezést nem sikerült betölteni. Nyisd meg újra az appot.','Could not load secure sign-in. Reopen the app.');status(authNotice,authNotice);await open()}}
