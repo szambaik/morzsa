@@ -1,6 +1,6 @@
 # Privát és háztartással megosztott beszélgetések
 
-Tervezési állapot: 2026. november 14. Ez megvalósítási terv; a beszélgetések backend-szinkronja és megosztási felülete még nincs bekötve. Kapcsolódó terv: [Tartós receptkönyv és receptfeed](RECIPE-PERSISTENCE-PLAN.md).
+Megvalósítva: 2026. november 14. A privát beszélgetésszinkron, a lapozott előzmények és a háztartási megosztás elkészült. A tényleges állapot: [megvalósítási jegyzet](PERSISTENCE-IMPLEMENTATION.md).
 
 ## Termékdöntés
 

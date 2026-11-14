@@ -1,28 +1,30 @@
 // Local conversations and suggestions; existing household record formats stay intact.
 const CompanionModel = (() => {
  const thumbnail=v=>typeof v==='string'&&v.length<=16000&&/^data:image\/jpeg;base64,\/9j\/[A-Za-z0-9+/]*={0,2}$/.test(v)?v:null;
+ const savedPhoto=m=>thumbnail(m.photo)||(m.photoPath&&typeof window!=='undefined'&&window.MORZSA_CLOUD?.url&&m.photo?.startsWith(window.MORZSA_CLOUD.url+'/storage/v1/object/sign/')?m.photo:null);
  const key=(user,home,lang)=>'morzsa-companion-v1:'+JSON.stringify([user||'guest',home||'local',lang]);
  const fresh=(id,now=Date.now())=>({id,title:'',updated:now,messages:[]});
  function normalize(value,validRecipe=()=>null,maxThreads=20){
-  const threads=(Array.isArray(value?.threads)?value.threads:[]).filter(t=>t&&typeof t.id==='string').slice(0,maxThreads).map(t=>({id:t.id,title:String(t.title||'').slice(0,80),updated:Number(t.updated)||0,...(Number.isFinite(t.archivedAt)&&t.archivedAt>0?{archivedAt:t.archivedAt}:{}),...(['main','chat','recipe','legacy'].includes(t.kind)?{kind:t.kind}:{}),...(t.kind==='recipe'&&validRecipe(t.recipe)?{recipe:validRecipe(t.recipe),status:t.status==='completed'?'completed':'active',...(typeof t.parentId==='string'?{parentId:t.parentId}:{}),completedSteps:[...new Set((Array.isArray(t.completedSteps)?t.completedSteps:[]).filter(i=>Number.isInteger(i)&&i>=0&&i<t.recipe.steps.length))].sort((a,b)=>a-b),cookingStep:Number.isInteger(t.cookingStep)&&t.cookingStep>=0&&t.cookingStep<t.recipe.steps.length?t.cookingStep:0}:{}),messages:(Array.isArray(t.messages)?t.messages:[]).filter(m=>m&&['user','model'].includes(m.role)&&typeof m.text==='string').slice(['main','chat'].includes(t.kind)?0:-40).map(m=>({role:m.role,text:m.text.slice(0,5000),...(Number.isFinite(m.createdAt)&&m.createdAt>0?{createdAt:m.createdAt}:{}),...(m.archived===true?{archived:true}:{}),...(m.role==='user'&&thumbnail(m.photo)?{photo:m.photo}:{}),...(m.provider==='recipes'?{provider:'recipes'}:{}),recipes:(Array.isArray(m.recipes)?m.recipes:[]).map(validRecipe).filter(Boolean).slice(0,3),...(typeof m.result==='string'?{result:m.result.slice(0,500)}:{})}))}));
+  const threads=(Array.isArray(value?.threads)?value.threads:[]).filter(t=>t&&typeof t.id==='string').slice(0,value?.cloud?10000:maxThreads).map(t=>({id:t.id,...(value?.cloud?{cloud:true,language:t.language||'hu',revision:t.revision||0,readOnly:t.readOnly===true,sharedHousehold:t.sharedHousehold||null,hasOlder:t.hasOlder===true,before:t.before||null,loaded:t.loaded===true}:{}),title:String(t.title||'').slice(0,80),updated:Number(t.updated)||0,...(Number.isFinite(t.archivedAt)&&t.archivedAt>0?{archivedAt:t.archivedAt}:{}),...(['main','chat','recipe','legacy'].includes(t.kind)?{kind:t.kind}:{}),...(t.kind==='recipe'&&validRecipe(t.recipe)?{recipe:validRecipe(t.recipe),status:t.status==='completed'?'completed':'active',...(typeof t.parentId==='string'?{parentId:t.parentId}:{}),completedSteps:[...new Set((Array.isArray(t.completedSteps)?t.completedSteps:[]).filter(i=>Number.isInteger(i)&&i>=0&&i<t.recipe.steps.length))].sort((a,b)=>a-b),cookingStep:Number.isInteger(t.cookingStep)&&t.cookingStep>=0&&t.cookingStep<t.recipe.steps.length?t.cookingStep:0}:{}),messages:(Array.isArray(t.messages)?t.messages:[]).filter(m=>m&&['user','model'].includes(m.role)&&typeof m.text==='string').slice(value?.cloud||['main','chat'].includes(t.kind)?0:-40).map(m=>({...(typeof m.id==='string'?{id:m.id}:{}),...(m.sequence?{sequence:m.sequence}:{}),...(typeof m.photoPath==='string'?{photoPath:m.photoPath}:{}),role:m.role,text:m.text.slice(0,5000),...(Number.isFinite(m.createdAt)&&m.createdAt>0?{createdAt:m.createdAt}:{}),...(m.archived===true?{archived:true}:{}),...(m.role==='user'&&savedPhoto(m)?{photo:savedPhoto(m)}:{}),...(m.provider==='recipes'?{provider:'recipes'}:{}),recipes:(Array.isArray(m.recipes)?m.recipes:[]).map(validRecipe).filter(Boolean).slice(0,3),...(typeof m.result==='string'?{result:m.result.slice(0,500)}:{})}))}));
   let photos=0;for(const t of [...threads].sort((a,b)=>b.updated-a.updated))for(const m of [...t.messages].reverse())if(m.photo&&++photos>30)delete m.photo;
-  return {version:1,active:threads.some(t=>t.id===value?.active)?value.active:threads[0]?.id,threads};
+  return {version:1,...(value?.cloud?{cloud:true}:{}),active:threads.some(t=>t.id===value?.active)?value.active:threads[0]?.id,threads};
  }
  // Separate storage leaves earlier history untouched for older installed clients.
  const previousWorkspaceKey=(user,home,lang)=>key(user,home,lang).replace('companion-v1:','companion-v2:');
  const dailyWorkspaceKey=(user,home,lang)=>key(user,home,lang).replace('companion-v1:','companion-v3:');
  const workspaceKey=(user,home,lang)=>key(user,home,lang).replace('companion-v1:','companion-v4:');
+ const bookLimit=value=>value?.cloud?10000:61;
  function workspace(value,validRecipe,now=Date.now()){
-  const clean=normalize(value,validRecipe,61),main=clean.threads.find(t=>t.kind==='main');
+  const clean=normalize(value,validRecipe,61),main=clean.threads.find(t=>t.kind==='main'&&!t.readOnly);
   let id='morzsa-main';while(clean.threads.some(t=>t.id===id))id+='-';
-  const primary=main||{...fresh(id,now),kind:'main'},seen=new Set([primary.id]);
+  const primary=main||{...fresh(value?.cloud?crypto.randomUUID():id,now),kind:'main'},seen=new Set([primary.id]);
   const others=clean.threads.filter(t=>{if(t===main||seen.has(t.id))return false;seen.add(t.id);return true}).map(t=>({...t,kind:t.kind==='recipe'&&t.recipe?'recipe':t.kind==='chat'?'chat':'legacy'}));
-  return {version:4,active:clean.threads.some(t=>t.id===clean.active)?clean.active:primary.id,threads:[primary,...others].slice(0,61)};
+  return {version:4,...(value?.cloud?{cloud:true}:{}),active:clean.threads.some(t=>t.id===clean.active)?clean.active:primary.id,threads:[primary,...others].slice(0,bookLimit(value))};
  }
  function startChat(book,id,validRecipe,now=Date.now()){
   const next=workspace(book,validRecipe,now);
   if(next.threads.some(t=>t.id===id))throw Error('DUPLICATE_THREAD');
-  if(next.threads.length>=61)throw Error('THREAD_LIMIT');
+  if(next.threads.length>=bookLimit(book))throw Error('THREAD_LIMIT');
   next.threads.splice(1,0,{...fresh(id,now),kind:'chat'});next.active=id;return next;
  }
  function archiveThread(book,id,validRecipe,archived=true,now=Date.now()){
@@ -32,15 +34,15 @@ const CompanionModel = (() => {
   return next;
  }
  function historyGroups(book,limit=5){
-  const general=book.threads.filter(t=>t.kind!=='recipe').sort((a,b)=>b.updated-a.updated);
+  const general=book.threads.filter(t=>t.kind!=='recipe'&&!t.readOnly).sort((a,b)=>b.updated-a.updated);
   const recent=general.filter(t=>!t.archivedAt).slice(0,limit),ids=new Set(recent.map(t=>t.id));
-  return {recent,archive:general.filter(t=>!ids.has(t.id)),recipes:book.threads.filter(t=>t.kind==='recipe').sort((a,b)=>b.updated-a.updated)};
+  return {recent,archive:general.filter(t=>!ids.has(t.id)),shared:book.threads.filter(t=>t.readOnly).sort((a,b)=>b.updated-a.updated),recipes:book.threads.filter(t=>t.kind==='recipe'&&!t.readOnly).sort((a,b)=>b.updated-a.updated)};
  }
  const recipeKey=r=>JSON.stringify([r.title,r.ingredients,r.steps]);
  function startRecipe(book,recipe,id,validRecipe,now=Date.now()){
   const r=validRecipe(recipe);if(!r)throw Error('INVALID_RECIPE');const next=workspace(book,validRecipe,now);
   let t=next.threads.find(t=>t.kind==='recipe'&&t.status==='active'&&recipeKey(t.recipe)===recipeKey(r));
-  if(!t){if(next.threads.length>=61)throw Error('THREAD_LIMIT');if(next.threads.some(t=>t.id===id))throw Error('DUPLICATE_THREAD');t={...fresh(id,now),kind:'recipe',title:r.title,recipe:r,status:'active',cookingStep:0,parentId:next.active};next.threads.splice(1,0,t)}
+  if(!t){if(next.threads.length>=bookLimit(book))throw Error('THREAD_LIMIT');if(next.threads.some(t=>t.id===id))throw Error('DUPLICATE_THREAD');t={...fresh(id,now),kind:'recipe',title:r.title,recipe:r,status:'active',cookingStep:0,parentId:next.active};next.threads.splice(1,0,t)}
   next.active=t.id;return next;
  }
  function setCookingStep(book,id,index,validRecipe){

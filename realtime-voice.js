@@ -44,7 +44,7 @@ window.MorzsaRealtime=(()=>{
    hidden.forEach(([el,inert])=>el.inert=inert);window.scrollTo(0,scroll);
    for(const [target,event,listener] of listeners)target.removeEventListener(event,listener);
    if(active===session)active=null;const target=previousFocus?.isConnected&&!previousFocus.disabled?previousFocus:document.querySelector('[data-mic]');target?.focus({preventScroll:true});
-   if(message)toast(message);options.onEnd?.();
+   if(message)toast(message);options.onEnd?.(reason);
   }
   function fail(reason,message,code=''){
    if(session.closed||session.dismissed)return;errorCode=String(code).replace(/[^a-z0-9_:-]/gi,'').slice(0,80);release(reason);

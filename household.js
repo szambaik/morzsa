@@ -38,6 +38,13 @@
  cloud.readPantryReviews=()=>request('/rest/v1/household_pantry_reviews?household_id=eq.'+encodeURIComponent(cloud.active)+'&select=product_name,last_confirmed_at,stock_revision');
  cloud.confirmPantryReviews=names=>rpc('confirm_pantry_items',{hid:cloud.active,items:names.map(name=>({name,revision:cloud.rows.find(r=>r.bucket==='stock'&&r.key===name)?.revision}))});
  cloud.userId=()=>session?.user?.id||null;
+ cloud.dataRead=(path,auth=true)=>request('/rest/v1/'+path,undefined,auth,'GET',20000,{expectedUser:auth?session?.user?.id:null});
+ cloud.dataRpc=(name,body,auth=true,expectedUser=session?.user?.id)=>request('/rest/v1/rpc/'+name,body,auth,'POST',20000,{expectedUser:auth?expectedUser:null});
+ cloud.mediaUpload=(path,bytes,expectedUser=session?.user?.id)=>request('/storage/v1/object/chat-media/'+path,bytes,true,'POST',20000,{raw:true,contentType:'image/jpeg',expectedUser});
+ cloud.mediaSign=(path,expectedUser=session?.user?.id)=>request('/storage/v1/object/sign/chat-media/'+path,{expiresIn:1800},true,'POST',20000,{expectedUser});
+ cloud.libraryImage=payload=>request('/functions/v1/recipe-image',{...payload,householdId:cloud.active,quality:window.AIMode?.isPlus()?'plus':'free'},!!session,'POST',85000);
+ let cloudDataConnection=null;
+ cloud.subscribeData=onChange=>{cloudDataConnection?.close();if(!session)return {close(){}};return cloudDataConnection=HouseholdLive.connectData({url:config.url,key:config.publishableKey,token:session.access_token,userId:session.user.id,onChange})};
  cloud.readKitchenIntelligence=async()=>{const hid=encodeURIComponent(cloud.active),[preferences,events,cooked]=await Promise.all([request('/rest/v1/household_kitchen_preferences?household_id=eq.'+hid+'&select=key,value,revision'),request('/rest/v1/household_kitchen_events?household_id=eq.'+hid+'&select=id,actor_id,created_at,event_type,subject,item_count&order=id.desc&limit=12'),request('/rest/v1/household_kitchen_events?household_id=eq.'+hid+'&event_type=eq.recipe_completed&select=event_type,subject,created_at&order=id.desc&limit=8')]);return {preferences,events,cooked}};
  cloud.saveKitchenPreferences=changes=>rpc('set_kitchen_preferences',{hid:cloud.active,changes});
  cloud.recordKitchenRecipe=(kind,title,client_id)=>rpc('record_kitchen_recipe',{hid:cloud.active,kind,title,client_id});
@@ -57,7 +64,7 @@
  cloud.recipeIdeas=async payload=>{if(!session)throw Error('AI_SIGN_IN_REQUIRED');if(!window.AIMode?.isPlus())return request('/functions/v1/recipe-ideas',payload,true,'POST',45000);const result=await cloud.voiceCommand({assistant:true,companion:true,text:payload.text||'Adj egy receptet a készletből.',language:payload.language,context:{stock:payload.names||[],uncertain:payload.uncertain||[],cart:[]},history:payload.history||[]});return {answer:result.answer,recipes:result.recipes||[]}};
  let liveConnection=null,liveRefreshTimer=null,liveDirty=false;
  let localBackup=null,authEmail='',authMode='login',recoveryMode=false,pollTimer,invitations=[],inviteUnavailable=false,inviteLoading=false;
- const houseNames=new Map();let switchingName='',menuBusy=false,newHouseholdId=null;
+ const houseNames=new Map();cloud.activeName=()=>houseNames.get(cloud.active)||say('Közös háztartás','Shared household');let switchingName='',menuBusy=false,newHouseholdId=null;
  const preferenceKey=()=>session?.user?.id?'morzsa-last-household-'+session.user.id:null;
  function rememberHousehold(){const key=preferenceKey();if(key)try{localStorage.setItem(key,JSON.stringify({id:cloud.active,name:houseNames.get(cloud.active)||''}))}catch{toast(say('A választást nem sikerült megjegyezni ezen az eszközön.','Could not remember your choice on this device.'))}}
  async function restoreHousehold(){
@@ -79,17 +86,18 @@
   if(auth&&session&&session.expires_at*1000<Date.now()+60000){
    if(!refreshPromise){const previous=session,version=authVersion;refreshPromise=(async()=>{const r=await fetch(config.url+'/auth/v1/token?grant_type=refresh_token',{method:'POST',signal:AbortSignal.timeout(20000),headers:{apikey:config.publishableKey,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:previous.refresh_token})});const data=await r.json();if(!r.ok||version!==authVersion)throw Error(say('Jelentkezz be újra.','Please sign in again.'));await setSession(data)})().finally(()=>{refreshPromise=null})}await refreshPromise;
   }
+  if(options.expectedUser&&options.expectedUser!==session?.user?.id)throw Error('Account changed');
   const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),timeoutMs),abort=()=>controller.abort();options.signal?.addEventListener('abort',abort,{once:true});if(options.signal?.aborted)controller.abort();
-  try{const response=await fetch(config.url+path,{method,signal:controller.signal,headers:{apikey:config.publishableKey,'Content-Type':'application/json',...(auth&&session?{Authorization:'Bearer '+session.access_token}:{})},...(body===undefined?{}:{body:JSON.stringify(body)})});
+  try{const response=await fetch(config.url+path,{method,signal:controller.signal,headers:{apikey:config.publishableKey,'Content-Type':options.contentType||'application/json',...(auth&&session?{Authorization:'Bearer '+session.access_token}:{})},...(body===undefined?{}:{body:options.raw?body:JSON.stringify(body)})});
   if(response.ok&&options.onAnswer&&response.headers.get('Content-Type')?.includes('application/x-ndjson'))return await ChatStream.read(response,options.onAnswer);
-  const text=await response.text();let data;try{data=text?JSON.parse(text):null}catch{throw Error('Invalid server response')}
+  const text=await response.text();if(options.expectedUser&&options.expectedUser!==session?.user?.id)throw Error('Account changed');let data;try{data=text?JSON.parse(text):null}catch{throw Error('Invalid server response')}
   if(!response.ok&&path.startsWith('/functions/v1/plus-assistant')&&response.status===404)throw Error('PLUS_SETUP_REQUIRED');
   if(!response.ok)throw Object.assign(Error(data?.message||data?.msg||data?.error_description||(typeof data?.error==='string'?data.error:'Request failed')),path==='/functions/v1/recipe-image'?{httpStatus:response.status,retryAfter:data?.retryAfter}:{});return data;}catch(e){if(controller.signal.aborted&&!options.signal?.aborted&&path==='/functions/v1/voice-command')throw Error('VOICE_TIMEOUT');if(controller.signal.aborted&&path==='/functions/v1/recipe-image')throw Error('IMAGE_TIMEOUT');throw e}finally{clearTimeout(timeout);options.signal?.removeEventListener('abort',abort)}
  }
  async function setSession(value){
   const previousUser=session?.user?.id,version=++authVersion;if(value&&!value.expires_at)value.expires_at=Math.floor(Date.now()/1000)+(value.expires_in||3600);
   if(window.MorzsaNative)await window.MorzsaNative.saveSession(value);else if(value)localStorage.setItem('morzsa-session',JSON.stringify(value));else localStorage.removeItem('morzsa-session');
-  if(version!==authVersion)return;session=value;liveConnection?.updateToken(session?.access_token||'');invitations=[];paintInviteBadge();if(previousUser!==session?.user?.id)window.dispatchEvent(new Event('morzsa-auth-change'));
+  if(version!==authVersion)return;session=value;liveConnection?.updateToken(session?.access_token||'');cloudDataConnection?.updateToken?.(session?.access_token||'');invitations=[];paintInviteBadge();if(previousUser!==session?.user?.id)window.dispatchEvent(new Event('morzsa-auth-change'));
  }
  const rpc=(name,args)=>request('/rest/v1/rpc/'+name,args);
  async function fetchRows(hid=cloud.active,verify=true){

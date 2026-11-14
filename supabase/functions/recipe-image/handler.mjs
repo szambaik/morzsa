@@ -1,3 +1,4 @@
+import {persistentImage} from './persistent.mjs';
 import {validRecipes} from '../recipe-ideas/handler.mjs';
 const imageError=(code,stage,httpStatus)=>Object.assign(Error(code),{stage,httpStatus});
 // Cache reads and URL signing are safe to repeat. Never repeat a generation or upload.
@@ -46,6 +47,7 @@ export function createHandler(config,fetcher=fetch){return async request=>{
  headers['Access-Control-Allow-Headers']='authorization,apikey,content-type,x-client-info';headers['Access-Control-Allow-Methods']='POST,OPTIONS';
  if(request.method==='OPTIONS')return new Response(null,{status:204,headers});
  if(request.method!=='POST')return reply(405,{error:'IMAGE_METHOD_NOT_ALLOWED'});
+ if(request.body){try{const clone=request.clone(),reader=clone.body.getReader();let size=0,parts=[];while(true){const r=await reader.read();if(r.done)break;size+=r.value.length;if(size>20000){await reader.cancel();return reply(400,{error:'IMAGE_INVALID_INPUT'})}parts.push(r.value)}const bytes=new Uint8Array(size);let off=0;for(const part of parts){bytes.set(part,off);off+=part.length}const parsed=JSON.parse(new TextDecoder().decode(bytes));if(parsed.recipeId)return persistentImage(parsed,request,config,fetcher,headers)}catch{}}
  if((!config.generateImage&&(!config.account||!config.token))||!config.serviceKey)return reply(503,{error:'IMAGE_SETUP_REQUIRED'});
  const auth=request.headers.get('authorization');if(!auth?.startsWith('Bearer '))return reply(401,{error:'IMAGE_SIGN_IN_REQUIRED'});
  let jobFilter='',db,lease,stage='auth';

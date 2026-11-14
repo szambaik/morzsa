@@ -145,3 +145,7 @@ Az iOS/Android Capacitor projekt és a szűkített mobil build elkészült, de a
 ## Közös web / iOS / Android kód
 
 A webes csomag: npm run build:web. A natív csomagok előkészítése: npm run sync:mobile. A GitHub Actions Mobile builds Android debug APK-t és iOS Simulator csomagot készít. A natív adapter kezeli a Keychain/Keystore session-tárolást, PKCE belépést, rendszerböngészőt, vágólapot, billentyűzetet és hálózati/életciklus-eseményeket. A receptcsevegés is a közös Supabase AI-végpontot használja; nem kell hozzá helyi Python szerver. A szerver korábbi API-ja megmaradt a régi kliensekhez.
+
+### Tartós receptfeed és privát beszélgetések
+
+A backendkatalógus 31 saját alapreceptet ad, kereséssel, preferenciák szerinti ajánlással és fiókszintű receptkönyvvel. A mentett receptek/képek újranyitása nem generál új tartalmat. A bejelentkezett felhasználó beszélgetései privátként szinkronizálódnak az eszközei között, és külön döntéssel olvashatóként megoszthatók a háztartással. Megvalósítás, költségvédelem és tesztelés: [PERSISTENCE-IMPLEMENTATION.md](docs/PERSISTENCE-IMPLEMENTATION.md).

@@ -1,6 +1,6 @@
 # Tartós receptkönyv és személyre szabott receptfeed
 
-Tervezési állapot: 2026. november 14. Ez megvalósítási terv; az alábbi új recepttáblák még nem települtek.
+Megvalósítva: 2026. november 14. A tartós receptkönyv, a 31 receptes backendkatalógus és a receptazonosítóhoz kötött képcache elkészült. A tényleges állapot: [megvalósítási jegyzet](PERSISTENCE-IMPLEMENTATION.md).
 
 Kapcsolódó terv: [Privát és háztartással megosztott beszélgetések](CONVERSATION-PERSISTENCE-PLAN.md). A receptkatalógus, a személyes receptkönyv és a chat külön jogosultságot kap; egyik megosztása nem osztja meg automatikusan a másikat.
 

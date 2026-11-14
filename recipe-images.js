@@ -9,6 +9,8 @@ window.RecipeImages=(()=>{
   PLUS_SETUP_REQUIRED:['A Plus képekhez még be kell kötni az OpenAI-szolgáltatást.','OpenAI needs to be configured for Plus images.'],
   PLUS_ACCESS_REQUIRED:['Ehhez a fiókhoz vagy konyhához még nincs Plus-hozzáférés. Az ingyenes mód választható a chatben.','Plus access is not enabled for this account or kitchen. Select Free in the chat.'],
   PLUS_LIMIT:['A Plus keret elfogyott. Folytathatod ingyenes módban.','The Plus allowance is used up. You can continue in Free mode.'],
+  IMAGE_UNCERTAIN:['A képkérés állapota ellenőrzésre vár. Új generálást nem indítunk, hogy ne fizess kétszer.','The image request needs checking. We will not generate again and charge twice.'],
+  IMAGE_ACCESS_DENIED:['Ehhez a képhez már nincs hozzáférésed.','You no longer have access to this image.'],
   IMAGE_TIMEOUT:['A kép lekérése túl sokáig tartott. Próbáld újra.','The image request timed out. Try again.'],
   IMAGE_SETUP_REQUIRED:['A képszolgáltatás beállítását ellenőrizni kell.','The image service configuration needs checking.'],
   IMAGE_SIGN_IN_REQUIRED:['A képhez jelentkezz be újra.','Sign in again to load the image.'],
@@ -19,7 +21,7 @@ window.RecipeImages=(()=>{
  };
  function enqueue(recipes){for(const r of recipes||[])auto.add(key(r,-1))}
  function mount(host,recipe,step=-1,options={}){
-  if(!host||!household?.userId()||!household.recipeImage)return;
+  if(!host||(!household?.userId()&&!recipe.recipeId)||!household.recipeImage)return;
   const id=key(recipe,step);let entry=entries.get(id);if(!entry||entry.expiresAt&&entry.expiresAt<Date.now()){entry={status:'new'};entries.set(id,entry)}
   let autoAttempted=false;const live=()=>host.isConnected&&key(recipe,step)===id;
   const paint=()=>{
@@ -34,7 +36,7 @@ window.RecipeImages=(()=>{
    const b=document.createElement('button');b.type='button';b.className='small-button';b.disabled=entry.status==='loading';
    b.textContent=entry.status==='loading'?say('Kép készül…','Creating image…'):entry.status==='limit'?say('A mai képkeret elfogyott','Daily image allowance used'):entry.status==='failed'?say('Kép újrapróbálása','Retry image'):entry.status==='pending'?say('Kép állapotának frissítése','Refresh image status'):say(step<0?'Képet kérek a recepthez':'Mutasd képen',step<0?'Create recipe image':'Show this step');
    const waiting=entry.retryAt>Date.now();
-   b.disabled ||= entry.status==='limit'||waiting;
+   b.disabled ||= entry.status==='limit'||waiting||entry.error==='IMAGE_UNCERTAIN';
    if(waiting)b.textContent=say('Újrapróbálás egy perc múlva','Retry in a minute');
    if(entry.error==='IMAGE_SIGN_IN_REQUIRED'){b.disabled=false;b.textContent=say('Belépés','Sign in');b.onclick=()=>document.getElementById('household-button')?.click()}
    else b.onclick=()=>load(entry.error!=='IMAGE_LOAD_FAILED');host.append(b);
@@ -47,10 +49,10 @@ window.RecipeImages=(()=>{
    if(entry.status==='loading'||entry.retryAt>Date.now())return;entry.status='loading';delete entry.error;refresh();
    const work=async()=>{
     if(key(recipe,step)!==id){entry.status='new';return}
-    try{const r=await household.recipeImage({recipe,step,create});if(r.status==='ready'){
-      const base=window.MORZSA_CLOUD?.url;if(typeof r.url!=='string'||!base||!r.url.startsWith(base+'/storage/v1/object/sign/'))throw Error('IMAGE_UNAVAILABLE');
+    try{let r;if(household.libraryImage&&(recipe.recipeId||window.MorzsaPersistence&&household.dataRpc)){const saved=recipe.recipeId?recipe:await MorzsaPersistence.ensureRecipe(recipe);r=await household.libraryImage({recipeId:saved.recipeId,step,create})}else r=await household.recipeImage({recipe,step,create});if(r.status==='ready'){
+      const base=window.MORZSA_CLOUD?.url;if(typeof r.url!=='string'||!base||!(r.url.startsWith(base+'/storage/v1/object/sign/')||recipe.recipeId&&r.url.startsWith(base+'/storage/v1/object/public/recipe-catalog/')))throw Error('IMAGE_UNAVAILABLE');
       Object.assign(entry,{status:'ready',url:r.url,expiresAt:r.expiresAt});
-     }else entry.status=r.status==='pending'?'pending':'missing';
+     }else {entry.status=r.status==='pending'?'pending':'missing';if(entry.status==='pending'&&!entry.polls){entry.polls=1;setTimeout(()=>{if(live()){entry.polls=0;load(false)}},5000)}};
     }catch(e){entry.error=Object.hasOwn(errors,e.message)||e.message==='IMAGE_LIMIT'?e.message:e.httpStatus===401?'IMAGE_SIGN_IN_REQUIRED':['AbortError','TimeoutError'].includes(e.name)?'IMAGE_TIMEOUT':'IMAGE_UNAVAILABLE';entry.status=entry.error==='IMAGE_LIMIT'?'limit':'failed';
      if(['IMAGE_COOLDOWN','IMAGE_PROVIDER_LIMIT'].includes(entry.error)){const seconds=Math.min(300,Math.max(1,Number(e.retryAfter)||60));entry.retryAt=Date.now()+seconds*1000;setTimeout(()=>{delete entry.retryAt;refresh()},seconds*1000)}
     }

@@ -36,6 +36,30 @@ const HouseholdLive=(()=>{
   const old=new Map(previous.map(r=>[r.bucket+':'+r.key,JSON.stringify(r.value)]));
   return next.filter(r=>['stock','cart'].includes(r.bucket)&&old.get(r.bucket+':'+r.key)!==JSON.stringify(r.value)).map(r=>({name:r.key,kind:r.bucket==='stock'?(r.value>0?'home':'gone'):r.value===null?'unlisted':r.value.done?'bought':'listed'}));
  }
- return {connect,changedNames,describeChanges};
+ function connectData({url,key,token,userId,onChange,WebSocketImpl=WebSocket,schedule=setTimeout,cancel=clearTimeout,repeat=setInterval,stopRepeat=clearInterval}){
+  let stopped=false,socket=null,timer=null,heartbeat=null,attempt=0,ref=1,awaiting=null;
+  const topic='realtime:private-chats:'+userId;
+  const send=(event,payload={},messageTopic=topic)=>{const id=String(++ref);if(socket?.readyState===1)socket.send(JSON.stringify({topic:messageTopic,event,ref:id,payload}));return id};
+  const retry=()=>{cancel(timer);timer=schedule(dial,Math.min(30000,1000*2**Math.min(attempt++,5)))};
+  const dial=()=>{
+   if(stopped)return;ref=1;awaiting=null;
+   try{socket=new WebSocketImpl(url.replace(/^http/,'ws')+'/realtime/v1/websocket?apikey='+encodeURIComponent(key)+'&vsn=1.0.0')}catch{retry();return}
+   const current=socket;
+   current.onopen=()=>{if(stopped||socket!==current)return;current.send(JSON.stringify({topic,event:'phx_join',ref:'1',payload:{access_token:token,config:{broadcast:{ack:false,self:false},presence:{key:''},postgres_changes:[{event:'*',schema:'public',table:'conversations'},{event:'*',schema:'public',table:'conversation_shares'}]}}}));
+    heartbeat=repeat(()=>{if(awaiting){current.close();return}awaiting=send('heartbeat',{},'phoenix')},20000);
+   };
+   current.onmessage=e=>{if(stopped||socket!==current)return;let m;try{m=JSON.parse(e.data)}catch{return}
+    if(m.event==='phx_reply'&&m.ref===awaiting)awaiting=null;
+    if(m.topic!==topic)return;
+    if(m.event==='postgres_changes')onChange();
+    if(m.event==='phx_reply'&&m.ref==='1'&&m.payload?.status==='ok'){attempt=0;onChange()}
+    if(m.event==='phx_error'||m.event==='phx_close'||m.event==='phx_reply'&&m.payload?.status==='error')current.close();
+   };
+   current.onerror=()=>current.close();current.onclose=()=>{if(socket!==current)return;stopRepeat(heartbeat);heartbeat=null;if(!stopped)retry()};
+  };
+  dial();return {updateToken(next){token=next;if(socket?.readyState===1)send('access_token',{access_token:token})},close(){stopped=true;cancel(timer);stopRepeat(heartbeat);socket?.close()}};
+ }
+
+ return {connect,connectData,changedNames,describeChanges};
 })();
 if(typeof module!=='undefined')module.exports=HouseholdLive;
