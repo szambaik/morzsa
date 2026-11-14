@@ -49,3 +49,15 @@ test('AI receives bounded kitchen context as data and rejects invalid preference
  for(const context of [{preferences:{servings:90}},{low:['Not at home']},{recentCooked:Array(7).fill('a')},{preferences:{...M.defaults,avoid:['x'.repeat(81)]}}])assert.throws(()=>normalizeInput({...request,context:{stock:['Tej'],...context}}),/INVALID_INPUT/);
  assert.equal(normalizeInput({assistant:true,text:'Hi'}).context.preferences,undefined);
 });
+test('recipe choices separate unknown from missing and resolve duplicate ingredient aliases',()=>{
+ const recipe={minutes:20,tags:['vegetarian'],ingredients:[{name:'milk'},{name:'Tej'},{name:'Tojás'},{name:'Liszt'},{name:'Cukor'}]},stock={Tej:2,Tojás:0,Liszt:1};
+ const c=M.recipeChoice(recipe,stock,['Liszt'],n=>n==='milk'?'Tej':n,{diet:'vegetarian',maxMinutes:25});
+ assert.equal(c.total,4);assert.equal(c.confirmed,1);assert.deepEqual(c.out,['Tojás']);assert.deepEqual(c.unknown,['Liszt','Cukor']);assert.equal(c.ready,false);assert.equal(c.timeFits,true);assert.equal(c.dietFits,true);
+ const ready=M.recipeChoice({minutes:20,ingredients:[{name:'Tej'},{name:'Liszt'}]},stock);
+ assert.equal(ready.ready,true);assert.equal(ready.confirmed,2);assert.equal(ready.timeFits,false);assert.equal(ready.dietFits,false);assert.equal(M.recipeChoice({ingredients:[]},stock).ready,false);
+});
+test('dashboard replenishment prioritizes explicit shortages and repeat purchases, preserves list quantities',()=>{
+ const now=Date.now(),history=[1,2].map(i=>({id:String(i),date:new Date(now-i*1000).toISOString(),items:[{name:'Tej'}]}));
+ const source={stock:{Tojás:0,Tej:0,Alma:1,Liszt:3},cart:[{name:'tej',quantity:8,done:false}],history},before=JSON.stringify(source);
+ const result=M.replenishment(source,now);assert.deepEqual(result.map(i=>i.name),['Tej','Tojás','Alma']);assert.equal(result[0].listed,true);assert.equal(result[2].status,'low');assert.equal(JSON.stringify(source),before);
+});

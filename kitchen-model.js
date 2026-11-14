@@ -30,6 +30,16 @@ const KitchenModel=(()=>{
   const recurring=out.filter(n=>(trips.get(norm(n))||0)>=2).sort(rank);
   for(const [type,source] of [['low',low],['recurring',recurring]]){const names=source.filter(n=>!(deferred['refill:'+n]>now)).slice(0,3);if(names.length)return {id:'refill:'+names.join('|'),type,names}}return null;
  }
+ function recipeChoice(recipe,stock={},uncertain=[],resolve=n=>n,prefs={}){
+  const groups={home:[],low:[],out:[],unknown:[]},seen=new Set();
+  for(const item of recipe.ingredients||[]){const name=resolve(Array.isArray(item)?item[0]:item.name);if(seen.has(name))continue;seen.add(name);const status=!Object.hasOwn(stock,name)||uncertain.includes(name)?'unknown':stock[name]===0?'out':stock[name]===1?'low':stock[name]>1?'home':'unknown';groups[status].push(name)}
+  const p=preferences(prefs),minutes=recipe.minutes||recipe.time||0;
+  return {...groups,total:seen.size,confirmed:groups.home.length+groups.low.length,ready:!!seen.size&&!groups.out.length&&!groups.unknown.length,timeFits:!!p.maxMinutes&&minutes>0&&minutes<=p.maxMinutes,dietFits:p.diet!=='any'&&!!recipe.tags?.includes(p.diet),diet:p.diet,maxMinutes:p.maxMinutes};
+ }
+ function replenishment(state,now=Date.now()){
+  const trips=new Map(purchasePatterns(state.history,now).map(i=>[norm(i.name),i.count]));
+  return Object.entries(state.stock).filter(([,n])=>n===0||n===1).map(([name,n])=>({name,status:n===0?'out':'low',listed:state.cart.some(i=>norm(i.name)===norm(name)&&!i.done)})).sort((a,b)=>(a.status==='out'?0:1)-(b.status==='out'?0:1)||(trips.get(norm(b.name))||0)-(trips.get(norm(a.name))||0)||a.name.localeCompare(b.name,'hu'));
+ }
  function context(prefs,book,events,stock,now=Date.now()){return {preferences:preferences(prefs),recentCooked:recentRecipes(book,events,now),low:Object.keys(stock).filter(n=>stock[n]===1).slice(0,1000)}}
  function accepts(recipe,prefs,products=[],english={}){
   const p=preferences(prefs),ingredients=recipe.ingredients||[];if(p.maxMinutes&&(recipe.time||recipe.minutes)>p.maxMinutes)return false;
@@ -39,6 +49,6 @@ const KitchenModel=(()=>{
    if(p.diet==='vegan'&&(category==='Tejtermék és tojás'||/^(mez|honey)\b/.test(label)))return false;return true;
   });
  }
- return {defaults,preferences,preferenceChanges,fromRows,recentRecipes,purchasePatterns,patterns,shoppingSuggestion,context,accepts};
+ return {recipeChoice,replenishment,defaults,preferences,preferenceChanges,fromRows,recentRecipes,purchasePatterns,patterns,shoppingSuggestion,context,accepts};
 })();
 if(typeof module!=='undefined')module.exports=KitchenModel;
