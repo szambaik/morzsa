@@ -15,7 +15,7 @@ const RecipeRoomModel = (() => {
  // Only a couple of visually useful techniques get automatic illustrations.
  // Measuring, ordinary mixing and waiting retain their manual image action.
  function visualSteps(r){
-  const useful=/hajtogat|hajtsd|form[aá]z|gomb[oó]c|ny[uú]jt|tekercs|tekerd|aranybarn|pir[ií]ts|k[ée]reg|habos|kr[ée]mes|s[űu]r[űu]|fold|shape|roll out|golden|brown|crust|whip|creamy|thicken/i;
+  const useful=/hajtogat|hajtsd|form[aá]z|gomb[oó]c|ny[uú]jt|tekercs|tekerd|aranybarn|aranysz[ií]n|pir[ií]ts|k[ée]reg|habos|kr[ée]mes|s[űu]r[űu]|fold|shape|roll out|golden|brown|crust|whip|creamy|thicken/i;
   return (r.steps||[]).map((s,i)=>useful.test(s)?i:-1).filter(i=>i>=0).slice(0,2);
  }
  function ingredientStatus(stock,name,uncertain=[]){
@@ -23,6 +23,11 @@ const RecipeRoomModel = (() => {
   return stock[name]===0?'out':stock[name]===1?'low':stock[name]>1?'home':'unknown';
  }
  const identity=r=>JSON.stringify([r.title,r.ingredients,r.steps]);
+ function ingredientSummary(r,stock,resolve=n=>n,uncertain=[]){
+  const counts={home:0,low:0,out:0,unknown:0,total:r.ingredients.length};
+  for(const i of r.ingredients)counts[ingredientStatus(stock,resolve(i.name),uncertain)]++;
+  return {...counts,confirmed:counts.home+counts.low};
+ }
  const conversationKey=(user,home,lang)=>'morzsa-recipe-room-v1:'+JSON.stringify([user||'guest',home||'local',lang]);
  const favouritesKey=user=>'morzsa-recipe-favourites-v1:'+JSON.stringify(user||'guest');
  function messages(value){return (Array.isArray(value)?value:[]).filter(m=>m&&['user','model'].includes(m.role)&&text(m.text,4000)).slice(-20).map(m=>({role:m.role,text:m.text,...(m.role==='user'&&text(m.request,2000)?{request:m.request}:{}),recipes:(Array.isArray(m.recipes)?m.recipes:[]).map(recipe).filter(Boolean).slice(0,3)}))}
@@ -45,6 +50,6 @@ const RecipeRoomModel = (() => {
   const added=[];for(const i of r.ingredients){const name=resolve(i.name),key=norm(name);if(stock.has(key)||known.has(key))continue;known.add(key);added.push({name,source:r.title,quantity:1,unit:unitFor(name),done:false})}
   return {...source,cart:[...source.cart,...added]};
  }
- return {recipe,stepTitle,visualSteps,ingredientStatus,identity,conversationKey,favouritesKey,messages,favourites,toggle,history,addMissing};
+ return {recipe,stepTitle,visualSteps,ingredientStatus,ingredientSummary,identity,conversationKey,favouritesKey,messages,favourites,toggle,history,addMissing};
 })();
 if(typeof module!=='undefined')module.exports=RecipeRoomModel;

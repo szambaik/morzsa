@@ -18,6 +18,16 @@ const englishRecipes=[
 ['Peach yoghurt cups','Fresh peaches, cool yoghurt and crunchy muesli. Two lovely little cups.',['Wash and dice the peaches. Sweeten the yoghurt with honey to taste.','Layer the yoghurt and peaches in two glasses.','Add the muesli just before serving so it stays crunchy.']]
 ];
 recipes.forEach((r,i)=>{const e=englishRecipes[i];uiEnglish[r.name]=e[0];uiEnglish[r.desc]=e[1];r.steps.forEach((s,j)=>uiEnglish[s]=e[2][j])});
+const englishStepTitles=[
+ ['Frying the crêpes','Creamy filling','Folding and baking the parcels'],
+ ['Preparing the rice','Frying the vegetables','Combining eggs and rice'],
+ ['Cooking the pasta','Frying ham and mushrooms','Making the creamy sauce'],
+ ['Thawing and preparation','Honey mustard marinade','Roasting with potatoes','Checking doneness'],
+ ['Bacon and onion base','Adding paprika and potatoes','Gentle simmering'],
+ ['Sauce and tortilla','Assembling the filling','Folding and toasting the wrap'],
+ ['Fruit and yoghurt','Layering the glasses','Crunchy topping']
+];
+recipes.forEach((r,i)=>r.stepTitles?.forEach((title,j)=>{uiEnglish[title]=englishStepTitles[i][j]}));
 uiEnglish['Háztartás']='Household';
 uiEnglish['Áttekintés']='Overview';uiEnglish['Receptek']='Recipes';
 Object.assign(uiEnglish,{'Készlet műveletek':'Pantry actions','Készlet ürítése':'Clear pantry','Kiüríted a készletet?':'Clear your pantry?','Minden otthonjelölést eltávolítunk. A bevásárlólista és a saját termékeid megmaradnak.':'All at-home marks will be removed. Your shopping list and custom products will be kept.','A közös háztartás minden tagjának készlete kiürül.':'The pantry will be cleared for everyone in this household.','Tej, kenyér, alma…':'Milk, bread, apples…'});

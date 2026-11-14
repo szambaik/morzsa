@@ -443,3 +443,101 @@ button:focus-visible,summary:focus-visible,a:focus-visible,input:focus-visible,t
 @media(min-width:1000px){.workspace-cooking .cooking-flow .cooking-steps{display:grid;gap:16px}}
 
 @media(min-width:1000px){.workspace-cooking .cooking-guide:has(#cooking-ingredients){grid-template-areas:'summary summary' 'view view' 'method ingredients-heading' 'steps ingredients'}.cooking-view-toggle{grid-area:view}}
+
+/* Recipe inspection is separate from an active cooking conversation. */
+.room-title-open{display:block;width:100%;min-height:44px;text-align:left;padding:0;border:0;background:transparent;color:inherit;font:inherit;letter-spacing:inherit}
+.recipe-reading-back{display:flex;align-items:center;gap:8px;min-height:44px;padding:8px 0;border:0;background:transparent;color:var(--green);font:600 14px Inter,system-ui,sans-serif}
+.recipe-reading-back img{transform:rotate(180deg)}
+.recipe-reading-hero .room-art{position:relative;height:240px;overflow:hidden;border-radius:24px;background:#f4eddd;display:grid;place-content:center;margin:10px 0 20px}
+.recipe-reading-hero .room-food-art img{width:100px;height:120px}
+.recipe-reading-hero h1{font:650 30px/1.25 Sora,system-ui,sans-serif;letter-spacing:-.8px;margin:8px 0 12px}
+.recipe-reading-hero>p:last-child{font-size:16px;line-height:1.75;color:var(--muted)}
+.recipe-reading-export{display:flex;justify-content:flex-end;gap:8px;margin:10px 0}
+.recipe-reading-export button{display:grid;place-items:center;min-width:44px;min-height:44px;border:0;border-radius:12px;background:var(--sage)}
+.recipe-reading-detail .recipe-method{margin:26px 0}
+.recipe-reading-detail .recipe-method summary{min-height:44px;font:650 22px Sora,system-ui,sans-serif;color:var(--green)}
+.recipe-reading-detail .recipe-method ol{padding-left:24px}
+.recipe-reading-detail .recipe-method li{padding:16px 0}
+.recipe-reading-detail .recipe-method li strong{display:block;font-size:18px;line-height:1.5}
+.recipe-reading-detail .recipe-method li p{font-size:16px;line-height:1.8;margin:12px 0}
+.recipe-reading-start{margin:20px 0 28px}
+.recipe-reading-start button{width:100%;min-height:52px;justify-content:center;gap:10px;background:var(--green);color:var(--white)}
+.recipe-reading-start img{filter:brightness(0) invert(1)}
+.cooking-reading-dock{display:none}
+.cooking-reading .companion-compose-wrap>:not(.cooking-reading-dock){display:none}
+.cooking-reading .cooking-reading-dock{display:flex;gap:8px;padding:8px;border:1px solid var(--line);border-radius:20px;background:var(--white);box-shadow:0 3px 12px #203f3210}
+.cooking-reading-dock button{display:flex;align-items:center;justify-content:center;gap:8px;flex:1;min-height:44px;border:0;background:transparent;color:var(--green);font:600 13px Inter,system-ui,sans-serif;border-radius:12px;padding:8px}
+.cooking-reading-dock button:last-child{background:var(--sage)}
+.cooking-reading .companion-message,.cooking-reading .cooking-chat-hint{display:none}
+.cooking-reading .companion{padding-bottom:105px}
+@media(min-width:1000px){.recipe-reading{max-width:850px;margin-inline:auto}.recipe-reading-hero .room-art{height:340px}.recipe-reading-hero h1{font-size:38px}}
+@media(max-width:360px){.recipe-reading-hero .room-art{height:200px}.recipe-reading-hero .room-food-art img{width:82px;height:100px}.recipe-reading-hero h1{font-size:26px}.cooking-reading-dock button{font-size:12px;gap:5px}}
+
+/* A focused store experience, sharing the regular list and its offline outbox. */
+.shopping-start-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:12px 0 16px}
+.shopping-start-actions button{display:flex;align-items:center;gap:9px;min-height:48px;background:var(--green)}
+.shopping-start-actions img{filter:brightness(0) invert(1)}
+.shopping-start-actions span{font-size:12px;color:var(--muted)}
+.shopping-mode .app>header,.shopping-mode .app>nav,.shopping-mode #workspace-sidebar,.shopping-mode #cooking-resume,.shopping-mode #workspace-assistant{display:none!important}
+.shopping-mode .app{max-width:800px;margin:auto;padding:0 16px}
+.shopping-mode #main{padding:0 0 155px;max-width:none;margin:0}
+.shopping-mode-heading{display:flex;align-items:center;gap:12px;min-height:78px}
+.shopping-mode-heading h1{font:650 22px Sora,system-ui,sans-serif;margin:0 0 5px}
+.shopping-mode-heading span{font-size:12px;color:var(--muted)}
+.shopping-mode-heading>div{flex:1;min-width:0}
+.shopping-mode-heading>button{display:grid;place-items:center;width:44px;height:44px;flex:none;border:0;border-radius:13px;background:var(--sage)}
+.shopping-mode-heading>button:first-child img{transform:rotate(180deg)}
+.shopping-mode progress{width:100%;height:6px;border:0;border-radius:6px;overflow:hidden;accent-color:var(--green);background:var(--sage);display:block;margin:0 0 12px}
+.shopping-mode progress::-webkit-progress-bar{background:var(--sage)}
+.shopping-mode progress::-webkit-progress-value{background:var(--green)}
+.shopping-mode-search{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:8px;background:var(--bg);padding:8px 0}
+.shopping-mode-search input{flex:1;min-width:0;min-height:44px;border:1px solid var(--line);background:var(--white);border-radius:13px;font-size:16px;padding:10px 12px}
+.shopping-mode-search button{flex:none;min-height:44px;border:0;background:transparent;font-size:12px;color:var(--green);padding:8px}
+.shopping-category-nav{position:sticky;top:60px;z-index:5;display:flex;gap:8px;overflow:auto;padding:8px 0 12px;background:var(--bg);scrollbar-width:none}
+.shopping-category-nav button{min-height:44px;white-space:nowrap;border:1px solid var(--line);border-radius:13px;padding:8px 12px;background:var(--white);font-size:12px;color:var(--green)}
+.shopping-category-nav button[data-complete=true]{background:var(--sage);color:var(--muted)}
+.shopping-category-nav small{margin-left:6px}
+.shopping-mode-items section{scroll-margin-top:132px;margin:16px 0}
+.shopping-mode-items h2{font:600 15px/1.5 Inter,system-ui,sans-serif;color:var(--muted);margin:0;padding:8px 0}
+.shopping-mode-items h2 small{margin-left:8px}
+.shopping-mode-row{display:flex;align-items:center;gap:10px;min-height:68px;padding:8px 0;border-bottom:1px solid var(--line)}
+.shopping-mode-check{display:grid;place-items:center;flex:none;width:44px;height:44px;border:1px solid #b5c4a2;border-radius:13px;background:var(--white);padding:10px}
+.shopping-mode-check[aria-pressed=false] img{opacity:0}
+.shopping-mode-check[aria-pressed=true]{background:var(--green);border-color:var(--green)}
+.shopping-mode-check[aria-pressed=true] img{filter:brightness(0) invert(1)}
+.shopping-mode-row .list-item-copy{flex:1;min-width:0;display:grid;gap:4px}
+.shopping-mode-row strong{font-size:16px;line-height:1.35;overflow-wrap:anywhere}
+.shopping-mode-row small{font-size:10px;color:var(--muted)}
+.shopping-mode-row.done strong{text-decoration:line-through;color:var(--muted)}
+.shopping-mode-row .quantity-badge{display:flex;align-items:center;gap:5px;max-width:110px;min-height:44px;flex:none;border:0;background:transparent;font-size:12px;color:var(--muted);padding:8px 3px}
+.shopping-mode-row .quantity-badge img{width:16px;height:16px}
+.shopping-mode-row mark{background:var(--orange-soft);color:inherit;border-radius:3px}
+.shopping-purchased{margin:20px 0;scroll-margin-top:130px}
+.shopping-purchased summary{display:flex;align-items:center;gap:8px;min-height:48px;cursor:pointer;font-size:14px;color:var(--green);background:var(--sage);padding:12px;border-radius:14px}
+.shopping-mode-dock{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:calc(100% - 32px);max-width:768px;z-index:12;background:var(--bg);padding:12px 0 calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--line)}
+.shopping-mode-dock form{display:flex;gap:8px;background:var(--white);border:1px solid var(--line);border-radius:16px;padding:5px}
+.shopping-mode-dock input{flex:1;min-width:0;border:0;background:transparent;min-height:44px;font-size:16px;padding:9px 10px}
+.shopping-mode-dock form button{display:grid;place-items:center;flex:none;width:44px;height:44px;border:0;border-radius:12px;background:var(--sage)}
+.shopping-mode-dock>div{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:8px}
+.shopping-mode-dock small{font-size:10px;color:var(--muted);max-width:160px;line-height:1.5}
+.shopping-mode-dock .primary{min-height:44px;padding:10px 14px;font-size:13px;background:var(--green)}
+.shopping-mode-empty{font-size:15px;line-height:1.7;color:var(--muted);padding:15px 0}
+.shopping-route-editor{max-height:50dvh;overflow:auto;margin:20px 0}
+.shopping-route-editor>div{display:flex;align-items:center;gap:6px;min-height:50px;border-bottom:1px solid var(--line)}
+.shopping-route-editor span{flex:1;font-size:13px}
+.shopping-route-editor button{display:grid;place-items:center;min-width:44px;min-height:44px;border:0;background:transparent}
+.shopping-route-editor [data-route-down] img{transform:rotate(180deg)}
+.quantity-remove{color:#91442b;margin-top:12px;min-height:44px}
+#shopping-removal-undo{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--sage);border-radius:12px;padding:8px 12px;margin:12px 0;font-size:13px}
+#shopping-removal-undo button{min-height:44px;border:0;background:transparent;font-weight:600;color:var(--green)}
+#shopping-removal-undo:empty{display:none}
+.shopping-finish-summary{font-size:13px;line-height:1.7;color:var(--green);padding:12px;background:var(--sage);border-radius:12px}
+@media(max-width:360px){.shopping-mode .app{padding-inline:12px}.shopping-mode-row{gap:8px}.shopping-mode-row strong{font-size:15px}.shopping-mode-row .quantity-badge{max-width:90px}}
+.shopping-mode-dock input:focus{outline:none;box-shadow:none}
+.shopping-mode-dock form:focus-within{border-color:var(--green);box-shadow:0 0 0 2px #38614812}
+.shopping-mode .assistant-dock{display:none!important}
+.shopping-mode-screen .shopping-mode-heading{background:transparent}
+.shopping-mode-dock{bottom:var(--shopping-keyboard,0px)}
+.native-app.keyboard-open .shopping-mode-dock{bottom:8px}
+.cooking-reading #companion-form{display:none}
+.cooking-reading-dock svg{width:22px;height:22px;flex:none}
