@@ -48,7 +48,7 @@
  const plusPayload=(task,payload)=>({...payload,task,householdId:cloud.active,requestId:payload.requestId||crypto.randomUUID()});
  cloud.plusStatus=()=>request('/functions/v1/plus-assistant'+(cloud.active?'?householdId='+encodeURIComponent(cloud.active):''),undefined,!!session);
  cloud.realtimeStart=payload=>request('/functions/v1/plus-assistant',plusPayload('connect',payload),true,'POST',30000);
- cloud.realtimeEnd=requestId=>request('/functions/v1/plus-assistant',plusPayload('end',{requestId}),true,'POST',15000);
+ cloud.realtimeEnd=(requestId,diagnostic={})=>request('/functions/v1/plus-assistant',plusPayload('end',{requestId,...diagnostic}),true,'POST',15000);
  cloud.voiceStatus=()=>window.AIMode?.isPlus()?cloud.plusStatus():request('/functions/v1/voice-command',undefined,false);
  cloud.voiceCommand=payload=>{if(!session)throw Error('VOICE_SIGN_IN_REQUIRED');return request(window.AIMode?.isPlus()?'/functions/v1/plus-assistant':'/functions/v1/voice-command',window.AIMode?.isPlus()?plusPayload('chat',payload):payload,true,'POST',60000)};
  cloud.voiceCommandStream=(payload,onAnswer,signal)=>{if(!session)throw Error('VOICE_SIGN_IN_REQUIRED');return request(window.AIMode?.isPlus()?'/functions/v1/plus-assistant':'/functions/v1/voice-command',window.AIMode?.isPlus()?plusPayload('chat',{...payload,stream:true}):{...payload,stream:true},true,'POST',60000,{onAnswer,signal})};
@@ -188,11 +188,13 @@
  }
  function positionHouseholdMenu(){
   const anchor=document.getElementById('household-button').getBoundingClientRect(),v=window.visualViewport,offset=v?.offsetTop||0,height=v?.height||innerHeight,width=Math.min(360,innerWidth-24),top=Math.max(offset+8,Math.min(anchor.bottom+8,offset+height-180));
+  if(matchMedia('(min-width:1000px)').matches&&document.getElementById('household-button').closest('#workspace-sidebar')){const left=document.getElementById('workspace-sidebar').getBoundingClientRect().right+12,menuHeight=Math.min(620,height-32),menuTop=Math.max(offset+16,anchor.bottom-menuHeight);q.style.width=width+'px';q.style.left=Math.min(left,innerWidth-width-16)+'px';q.style.top=menuTop+'px';q.style.maxHeight=menuHeight+'px';return}
+  if(document.getElementById('household-button').closest('#companion-history')){q.style.width=width+'px';q.style.left=Math.max(12,(innerWidth-width)/2)+'px';q.style.top=(offset+16)+'px';q.style.maxHeight=Math.max(140,height-32)+'px';return}
   q.style.width=width+'px';q.style.left=Math.max(12,Math.min(anchor.right-width,innerWidth-width-12))+'px';q.style.top=top+'px';q.style.maxHeight=Math.max(140,offset+height-top-12)+'px';
  }
  async function open(){
   q.innerHTML='<button class="close" aria-label="'+say('Bezárás','Close')+'">×</button><h2>'+say('Konyháim','My kitchens')+'</h2><p class="household-error" role="alert"></p><div id="household-body"></div>';
-  q.querySelector('.close').onclick=()=>q.close();const guide=document.createElement('button');guide.className='kitchen-help';guide.textContent=say('Hogyan használjam?','How do I use this?');guide.onclick=()=>{q.close();window.MorzsaOnboarding?.open()};q.querySelector('h2').after(guide);q.classList.add('household-menu');positionHouseholdMenu();if(!q.open)q.showModal();document.getElementById('household-button').setAttribute('aria-expanded','true');const body=q.querySelector('#household-body');
+  q.querySelector('.close').onclick=()=>q.close();const guide=document.createElement('button');guide.className='kitchen-help';guide.textContent=say('Hogyan használjam?','How do I use this?');guide.onclick=()=>{q.close();document.getElementById("companion-history")?.close();window.MorzsaOnboarding?.open()};q.querySelector('h2').after(guide);q.classList.add('household-menu');positionHouseholdMenu();if(!q.open)q.showModal();document.getElementById('household-button').setAttribute('aria-expanded','true');const body=q.querySelector('#household-body');
   if(!configured){body.innerHTML='<p>'+say('A közös háztartás előkészítve. A bejelentkezéshez és megosztáshoz még be kell kötni a felhőszolgáltatást.','Shared households are prepared. Connect the cloud service to enable sign-in and sharing.')+'</p><p>'+say('Addig a készleted és listád csak ezen a böngészőn mentődik.','Until then, your pantry and list are saved in this browser only.')+'</p>';return}
   if(authPending){body.innerHTML='<p role="status">'+say('Belépési link ellenőrzése…','Checking your sign-in link…')+'</p>';return}
   if(recoveryMode){paintPasswordReset(body);return}

@@ -78,6 +78,8 @@ const CompanionModel = (() => {
   return next;
  }
  function history(messages,limit=6){return messages.slice(-Math.min(12,limit)).map(m=>({role:m.role,text:(m.text+(m.photo?' [Photo was attached; image is not available in this history.]':'')+(m.recipes?.length?' Recipes: '+JSON.stringify(m.recipes):'')+(m.result?' Change status: '+m.result:'')).slice(0,5000)}))}
+ function voiceHistory(messages){const roots=messages.map((m,i)=>m.role==='user'?i:-1).filter(i=>i>=0).slice(0,2),recent=messages.map((_,i)=>i).slice(-10),indices=[...new Set([...roots,...recent])].sort((a,b)=>a-b);return history(indices.map(i=>messages[i]),12)}
+ function voicePage(messages,{offset=0,query=null}={}){if(!Number.isInteger(offset)||offset<0||typeof query!=='string'&&query!==null||query?.length>120)return {error:'Invalid history query'};const q=(query||'').toLocaleLowerCase(),found=messages.map((m,index)=>({m,index})).filter(({m})=>!q||(m.text+' '+(m.recipes||[]).map(r=>r.title).join(' ')).toLocaleLowerCase().includes(q));return {total:found.length,messages:found.slice(offset,offset+4).map(({m,index})=>({index,role:m.role,text:m.text.slice(0,2500),createdAt:m.createdAt,recipes:(m.recipes||[]).slice(0,1),result:m.result,...(m.photo?{photoUnavailable:true}:{})})),nextOffset:offset+4<found.length?offset+4:null}}
  function reviewPreview(reviews,stock,deferred={},now=Date.now()){return reviews.filter(i=>stock[i.name]>0&&!(deferred['review:'+i.name]>now)).slice(0,8)}
  function suggestion(state,reviews,removed=[],deferred={},now=Date.now()){
   const allowed=id=>!(deferred[id]>now),bought=state.cart.filter(i=>i.done);
@@ -93,6 +95,6 @@ const CompanionModel = (() => {
  function changes(before,after){
   const changes=[];for(const bucket of ['stock','cart','history']){const entries=s=>bucket==='stock'?Object.entries(s.stock):s[bucket].map(i=>[bucket==='history'?i.id:i.name,i]),a=new Map(entries(before)),b=new Map(entries(after));for(const key of new Set([...a.keys(),...b.keys()]))if(JSON.stringify(a.get(key))!==JSON.stringify(b.get(key)))changes.push({bucket,key,before:a.get(key),after:b.get(key)})}return changes;
  }
- return {thumbnail,key,fresh,normalize,previousWorkspaceKey,dailyWorkspaceKey,workspaceKey,workspace,startChat,archiveThread,historyGroups,dayKey,dayGroups,currentMessages,archiveMain,startRecipe,setCookingStep,completeCookingStep,finishRecipe,recipeKey,history,reviewPreview,suggestion,fingerprint,changes};
+ return {thumbnail,key,fresh,normalize,previousWorkspaceKey,dailyWorkspaceKey,workspaceKey,workspace,startChat,archiveThread,historyGroups,dayKey,dayGroups,currentMessages,archiveMain,startRecipe,setCookingStep,completeCookingStep,finishRecipe,recipeKey,history,voiceHistory,voicePage,reviewPreview,suggestion,fingerprint,changes};
 })();
 if(typeof module!=='undefined')module.exports=CompanionModel;

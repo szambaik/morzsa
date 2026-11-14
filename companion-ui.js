@@ -116,7 +116,7 @@ window.MorzsaCompanion=(()=>{
  }
  function goMain(text='',origin=''){composerOrigin=origin;sync();if((busy||saving||pending||preparing)&&page!=='chat')open();if(selectThread(mainThread().id)&&text){draft=text;renderChat();main.querySelector('#companion-input')?.focus()}}
  function ask(text){sync();if(!canSwitch())return false;if(!selectThread(mainThread().id))return false;send(text);return true}
- function askVoice(){sync();if(!canSwitch())return false;if(!selectThread(mainThread().id))return false;voice();return true}
+ function askVoice(){sync();if(!canSwitch())return false;if(page!=='chat'&&!selectThread(mainThread().id))return false;voice();return true}
  function newChat(){
   sync();if(!canSwitch())return;
   if(thread()?.kind!=='recipe'&&!thread()?.archivedAt&&!thread()?.messages.length){closePanels();open();main.querySelector('#companion-input')?.focus();return}
@@ -151,7 +151,7 @@ window.MorzsaCompanion=(()=>{
   const operations=VoiceModel.resolve(output,[...catalog,...state.custom],productEnglish,QuickEntry);
   append({role:'model',text:output.answer||output.clarification||(operations.length?say('Így módosítanám. Nézd át, mielőtt mentjük.','Here are the proposed changes. Review before saving.'):say('Pontosítanád egy kicsit?','Could you clarify?')),recipes:(output.recipes||[]).map(RecipeRoomModel.recipe).filter(Boolean),...(operations.length?{result:say('Javaslat, nincs mentve.','Proposed, not saved.')}:output.clarification?{result:say('Pontosítás szükséges.','Clarification needed.')}:{})});
   window.RecipeImages?.enqueue((output.recipes||[]).map(RecipeRoomModel.recipe).filter(Boolean));
-  pending=operations.length?{operations,output,stamp:fingerprint(operations),thread:book.active}:null;startReveal(shown);
+  pending=operations.length?{operations,output,stamp:fingerprint(operations),thread:book.active,message:thread().messages.length-1}:null;startReveal(shown);
  }
  function requestContext(){return {assistant:true,companion:true,destination:'stock',language,context:{...(window.KitchenIntelligence?.context(book)||{}),...(isCooking()?{cookingRecipe:thread().recipe,cookingStep:thread().cookingStep||0}:{}),stock:Object.keys(state.stock).filter(n=>state.stock[n]>0).slice(0,1000),cart:state.cart.slice(0,1000).map(i=>({name:i.name,quantity:i.quantity||1,unit:i.unit||productUnit(i.name)})),uncertain:(PantryReview?.uncertain()||[]).slice(0,1000)},history:M.history(M.currentMessages(thread()),12)}}
  async function send(value,retry=false,recipeRequestOnly=false){
@@ -169,7 +169,8 @@ window.MorzsaCompanion=(()=>{
   const current=context,tid=book.active;
   if(window.AIMode?.isPlus()&&window.MorzsaRealtime){
    const valid=()=>current===scope()&&tid===book.active;
-   MorzsaRealtime.open({valid,context:requestContext,onUser:text=>{if(!valid())return;append({role:'user',text:text.slice(0,3000),recipes:[]});renderChat();scrollEnd()},onAssistant:text=>{if(!valid())return;append({role:'model',text:text.slice(0,5000),recipes:[]});renderChat();scrollEnd()},tools:{
+   const messages=()=>{const parent=isCooking()?book.threads.find(t=>t.id===thread().parentId):null;return [...(parent?.messages||[]),...thread().messages]};
+   MorzsaRealtime.open({valid,context:()=>({...requestContext(),history:M.voiceHistory(messages())}),history:args=>valid()?M.voicePage(messages(),args):{error:'Conversation changed'},onUser:text=>{if(!valid())return;append({role:'user',text:text.slice(0,3000),recipes:[]});renderChat();scrollEnd()},onAssistant:text=>{if(!valid())return;append({role:'model',text:text.slice(0,5000),recipes:[]});renderChat();scrollEnd()},tools:{
     propose:(operations,transcript)=>{if(!valid()||pending||saving||busy)return {proposed:false,reason:'An earlier proposal is waiting for review.'};const output={transcript,answer:say('Nézd át, majd mondd: „mentheted”.','Review, then say “save changes”.'),clarification:'',operations,recipes:[]};if(!VoiceModel.validate(output))return {proposed:false};receive(output,'');renderChat();scrollEnd();return {proposed:true,items:pending?.operations.map(o=>({name:displayName(o.name),action:labels(o),recognized:o.confirmed}))||[]}},
     confirm:async()=>{if(!valid()||!pending)return {saved:false,reason:'No proposal to save.'};const saved=await apply();return {saved:saved===true,reason:saved?'Saved.':'Review the proposal in the chat; data may have changed or a product may need clarification.'}},
     recipe:async request=>{if(!valid()||pending||busy||saving)return {created:false};await send(request);if(!valid())return {created:false};return {created:!error,recipes:thread().messages.at(-1)?.recipes||[],error:error||undefined}},
@@ -180,7 +181,7 @@ window.MorzsaCompanion=(()=>{
   }
   openVoiceCommand('voice','',{history:M.history(M.currentMessages(thread())),...(isCooking()?{cookingRecipe:thread().recipe,cookingStep:thread().cookingStep||0}:{}),onOutput:output=>{if(current!==scope()||tid!==book.active)return;try{receive(output);quietUntil=Date.now()+600000;open();scrollEnd()}catch(e){toast(voiceError(e))}}});
  }
- function markResult(result,operations=[]){if(!pending)return;const message=thread().messages.at(-1);message.result=(result+(operations.length?' '+operations.slice(0,4).map(o=>displayName(o.name)+' · '+labels(o)).join('; ')+(operations.length>4?say(' és további ',' and ')+(operations.length-4)+say(' módosítás.',' more changes.'):''):'' )).slice(0,500);pending=null;persist()}
+ function markResult(result,operations=[]){if(!pending)return;const message=thread().messages[pending.message]||thread().messages.at(-1);message.result=(result+(operations.length?' '+operations.slice(0,4).map(o=>displayName(o.name)+' · '+labels(o)).join('; ')+(operations.length>4?say(' és további ',' and ')+(operations.length-4)+say(' módosítás.',' more changes.'):''):'' )).slice(0,500);pending=null;persist()}
  async function apply(){
   const p=pending;if(!p||saving||household?.busy||household?.cartPending)return;
   if(scope()!==context){sync();renderChat();return}
@@ -343,7 +344,7 @@ window.MorzsaCompanion=(()=>{
  }
  function history(){
   sync();if(matchMedia('(min-width:1000px)').matches){renderHistoryRail();document.querySelector('#companion-history-rail [aria-current="true"]')?.focus();return null}
-  const q=panel('companion-history');q.innerHTML=historyMarkup();bindHistory(q);if(!q.open)q.showModal();return q;
+  const q=panel('companion-history');q.innerHTML=historyMarkup();bindHistory(q);window.MorzsaWorkspace?.attachSettings(q);if(!q.open)q.showModal();return q;
  }
  function removed(names){sync();removedNames=[...new Set([...names,...removedNames])].slice(0,10);updateNudge()}
  function nudge(){if(isCooking()||busy||saving||pending)return null;const existing=M.suggestion(state,PantryReview?.candidates()||[],removedNames,deferred),refill=typeof KitchenModel==='undefined'?null:KitchenModel.shoppingSuggestion(state,deferred),n=['bought','restock'].includes(existing?.type)?existing:refill||existing;return ['review','low','recurring'].includes(n?.type)&&Date.now()<quietUntil?null:n}
@@ -436,5 +437,5 @@ window.MorzsaCompanion=(()=>{
  setInterval(()=>{if(!document.hidden&&page==='chat'&&!busy&&!saving&&!pending&&!preparing&&renderedDay!==M.dayKey(Date.now()))renderChat()},30000);
  sync();queueMicrotask(()=>render());
  window.addEventListener('morzsa-ai-mode-change',()=>{requestController?.abort();serial++;busy=false;error='';resetStream();if(page==='chat')renderChat();else render()});
- return {openContext:origin=>{goMain('',origin);main.querySelector('#companion-input')?.focus()},newChat,recipeThreads:()=>{sync();return M.historyGroups(book).recipes.filter(t=>t.recipe).map(t=>({id:t.id,title:t.title,status:t.status,updated:t.updated,recipe:structuredClone(t.recipe)}))},openThread:selectThread,ask,voice:askVoice,render:renderChat,open:goMain,onNavigate,updateNudge,removed,quick,refreshQuick:()=>refreshQuick(),purchaseSaved:(before,after,ctx)=>showVoiceUndo(M.changes(before,after),ctx),discuss,showRecipe:r=>window.RecipeRoom?.open(r)};
+ return {openHistory:history,openContext:origin=>{goMain('',origin);main.querySelector('#companion-input')?.focus()},newChat,recipeThreads:()=>{sync();return M.historyGroups(book).recipes.filter(t=>t.recipe).map(t=>({id:t.id,title:t.title,status:t.status,updated:t.updated,recipe:structuredClone(t.recipe)}))},openThread:selectThread,ask,voice:askVoice,render:renderChat,open:goMain,onNavigate,updateNudge,removed,quick,refreshQuick:()=>refreshQuick(),purchaseSaved:(before,after,ctx)=>showVoiceUndo(M.changes(before,after),ctx),discuss,showRecipe:r=>window.RecipeRoom?.open(r)};
 })();

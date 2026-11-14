@@ -1,4 +1,4 @@
-# Receptek és képek tartós mentése
+# Tartós receptkönyv és személyre szabott receptfeed
 
 Tervezési állapot: 2026. november 14. Ez megvalósítási terv; az alábbi új recepttáblák még nem települtek.
 
@@ -6,7 +6,7 @@ Tervezési állapot: 2026. november 14. Ez megvalósítási terv; az alábbi új
 
 A teljes elkészült receptet és a hozzá tartozó képeket tartósan mentsük. Új megnyitás, másik készülék, kedvencből indítás és ismételt főzés ne indítson új generálást. A recept új változatát csak érdemi módosítás vagy kifejezett kérés hozza létre. A recept ajánlhatósága, a hiányzó hozzávalók és a bevásárlási mennyiségek mindig az aktuális készletből számolódjanak.
 
-Első körben személyes és konyhán belüli újrafelhasználás legyen. Külön háztartások között ne osszunk meg automatikusan privát receptet, fotót vagy beszélgetést. Később külön, önkéntes publikálással létrejöhet szerkesztett közös receptkatalógus.
+A Receptek alapját egy központi, böngészhető, szerkesztett receptkatalógus adja, nem csak a felhasználó korábbi chatjei. Emellett megmarad a személyes és konyhán belüli receptkönyv. Külön háztartások között ne osszunk meg automatikusan privát receptet, fotót vagy beszélgetést; a közös katalógusba csak külön jóváhagyott tartalom kerül.
 
 ## Mi működik most
 
@@ -17,6 +17,42 @@ Első körben személyes és konyhán belüli újrafelhasználás legyen. Külö
 - A fő chat receptjei, a receptbeszélgetések és főzési haladás főként a helyi workspace-ben vannak (`companion-model.js`, `companion-ui.js`). A régebbi `recipe_idea_cache` az ötletkérés külön, lejáró cache-e; nem tartós receptkönyv. A közös konyha eseménynaplója receptindítást és befejezést rögzít, teljes receptet nem.
 
 A jelenlegi képcache nem teszi ugyanazt a képet automatikusan elérhetővé a pár másik fiókjának, és a helyi recepttárolás önmagában nem biztosít készülékek közötti helyreállítást.
+
+## Böngészhető induló katalógus
+
+Első változat: a meglévő hét Morzsa-recept backendről olvasható seedként, majd 50–100 ellenőrzött, változatos alaprecept. Gyors vacsorák, egyszerű sütemények, vegetáriánus, családi és szezonális fogások. A bővítés egyszeri, költségkorlátos batch és ellenőrzés; a látogatók nem generáltatnak újra recepteket a feed megnyitásával. Külső receptoldalak másolása nem része a tervnek.
+
+A szerkesztett katalógus bejelentkezés nélkül is olvasható. Publikus, jóváhagyott receptek és képek külön hozzáférést kapnak; személyes és közös konyhai receptek továbbra is privátak. A privát recept mentése nem publikálás. A katalógus írása/publikálása szerveroldali adminfeladat, a frontend csak olvas.
+
+Additív metadata: publication_status (draft/published/withdrawn), címkék, stabil published_version_id és publikálási idő. Egy célzott, RLS-sel védett published_recipe_feed csak az azonosítót, címet, időt, adagot, címkéket, thumbnailt és fix receptverziót adja vissza. A teljes hozzávaló-/lépéslista csak megnyitáskor töltődik be. A privát tulajdonosi és chatadatok nem részei ennek az olvasási felületnek.
+
+A kártya, a megnyitott recept és a főzési session ugyanarra a változatlan receptverzióra hivatkozik. Új megnyitáskor a cím, borítókép, hozzávalók és lépések azonosak. Egy kért helyettesítés/adagváltozat külön személyes vagy konyhai változat, nem írja át a katalógusreceptet vagy mások főzését.
+
+## A Receptek felülete és a feed sorrendje
+
+A meglévő Receptek menün belül három egyszerű nézet javasolt:
+
+- **Neked:** az alapértelmezett receptfeed, az első használatkor is valódi tartalommal.
+- **Böngészés:** keresés és néhány érthető szűrő, például gyors, édes, vegetáriánus, szezonális.
+- **Saját receptek:** mentett, kedvenc, elkezdett és megfőzött receptek; a jelenlegi receptbeszélgetések megmaradnak.
+
+A feed nem hív LLM-et minden betöltéskor. Először a megadott étkezési és kerülendő-összetevő preferenciák szűrnek, majd az otthoni alapanyagok, időkeret, kedvencek, megfőzött fogások és évszak rendeznek. A megnyitás gyenge jel; a kedvenc és a megfőzés erősebb. Kiindulásként kb. 70% ismerős, jól illeszkedő fogás, 30% megkötéseken belüli új ötlet. Ez hangolható termékhipotézis, nem már megtanult ajánló.
+
+A sorrend egy böngészési alkalmon belül stabil maradjon: görgetéskor/visszalépéskor ne ugráljanak a kártyák. Lapozás, limitált oldalankénti elemszám és thumbnail lazy loading szükséges. Új felhasználónál a változatos induló sorrend működik, hosszú ízléskérdőív nélkül. A chat a katalógusból is ajánlhat, csak valóban új igénynél készít új receptet.
+
+## Olcsó kép- és receptkiszolgálás
+
+Kezdetben a már használt Supabase Postgres és Storage marad. A recept strukturált JSON és kereshető metadata a DB-ben; a kép fájl a Storage-ban, a DB-ben csak azonosító, útvonal, méret, hash és verzió. Ne tároljunk base64 képet vagy lejáró signed URL-t a tartós recept tartalmaként.
+
+- A publikus katalógus saját recipe-catalog bucketet kap, adminfeltöltéssel. A jóváhagyott borító és thumbnail tartalmi hash-t tartalmazó, változatlan URL-en CDN/browser cache-ből kiszolgálható. Privát képet nem teszünk automatikusan publikussá.
+- A személyes/konyhai kép a privát recipe-images tárolóban marad. Stabil artifactazonosító alapján friss signed URL kérhető; a link lejárta nem új képgenerálás.
+- A borító egyszer készül. Kártyán kicsi thumbnail, nagyobb kép csak receptmegnyitáskor. Lépéskép csak a vizuálisan indokolt lépésekhez; a feed nem generáltat lépésképeket.
+- Publikus katalóguskép minden olvasónak ugyanaz a fájl. Konyhai képek a jogosult tagok között újrafelhasználhatók; a jelenlegi felhasználónkénti képcache ehhez külön, kompatibilis bővítést igényel.
+- Új képverzió kifejezett, költséges művelet. Modell-, nyelv-, kedvenc- vagy feed-sorrend-változás nem cseréli ki automatikusan a mentett képet.
+
+Szemléltető kapacitás: 1000 recept × (180 KB borító + 30 KB thumbnail + átlagosan 2 × 120 KB lépéskép) ≈ **450 MB kép**, plusz körülbelül **10 MB receptszöveg**, ha egy recept átlagosan 10 KB. Ezek célméretek és feltételezések; WebP/AVIF export és tényleges mérés kell. A szolgáltatói díj, csomagkeret és adatforgalom külön kérdés. A nagyobb költség jellemzően a generálás, ezért jóváhagyott batch és költséglimit kell a katalógus bővítéséhez.
+
+Az adatforgalmat mérjük: thumbnail, lazy loading, lapozás és hosszú HTTP cache a publikus változatlan képeknél. Ha később indokolt, a publikus assetek Cloudflare R2/CDN-re áttehetők egy asset-provider adapterrel. A stabil recept-/assetazonosító miatt ez ne változtassa meg a kliens receptadatait. Kezdetben nem szükséges két Storage rendszert fenntartani.
 
 ## Adatmodell
 
@@ -86,4 +122,4 @@ Mérjük: cache-találati arány, első/sokadik megnyitás ideje, generálások 
 - Free/Plus váltás, keretkimerülés vagy providerhiba mellett a mentett recept olvasható.
 - Export és megosztás stabil receptverzióból készül; megosztás külön felhasználói döntés.
 
-Első szállításként az 1–2. fázis javasolt: készülékek közötti receptmentés és a meglévő képek stabil összekötése. Ez adja a leggyorsabban a megbízható visszatérést és a generálási költségcsökkenést.
+Első szállításként a publikus induló katalógus és az 1–2. fázis javasolt: készülékek közötti receptmentés és a meglévő képek stabil összekötése. Ez adja a leggyorsabban a megbízható visszatérést és a generálási költségcsökkenést.

@@ -51,7 +51,9 @@ Helyi szervernél a VOICE_ORIGINS engedélyezett originjei közé fel kell venni
 
 ## Hang és műveletek
 
-A Plus mikrofonja beszélgetést indít: automatikus beszédfordulók, válasz hanggal, félbeszakítás, némítás, átirat a fő chatben. Nem kell minden mondat után beküldeni egy felvételt.
+A Plus mikrofonja beszélgetést indít: automatikus beszédfordulók, válasz hanggal és félbeszakítás. A teljes képernyős Morzsa-alak a beszédre mozog; a felületen visszaszámláló és Befejezés gomb látszik. Az átiratok a háttérben, az aktuális chatben jelennek meg. Nem kell minden mondat után beküldeni egy felvételt. A Némítás/Bekapcsolás a mikrofon tényleges hangsávját kapcsolja. A kapcsolódás 35, a feldolgozás 30 másodperces határidőt kap; hiba esetén az erőforrások lezárulnak és újrapróbálás jelenik meg. A lejátszás állapota és az elérhető mikrofon-/kimeneti analizerek vezérlik az orbot; nincs folyamatos forgó spinner vagy kitalált hangerő.
+
+Induláskor az aktuális beszélgetés nyitó kérdései és friss üzenetei is átkerülnek. Receptnél a szülőbeszélgetés és a receptchat együtt ad kontextust. A read_conversation eszközzel régebbi üzenetek kereshetők; a read_kitchen mindig az aktuális készletet, listát és konyhai kontextust olvassa. A műveletek az eredeti válasz lezárása után, egy kötegben futnak, így nem indítanak egymásnak ütköző hangválaszokat. Rövid hálózati megszakadás 8 másodperc türelmi időt kap; egy javítható protokollhiba nem bontja a beszélgetést.
 
 Példa: „Elfogyott a tej, írd a listára.” Morzsa előkészíti a két módosítást. Egy új beszédfordulóban „mentheted”, „mentsd el” vagy „igen” menti; a chat Mentés gombja is használható. Két toolhívás ugyanabban a beszédfordulóban nem menthet. Ismeretlen termék vagy közben változott adat a chatben pontosítást igényel. A közös, verzióellenőrzött mentés és a visszavonás megmarad.
 
@@ -64,7 +66,7 @@ További eszközök: készlet/lista/recept olvasása, teljes receptkártya kér�
 - Jogosultságonként alapértelmezett havi keret 1000 USD-cent ($10), 500 szövegkérés, 60 kép, 30 hangkör. Globális keret a global jogosultságsorban állítható.
 - Atomikus foglalás hívás előtt: szöveg 12 cent, kép 25 cent, hangkör 30 cent. Azonos requestId nem indít még egy generálást. A képek privát cache-t és lease-t is használnak; cache-találat nem fogyaszt új keretet.
 - Terra/Luna szöveg után tokenhasználat alapján, felfelé centre kerekített becslés kerül a keretbe. Kép/hang után jelenleg a teljes foglalás marad: ez kerettartalék, nem OpenAI-számla vagy ügyfélterhelés. A szolgáltatói számla eltérhet.
-- A voice sideband válaszhasználatot is figyel, és küszöbnél bont. Egy válasz vagy háttérhiba túllépést okozhat; saját API-projektmonitoring is szükséges.
+- A voice sideband válaszhasználatot is figyel, és küszöbnél bont. A szöveg-, hang- és cache-tokeneket külön árral számolja; a szöveges konyhai kontextus nem hangtokenként terheli ezt az őrt. Egy válasz vagy háttérhiba túllépést okozhat; saját API-projektmonitoring is szükséges. A lezárás oka és hibakódja naplózható, az átirat és a hang nélkül.
 - A napló azonosítót, modellt, használati számokat, állapotot és hívásazonosítót tárol; nyers hangot, promptot vagy beszélgetést nem.
 - Kulcs/keret/jogosultság hibánál nincs csendes váltás. Válaszd az Ingyenes módot; a kézi lista/készlet végig használható. A Free választás felhasználónként megmarad.
 

@@ -38,7 +38,7 @@ export function createHandler(config,fetcher=fetch){return async request=>{
    return await imageHandler({...config,model:config.imageModel||MODELS.image,generateImage:async image=>{await reserve('image',25);try{const img=await openaiImage(image,config,fetcher);await settle('complete',config.imageModel||MODELS.image,img.usage);return img}catch(e){await settle('failed',config.imageModel||MODELS.image).catch(()=>{});throw e}}},fetcher)(new Request(request.url,{method:'POST',headers:request.headers,body:JSON.stringify(input)}));
   }
   if(input.task==='end'){
-   const r=await db('morzsa_plus_requests?request_id=eq.'+id+'&user_id=eq.'+user.id+'&kind=eq.voice&select=call_id,scope',undefined,'GET');if(!r.ok)throw Error('PLUS_SETUP_REQUIRED');const row=(await r.json())[0];if(!row||row.scope!==access.scope)throw Error('PLUS_ACCESS_REQUIRED');await hangup(row.call_id,config,fetcher);reserved=true;await settle('complete',config.voiceModel||MODELS.voice);return reply(200,{ended:true});
+   const r=await db('morzsa_plus_requests?request_id=eq.'+id+'&user_id=eq.'+user.id+'&kind=eq.voice&select=call_id,scope',undefined,'GET');if(!r.ok)throw Error('PLUS_SETUP_REQUIRED');const row=(await r.json())[0];if(!row||row.scope!==access.scope)throw Error('PLUS_ACCESS_REQUIRED');console.info(JSON.stringify({event:'morzsa_plus_voice_client_end',requestId:id,reason:['user','time','network','background','mode','context','provider','setup'].includes(input.reason)?input.reason:'unknown',code:/^[a-z0-9_:-]{1,80}$/i.test(input.errorCode||'')?input.errorCode:undefined}));await hangup(row.call_id,config,fetcher);reserved=true;await settle('complete',config.voiceModel||MODELS.voice);return reply(200,{ended:true});
   }
   if(input.task==='connect'){
    if(typeof input.sdp!=='string'||input.sdp.length>65000||!input.sdp.startsWith('v=0')||!config.watchCall||!config.defer)throw Error('VOICE_INVALID_INPUT');
@@ -47,7 +47,7 @@ export function createHandler(config,fetcher=fetch){return async request=>{
    try{const stored=await db('morzsa_plus_requests?request_id=eq.'+id+'&user_id=eq.'+user.id,{call_id:call.callId,expires_at:new Date(Date.now()+VOICE_SECONDS*1000).toISOString()},'PATCH');if(!stored.ok)throw Error('PLUS_SETUP_REQUIRED');
     config.defer(config.watchCall(call.callId,realtimeSession(clean,config),()=>hangup(call.callId,config,fetcher),()=>settle('complete',config.voiceModel||MODELS.voice)));
    }catch(e){await hangup(call.callId,config,fetcher).catch(()=>{});throw e}
-   return reply(200,{sdp:call.sdp,seconds:VOICE_SECONDS,requestId:id});
+   return reply(200,{sdp:call.sdp,seconds:VOICE_SECONDS,requestId:id,expiresAt:new Date(Date.now()+VOICE_SECONDS*1000).toISOString()});
   }
   if(input.task!=='chat'||input.audio)throw Error('VOICE_INVALID_INPUT');
   const clean=normalizeInput(input);await reserve('chat',12);

@@ -7,14 +7,29 @@ window.MorzsaWorkspace=(()=>{
  const navIcons={overview:'layout-grid',pantry:'house',shopping:'shopping-cart',recipes:'chef-hat'};
  const sidebar=document.createElement('aside');sidebar.id='workspace-sidebar';sidebar.hidden=true;sidebar.setAttribute('data-no-translate','');
  sidebar.innerHTML='<a class="workspace-brand" href="#">'+document.querySelector('header .brand').innerHTML+'</a><div class="workspace-navigation"></div><div class="workspace-history"></div>';
- sidebar.querySelector('a').onclick=e=>{e.preventDefault();window.MorzsaCompanion.open()};document.body.append(sidebar);
+ const dashboard=e=>{e.preventDefault();page='overview';render();window.scrollTo(0,0)};sidebar.querySelector('a').onclick=dashboard;document.querySelector('header .brand').onclick=dashboard;document.body.append(sidebar);
+ const settings=document.createElement('section');settings.className='workspace-settings-area';settings.setAttribute('data-no-translate','');
+ settings.innerHTML='<details class="workspace-settings"><summary>'+glyph('sliders-horizontal')+'<span data-settings-label></span></summary><div class="workspace-account"></div><div class="workspace-language"><span data-language-label></span><div class="workspace-language-host"></div></div></details><button type="button" class="workspace-introduction">'+glyph('sparkles')+'<span></span></button>';
+ const account=document.getElementById('household-button'),languageSwitch=document.querySelector('.language-switch');
+ settings.querySelector('.workspace-account').append(account);settings.querySelector('.workspace-language-host').append(languageSwitch);
+ languageSwitch.querySelector('[data-language=hu]').textContent='Magyar';languageSwitch.querySelector('[data-language=en]').textContent='English';
+ settings.querySelector('.workspace-introduction').onclick=()=>{document.getElementById('companion-history')?.close();window.MorzsaOnboarding?.open()};
+ function attachSettings(host){
+  const dialog=document.getElementById('companion-history');host=host||(matchMedia('(min-width:1000px)').matches?sidebar:dialog?.open?dialog:sidebar);
+  if(settings.parentElement!==host)host.append(settings);
+  settings.querySelector('[data-settings-label]').textContent=say('Beállítások','Settings');settings.querySelector('[data-language-label]').textContent=say('Nyelv','Language');
+  settings.querySelector('.workspace-introduction span').textContent=say('Morzsa bemutató','Morzsa introduction');languageSwitch.setAttribute('aria-label',say('Nyelv','Language'));
+  languageSwitch.querySelectorAll('[data-language]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.language===language)));
+ }
  const dock=document.createElement('section');dock.id='workspace-assistant';dock.hidden=true;dock.setAttribute('data-no-translate','');document.body.append(dock);
  let dockLanguage='',quick=null,names=[],draft='',target='stock',entryContext='',working=false;
  const fastMarkup=()=>main.querySelector('.cooking-guide,.shopping-mode-screen')?'':'<div class="workspace-fast-actions" role="group" aria-label="'+say('Gyors műveletek','Quick actions')+'">'+(!['pantry','shopping'].includes(page)?'<button type="button" data-workspace-add="stock">'+glyph('plus')+say('Hozzáadás','Quick add')+'</button>':'')+(page==='chat'?'<button type="button" data-workspace-new-chat aria-label="'+say('Új beszélgetés','New chat')+'">'+glyph('message-circle')+say('Új chat','New chat')+'</button>':'')+(page!=='chat'?'<button class="workspace-context-assistant" type="button" data-workspace-assistant><img src="assets/brands/morzsa.svg" alt="" width="23" height="23">'+say('Kérdezz Morzsától','Ask Morzsa')+'</button>':'')+'</div>';
  function bindFast(host){host.querySelector('[data-workspace-new-chat]')?.addEventListener('click',()=>window.MorzsaCompanion.newChat());host.querySelectorAll('[data-workspace-add]').forEach(b=>b.onclick=()=>openEntry(b.dataset.workspaceAdd));host.querySelector('[data-workspace-assistant]')?.addEventListener('click',()=>window.MorzsaCompanion.openContext(page))}
  function mount(){
-  for(const [index,destination] of order.entries()){const button=nav.querySelector('[data-page="'+destination+'"]');if(nav.children[index]!==button)nav.insertBefore(button,nav.children[index]||null);const labels={overview:say('Áttekintés','Overview'),pantry:say('Készlet','Pantry'),chat:'Morzsa',shopping:say('Lista','List'),recipes:say('Receptek','Recipes')};for(const node of button.childNodes)if(node.nodeType===Node.TEXT_NODE&&node.textContent.trim())node.textContent=labels[destination]+' ';const span=button.querySelector('span');if(navIcons[destination]&&!span.querySelector('.workspace-icon'))span.innerHTML=glyph(navIcons[destination]);}
-  const desktop=matchMedia('(min-width:1000px)').matches;sidebar.hidden=!desktop;
+  const desktop=matchMedia('(min-width:1000px)').matches,destinations=desktop?['chat','overview','pantry','shopping','recipes']:order;
+  for(const [index,destination] of destinations.entries()){const button=nav.querySelector('[data-page="'+destination+'"]');if(nav.children[index]!==button)nav.insertBefore(button,nav.children[index]||null);const labels={overview:say('Áttekintés','Overview'),pantry:say('Készlet','Pantry'),chat:'Morzsa',shopping:say('Lista','List'),recipes:say('Receptek','Recipes')};for(const node of button.childNodes)if(node.nodeType===Node.TEXT_NODE&&node.textContent.trim())node.textContent=labels[destination]+' ';const span=button.querySelector('span');if(navIcons[destination]&&!span.querySelector('.workspace-icon'))span.innerHTML=glyph(navIcons[destination]);}
+  sidebar.hidden=!desktop;
+  attachSettings();
   const navHost=desktop?sidebar.querySelector('.workspace-navigation'):mobileParent;if(nav.parentElement!==navHost)navHost.append(nav);
   const rail=document.getElementById('companion-history-rail');if(rail&&rail.parentElement!==sidebar.querySelector('.workspace-history'))sidebar.querySelector('.workspace-history').append(rail);
   const local=main.querySelector('.companion-compose-wrap,.room-compose-wrap,.shopping-mode-dock');dock.hidden=!!local;dock.classList.toggle('workspace-quick-only',page!=='chat');
@@ -64,5 +79,5 @@ window.MorzsaWorkspace=(()=>{
  function connectionNote(){let note=document.getElementById('workspace-connection-note');if(!note){note=document.createElement('div');note.id='workspace-connection-note';note.setAttribute('role','status');note.setAttribute('data-no-translate','');document.querySelector('.app header').after(note)}note.hidden=navigator.onLine!==false;note.textContent=say('Nincs internet. Az AI és a közös konyha frissítése szünetel.','No internet. AI and shared kitchen updates are unavailable.')}
  window.addEventListener('offline',connectionNote);window.addEventListener('online',connectionNote);connectionNote();
  window.addEventListener('resize',mount);
- mount();return {mount,quick:openEntry};
+ mount();return {mount,quick:openEntry,attachSettings};
 })();
