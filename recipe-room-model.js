@@ -3,8 +3,9 @@ const RecipeRoomModel = (() => {
  const text=(s,n)=>typeof s==='string'&&s.trim()&&s.length<=n;
  function recipe(r){
   if(!r||!text(r.title,100)||!text(r.summary,400)||!Number.isInteger(r.minutes)||r.minutes<1||r.minutes>240||!Array.isArray(r.ingredients)||!r.ingredients.length||r.ingredients.length>15||!r.ingredients.every(i=>text(i?.name,80)&&text(i.amount,80))||!Array.isArray(r.steps)||!r.steps.length||r.steps.length>6||!r.steps.every(s=>text(s,1000)))return null;
+  if(r.servings!==undefined&&(!Number.isInteger(r.servings)||r.servings<1||r.servings>24)||r.equipment!==undefined&&(!Array.isArray(r.equipment)||r.equipment.length>4||!r.equipment.every(s=>text(s,100))))return null;
   if(r.stepTitles!==undefined&&(!Array.isArray(r.stepTitles)||r.stepTitles.length!==r.steps.length||!r.stepTitles.every(s=>text(s,80))))return null;
-  return {...(typeof r.recipeId==='string'&&/^[a-f0-9-]{36}$/i.test(r.recipeId)?{recipeId:r.recipeId}:{}),title:r.title,summary:r.summary,minutes:r.minutes,ingredients:r.ingredients.map(i=>({name:i.name,amount:i.amount})),steps:[...r.steps],...(r.stepTitles?{stepTitles:[...r.stepTitles]}:{})};
+  return {...(typeof r.recipeId==='string'&&/^[a-f0-9-]{36}$/i.test(r.recipeId)?{recipeId:r.recipeId}:{}),title:r.title,summary:r.summary,minutes:r.minutes,...(r.servings!==undefined?{servings:r.servings}:{}),...(r.equipment?{equipment:[...r.equipment]}:{}),ingredients:r.ingredients.map(i=>({name:i.name,amount:i.amount})),steps:[...r.steps],...(r.stepTitles?{stepTitles:[...r.stepTitles]}:{})};
  }
  function stepTitle(r,index){
   if(text(r.stepTitles?.[index],80))return r.stepTitles[index].trim();
@@ -22,7 +23,7 @@ const RecipeRoomModel = (() => {
   if(!Object.hasOwn(stock,name)||uncertain.includes(name))return 'unknown';
   return stock[name]===0?'out':stock[name]===1?'low':stock[name]>1?'home':'unknown';
  }
- const identity=r=>JSON.stringify([r.title,r.ingredients,r.steps]);
+ const identity=r=>JSON.stringify([r.title,r.ingredients,r.steps,...(r.servings!==undefined?[r.servings]:[])]);
  function ingredientSummary(r,stock,resolve=n=>n,uncertain=[]){
   const counts={home:0,low:0,out:0,unknown:0,total:r.ingredients.length};
   for(const i of r.ingredients)counts[ingredientStatus(stock,resolve(i.name),uncertain)]++;

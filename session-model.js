@@ -4,7 +4,7 @@ const MorzsaSessionModel = (() => {
  const key=scope=>scope+':resume-v1';
  function normalize(value,validRecipe=()=>null){
   if(!value||value.version!==1||!Number.isFinite(value.activity)||value.activity<=0||!pages.includes(value.page)||typeof value.thread!=='string')return null;
-  return {version:1,activity:value.activity,page:value.page,thread:value.thread,scroll:Math.max(0,Math.min(100000,Number(value.scroll)||0)),draft:typeof value.draft==='string'?value.draft.slice(0,2000):'',cookingView:value.cookingView==='focus'?'focus':'full',preview:validRecipe(value.preview),shoppingActive:value.shoppingActive===true};
+  return {version:1,activity:value.activity,page:value.page,thread:value.thread,scroll:Math.max(0,Math.min(100000,Number(value.scroll)||0)),draft:typeof value.draft==='string'?value.draft.slice(0,2000):'',cookingView:value.cookingView==='focus'?'focus':'full',preview:validRecipe(value.preview),...(value.previewPortions&&Number.isInteger(value.previewPortions.base)&&value.previewPortions.base>=1&&value.previewPortions.base<=24&&Number.isInteger(value.previewPortions.target)&&value.previewPortions.target>=1&&value.previewPortions.target<=24?{previewPortions:{base:value.previewPortions.base,target:value.previewPortions.target}}:{}),shoppingActive:value.shoppingActive===true};
  }
  function decide(saved,book,now=Date.now(),protectedWork=false){
   if(!saved)return 'unchanged';

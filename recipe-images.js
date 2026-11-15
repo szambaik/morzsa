@@ -2,7 +2,7 @@
 window.RecipeImages=(()=>{
  const entries=new Map(),auto=new Set(),autoCreated=new Set();let queue=Promise.resolve();
  const scope=()=>household?.userId()+'|'+(household?.active||'local')+'|'+(window.AIMode?.get()||'free');
- const key=(r,step)=>scope()+'|'+JSON.stringify({title:r.title,summary:r.summary,minutes:r.minutes,ingredients:r.ingredients.map(i=>({name:i.name,amount:i.amount})),steps:r.steps})+'|'+step;
+ const key=(r,step)=>scope()+'|'+JSON.stringify({title:r.title,summary:r.summary,minutes:r.minutes,...(r.servings!==undefined?{servings:r.servings}:{}),...(r.equipment?{equipment:r.equipment}:{}),ingredients:r.ingredients.map(i=>({name:i.name,amount:i.amount})),steps:r.steps})+'|'+step;
  const say=(hu,en)=>language==='en'?en:hu;
  const errors={
   PLUS_API_QUOTA:['Az OpenAI API-keretét vagy számlázását aktiválni kell a képekhez.','Activate the OpenAI API balance or billing to generate images.'],
