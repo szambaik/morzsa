@@ -36,7 +36,7 @@ test('cooking context is validated, sent every turn, and separate from legacy re
  const {normalizeInput,bodyFor}=await import('../supabase/functions/voice-command/handler.mjs');
  const request={assistant:true,companion:true,text:'Mivel kezdjem?',context:{cookingRecipe:recipe},history:[]};
  const input=normalizeInput(request),body=bodyFor(input);assert.deepEqual(input.context.cookingRecipe,recipe);assert.match(body.systemInstruction.parts[0].text,/focused cooking session/);assert.doesNotMatch(body.systemInstruction.parts[0].text,/Return NO operations/);assert.match(body.contents.at(-1).parts[0].text,/Palacsinta/);
- assert.throws(()=>normalizeInput({...request,companion:false}),/INVALID_INPUT/);assert.throws(()=>normalizeInput({...request,context:{cookingRecipe:{...recipe,steps:['x'.repeat(501)]}}}),/INVALID_INPUT/);
+ assert.throws(()=>normalizeInput({...request,companion:false}),/INVALID_INPUT/);assert.throws(()=>normalizeInput({...request,context:{cookingRecipe:{...recipe,steps:['x'.repeat(1001)]}}}),/INVALID_INPUT/);
  const legacy=normalizeInput({assistant:true,text:'Help',context:{recipe:{name:'Palacsinta',ingredients:recipe.ingredients,steps:recipe.steps}}});assert.match(bodyFor(legacy).systemInstruction.parts[0].text,/Return NO operations/);
 });
 test('recipe progress defaults safely, survives saves and resume, and stays isolated by cooking session',()=>{
@@ -80,7 +80,7 @@ test('AI accepts legacy recipes and bounded names, and requests detailed named i
  const input=normalizeInput({assistant:true,companion:true,text:'Mivel kezdjem?',context:{cookingRecipe:named,cookingStep:0}});
  assert.deepEqual(input.context.cookingRecipe,named);
  for(const body of [bodyFor(input),geminiBody({conversation:true,language:'hu',names:[],mood:'any'})]){
-  assert.match(body.systemInstruction.parts[0].text,/2–4 clear sentences/);
+  assert.match(body.systemInstruction.parts[0].text,/4–6 useful sentences/);
   assert.match(body.systemInstruction.parts[0].text,/doneness cue/);
   const schema=body.generationConfig.responseSchema.properties.recipes.items;
   assert(schema.required.includes('stepTitles'));assert.equal(schema.properties.steps.items.type,'STRING');
