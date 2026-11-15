@@ -744,3 +744,11 @@ body.voice-active{overflow:hidden}
 /* Proposed household edits form a separate review area below the dialogue. */
 .companion:has(>.companion-proposal) .companion-messages{padding-bottom:0}
 .companion>.companion-proposal{margin-bottom:calc(var(--companion-compose-height,160px) + 24px)}
+
+/* Practical measurement help stays beside the original recipe quantity. */
+.recipe-measures-toggle{display:inline-flex;align-items:center;min-height:44px;padding:8px 12px;margin:0 0 10px;border:1px solid #d7dfd4;border-radius:16px;background:#f8f3e9;color:#344638;font:inherit;font-size:13px;font-weight:650;cursor:pointer}
+.recipe-measures-toggle[aria-pressed="true"]{background:#e8eee2;border-color:#b6c5af}
+.recipe-measures-toggle:focus-visible{outline:2px solid #344638;outline-offset:3px}
+.recipe-measures-note{margin:0 0 14px;font-size:12px;line-height:1.65;color:#53604e;max-width:62ch}
+.recipe-measure-hint{display:block;margin-top:3px;font-size:12px;line-height:1.5;color:#59684f}
+.recipe-measures-note[hidden],.recipe-measure-hint[hidden]{display:none}

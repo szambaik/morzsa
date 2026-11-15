@@ -156,7 +156,7 @@ window.MorzsaCompanion=(()=>{
   window.RecipeImages?.enqueue((output.recipes||[]).map(RecipeRoomModel.recipe).filter(Boolean));
   pending=operations.length?{operations,output,stamp:fingerprint(operations),thread:book.active,message:thread().messages.length-1}:null;startReveal(shown);
  }
- function requestContext(){return {assistant:true,companion:true,destination:'stock',language,context:{...(window.KitchenIntelligence?.context(book)||{}),...(isCooking()?{cookingRecipe:thread().recipe,cookingStep:thread().cookingStep||0}:{}),stock:Object.keys(state.stock).filter(n=>state.stock[n]>0).slice(0,1000),cart:state.cart.slice(0,1000).map(i=>({name:i.name,quantity:i.quantity||1,unit:i.unit||productUnit(i.name)})),uncertain:(PantryReview?.uncertain()||[]).slice(0,1000)},history:M.history(M.currentMessages(thread()),12)}}
+ function requestContext(){return {assistant:true,companion:true,destination:'stock',language,context:{...(window.KitchenIntelligence?.context(book)||{}),...(window.KitchenMeasures?.enabled()?{noScale:true}:{}),...(isCooking()?{cookingRecipe:thread().recipe,cookingStep:thread().cookingStep||0}:{}),stock:Object.keys(state.stock).filter(n=>state.stock[n]>0).slice(0,1000),cart:state.cart.slice(0,1000).map(i=>({name:i.name,quantity:i.quantity||1,unit:i.unit||productUnit(i.name)})),uncertain:(PantryReview?.uncertain()||[]).slice(0,1000)},history:M.history(M.currentMessages(thread()),12)}}
  let chatTurn=null,startingTurn=false;
  async function send(value,retry=false,recipeRequestOnly=false){
   sync();const selected=retry?retryAttachment:attachment;const text=String(value).trim()||(selected?say('Mit látsz a képen? Miben segíthet a főzésnél?','What can you see in this photo? How could I use it for cooking?'):'');if(!text||text.length>2000||busy||saving||preparing||thread()?.readOnly||startingTurn)return;
@@ -249,7 +249,7 @@ window.MorzsaCompanion=(()=>{
  }
  function mountCookingImages(){
   if(!isCooking())return;const r=thread().recipe,selected=cookingStep(),visual=RecipeRoomModel.visualSteps(r);
-  main.querySelectorAll('[data-cooking-image]').forEach(host=>{const i=Number(host.dataset.cookingImage);window.RecipeImages?.mount(host,r,i,{autoCreate:thread().status==='active'&&i===selected&&visual.includes(i)})});
+  main.querySelectorAll('[data-cooking-image]').forEach(host=>{const i=Number(host.dataset.cookingImage);window.RecipeImages?.mount(host,r,i,{autoCreate:window.AIMode?.isPlus()===true||thread().status==='active'&&i===selected&&visual.includes(i)})});
  }
  function jumpCookingStep(index){
   sync();if(!isCooking()||busy||saving||pending||preparing)return;const previous=book;

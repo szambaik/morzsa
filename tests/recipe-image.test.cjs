@@ -112,3 +112,21 @@ test('a broken image link refreshes the cache without consuming another generati
  const context={window:{MORZSA_CLOUD:{url:'https://test.supabase.co'}},household:{active:null,userId:()=> 'test',recipeImage:async input=>{inputs.push(input);return {status:'ready',url:'https://test.supabase.co/storage/v1/object/sign/cover'}}},language:'hu',document:{createElement:tag=>({tag})},IntersectionObserver:class{constructor(cb){this.cb=cb}observe(){this.cb([{isIntersecting:true}])}disconnect(){}}};
  vm.runInNewContext(fs.readFileSync('recipe-images.js','utf8'),context);context.window.RecipeImages.mount(host,recipe,-1,{autoCreate:true});await new Promise(resolve=>setImmediate(resolve));host.children[0].onerror();assert.match(host.children[1].textContent,/Frissítsd a kép linkjét/);await host.children[0].onclick();assert.deepEqual(inputs.map(i=>i.create),[true,false]);assert.equal(host.dataset.imageStatus,'ready');
 });
+test('queued step creation is cancelled after navigation and can run when viewed again',async()=>{
+ const vm=require('node:vm'),fs=require('node:fs'),calls=[];let release;
+ const host=()=>({isConnected:true,children:[],dataset:{},replaceChildren(){this.children=[]},append(...nodes){this.children.push(...nodes)}}),observers=[];
+ const context={window:{},household:{active:null,userId:()=> 'test',recipeImage:async input=>{calls.push(input);if(input.step===0)await new Promise(resolve=>release=resolve);return {status:'missing'}}},language:'hu',document:{createElement:tag=>({tag})},IntersectionObserver:class{constructor(cb){observers.push(cb)}observe(){}disconnect(){}}};
+ vm.runInNewContext(fs.readFileSync('recipe-images.js','utf8'),context);const images=context.window.RecipeImages,first=host(),abandoned=host(),r={...recipe,steps:['Mix.','Shape.']};
+ images.mount(first,r,0,{autoCreate:true});observers[0]([{isIntersecting:true}]);await new Promise(resolve=>setImmediate(resolve));
+ images.mount(abandoned,r,1,{autoCreate:true});observers[1]([{isIntersecting:true}]);abandoned.isConnected=false;release();await new Promise(resolve=>setImmediate(resolve));assert.deepEqual(calls.map(i=>i.step),[0]);
+ const again=host();images.mount(again,r,1,{autoCreate:true});observers.at(-1)([{isIntersecting:true}]);await new Promise(resolve=>setImmediate(resolve));assert.deepEqual(calls.map(i=>i.step),[0,1]);
+});
+test('a cached miss does not trigger offscreen generation on a new Plus step view',async()=>{
+ const vm=require('node:vm'),fs=require('node:fs'),calls=[],observers=[];
+ const host=()=>({isConnected:true,children:[],dataset:{},replaceChildren(){this.children=[]},append(...nodes){this.children.push(...nodes)}});
+ const context={window:{},household:{active:null,userId:()=> 'test',recipeImage:async input=>{calls.push(input);return {status:'missing'}}},language:'hu',document:{createElement:tag=>({tag})},IntersectionObserver:class{constructor(cb){observers.push(cb)}observe(){}disconnect(){}}};
+ vm.runInNewContext(fs.readFileSync('recipe-images.js','utf8'),context);const images=context.window.RecipeImages;
+ images.mount(host(),recipe,0,{cacheOnly:true});observers[0]([{isIntersecting:true}]);await new Promise(resolve=>setImmediate(resolve));
+ images.mount(host(),recipe,0,{autoCreate:true});await new Promise(resolve=>setImmediate(resolve));assert.deepEqual(calls.map(i=>i.create),[false]);
+ observers.at(-1)([{isIntersecting:true}]);await new Promise(resolve=>setImmediate(resolve));assert.deepEqual(calls.map(i=>i.create),[false,true]);
+});

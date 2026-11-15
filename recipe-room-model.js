@@ -2,7 +2,7 @@
 const RecipeRoomModel = (() => {
  const text=(s,n)=>typeof s==='string'&&s.trim()&&s.length<=n;
  function recipe(r){
-  if(!r||!text(r.title,100)||!text(r.summary,400)||!Number.isInteger(r.minutes)||r.minutes<1||r.minutes>240||!Array.isArray(r.ingredients)||!r.ingredients.length||r.ingredients.length>15||!r.ingredients.every(i=>text(i?.name,80)&&text(i.amount,80))||!Array.isArray(r.steps)||!r.steps.length||r.steps.length>6||!r.steps.every(s=>text(s,500)))return null;
+  if(!r||!text(r.title,100)||!text(r.summary,400)||!Number.isInteger(r.minutes)||r.minutes<1||r.minutes>240||!Array.isArray(r.ingredients)||!r.ingredients.length||r.ingredients.length>15||!r.ingredients.every(i=>text(i?.name,80)&&text(i.amount,80))||!Array.isArray(r.steps)||!r.steps.length||r.steps.length>6||!r.steps.every(s=>text(s,1000)))return null;
   if(r.stepTitles!==undefined&&(!Array.isArray(r.stepTitles)||r.stepTitles.length!==r.steps.length||!r.stepTitles.every(s=>text(s,80))))return null;
   return {...(typeof r.recipeId==='string'&&/^[a-f0-9-]{36}$/i.test(r.recipeId)?{recipeId:r.recipeId}:{}),title:r.title,summary:r.summary,minutes:r.minutes,ingredients:r.ingredients.map(i=>({name:i.name,amount:i.amount})),steps:[...r.steps],...(r.stepTitles?{stepTitles:[...r.stepTitles]}:{})};
  }
