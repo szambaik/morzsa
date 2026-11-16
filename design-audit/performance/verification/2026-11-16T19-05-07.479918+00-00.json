@@ -1,0 +1,32 @@
+{
+  "validatedAt": "2026-11-16T19:05:07.479918+00:00",
+  "report": "reports/2026-11-16T19-01-05.405960+00-00",
+  "artifactIntegrityPassed": true,
+  "counts": {
+    "json": 34,
+    "png": 82,
+    "traceZip": 9,
+    "cpuProfile": 6,
+    "networkRequests": 9198
+  },
+  "findings": 11,
+  "sourceVerification": {
+    "verifiedAt": "2026-11-16T19:05:07.479918+00:00",
+    "snapshotSourceChanged": [],
+    "concurrentSourceDrift": [
+      ".gitignore",
+      "AGENTS.md",
+      "docs/UX-FIRST-AUDIT-FIX-LOG-2026-11-16.md",
+      "proactive-ui.js",
+      "proactive.css",
+      "supabase/migrations/20261116_proactive_suggestions.sql",
+      "tests/proactive-sql.test.mjs",
+      "tests/proactive.browser.js"
+    ],
+    "auditSourceUnchanged": true,
+    "scope": "The 377 source files captured in snapshot.json; concurrent additions are not enumerated."
+  },
+  "successfulExternalBrowserResponses": 0,
+  "errors": [],
+  "note": "Artifact integrity is distinct from application performance thresholds. Recorded application failures remain findings."
+}

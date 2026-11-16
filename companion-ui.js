@@ -500,7 +500,7 @@ window.MorzsaCompanion=(()=>{
  function nudge(){if(isCooking()||craftState()?.open||busy||saving||pending)return null;const existing=M.suggestion(state,PantryReview?.candidates()||[],removedNames,deferred),refill=typeof KitchenModel==='undefined'?null:KitchenModel.shoppingSuggestion(state,deferred),n=['bought','restock'].includes(existing?.type)?existing:refill||existing;return ['review','low','recurring'].includes(n?.type)&&Date.now()<quietUntil?null:n}
  function updateNudge(){
   if(context!==scope())return;
-  const host=main.querySelector('#companion-nudge');if(!host||host.querySelector('[data-inline-review]'))return;const n=nudge();if(!n){host.innerHTML='';return}
+  const host=main.querySelector('#companion-nudge');if(!host||host.querySelector('[data-inline-review]'))return;const n=nudge();if(window.MorzsaProactive?.chat(host,{quiet:isCooking()||!!craftState()?.open||busy||saving||!!pending,bought:n?.type==='bought',hasMessages:M.currentMessages(thread()).length>0}))return;if(!n){host.innerHTML='';return}
   if(n.type==='review'){
    const current=context,all=M.reviewPreview(PantryReview.candidates(),state.stock,deferred),items=all.slice(0,3);
    PantryReview.open({host,items,onClose:()=>{if(current!==scope())return;for(const item of items)deferred['review:'+item.name]=Date.now()+86400000;try{localStorage.setItem(context+':snooze',JSON.stringify(deferred))}catch{}updateNudge()}});

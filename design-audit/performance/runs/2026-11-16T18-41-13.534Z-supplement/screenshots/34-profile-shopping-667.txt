@@ -1,0 +1,2747 @@
+- banner:
+  - button "Beszélgetéstörténet": ☰
+  - link "Morzsa":
+    - /url: "#"
+    - text: morzsa
+  - button "Saját konyha · Konyhaváltás és meghívás": Saját konyha
+  - button "Új Morzsa-beszélgetés"
+- main:
+  - heading "Bevásárlólista" [level=1]
+  - text: 667 hátravan
+  - group: ···
+  - combobox "Új bevásárlótétel"
+  - button "Listára vétel": +
+  - group:
+    - text: Zöldségek 49 ›
+    - button "Paradicsom · Megvettem"
+    - button "Paradicsom · Szerkesztés":
+      - strong: Paradicsom
+    - button "Paradicsom · Mennyiség szerkesztése": 1 db
+    - button "Krumpli · Megvettem"
+    - button "Krumpli · Szerkesztés":
+      - strong: Krumpli
+    - button "Krumpli · Mennyiség szerkesztése": 1 db
+    - button "Hagyma · Megvettem"
+    - button "Hagyma · Szerkesztés":
+      - strong: Hagyma
+    - button "Hagyma · Mennyiség szerkesztése": 1 db
+    - button "Paprika · Megvettem"
+    - button "Paprika · Szerkesztés":
+      - strong: Paprika
+    - button "Paprika · Mennyiség szerkesztése": 1 db
+    - button "Fokhagyma · Megvettem"
+    - button "Fokhagyma · Szerkesztés":
+      - strong: Fokhagyma
+    - button "Fokhagyma · Mennyiség szerkesztése": 1 db
+    - button "Sárgarépa · Megvettem"
+    - button "Sárgarépa · Szerkesztés":
+      - strong: Sárgarépa
+    - button "Sárgarépa · Mennyiség szerkesztése": 1 db
+    - button "Uborka · Megvettem"
+    - button "Uborka · Szerkesztés":
+      - strong: Uborka
+    - button "Uborka · Mennyiség szerkesztése": 1 db
+    - button "Borsó · Megvettem"
+    - button "Borsó · Szerkesztés":
+      - strong: Borsó
+    - button "Borsó · Mennyiség szerkesztése": 1 db
+    - button "Gomba · Megvettem"
+    - button "Gomba · Szerkesztés":
+      - strong: Gomba
+    - button "Gomba · Mennyiség szerkesztése": 1 db
+    - button "Brokkoli · Megvettem"
+    - button "Brokkoli · Szerkesztés":
+      - strong: Brokkoli
+    - button "Brokkoli · Mennyiség szerkesztése": 1 db
+    - button "Cukkini · Megvettem"
+    - button "Cukkini · Szerkesztés":
+      - strong: Cukkini
+    - button "Cukkini · Mennyiség szerkesztése": 1 db
+    - button "Saláta · Megvettem"
+    - button "Saláta · Szerkesztés":
+      - strong: Saláta
+    - button "Saláta · Mennyiség szerkesztése": 1 db
+    - button "Lilahagyma · Megvettem"
+    - button "Lilahagyma · Szerkesztés":
+      - strong: Lilahagyma
+    - button "Lilahagyma · Mennyiség szerkesztése": 1 db
+    - button "Újhagyma · Megvettem"
+    - button "Újhagyma · Szerkesztés":
+      - strong: Újhagyma
+    - button "Újhagyma · Mennyiség szerkesztése": 1 db
+    - button "Póréhagyma · Megvettem"
+    - button "Póréhagyma · Szerkesztés":
+      - strong: Póréhagyma
+    - button "Póréhagyma · Mennyiség szerkesztése": 1 db
+    - button "Fehérrépa · Megvettem"
+    - button "Fehérrépa · Szerkesztés":
+      - strong: Fehérrépa
+    - button "Fehérrépa · Mennyiség szerkesztése": 1 db
+    - button "Zeller · Megvettem"
+    - button "Zeller · Szerkesztés":
+      - strong: Zeller
+    - button "Zeller · Mennyiség szerkesztése": 1 db
+    - button "Karalábé · Megvettem"
+    - button "Karalábé · Szerkesztés":
+      - strong: Karalábé
+    - button "Karalábé · Mennyiség szerkesztése": 1 db
+    - button "Cékla · Megvettem"
+    - button "Cékla · Szerkesztés":
+      - strong: Cékla
+    - button "Cékla · Mennyiség szerkesztése": 1 db
+    - button "Padlizsán · Megvettem"
+    - button "Padlizsán · Szerkesztés":
+      - strong: Padlizsán
+    - button "Padlizsán · Mennyiség szerkesztése": 1 db
+    - button "Karfiol · Megvettem"
+    - button "Karfiol · Szerkesztés":
+      - strong: Karfiol
+    - button "Karfiol · Mennyiség szerkesztése": 1 db
+    - button "Fejes káposzta · Megvettem"
+    - button "Fejes káposzta · Szerkesztés":
+      - strong: Fejes káposzta
+    - button "Fejes káposzta · Mennyiség szerkesztése": 1 db
+    - button "Lila káposzta · Megvettem"
+    - button "Lila káposzta · Szerkesztés":
+      - strong: Lila káposzta
+    - button "Lila káposzta · Mennyiség szerkesztése": 1 db
+    - button "Kelkáposzta · Megvettem"
+    - button "Kelkáposzta · Szerkesztés":
+      - strong: Kelkáposzta
+    - button "Kelkáposzta · Mennyiség szerkesztése": 1 db
+    - button "Kelbimbó · Megvettem"
+    - button "Kelbimbó · Szerkesztés":
+      - strong: Kelbimbó
+    - button "Kelbimbó · Mennyiség szerkesztése": 1 db
+    - button "Spenót · Megvettem"
+    - button "Spenót · Szerkesztés":
+      - strong: Spenót
+    - button "Spenót · Mennyiség szerkesztése": 1 db
+    - button "Sóska · Megvettem"
+    - button "Sóska · Szerkesztés":
+      - strong: Sóska
+    - button "Sóska · Mennyiség szerkesztése": 1 db
+    - button "Rukkola · Megvettem"
+    - button "Rukkola · Szerkesztés":
+      - strong: Rukkola
+    - button "Rukkola · Mennyiség szerkesztése": 1 db
+    - button "Édesburgonya · Megvettem"
+    - button "Édesburgonya · Szerkesztés":
+      - strong: Édesburgonya
+    - button "Édesburgonya · Mennyiség szerkesztése": 1 db
+    - button "Sütőtök · Megvettem"
+    - button "Sütőtök · Szerkesztés":
+      - strong: Sütőtök
+    - button "Sütőtök · Mennyiség szerkesztése": 1 db
+    - button "Retek · Megvettem"
+    - button "Retek · Szerkesztés":
+      - strong: Retek
+    - button "Retek · Mennyiség szerkesztése": 1 db
+    - button "Zöldbab · Megvettem"
+    - button "Zöldbab · Szerkesztés":
+      - strong: Zöldbab
+    - button "Zöldbab · Mennyiség szerkesztése": 1 db
+    - button "Spárga · Megvettem"
+    - button "Spárga · Szerkesztés":
+      - strong: Spárga
+    - button "Spárga · Mennyiség szerkesztése": 1 db
+    - button "Chili · Megvettem"
+    - button "Chili · Szerkesztés":
+      - strong: Chili
+    - button "Chili · Mennyiség szerkesztése": 1 db
+    - button "Kukorica · Megvettem"
+    - button "Kukorica · Szerkesztés":
+      - strong: Kukorica
+    - button "Kukorica · Mennyiség szerkesztése": 1 db
+    - button "Jégsaláta · Megvettem"
+    - button "Jégsaláta · Szerkesztés":
+      - strong: Jégsaláta
+    - button "Jégsaláta · Mennyiség szerkesztése": 1 db
+    - button "Madársaláta · Megvettem"
+    - button "Madársaláta · Szerkesztés":
+      - strong: Madársaláta
+    - button "Madársaláta · Mennyiség szerkesztése": 1 db
+    - button "Koktélparadicsom · Megvettem"
+    - button "Koktélparadicsom · Szerkesztés":
+      - strong: Koktélparadicsom
+    - button "Koktélparadicsom · Mennyiség szerkesztése": 1 db
+    - button "TV paprika · Megvettem"
+    - button "TV paprika · Szerkesztés":
+      - strong: TV paprika
+    - button "TV paprika · Mennyiség szerkesztése": 1 db
+    - button "Kápia paprika · Megvettem"
+    - button "Kápia paprika · Szerkesztés":
+      - strong: Kápia paprika
+    - button "Kápia paprika · Mennyiség szerkesztése": 1 db
+    - button "Csípős paprika · Megvettem"
+    - button "Csípős paprika · Szerkesztés":
+      - strong: Csípős paprika
+    - button "Csípős paprika · Mennyiség szerkesztése": 1 db
+    - button "Újkrumpli · Megvettem"
+    - button "Újkrumpli · Szerkesztés":
+      - strong: Újkrumpli
+    - button "Újkrumpli · Mennyiség szerkesztése": 1 db
+    - button "Friss petrezselyem · Megvettem"
+    - button "Friss petrezselyem · Szerkesztés":
+      - strong: Friss petrezselyem
+    - button "Friss petrezselyem · Mennyiség szerkesztése": 1 db
+    - button "Friss bazsalikom · Megvettem"
+    - button "Friss bazsalikom · Szerkesztés":
+      - strong: Friss bazsalikom
+    - button "Friss bazsalikom · Mennyiség szerkesztése": 1 db
+    - button "Friss kapor · Megvettem"
+    - button "Friss kapor · Szerkesztés":
+      - strong: Friss kapor
+    - button "Friss kapor · Mennyiség szerkesztése": 1 db
+    - button "Friss menta · Megvettem"
+    - button "Friss menta · Szerkesztés":
+      - strong: Friss menta
+    - button "Friss menta · Mennyiség szerkesztése": 1 db
+    - button "Édeskömény · Megvettem"
+    - button "Édeskömény · Szerkesztés":
+      - strong: Édeskömény
+    - button "Édeskömény · Mennyiség szerkesztése": 1 db
+    - button "Torma · Megvettem"
+    - button "Torma · Szerkesztés":
+      - strong: Torma
+    - button "Torma · Mennyiség szerkesztése": 1 db
+    - button "Csíra · Megvettem"
+    - button "Csíra · Szerkesztés":
+      - strong: Csíra
+    - button "Csíra · Mennyiség szerkesztése": 1 db
+  - group:
+    - text: Tejtermék és tojás 42 ›
+    - button "Tojás · Megvettem"
+    - button "Tojás · Szerkesztés":
+      - strong: Tojás
+    - button "Tojás · Mennyiség szerkesztése": 1 db
+    - button "Tej · Megvettem"
+    - button "Tej · Szerkesztés":
+      - strong: Tej
+    - button "Tej · Mennyiség szerkesztése": 1 db
+    - button "Vaj · Megvettem"
+    - button "Vaj · Szerkesztés":
+      - strong: Vaj
+    - button "Vaj · Mennyiség szerkesztése": 1 db
+    - button "Sajt · Megvettem"
+    - button "Sajt · Szerkesztés":
+      - strong: Sajt
+    - button "Sajt · Mennyiség szerkesztése": 1 db
+    - button "Tejföl · Megvettem"
+    - button "Tejföl · Szerkesztés":
+      - strong: Tejföl
+    - button "Tejföl · Mennyiség szerkesztése": 1 db
+    - button "Joghurt · Megvettem"
+    - button "Joghurt · Szerkesztés":
+      - strong: Joghurt
+    - button "Joghurt · Mennyiség szerkesztése": 1 db
+    - button "Trappista · Megvettem"
+    - button "Trappista · Szerkesztés":
+      - strong: Trappista
+    - button "Trappista · Mennyiség szerkesztése": 1 db
+    - button "Túró · Megvettem"
+    - button "Túró · Szerkesztés":
+      - strong: Túró
+    - button "Túró · Mennyiség szerkesztése": 1 db
+    - button "Tejszín · Megvettem"
+    - button "Tejszín · Szerkesztés":
+      - strong: Tejszín
+    - button "Tejszín · Mennyiség szerkesztése": 1 db
+    - button "Sajtkrém · Megvettem"
+    - button "Sajtkrém · Szerkesztés":
+      - strong: Sajtkrém
+    - button "Sajtkrém · Mennyiség szerkesztése": 1 db
+    - button "Görög joghurt · Megvettem"
+    - button "Görög joghurt · Szerkesztés":
+      - strong: Görög joghurt
+    - button "Görög joghurt · Mennyiség szerkesztése": 1 db
+    - button "Kefir · Megvettem"
+    - button "Kefir · Szerkesztés":
+      - strong: Kefir
+    - button "Kefir · Mennyiség szerkesztése": 1 db
+    - button "Cheddar · Megvettem"
+    - button "Cheddar · Szerkesztés":
+      - strong: Cheddar
+    - button "Cheddar · Mennyiség szerkesztése": 1 db
+    - button "Mozzarella · Megvettem"
+    - button "Mozzarella · Szerkesztés":
+      - strong: Mozzarella
+    - button "Mozzarella · Mennyiség szerkesztése": 1 db
+    - button "Parmezán · Megvettem"
+    - button "Parmezán · Szerkesztés":
+      - strong: Parmezán
+    - button "Parmezán · Mennyiség szerkesztése": 1 db
+    - button "Feta · Megvettem"
+    - button "Feta · Szerkesztés":
+      - strong: Feta
+    - button "Feta · Mennyiség szerkesztése": 1 db
+    - button "Camembert · Megvettem"
+    - button "Camembert · Szerkesztés":
+      - strong: Camembert
+    - button "Camembert · Mennyiség szerkesztése": 1 db
+    - button "Mascarpone · Megvettem"
+    - button "Mascarpone · Szerkesztés":
+      - strong: Mascarpone
+    - button "Mascarpone · Mennyiség szerkesztése": 1 db
+    - button "Ricotta · Megvettem"
+    - button "Ricotta · Szerkesztés":
+      - strong: Ricotta
+    - button "Ricotta · Mennyiség szerkesztése": 1 db
+    - button "Krémtúró · Megvettem"
+    - button "Krémtúró · Szerkesztés":
+      - strong: Krémtúró
+    - button "Krémtúró · Mennyiség szerkesztése": 1 db
+    - button "Író · Megvettem"
+    - button "Író · Szerkesztés":
+      - strong: Író
+    - button "Író · Mennyiség szerkesztése": 1 db
+    - button "Laktózmentes tej · Megvettem"
+    - button "Laktózmentes tej · Szerkesztés":
+      - strong: Laktózmentes tej
+    - button "Laktózmentes tej · Mennyiség szerkesztése": 1 db
+    - button "Laktózmentes tejföl · Megvettem"
+    - button "Laktózmentes tejföl · Szerkesztés":
+      - strong: Laktózmentes tejföl
+    - button "Laktózmentes tejföl · Mennyiség szerkesztése": 1 db
+    - button "Laktózmentes joghurt · Megvettem"
+    - button "Laktózmentes joghurt · Szerkesztés":
+      - strong: Laktózmentes joghurt
+    - button "Laktózmentes joghurt · Mennyiség szerkesztése": 1 db
+    - button "Laktózmentes túró · Megvettem"
+    - button "Laktózmentes túró · Szerkesztés":
+      - strong: Laktózmentes túró
+    - button "Laktózmentes túró · Mennyiség szerkesztése": 1 db
+    - button "Laktózmentes sajt · Megvettem"
+    - button "Laktózmentes sajt · Szerkesztés":
+      - strong: Laktózmentes sajt
+    - button "Laktózmentes sajt · Mennyiség szerkesztése": 1 db
+    - button "Gyümölcsjoghurt · Megvettem"
+    - button "Gyümölcsjoghurt · Szerkesztés":
+      - strong: Gyümölcsjoghurt
+    - button "Gyümölcsjoghurt · Mennyiség szerkesztése": 1 db
+    - button "Natúr joghurt · Megvettem"
+    - button "Natúr joghurt · Szerkesztés":
+      - strong: Natúr joghurt
+    - button "Natúr joghurt · Mennyiség szerkesztése": 1 db
+    - button "Ivójoghurt · Megvettem"
+    - button "Ivójoghurt · Szerkesztés":
+      - strong: Ivójoghurt
+    - button "Ivójoghurt · Mennyiség szerkesztése": 1 db
+    - button "Skyr · Megvettem"
+    - button "Skyr · Szerkesztés":
+      - strong: Skyr
+    - button "Skyr · Mennyiség szerkesztése": 1 db
+    - button "Gouda · Megvettem"
+    - button "Gouda · Szerkesztés":
+      - strong: Gouda
+    - button "Gouda · Mennyiség szerkesztése": 1 db
+    - button "Edami · Megvettem"
+    - button "Edami · Szerkesztés":
+      - strong: Edami
+    - button "Edami · Mennyiség szerkesztése": 1 db
+    - button "Ementáli · Megvettem"
+    - button "Ementáli · Szerkesztés":
+      - strong: Ementáli
+    - button "Ementáli · Mennyiség szerkesztése": 1 db
+    - button "Füstölt sajt · Megvettem"
+    - button "Füstölt sajt · Szerkesztés":
+      - strong: Füstölt sajt
+    - button "Füstölt sajt · Mennyiség szerkesztése": 1 db
+    - button "Reszelt sajt · Megvettem"
+    - button "Reszelt sajt · Szerkesztés":
+      - strong: Reszelt sajt
+    - button "Reszelt sajt · Mennyiség szerkesztése": 1 db
+    - button "Lapsajt · Megvettem"
+    - button "Lapsajt · Szerkesztés":
+      - strong: Lapsajt
+    - button "Lapsajt · Mennyiség szerkesztése": 1 db
+    - button "Kecskesajt · Megvettem"
+    - button "Kecskesajt · Szerkesztés":
+      - strong: Kecskesajt
+    - button "Kecskesajt · Mennyiség szerkesztése": 1 db
+    - button "Juhtúró · Megvettem"
+    - button "Juhtúró · Szerkesztés":
+      - strong: Juhtúró
+    - button "Juhtúró · Mennyiség szerkesztése": 1 db
+    - button "Sűrített tej · Megvettem"
+    - button "Sűrített tej · Szerkesztés":
+      - strong: Sűrített tej
+    - button "Sűrített tej · Mennyiség szerkesztése": 1 db
+    - button "Habtejszín · Megvettem"
+    - button "Habtejszín · Szerkesztés":
+      - strong: Habtejszín
+    - button "Habtejszín · Mennyiség szerkesztése": 1 db
+    - button "Főzőtejszín · Megvettem"
+    - button "Főzőtejszín · Szerkesztés":
+      - strong: Főzőtejszín
+    - button "Főzőtejszín · Mennyiség szerkesztése": 1 db
+    - button "Margarin · Megvettem"
+    - button "Margarin · Szerkesztés":
+      - strong: Margarin
+    - button "Margarin · Mennyiség szerkesztése": 1 db
+  - group:
+    - text: Pékáru 27 ›
+    - button "Kenyér · Megvettem"
+    - button "Kenyér · Szerkesztés":
+      - strong: Kenyér
+    - button "Kenyér · Mennyiség szerkesztése": 1 db
+    - button "Zsemle · Megvettem"
+    - button "Zsemle · Szerkesztés":
+      - strong: Zsemle
+    - button "Zsemle · Mennyiség szerkesztése": 1 db
+    - button "Kifli · Megvettem"
+    - button "Kifli · Szerkesztés":
+      - strong: Kifli
+    - button "Kifli · Mennyiség szerkesztése": 1 db
+    - button "Teljes kiőrlésű kenyér · Megvettem"
+    - button "Teljes kiőrlésű kenyér · Szerkesztés":
+      - strong: Teljes kiőrlésű kenyér
+    - button "Teljes kiőrlésű kenyér · Mennyiség szerkesztése": 1 db
+    - button "Toastkenyér · Megvettem"
+    - button "Toastkenyér · Szerkesztés":
+      - strong: Toastkenyér
+    - button "Toastkenyér · Mennyiség szerkesztése": 1 db
+    - button "Bagett · Megvettem"
+    - button "Bagett · Szerkesztés":
+      - strong: Bagett
+    - button "Bagett · Mennyiség szerkesztése": 1 db
+    - button "Ciabatta · Megvettem"
+    - button "Ciabatta · Szerkesztés":
+      - strong: Ciabatta
+    - button "Ciabatta · Mennyiség szerkesztése": 1 db
+    - button "Pita · Megvettem"
+    - button "Pita · Szerkesztés":
+      - strong: Pita
+    - button "Pita · Mennyiség szerkesztése": 1 db
+    - button "Tortillalap · Megvettem"
+    - button "Tortillalap · Szerkesztés":
+      - strong: Tortillalap
+    - button "Tortillalap · Mennyiség szerkesztése": 1 db
+    - button "Croissant · Megvettem"
+    - button "Croissant · Szerkesztés":
+      - strong: Croissant
+    - button "Croissant · Mennyiség szerkesztése": 1 db
+    - button "Kalács · Megvettem"
+    - button "Kalács · Szerkesztés":
+      - strong: Kalács
+    - button "Kalács · Mennyiség szerkesztése": 1 db
+    - button "Kétszersült · Megvettem"
+    - button "Kétszersült · Szerkesztés":
+      - strong: Kétszersült
+    - button "Kétszersült · Mennyiség szerkesztése": 1 db
+    - button "Pászka · Megvettem"
+    - button "Pászka · Szerkesztés":
+      - strong: Pászka
+    - button "Pászka · Mennyiség szerkesztése": 1 db
+    - button "Rozskenyér · Megvettem"
+    - button "Rozskenyér · Szerkesztés":
+      - strong: Rozskenyér
+    - button "Rozskenyér · Mennyiség szerkesztése": 1 db
+    - button "Kovászos kenyér · Megvettem"
+    - button "Kovászos kenyér · Szerkesztés":
+      - strong: Kovászos kenyér
+    - button "Kovászos kenyér · Mennyiség szerkesztése": 1 db
+    - button "Magvas kenyér · Megvettem"
+    - button "Magvas kenyér · Szerkesztés":
+      - strong: Magvas kenyér
+    - button "Magvas kenyér · Mennyiség szerkesztése": 1 db
+    - button "Gluténmentes kenyér · Megvettem"
+    - button "Gluténmentes kenyér · Szerkesztés":
+      - strong: Gluténmentes kenyér
+    - button "Gluténmentes kenyér · Mennyiség szerkesztése": 1 db
+    - button "Gluténmentes zsemle · Megvettem"
+    - button "Gluténmentes zsemle · Szerkesztés":
+      - strong: Gluténmentes zsemle
+    - button "Gluténmentes zsemle · Mennyiség szerkesztése": 1 db
+    - button "Hamburgerzsemle · Megvettem"
+    - button "Hamburgerzsemle · Szerkesztés":
+      - strong: Hamburgerzsemle
+    - button "Hamburgerzsemle · Mennyiség szerkesztése": 1 db
+    - button "Hotdogkifli · Megvettem"
+    - button "Hotdogkifli · Szerkesztés":
+      - strong: Hotdogkifli
+    - button "Hotdogkifli · Mennyiség szerkesztése": 1 db
+    - button "Pogácsa · Megvettem"
+    - button "Pogácsa · Szerkesztés":
+      - strong: Pogácsa
+    - button "Pogácsa · Mennyiség szerkesztése": 1 db
+    - button "Kakaós csiga · Megvettem"
+    - button "Kakaós csiga · Szerkesztés":
+      - strong: Kakaós csiga
+    - button "Kakaós csiga · Mennyiség szerkesztése": 1 db
+    - button "Túrós táska · Megvettem"
+    - button "Túrós táska · Szerkesztés":
+      - strong: Túrós táska
+    - button "Túrós táska · Mennyiség szerkesztése": 1 db
+    - button "Fánk · Megvettem"
+    - button "Fánk · Szerkesztés":
+      - strong: Fánk
+    - button "Fánk · Mennyiség szerkesztése": 1 db
+    - button "Rétes · Megvettem"
+    - button "Rétes · Szerkesztés":
+      - strong: Rétes
+    - button "Rétes · Mennyiség szerkesztése": 1 db
+    - button "Briós · Megvettem"
+    - button "Briós · Szerkesztés":
+      - strong: Briós
+    - button "Briós · Mennyiség szerkesztése": 1 db
+    - button "Sajtos rúd · Megvettem"
+    - button "Sajtos rúd · Szerkesztés":
+      - strong: Sajtos rúd
+    - button "Sajtos rúd · Mennyiség szerkesztése": 1 db
+  - group:
+    - text: Gyümölcsök 31 ›
+    - button "Alma · Megvettem"
+    - button "Alma · Szerkesztés":
+      - strong: Alma
+    - button "Alma · Mennyiség szerkesztése": 1 db
+    - button "Banán · Megvettem"
+    - button "Banán · Szerkesztés":
+      - strong: Banán
+    - button "Banán · Mennyiség szerkesztése": 1 db
+    - button "Citrom · Megvettem"
+    - button "Citrom · Szerkesztés":
+      - strong: Citrom
+    - button "Citrom · Mennyiség szerkesztése": 1 db
+    - button "Narancs · Megvettem"
+    - button "Narancs · Szerkesztés":
+      - strong: Narancs
+    - button "Narancs · Mennyiség szerkesztése": 1 db
+    - button "Körte · Megvettem"
+    - button "Körte · Szerkesztés":
+      - strong: Körte
+    - button "Körte · Mennyiség szerkesztése": 1 db
+    - button "Barack · Megvettem"
+    - button "Barack · Szerkesztés":
+      - strong: Barack
+    - button "Barack · Mennyiség szerkesztése": 1 db
+    - button "Mandarin · Megvettem"
+    - button "Mandarin · Szerkesztés":
+      - strong: Mandarin
+    - button "Mandarin · Mennyiség szerkesztése": 1 db
+    - button "Lime · Megvettem"
+    - button "Lime · Szerkesztés":
+      - strong: Lime
+    - button "Lime · Mennyiség szerkesztése": 1 db
+    - button "Grapefruit · Megvettem"
+    - button "Grapefruit · Szerkesztés":
+      - strong: Grapefruit
+    - button "Grapefruit · Mennyiség szerkesztése": 1 db
+    - button "Szilva · Megvettem"
+    - button "Szilva · Szerkesztés":
+      - strong: Szilva
+    - button "Szilva · Mennyiség szerkesztése": 1 db
+    - button "Szőlő · Megvettem"
+    - button "Szőlő · Szerkesztés":
+      - strong: Szőlő
+    - button "Szőlő · Mennyiség szerkesztése": 1 db
+    - button "Eper · Megvettem"
+    - button "Eper · Szerkesztés":
+      - strong: Eper
+    - button "Eper · Mennyiség szerkesztése": 1 db
+    - button "Málna · Megvettem"
+    - button "Málna · Szerkesztés":
+      - strong: Málna
+    - button "Málna · Mennyiség szerkesztése": 1 db
+    - button "Áfonya · Megvettem"
+    - button "Áfonya · Szerkesztés":
+      - strong: Áfonya
+    - button "Áfonya · Mennyiség szerkesztése": 1 db
+    - button "Szeder · Megvettem"
+    - button "Szeder · Szerkesztés":
+      - strong: Szeder
+    - button "Szeder · Mennyiség szerkesztése": 1 db
+    - button "Cseresznye · Megvettem"
+    - button "Cseresznye · Szerkesztés":
+      - strong: Cseresznye
+    - button "Cseresznye · Mennyiség szerkesztése": 1 db
+    - button "Meggy · Megvettem"
+    - button "Meggy · Szerkesztés":
+      - strong: Meggy
+    - button "Meggy · Mennyiség szerkesztése": 1 db
+    - button "Ananász · Megvettem"
+    - button "Ananász · Szerkesztés":
+      - strong: Ananász
+    - button "Ananász · Mennyiség szerkesztése": 1 db
+    - button "Mangó · Megvettem"
+    - button "Mangó · Szerkesztés":
+      - strong: Mangó
+    - button "Mangó · Mennyiség szerkesztése": 1 db
+    - button "Kiwi · Megvettem"
+    - button "Kiwi · Szerkesztés":
+      - strong: Kiwi
+    - button "Kiwi · Mennyiség szerkesztése": 1 db
+    - button "Avokádó · Megvettem"
+    - button "Avokádó · Szerkesztés":
+      - strong: Avokádó
+    - button "Avokádó · Mennyiség szerkesztése": 1 db
+    - button "Görögdinnye · Megvettem"
+    - button "Görögdinnye · Szerkesztés":
+      - strong: Görögdinnye
+    - button "Görögdinnye · Mennyiség szerkesztése": 1 db
+    - button "Sárgadinnye · Megvettem"
+    - button "Sárgadinnye · Szerkesztés":
+      - strong: Sárgadinnye
+    - button "Sárgadinnye · Mennyiség szerkesztése": 1 db
+    - button "Gránátalma · Megvettem"
+    - button "Gránátalma · Szerkesztés":
+      - strong: Gránátalma
+    - button "Gránátalma · Mennyiség szerkesztése": 1 db
+    - button "Nektarin · Megvettem"
+    - button "Nektarin · Szerkesztés":
+      - strong: Nektarin
+    - button "Nektarin · Mennyiség szerkesztése": 1 db
+    - button "Sárgabarack · Megvettem"
+    - button "Sárgabarack · Szerkesztés":
+      - strong: Sárgabarack
+    - button "Sárgabarack · Mennyiség szerkesztése": 1 db
+    - button "Őszibarack · Megvettem"
+    - button "Őszibarack · Szerkesztés":
+      - strong: Őszibarack
+    - button "Őszibarack · Mennyiség szerkesztése": 1 db
+    - button "Kókuszdió · Megvettem"
+    - button "Kókuszdió · Szerkesztés":
+      - strong: Kókuszdió
+    - button "Kókuszdió · Mennyiség szerkesztése": 1 db
+    - button "Füge · Megvettem"
+    - button "Füge · Szerkesztés":
+      - strong: Füge
+    - button "Füge · Mennyiség szerkesztése": 1 db
+    - button "Datolyaszilva · Megvettem"
+    - button "Datolyaszilva · Szerkesztés":
+      - strong: Datolyaszilva
+    - button "Datolyaszilva · Mennyiség szerkesztése": 1 db
+    - button "Pomelo · Megvettem"
+    - button "Pomelo · Szerkesztés":
+      - strong: Pomelo
+    - button "Pomelo · Mennyiség szerkesztése": 1 db
+  - group:
+    - text: Hús és felvágott 38 ›
+    - button "Csirkemell · Megvettem"
+    - button "Csirkemell · Szerkesztés":
+      - strong: Csirkemell
+    - button "Csirkemell · Mennyiség szerkesztése": 1 db
+    - button "Csirkecomb · Megvettem"
+    - button "Csirkecomb · Szerkesztés":
+      - strong: Csirkecomb
+    - button "Csirkecomb · Mennyiség szerkesztése": 1 db
+    - button "Csirkemellsonka · Megvettem"
+    - button "Csirkemellsonka · Szerkesztés":
+      - strong: Csirkemellsonka
+    - button "Csirkemellsonka · Mennyiség szerkesztése": 1 db
+    - button "Sonka · Megvettem"
+    - button "Sonka · Szerkesztés":
+      - strong: Sonka
+    - button "Sonka · Mennyiség szerkesztése": 1 db
+    - button "Darált sertéshús · Megvettem"
+    - button "Darált sertéshús · Szerkesztés":
+      - strong: Darált sertéshús
+    - button "Darált sertéshús · Mennyiség szerkesztése": 1 db
+    - button "Darált marhahús · Megvettem"
+    - button "Darált marhahús · Szerkesztés":
+      - strong: Darált marhahús
+    - button "Darált marhahús · Mennyiség szerkesztése": 1 db
+    - button "Szalonna · Megvettem"
+    - button "Szalonna · Szerkesztés":
+      - strong: Szalonna
+    - button "Szalonna · Mennyiség szerkesztése": 1 db
+    - button "Virsli · Megvettem"
+    - button "Virsli · Szerkesztés":
+      - strong: Virsli
+    - button "Virsli · Mennyiség szerkesztése": 1 db
+    - button "Kolbász · Megvettem"
+    - button "Kolbász · Szerkesztés":
+      - strong: Kolbász
+    - button "Kolbász · Mennyiség szerkesztése": 1 db
+    - button "Csirkeszárny · Megvettem"
+    - button "Csirkeszárny · Szerkesztés":
+      - strong: Csirkeszárny
+    - button "Csirkeszárny · Mennyiség szerkesztése": 1 db
+    - button "Egész csirke · Megvettem"
+    - button "Egész csirke · Szerkesztés":
+      - strong: Egész csirke
+    - button "Egész csirke · Mennyiség szerkesztése": 1 db
+    - button "Pulykamell · Megvettem"
+    - button "Pulykamell · Szerkesztés":
+      - strong: Pulykamell
+    - button "Pulykamell · Mennyiség szerkesztése": 1 db
+    - button "Sertéskaraj · Megvettem"
+    - button "Sertéskaraj · Szerkesztés":
+      - strong: Sertéskaraj
+    - button "Sertéskaraj · Mennyiség szerkesztése": 1 db
+    - button "Sertéstarja · Megvettem"
+    - button "Sertéstarja · Szerkesztés":
+      - strong: Sertéstarja
+    - button "Sertéstarja · Mennyiség szerkesztése": 1 db
+    - button "Sertéscomb · Megvettem"
+    - button "Sertéscomb · Szerkesztés":
+      - strong: Sertéscomb
+    - button "Sertéscomb · Mennyiség szerkesztése": 1 db
+    - button "Sertésszűz · Megvettem"
+    - button "Sertésszűz · Szerkesztés":
+      - strong: Sertésszűz
+    - button "Sertésszűz · Mennyiség szerkesztése": 1 db
+    - button "Marhapörkölt-hús · Megvettem"
+    - button "Marhapörkölt-hús · Szerkesztés":
+      - strong: Marhapörkölt-hús
+    - button "Marhapörkölt-hús · Mennyiség szerkesztése": 1 db
+    - button "Marhasteak · Megvettem"
+    - button "Marhasteak · Szerkesztés":
+      - strong: Marhasteak
+    - button "Marhasteak · Mennyiség szerkesztése": 1 db
+    - button "Kacsa · Megvettem"
+    - button "Kacsa · Szerkesztés":
+      - strong: Kacsa
+    - button "Kacsa · Mennyiség szerkesztése": 1 db
+    - button "Csirkemáj · Megvettem"
+    - button "Csirkemáj · Szerkesztés":
+      - strong: Csirkemáj
+    - button "Csirkemáj · Mennyiség szerkesztése": 1 db
+    - button "Bacon · Megvettem"
+    - button "Bacon · Szerkesztés":
+      - strong: Bacon
+    - button "Bacon · Mennyiség szerkesztése": 1 db
+    - button "Szalámi · Megvettem"
+    - button "Szalámi · Szerkesztés":
+      - strong: Szalámi
+    - button "Szalámi · Mennyiség szerkesztése": 1 db
+    - button "Párizsi · Megvettem"
+    - button "Párizsi · Szerkesztés":
+      - strong: Párizsi
+    - button "Párizsi · Mennyiség szerkesztése": 1 db
+    - button "Májkrém · Megvettem"
+    - button "Májkrém · Szerkesztés":
+      - strong: Májkrém
+    - button "Májkrém · Mennyiség szerkesztése": 1 db
+    - button "Darált pulykahús · Megvettem"
+    - button "Darált pulykahús · Szerkesztés":
+      - strong: Darált pulykahús
+    - button "Darált pulykahús · Mennyiség szerkesztése": 1 db
+    - button "Sertésoldalas · Megvettem"
+    - button "Sertésoldalas · Szerkesztés":
+      - strong: Sertésoldalas
+    - button "Sertésoldalas · Mennyiség szerkesztése": 1 db
+    - button "Sertéslapocka · Megvettem"
+    - button "Sertéslapocka · Szerkesztés":
+      - strong: Sertéslapocka
+    - button "Sertéslapocka · Mennyiség szerkesztése": 1 db
+    - button "Marhalábszár · Megvettem"
+    - button "Marhalábszár · Szerkesztés":
+      - strong: Marhalábszár
+    - button "Marhalábszár · Mennyiség szerkesztése": 1 db
+    - button "Leveshús · Megvettem"
+    - button "Leveshús · Szerkesztés":
+      - strong: Leveshús
+    - button "Leveshús · Mennyiség szerkesztése": 1 db
+    - button "Pulykacomb · Megvettem"
+    - button "Pulykacomb · Szerkesztés":
+      - strong: Pulykacomb
+    - button "Pulykacomb · Mennyiség szerkesztése": 1 db
+    - button "Libacomb · Megvettem"
+    - button "Libacomb · Szerkesztés":
+      - strong: Libacomb
+    - button "Libacomb · Mennyiség szerkesztése": 1 db
+    - button "Kacsamell · Megvettem"
+    - button "Kacsamell · Szerkesztés":
+      - strong: Kacsamell
+    - button "Kacsamell · Mennyiség szerkesztése": 1 db
+    - button "Sertésmáj · Megvettem"
+    - button "Sertésmáj · Szerkesztés":
+      - strong: Sertésmáj
+    - button "Sertésmáj · Mennyiség szerkesztése": 1 db
+    - button "Disznósajt · Megvettem"
+    - button "Disznósajt · Szerkesztés":
+      - strong: Disznósajt
+    - button "Disznósajt · Mennyiség szerkesztése": 1 db
+    - button "Kenőmájas · Megvettem"
+    - button "Kenőmájas · Szerkesztés":
+      - strong: Kenőmájas
+    - button "Kenőmájas · Mennyiség szerkesztése": 1 db
+    - button "Füstölt csülök · Megvettem"
+    - button "Füstölt csülök · Szerkesztés":
+      - strong: Füstölt csülök
+    - button "Füstölt csülök · Mennyiség szerkesztése": 1 db
+    - button "Debreceni · Megvettem"
+    - button "Debreceni · Szerkesztés":
+      - strong: Debreceni
+    - button "Debreceni · Mennyiség szerkesztése": 1 db
+    - button "Pulykasonka · Megvettem"
+    - button "Pulykasonka · Szerkesztés":
+      - strong: Pulykasonka
+    - button "Pulykasonka · Mennyiség szerkesztése": 1 db
+  - group:
+    - text: Rizs és tészta 31 ›
+    - button "Rizs · Megvettem"
+    - button "Rizs · Szerkesztés":
+      - strong: Rizs
+    - button "Rizs · Mennyiség szerkesztése": 1 db
+    - button "Tészta · Megvettem"
+    - button "Tészta · Szerkesztés":
+      - strong: Tészta
+    - button "Tészta · Mennyiség szerkesztése": 1 db
+    - button "Jázminrizs · Megvettem"
+    - button "Jázminrizs · Szerkesztés":
+      - strong: Jázminrizs
+    - button "Jázminrizs · Mennyiség szerkesztése": 1 db
+    - button "Spagetti · Megvettem"
+    - button "Spagetti · Szerkesztés":
+      - strong: Spagetti
+    - button "Spagetti · Mennyiség szerkesztése": 1 db
+    - button "Penne · Megvettem"
+    - button "Penne · Szerkesztés":
+      - strong: Penne
+    - button "Penne · Mennyiség szerkesztése": 1 db
+    - button "Basmati rizs · Megvettem"
+    - button "Basmati rizs · Szerkesztés":
+      - strong: Basmati rizs
+    - button "Basmati rizs · Mennyiség szerkesztése": 1 db
+    - button "Barna rizs · Megvettem"
+    - button "Barna rizs · Szerkesztés":
+      - strong: Barna rizs
+    - button "Barna rizs · Mennyiség szerkesztése": 1 db
+    - button "Rizottórizs · Megvettem"
+    - button "Rizottórizs · Szerkesztés":
+      - strong: Rizottórizs
+    - button "Rizottórizs · Mennyiség szerkesztése": 1 db
+    - button "Fusilli · Megvettem"
+    - button "Fusilli · Szerkesztés":
+      - strong: Fusilli
+    - button "Fusilli · Mennyiség szerkesztése": 1 db
+    - button "Tagliatelle · Megvettem"
+    - button "Tagliatelle · Szerkesztés":
+      - strong: Tagliatelle
+    - button "Tagliatelle · Mennyiség szerkesztése": 1 db
+    - button "Lasagnelap · Megvettem"
+    - button "Lasagnelap · Szerkesztés":
+      - strong: Lasagnelap
+    - button "Lasagnelap · Mennyiség szerkesztése": 1 db
+    - button "Tarhonya · Megvettem"
+    - button "Tarhonya · Szerkesztés":
+      - strong: Tarhonya
+    - button "Tarhonya · Mennyiség szerkesztése": 1 db
+    - button "Rizstészta · Megvettem"
+    - button "Rizstészta · Szerkesztés":
+      - strong: Rizstészta
+    - button "Rizstészta · Mennyiség szerkesztése": 1 db
+    - button "Üvegtészta · Megvettem"
+    - button "Üvegtészta · Szerkesztés":
+      - strong: Üvegtészta
+    - button "Üvegtészta · Mennyiség szerkesztése": 1 db
+    - button "Kuszkusz · Megvettem"
+    - button "Kuszkusz · Szerkesztés":
+      - strong: Kuszkusz
+    - button "Kuszkusz · Mennyiség szerkesztése": 1 db
+    - button "Bulgur · Megvettem"
+    - button "Bulgur · Szerkesztés":
+      - strong: Bulgur
+    - button "Bulgur · Mennyiség szerkesztése": 1 db
+    - button "Quinoa · Megvettem"
+    - button "Quinoa · Szerkesztés":
+      - strong: Quinoa
+    - button "Quinoa · Mennyiség szerkesztése": 1 db
+    - button "Köles · Megvettem"
+    - button "Köles · Szerkesztés":
+      - strong: Köles
+    - button "Köles · Mennyiség szerkesztése": 1 db
+    - button "Hajdina · Megvettem"
+    - button "Hajdina · Szerkesztés":
+      - strong: Hajdina
+    - button "Hajdina · Mennyiség szerkesztése": 1 db
+    - button "Árpagyöngy · Megvettem"
+    - button "Árpagyöngy · Szerkesztés":
+      - strong: Árpagyöngy
+    - button "Árpagyöngy · Mennyiség szerkesztése": 1 db
+    - button "Gnocchi · Megvettem"
+    - button "Gnocchi · Szerkesztés":
+      - strong: Gnocchi
+    - button "Gnocchi · Mennyiség szerkesztése": 1 db
+    - button "Levestészta · Megvettem"
+    - button "Levestészta · Szerkesztés":
+      - strong: Levestészta
+    - button "Levestészta · Mennyiség szerkesztése": 1 db
+    - button "Cérnametélt · Megvettem"
+    - button "Cérnametélt · Szerkesztés":
+      - strong: Cérnametélt
+    - button "Cérnametélt · Mennyiség szerkesztése": 1 db
+    - button "Orsótészta · Megvettem"
+    - button "Orsótészta · Szerkesztés":
+      - strong: Orsótészta
+    - button "Orsótészta · Mennyiség szerkesztése": 1 db
+    - button "Száraztészta tojás nélkül · Megvettem"
+    - button "Száraztészta tojás nélkül · Szerkesztés":
+      - strong: Száraztészta tojás nélkül
+    - button "Száraztészta tojás nélkül · Mennyiség szerkesztése": 1 db
+    - button "Teljes kiőrlésű tészta · Megvettem"
+    - button "Teljes kiőrlésű tészta · Szerkesztés":
+      - strong: Teljes kiőrlésű tészta
+    - button "Teljes kiőrlésű tészta · Mennyiség szerkesztése": 1 db
+    - button "Gluténmentes tészta · Megvettem"
+    - button "Gluténmentes tészta · Szerkesztés":
+      - strong: Gluténmentes tészta
+    - button "Gluténmentes tészta · Mennyiség szerkesztése": 1 db
+    - button "Instant tészta · Megvettem"
+    - button "Instant tészta · Szerkesztés":
+      - strong: Instant tészta
+    - button "Instant tészta · Mennyiség szerkesztése": 1 db
+    - button "Tortellini · Megvettem"
+    - button "Tortellini · Szerkesztés":
+      - strong: Tortellini
+    - button "Tortellini · Mennyiség szerkesztése": 1 db
+    - button "Ravioli · Megvettem"
+    - button "Ravioli · Szerkesztés":
+      - strong: Ravioli
+    - button "Ravioli · Mennyiség szerkesztése": 1 db
+    - button "Polenta · Megvettem"
+    - button "Polenta · Szerkesztés":
+      - strong: Polenta
+    - button "Polenta · Mennyiség szerkesztése": 1 db
+  - group:
+    - text: Fagyasztott 28 ›
+    - button "Zöldségkeverék · Megvettem"
+    - button "Zöldségkeverék · Szerkesztés":
+      - strong: Zöldségkeverék
+    - button "Zöldségkeverék · Mennyiség szerkesztése": 1 db
+    - button "Mirelit zöldség · Megvettem"
+    - button "Mirelit zöldség · Szerkesztés":
+      - strong: Mirelit zöldség
+    - button "Mirelit zöldség · Mennyiség szerkesztése": 1 db
+    - button "Mirelit borsó · Megvettem"
+    - button "Mirelit borsó · Szerkesztés":
+      - strong: Mirelit borsó
+    - button "Mirelit borsó · Mennyiség szerkesztése": 1 db
+    - button "Mirelit brokkoli · Megvettem"
+    - button "Mirelit brokkoli · Szerkesztés":
+      - strong: Mirelit brokkoli
+    - button "Mirelit brokkoli · Mennyiség szerkesztése": 1 db
+    - button "Mirelit spenót · Megvettem"
+    - button "Mirelit spenót · Szerkesztés":
+      - strong: Mirelit spenót
+    - button "Mirelit spenót · Mennyiség szerkesztése": 1 db
+    - button "Mirelit zöldbab · Megvettem"
+    - button "Mirelit zöldbab · Szerkesztés":
+      - strong: Mirelit zöldbab
+    - button "Mirelit zöldbab · Mennyiség szerkesztése": 1 db
+    - button "Mirelit kukorica · Megvettem"
+    - button "Mirelit kukorica · Szerkesztés":
+      - strong: Mirelit kukorica
+    - button "Mirelit kukorica · Mennyiség szerkesztése": 1 db
+    - button "Mirelit gyümölcs · Megvettem"
+    - button "Mirelit gyümölcs · Szerkesztés":
+      - strong: Mirelit gyümölcs
+    - button "Mirelit gyümölcs · Mennyiség szerkesztése": 1 db
+    - button "Mirelit hasábburgonya · Megvettem"
+    - button "Mirelit hasábburgonya · Szerkesztés":
+      - strong: Mirelit hasábburgonya
+    - button "Mirelit hasábburgonya · Mennyiség szerkesztése": 1 db
+    - button "Leveles tészta · Megvettem"
+    - button "Leveles tészta · Szerkesztés":
+      - strong: Leveles tészta
+    - button "Leveles tészta · Mennyiség szerkesztése": 1 db
+    - button "Pizza · Megvettem"
+    - button "Pizza · Szerkesztés":
+      - strong: Pizza
+    - button "Pizza · Mennyiség szerkesztése": 1 db
+    - button "Fagylalt · Megvettem"
+    - button "Fagylalt · Szerkesztés":
+      - strong: Fagylalt
+    - button "Fagylalt · Mennyiség szerkesztése": 1 db
+    - button "Jégkocka · Megvettem"
+    - button "Jégkocka · Szerkesztés":
+      - strong: Jégkocka
+    - button "Jégkocka · Mennyiség szerkesztése": 1 db
+    - button "Mirelit eper · Megvettem"
+    - button "Mirelit eper · Szerkesztés":
+      - strong: Mirelit eper
+    - button "Mirelit eper · Mennyiség szerkesztése": 1 db
+    - button "Mirelit málna · Megvettem"
+    - button "Mirelit málna · Szerkesztés":
+      - strong: Mirelit málna
+    - button "Mirelit málna · Mennyiség szerkesztése": 1 db
+    - button "Mirelit meggy · Megvettem"
+    - button "Mirelit meggy · Szerkesztés":
+      - strong: Mirelit meggy
+    - button "Mirelit meggy · Mennyiség szerkesztése": 1 db
+    - button "Mirelit karfiol · Megvettem"
+    - button "Mirelit karfiol · Szerkesztés":
+      - strong: Mirelit karfiol
+    - button "Mirelit karfiol · Mennyiség szerkesztése": 1 db
+    - button "Mirelit gomba · Megvettem"
+    - button "Mirelit gomba · Szerkesztés":
+      - strong: Mirelit gomba
+    - button "Mirelit gomba · Mennyiség szerkesztése": 1 db
+    - button "Mirelit leveszöldség · Megvettem"
+    - button "Mirelit leveszöldség · Szerkesztés":
+      - strong: Mirelit leveszöldség
+    - button "Mirelit leveszöldség · Mennyiség szerkesztése": 1 db
+    - button "Mirelit halfilé · Megvettem"
+    - button "Mirelit halfilé · Szerkesztés":
+      - strong: Mirelit halfilé
+    - button "Mirelit halfilé · Mennyiség szerkesztése": 1 db
+    - button "Mirelit csirkefalatok · Megvettem"
+    - button "Mirelit csirkefalatok · Szerkesztés":
+      - strong: Mirelit csirkefalatok
+    - button "Mirelit csirkefalatok · Mennyiség szerkesztése": 1 db
+    - button "Mirelit rántott sajt · Megvettem"
+    - button "Mirelit rántott sajt · Szerkesztés":
+      - strong: Mirelit rántott sajt
+    - button "Mirelit rántott sajt · Mennyiség szerkesztése": 1 db
+    - button "Mirelit krokett · Megvettem"
+    - button "Mirelit krokett · Szerkesztés":
+      - strong: Mirelit krokett
+    - button "Mirelit krokett · Mennyiség szerkesztése": 1 db
+    - button "Mirelit pogácsa · Megvettem"
+    - button "Mirelit pogácsa · Szerkesztés":
+      - strong: Mirelit pogácsa
+    - button "Mirelit pogácsa · Mennyiség szerkesztése": 1 db
+    - button "Mirelit szilvás gombóc · Megvettem"
+    - button "Mirelit szilvás gombóc · Szerkesztés":
+      - strong: Mirelit szilvás gombóc
+    - button "Mirelit szilvás gombóc · Mennyiség szerkesztése": 1 db
+    - button "Mirelit derelye · Megvettem"
+    - button "Mirelit derelye · Szerkesztés":
+      - strong: Mirelit derelye
+    - button "Mirelit derelye · Mennyiség szerkesztése": 1 db
+    - button "Mirelit pizza · Megvettem"
+    - button "Mirelit pizza · Szerkesztés":
+      - strong: Mirelit pizza
+    - button "Mirelit pizza · Mennyiség szerkesztése": 1 db
+    - button "Jégkrém · Megvettem"
+    - button "Jégkrém · Szerkesztés":
+      - strong: Jégkrém
+    - button "Jégkrém · Mennyiség szerkesztése": 1 db
+  - group:
+    - text: Italok 30 ›
+    - button "Kávé · Megvettem"
+    - button "Kávé · Szerkesztés":
+      - strong: Kávé
+    - button "Kávé · Mennyiség szerkesztése": 1 db
+    - button "Tea · Megvettem"
+    - button "Tea · Szerkesztés":
+      - strong: Tea
+    - button "Tea · Mennyiség szerkesztése": 1 db
+    - button "Víz · Megvettem"
+    - button "Víz · Szerkesztés":
+      - strong: Víz
+    - button "Víz · Mennyiség szerkesztése": 1 db
+    - button "Szénsavas víz · Megvettem"
+    - button "Szénsavas víz · Szerkesztés":
+      - strong: Szénsavas víz
+    - button "Szénsavas víz · Mennyiség szerkesztése": 1 db
+    - button "Gyümölcslé · Megvettem"
+    - button "Gyümölcslé · Szerkesztés":
+      - strong: Gyümölcslé
+    - button "Gyümölcslé · Mennyiség szerkesztése": 1 db
+    - button "Narancslé · Megvettem"
+    - button "Narancslé · Szerkesztés":
+      - strong: Narancslé
+    - button "Narancslé · Mennyiség szerkesztése": 1 db
+    - button "Almalé · Megvettem"
+    - button "Almalé · Szerkesztés":
+      - strong: Almalé
+    - button "Almalé · Mennyiség szerkesztése": 1 db
+    - button "Szörp · Megvettem"
+    - button "Szörp · Szerkesztés":
+      - strong: Szörp
+    - button "Szörp · Mennyiség szerkesztése": 1 db
+    - button "Kakaóital · Megvettem"
+    - button "Kakaóital · Szerkesztés":
+      - strong: Kakaóital
+    - button "Kakaóital · Mennyiség szerkesztése": 1 db
+    - button "Üdítő · Megvettem"
+    - button "Üdítő · Szerkesztés":
+      - strong: Üdítő
+    - button "Üdítő · Mennyiség szerkesztése": 1 db
+    - button "Szénsavmentes ásványvíz · Megvettem"
+    - button "Szénsavmentes ásványvíz · Szerkesztés":
+      - strong: Szénsavmentes ásványvíz
+    - button "Szénsavmentes ásványvíz · Mennyiség szerkesztése": 1 db
+    - button "Szénsavas ásványvíz · Megvettem"
+    - button "Szénsavas ásványvíz · Szerkesztés":
+      - strong: Szénsavas ásványvíz
+    - button "Szénsavas ásványvíz · Mennyiség szerkesztése": 1 db
+    - button "Ízesített víz · Megvettem"
+    - button "Ízesített víz · Szerkesztés":
+      - strong: Ízesített víz
+    - button "Ízesített víz · Mennyiség szerkesztése": 1 db
+    - button "Jeges tea · Megvettem"
+    - button "Jeges tea · Szerkesztés":
+      - strong: Jeges tea
+    - button "Jeges tea · Mennyiség szerkesztése": 1 db
+    - button "Kóla · Megvettem"
+    - button "Kóla · Szerkesztés":
+      - strong: Kóla
+    - button "Kóla · Mennyiség szerkesztése": 1 db
+    - button "Tonik · Megvettem"
+    - button "Tonik · Szerkesztés":
+      - strong: Tonik
+    - button "Tonik · Mennyiség szerkesztése": 1 db
+    - button "Energiaital · Megvettem"
+    - button "Energiaital · Szerkesztés":
+      - strong: Energiaital
+    - button "Energiaital · Mennyiség szerkesztése": 1 db
+    - button "Izotóniás ital · Megvettem"
+    - button "Izotóniás ital · Szerkesztés":
+      - strong: Izotóniás ital
+    - button "Izotóniás ital · Mennyiség szerkesztése": 1 db
+    - button "Paradicsomlé · Megvettem"
+    - button "Paradicsomlé · Szerkesztés":
+      - strong: Paradicsomlé
+    - button "Paradicsomlé · Mennyiség szerkesztése": 1 db
+    - button "Smoothie · Megvettem"
+    - button "Smoothie · Szerkesztés":
+      - strong: Smoothie
+    - button "Smoothie · Mennyiség szerkesztése": 1 db
+    - button "Forrócsoki-por · Megvettem"
+    - button "Forrócsoki-por · Szerkesztés":
+      - strong: Forrócsoki-por
+    - button "Forrócsoki-por · Mennyiség szerkesztése": 1 db
+    - button "Szálas tea · Megvettem"
+    - button "Szálas tea · Szerkesztés":
+      - strong: Szálas tea
+    - button "Szálas tea · Mennyiség szerkesztése": 1 db
+    - button "Gyógytea · Megvettem"
+    - button "Gyógytea · Szerkesztés":
+      - strong: Gyógytea
+    - button "Gyógytea · Mennyiség szerkesztése": 1 db
+    - button "Gyümölcstea · Megvettem"
+    - button "Gyümölcstea · Szerkesztés":
+      - strong: Gyümölcstea
+    - button "Gyümölcstea · Mennyiség szerkesztése": 1 db
+    - button "Zöld tea · Megvettem"
+    - button "Zöld tea · Szerkesztés":
+      - strong: Zöld tea
+    - button "Zöld tea · Mennyiség szerkesztése": 1 db
+    - button "Szemes kávé · Megvettem"
+    - button "Szemes kávé · Szerkesztés":
+      - strong: Szemes kávé
+    - button "Szemes kávé · Mennyiség szerkesztése": 1 db
+    - button "Őrölt kávé · Megvettem"
+    - button "Őrölt kávé · Szerkesztés":
+      - strong: Őrölt kávé
+    - button "Őrölt kávé · Mennyiség szerkesztése": 1 db
+    - button "Instant kávé · Megvettem"
+    - button "Instant kávé · Szerkesztés":
+      - strong: Instant kávé
+    - button "Instant kávé · Mennyiség szerkesztése": 1 db
+    - button "Kávékapszula · Megvettem"
+    - button "Kávékapszula · Szerkesztés":
+      - strong: Kávékapszula
+    - button "Kávékapszula · Mennyiség szerkesztése": 1 db
+    - button "Koffeinmentes kávé · Megvettem"
+    - button "Koffeinmentes kávé · Szerkesztés":
+      - strong: Koffeinmentes kávé
+    - button "Koffeinmentes kávé · Mennyiség szerkesztése": 1 db
+  - group:
+    - text: Konzervek és hüvelyesek 32 ›
+    - button "Babkonzerv · Megvettem"
+    - button "Babkonzerv · Szerkesztés":
+      - strong: Babkonzerv
+    - button "Babkonzerv · Mennyiség szerkesztése": 1 db
+    - button "Kukoricakonzerv · Megvettem"
+    - button "Kukoricakonzerv · Szerkesztés":
+      - strong: Kukoricakonzerv
+    - button "Kukoricakonzerv · Mennyiség szerkesztése": 1 db
+    - button "Paradicsomkonzerv · Megvettem"
+    - button "Paradicsomkonzerv · Szerkesztés":
+      - strong: Paradicsomkonzerv
+    - button "Paradicsomkonzerv · Mennyiség szerkesztése": 1 db
+    - button "Sűrített paradicsom · Megvettem"
+    - button "Sűrített paradicsom · Szerkesztés":
+      - strong: Sűrített paradicsom
+    - button "Sűrített paradicsom · Mennyiség szerkesztése": 1 db
+    - button "Lencse · Megvettem"
+    - button "Lencse · Szerkesztés":
+      - strong: Lencse
+    - button "Lencse · Mennyiség szerkesztése": 1 db
+    - button "Konzerv gomba · Megvettem"
+    - button "Konzerv gomba · Szerkesztés":
+      - strong: Konzerv gomba
+    - button "Konzerv gomba · Mennyiség szerkesztése": 1 db
+    - button "Csicseriborsó-konzerv · Megvettem"
+    - button "Csicseriborsó-konzerv · Szerkesztés":
+      - strong: Csicseriborsó-konzerv
+    - button "Csicseriborsó-konzerv · Mennyiség szerkesztése": 1 db
+    - button "Lencsekonzerv · Megvettem"
+    - button "Lencsekonzerv · Szerkesztés":
+      - strong: Lencsekonzerv
+    - button "Lencsekonzerv · Mennyiség szerkesztése": 1 db
+    - button "Passata · Megvettem"
+    - button "Passata · Szerkesztés":
+      - strong: Passata
+    - button "Passata · Mennyiség szerkesztése": 1 db
+    - button "Fehér bab · Megvettem"
+    - button "Fehér bab · Szerkesztés":
+      - strong: Fehér bab
+    - button "Fehér bab · Mennyiség szerkesztése": 1 db
+    - button "Vörös bab · Megvettem"
+    - button "Vörös bab · Szerkesztés":
+      - strong: Vörös bab
+    - button "Vörös bab · Mennyiség szerkesztése": 1 db
+    - button "Száraz csicseriborsó · Megvettem"
+    - button "Száraz csicseriborsó · Szerkesztés":
+      - strong: Száraz csicseriborsó
+    - button "Száraz csicseriborsó · Mennyiség szerkesztése": 1 db
+    - button "Vörös lencse · Megvettem"
+    - button "Vörös lencse · Szerkesztés":
+      - strong: Vörös lencse
+    - button "Vörös lencse · Mennyiség szerkesztése": 1 db
+    - button "Sárgaborsó · Megvettem"
+    - button "Sárgaborsó · Szerkesztés":
+      - strong: Sárgaborsó
+    - button "Sárgaborsó · Mennyiség szerkesztése": 1 db
+    - button "Csemegeuborka · Megvettem"
+    - button "Csemegeuborka · Szerkesztés":
+      - strong: Csemegeuborka
+    - button "Csemegeuborka · Mennyiség szerkesztése": 1 db
+    - button "Olívabogyó · Megvettem"
+    - button "Olívabogyó · Szerkesztés":
+      - strong: Olívabogyó
+    - button "Olívabogyó · Mennyiség szerkesztése": 1 db
+    - button "Savanyú káposzta · Megvettem"
+    - button "Savanyú káposzta · Szerkesztés":
+      - strong: Savanyú káposzta
+    - button "Savanyú káposzta · Mennyiség szerkesztése": 1 db
+    - button "Cékla savanyúság · Megvettem"
+    - button "Cékla savanyúság · Szerkesztés":
+      - strong: Cékla savanyúság
+    - button "Cékla savanyúság · Mennyiség szerkesztése": 1 db
+    - button "Befőtt · Megvettem"
+    - button "Befőtt · Szerkesztés":
+      - strong: Befőtt
+    - button "Befőtt · Mennyiség szerkesztése": 1 db
+    - button "Zöldborsókonzerv · Megvettem"
+    - button "Zöldborsókonzerv · Szerkesztés":
+      - strong: Zöldborsókonzerv
+    - button "Zöldborsókonzerv · Mennyiség szerkesztése": 1 db
+    - button "Fehérbab-konzerv · Megvettem"
+    - button "Fehérbab-konzerv · Szerkesztés":
+      - strong: Fehérbab-konzerv
+    - button "Fehérbab-konzerv · Mennyiség szerkesztése": 1 db
+    - button "Chilis bab konzerv · Megvettem"
+    - button "Chilis bab konzerv · Szerkesztés":
+      - strong: Chilis bab konzerv
+    - button "Chilis bab konzerv · Mennyiség szerkesztése": 1 db
+    - button "Lecsókonzerv · Megvettem"
+    - button "Lecsókonzerv · Szerkesztés":
+      - strong: Lecsókonzerv
+    - button "Lecsókonzerv · Mennyiség szerkesztése": 1 db
+    - button "Sóskakrém · Megvettem"
+    - button "Sóskakrém · Szerkesztés":
+      - strong: Sóskakrém
+    - button "Sóskakrém · Mennyiség szerkesztése": 1 db
+    - button "Savanyú paprika · Megvettem"
+    - button "Savanyú paprika · Szerkesztés":
+      - strong: Savanyú paprika
+    - button "Savanyú paprika · Mennyiség szerkesztése": 1 db
+    - button "Csalamádé · Megvettem"
+    - button "Csalamádé · Szerkesztés":
+      - strong: Csalamádé
+    - button "Csalamádé · Mennyiség szerkesztése": 1 db
+    - button "Kovászos uborka · Megvettem"
+    - button "Kovászos uborka · Szerkesztés":
+      - strong: Kovászos uborka
+    - button "Kovászos uborka · Mennyiség szerkesztése": 1 db
+    - button "Kapribogyó · Megvettem"
+    - button "Kapribogyó · Szerkesztés":
+      - strong: Kapribogyó
+    - button "Kapribogyó · Mennyiség szerkesztése": 1 db
+    - button "Aszalt paradicsom · Megvettem"
+    - button "Aszalt paradicsom · Szerkesztés":
+      - strong: Aszalt paradicsom
+    - button "Aszalt paradicsom · Mennyiség szerkesztése": 1 db
+    - button "Ananászkonzerv · Megvettem"
+    - button "Ananászkonzerv · Szerkesztés":
+      - strong: Ananászkonzerv
+    - button "Ananászkonzerv · Mennyiség szerkesztése": 1 db
+    - button "Őszibarackbefőtt · Megvettem"
+    - button "Őszibarackbefőtt · Szerkesztés":
+      - strong: Őszibarackbefőtt
+    - button "Őszibarackbefőtt · Mennyiség szerkesztése": 1 db
+    - button "Meggybefőtt · Megvettem"
+    - button "Meggybefőtt · Szerkesztés":
+      - strong: Meggybefőtt
+    - button "Meggybefőtt · Mennyiség szerkesztése": 1 db
+  - group:
+    - text: Szószok és olajok 33 ›
+    - button "Olaj · Megvettem"
+    - button "Olaj · Szerkesztés":
+      - strong: Olaj
+    - button "Olaj · Mennyiség szerkesztése": 1 db
+    - button "Mustár · Megvettem"
+    - button "Mustár · Szerkesztés":
+      - strong: Mustár
+    - button "Mustár · Mennyiség szerkesztése": 1 db
+    - button "Majonéz · Megvettem"
+    - button "Majonéz · Szerkesztés":
+      - strong: Majonéz
+    - button "Majonéz · Mennyiség szerkesztése": 1 db
+    - button "Ketchup · Megvettem"
+    - button "Ketchup · Szerkesztés":
+      - strong: Ketchup
+    - button "Ketchup · Mennyiség szerkesztése": 1 db
+    - button "Olívaolaj · Megvettem"
+    - button "Olívaolaj · Szerkesztés":
+      - strong: Olívaolaj
+    - button "Olívaolaj · Mennyiség szerkesztése": 1 db
+    - button "Kókuszolaj · Megvettem"
+    - button "Kókuszolaj · Szerkesztés":
+      - strong: Kókuszolaj
+    - button "Kókuszolaj · Mennyiség szerkesztése": 1 db
+    - button "Szezámolaj · Megvettem"
+    - button "Szezámolaj · Szerkesztés":
+      - strong: Szezámolaj
+    - button "Szezámolaj · Mennyiség szerkesztése": 1 db
+    - button "Sertészsír · Megvettem"
+    - button "Sertészsír · Szerkesztés":
+      - strong: Sertészsír
+    - button "Sertészsír · Mennyiség szerkesztése": 1 db
+    - button "Piros Arany · Megvettem"
+    - button "Piros Arany · Szerkesztés":
+      - strong: Piros Arany
+    - button "Piros Arany · Mennyiség szerkesztése": 1 db
+    - button "Szójaszósz · Megvettem"
+    - button "Szójaszósz · Szerkesztés":
+      - strong: Szójaszósz
+    - button "Szójaszósz · Mennyiség szerkesztése": 1 db
+    - button "Worcestershire-szósz · Megvettem"
+    - button "Worcestershire-szósz · Szerkesztés":
+      - strong: Worcestershire-szósz
+    - button "Worcestershire-szósz · Mennyiség szerkesztése": 1 db
+    - button "Csípős szósz · Megvettem"
+    - button "Csípős szósz · Szerkesztés":
+      - strong: Csípős szósz
+    - button "Csípős szósz · Mennyiség szerkesztése": 1 db
+    - button "Pesto · Megvettem"
+    - button "Pesto · Szerkesztés":
+      - strong: Pesto
+    - button "Pesto · Mennyiség szerkesztése": 1 db
+    - button "Tahini · Megvettem"
+    - button "Tahini · Szerkesztés":
+      - strong: Tahini
+    - button "Tahini · Mennyiség szerkesztése": 1 db
+    - button "Barbecue-szósz · Megvettem"
+    - button "Barbecue-szósz · Szerkesztés":
+      - strong: Barbecue-szósz
+    - button "Barbecue-szósz · Mennyiség szerkesztése": 1 db
+    - button "Almaecet · Megvettem"
+    - button "Almaecet · Szerkesztés":
+      - strong: Almaecet
+    - button "Almaecet · Mennyiség szerkesztése": 1 db
+    - button "Ételecet · Megvettem"
+    - button "Ételecet · Szerkesztés":
+      - strong: Ételecet
+    - button "Ételecet · Mennyiség szerkesztése": 1 db
+    - button "Balzsamecet · Megvettem"
+    - button "Balzsamecet · Szerkesztés":
+      - strong: Balzsamecet
+    - button "Balzsamecet · Mennyiség szerkesztése": 1 db
+    - button "Málnás balzsamecet · Megvettem"
+    - button "Málnás balzsamecet · Szerkesztés":
+      - strong: Málnás balzsamecet
+    - button "Málnás balzsamecet · Mennyiség szerkesztése": 1 db
+    - button "Repceolaj · Megvettem"
+    - button "Repceolaj · Szerkesztés":
+      - strong: Repceolaj
+    - button "Repceolaj · Mennyiség szerkesztése": 1 db
+    - button "Tökmagolaj · Megvettem"
+    - button "Tökmagolaj · Szerkesztés":
+      - strong: Tökmagolaj
+    - button "Tökmagolaj · Mennyiség szerkesztése": 1 db
+    - button "Rizsecet · Megvettem"
+    - button "Rizsecet · Szerkesztés":
+      - strong: Rizsecet
+    - button "Rizsecet · Mennyiség szerkesztése": 1 db
+    - button "Fehérborecet · Megvettem"
+    - button "Fehérborecet · Szerkesztés":
+      - strong: Fehérborecet
+    - button "Fehérborecet · Mennyiség szerkesztése": 1 db
+    - button "Dijoni mustár · Megvettem"
+    - button "Dijoni mustár · Szerkesztés":
+      - strong: Dijoni mustár
+    - button "Dijoni mustár · Mennyiség szerkesztése": 1 db
+    - button "Tormakrém · Megvettem"
+    - button "Tormakrém · Szerkesztés":
+      - strong: Tormakrém
+    - button "Tormakrém · Mennyiség szerkesztése": 1 db
+    - button "Tartármártás · Megvettem"
+    - button "Tartármártás · Szerkesztés":
+      - strong: Tartármártás
+    - button "Tartármártás · Mennyiség szerkesztése": 1 db
+    - button "Salátaöntet · Megvettem"
+    - button "Salátaöntet · Szerkesztés":
+      - strong: Salátaöntet
+    - button "Salátaöntet · Mennyiség szerkesztése": 1 db
+    - button "Édes chiliszósz · Megvettem"
+    - button "Édes chiliszósz · Szerkesztés":
+      - strong: Édes chiliszósz
+    - button "Édes chiliszósz · Mennyiség szerkesztése": 1 db
+    - button "Teriyaki szósz · Megvettem"
+    - button "Teriyaki szósz · Szerkesztés":
+      - strong: Teriyaki szósz
+    - button "Teriyaki szósz · Mennyiség szerkesztése": 1 db
+    - button "Halszósz · Megvettem"
+    - button "Halszósz · Szerkesztés":
+      - strong: Halszósz
+    - button "Halszósz · Mennyiség szerkesztése": 1 db
+    - button "Paradicsomos tésztaszósz · Megvettem"
+    - button "Paradicsomos tésztaszósz · Szerkesztés":
+      - strong: Paradicsomos tésztaszósz
+    - button "Paradicsomos tésztaszósz · Mennyiség szerkesztése": 1 db
+    - button "Bolognai szósz · Megvettem"
+    - button "Bolognai szósz · Szerkesztés":
+      - strong: Bolognai szósz
+    - button "Bolognai szósz · Mennyiség szerkesztése": 1 db
+    - button "Ajvár · Megvettem"
+    - button "Ajvár · Szerkesztés":
+      - strong: Ajvár
+    - button "Ajvár · Mennyiség szerkesztése": 1 db
+  - group:
+    - text: Fűszerek 42 ›
+    - button "Só · Megvettem"
+    - button "Só · Szerkesztés":
+      - strong: Só
+    - button "Só · Mennyiség szerkesztése": 1 db
+    - button "Pirospaprika · Megvettem"
+    - button "Pirospaprika · Szerkesztés":
+      - strong: Pirospaprika
+    - button "Pirospaprika · Mennyiség szerkesztése": 1 db
+    - button "Bors · Megvettem"
+    - button "Bors · Szerkesztés":
+      - strong: Bors
+    - button "Bors · Mennyiség szerkesztése": 1 db
+    - button "Füstölt paprika · Megvettem"
+    - button "Füstölt paprika · Szerkesztés":
+      - strong: Füstölt paprika
+    - button "Füstölt paprika · Mennyiség szerkesztése": 1 db
+    - button "Chilipehely · Megvettem"
+    - button "Chilipehely · Szerkesztés":
+      - strong: Chilipehely
+    - button "Chilipehely · Mennyiség szerkesztése": 1 db
+    - button "Fokhagymasó · Megvettem"
+    - button "Fokhagymasó · Szerkesztés":
+      - strong: Fokhagymasó
+    - button "Fokhagymasó · Mennyiség szerkesztése": 1 db
+    - button "Delikát · Megvettem"
+    - button "Delikát · Szerkesztés":
+      - strong: Delikát
+    - button "Delikát · Mennyiség szerkesztése": 1 db
+    - button "Csirkeleveskocka · Megvettem"
+    - button "Csirkeleveskocka · Szerkesztés":
+      - strong: Csirkeleveskocka
+    - button "Csirkeleveskocka · Mennyiség szerkesztése": 1 db
+    - button "Zöldségleveskocka · Megvettem"
+    - button "Zöldségleveskocka · Szerkesztés":
+      - strong: Zöldségleveskocka
+    - button "Zöldségleveskocka · Mennyiség szerkesztése": 1 db
+    - button "Marhaleveskocka · Megvettem"
+    - button "Marhaleveskocka · Szerkesztés":
+      - strong: Marhaleveskocka
+    - button "Marhaleveskocka · Mennyiség szerkesztése": 1 db
+    - button "Babérlevél · Megvettem"
+    - button "Babérlevél · Szerkesztés":
+      - strong: Babérlevél
+    - button "Babérlevél · Mennyiség szerkesztése": 1 db
+    - button "Bazsalikom · Megvettem"
+    - button "Bazsalikom · Szerkesztés":
+      - strong: Bazsalikom
+    - button "Bazsalikom · Mennyiség szerkesztése": 1 db
+    - button "Majoranna · Megvettem"
+    - button "Majoranna · Szerkesztés":
+      - strong: Majoranna
+    - button "Majoranna · Mennyiség szerkesztése": 1 db
+    - button "Szárított petrezselyem · Megvettem"
+    - button "Szárított petrezselyem · Szerkesztés":
+      - strong: Szárított petrezselyem
+    - button "Szárított petrezselyem · Mennyiség szerkesztése": 1 db
+    - button "Oregánó · Megvettem"
+    - button "Oregánó · Szerkesztés":
+      - strong: Oregánó
+    - button "Oregánó · Mennyiség szerkesztése": 1 db
+    - button "Kakukkfű · Megvettem"
+    - button "Kakukkfű · Szerkesztés":
+      - strong: Kakukkfű
+    - button "Kakukkfű · Mennyiség szerkesztése": 1 db
+    - button "Rozmaring · Megvettem"
+    - button "Rozmaring · Szerkesztés":
+      - strong: Rozmaring
+    - button "Rozmaring · Mennyiség szerkesztése": 1 db
+    - button "Kapor · Megvettem"
+    - button "Kapor · Szerkesztés":
+      - strong: Kapor
+    - button "Kapor · Mennyiség szerkesztése": 1 db
+    - button "Koriander · Megvettem"
+    - button "Koriander · Szerkesztés":
+      - strong: Koriander
+    - button "Koriander · Mennyiség szerkesztése": 1 db
+    - button "Kömény · Megvettem"
+    - button "Kömény · Szerkesztés":
+      - strong: Kömény
+    - button "Kömény · Mennyiség szerkesztése": 1 db
+    - button "Római kömény · Megvettem"
+    - button "Római kömény · Szerkesztés":
+      - strong: Római kömény
+    - button "Római kömény · Mennyiség szerkesztése": 1 db
+    - button "Curry · Megvettem"
+    - button "Curry · Szerkesztés":
+      - strong: Curry
+    - button "Curry · Mennyiség szerkesztése": 1 db
+    - button "Kurkuma · Megvettem"
+    - button "Kurkuma · Szerkesztés":
+      - strong: Kurkuma
+    - button "Kurkuma · Mennyiség szerkesztése": 1 db
+    - button "Gyömbér · Megvettem"
+    - button "Gyömbér · Szerkesztés":
+      - strong: Gyömbér
+    - button "Gyömbér · Mennyiség szerkesztése": 1 db
+    - button "Fahéj · Megvettem"
+    - button "Fahéj · Szerkesztés":
+      - strong: Fahéj
+    - button "Fahéj · Mennyiség szerkesztése": 1 db
+    - button "Szerecsendió · Megvettem"
+    - button "Szerecsendió · Szerkesztés":
+      - strong: Szerecsendió
+    - button "Szerecsendió · Mennyiség szerkesztése": 1 db
+    - button "Szegfűszeg · Megvettem"
+    - button "Szegfűszeg · Szerkesztés":
+      - strong: Szegfűszeg
+    - button "Szegfűszeg · Mennyiség szerkesztése": 1 db
+    - button "Vanília · Megvettem"
+    - button "Vanília · Szerkesztés":
+      - strong: Vanília
+    - button "Vanília · Mennyiség szerkesztése": 1 db
+    - button "Fűszerkeverék · Megvettem"
+    - button "Fűszerkeverék · Szerkesztés":
+      - strong: Fűszerkeverék
+    - button "Fűszerkeverék · Mennyiség szerkesztése": 1 db
+    - button "Fehér bors · Megvettem"
+    - button "Fehér bors · Szerkesztés":
+      - strong: Fehér bors
+    - button "Fehér bors · Mennyiség szerkesztése": 1 db
+    - button "Egész bors · Megvettem"
+    - button "Egész bors · Szerkesztés":
+      - strong: Egész bors
+    - button "Egész bors · Mennyiség szerkesztése": 1 db
+    - button "Fokhagymapor · Megvettem"
+    - button "Fokhagymapor · Szerkesztés":
+      - strong: Fokhagymapor
+    - button "Fokhagymapor · Mennyiség szerkesztése": 1 db
+    - button "Vöröshagymapor · Megvettem"
+    - button "Vöröshagymapor · Szerkesztés":
+      - strong: Vöröshagymapor
+    - button "Vöröshagymapor · Mennyiség szerkesztése": 1 db
+    - button "Mustármag · Megvettem"
+    - button "Mustármag · Szerkesztés":
+      - strong: Mustármag
+    - button "Mustármag · Mennyiség szerkesztése": 1 db
+    - button "Sáfrány · Megvettem"
+    - button "Sáfrány · Szerkesztés":
+      - strong: Sáfrány
+    - button "Sáfrány · Mennyiség szerkesztése": 1 db
+    - button "Csillagánizs · Megvettem"
+    - button "Csillagánizs · Szerkesztés":
+      - strong: Csillagánizs
+    - button "Csillagánizs · Mennyiség szerkesztése": 1 db
+    - button "Kardamom · Megvettem"
+    - button "Kardamom · Szerkesztés":
+      - strong: Kardamom
+    - button "Kardamom · Mennyiség szerkesztése": 1 db
+    - button "Szegfűbors · Megvettem"
+    - button "Szegfűbors · Szerkesztés":
+      - strong: Szegfűbors
+    - button "Szegfűbors · Mennyiség szerkesztése": 1 db
+    - button "Szárított kapor · Megvettem"
+    - button "Szárított kapor · Szerkesztés":
+      - strong: Szárított kapor
+    - button "Szárított kapor · Mennyiség szerkesztése": 1 db
+    - button "Provence-i fűszerkeverék · Megvettem"
+    - button "Provence-i fűszerkeverék · Szerkesztés":
+      - strong: Provence-i fűszerkeverék
+    - button "Provence-i fűszerkeverék · Mennyiség szerkesztése": 1 db
+    - button "Grillfűszer · Megvettem"
+    - button "Grillfűszer · Szerkesztés":
+      - strong: Grillfűszer
+    - button "Grillfűszer · Mennyiség szerkesztése": 1 db
+    - button "Mézeskalács-fűszerkeverék · Megvettem"
+    - button "Mézeskalács-fűszerkeverék · Szerkesztés":
+      - strong: Mézeskalács-fűszerkeverék
+    - button "Mézeskalács-fűszerkeverék · Mennyiség szerkesztése": 1 db
+  - group:
+    - text: Reggeli és rágcsálnivaló 14 ›
+    - button "Zabpehely · Megvettem"
+    - button "Zabpehely · Szerkesztés":
+      - strong: Zabpehely
+    - button "Zabpehely · Mennyiség szerkesztése": 1 db
+    - button "Müzli · Megvettem"
+    - button "Müzli · Szerkesztés":
+      - strong: Müzli
+    - button "Müzli · Mennyiség szerkesztése": 1 db
+    - button "Granola · Megvettem"
+    - button "Granola · Szerkesztés":
+      - strong: Granola
+    - button "Granola · Mennyiség szerkesztése": 1 db
+    - button "Kukoricapehely · Megvettem"
+    - button "Kukoricapehely · Szerkesztés":
+      - strong: Kukoricapehely
+    - button "Kukoricapehely · Mennyiség szerkesztése": 1 db
+    - button "Chiamag · Megvettem"
+    - button "Chiamag · Szerkesztés":
+      - strong: Chiamag
+    - button "Chiamag · Mennyiség szerkesztése": 1 db
+    - button "Lenmag · Megvettem"
+    - button "Lenmag · Szerkesztés":
+      - strong: Lenmag
+    - button "Lenmag · Mennyiség szerkesztése": 1 db
+    - button "Szezámmag · Megvettem"
+    - button "Szezámmag · Szerkesztés":
+      - strong: Szezámmag
+    - button "Szezámmag · Mennyiség szerkesztése": 1 db
+    - button "Instant zabkása · Megvettem"
+    - button "Instant zabkása · Szerkesztés":
+      - strong: Instant zabkása
+    - button "Instant zabkása · Mennyiség szerkesztése": 1 db
+    - button "Kölesgolyó · Megvettem"
+    - button "Kölesgolyó · Szerkesztés":
+      - strong: Kölesgolyó
+    - button "Kölesgolyó · Mennyiség szerkesztése": 1 db
+    - button "Rizsszelet · Megvettem"
+    - button "Rizsszelet · Szerkesztés":
+      - strong: Rizsszelet
+    - button "Rizsszelet · Mennyiség szerkesztése": 1 db
+    - button "Abonett · Megvettem"
+    - button "Abonett · Szerkesztés":
+      - strong: Abonett
+    - button "Abonett · Mennyiség szerkesztése": 1 db
+    - button "Puffasztott kukorica · Megvettem"
+    - button "Puffasztott kukorica · Szerkesztés":
+      - strong: Puffasztott kukorica
+    - button "Puffasztott kukorica · Mennyiség szerkesztése": 1 db
+    - button "Korpapehely · Megvettem"
+    - button "Korpapehely · Szerkesztés":
+      - strong: Korpapehely
+    - button "Korpapehely · Mennyiség szerkesztése": 1 db
+    - button "Fehérjeszelet · Megvettem"
+    - button "Fehérjeszelet · Szerkesztés":
+      - strong: Fehérjeszelet
+    - button "Fehérjeszelet · Mennyiség szerkesztése": 1 db
+  - group:
+    - text: Sütés és édesség 39 ›
+    - button "Liszt · Megvettem"
+    - button "Liszt · Szerkesztés":
+      - strong: Liszt
+    - button "Liszt · Mennyiség szerkesztése": 1 db
+    - button "Cukor · Megvettem"
+    - button "Cukor · Szerkesztés":
+      - strong: Cukor
+    - button "Cukor · Mennyiség szerkesztése": 1 db
+    - button "Sütőpor · Megvettem"
+    - button "Sütőpor · Szerkesztés":
+      - strong: Sütőpor
+    - button "Sütőpor · Mennyiség szerkesztése": 1 db
+    - button "Kakaópor · Megvettem"
+    - button "Kakaópor · Szerkesztés":
+      - strong: Kakaópor
+    - button "Kakaópor · Mennyiség szerkesztése": 1 db
+    - button "Teljes kiőrlésű liszt · Megvettem"
+    - button "Teljes kiőrlésű liszt · Szerkesztés":
+      - strong: Teljes kiőrlésű liszt
+    - button "Teljes kiőrlésű liszt · Mennyiség szerkesztése": 1 db
+    - button "Rétesliszt · Megvettem"
+    - button "Rétesliszt · Szerkesztés":
+      - strong: Rétesliszt
+    - button "Rétesliszt · Mennyiség szerkesztése": 1 db
+    - button "Rizsliszt · Megvettem"
+    - button "Rizsliszt · Szerkesztés":
+      - strong: Rizsliszt
+    - button "Rizsliszt · Mennyiség szerkesztése": 1 db
+    - button "Mandulaliszt · Megvettem"
+    - button "Mandulaliszt · Szerkesztés":
+      - strong: Mandulaliszt
+    - button "Mandulaliszt · Mennyiség szerkesztése": 1 db
+    - button "Búzadara · Megvettem"
+    - button "Búzadara · Szerkesztés":
+      - strong: Búzadara
+    - button "Búzadara · Mennyiség szerkesztése": 1 db
+    - button "Zsemlemorzsa · Megvettem"
+    - button "Zsemlemorzsa · Szerkesztés":
+      - strong: Zsemlemorzsa
+    - button "Zsemlemorzsa · Mennyiség szerkesztése": 1 db
+    - button "Keményítő · Megvettem"
+    - button "Keményítő · Szerkesztés":
+      - strong: Keményítő
+    - button "Keményítő · Mennyiség szerkesztése": 1 db
+    - button "Szódabikarbóna · Megvettem"
+    - button "Szódabikarbóna · Szerkesztés":
+      - strong: Szódabikarbóna
+    - button "Szódabikarbóna · Mennyiség szerkesztése": 1 db
+    - button "Élesztő · Megvettem"
+    - button "Élesztő · Szerkesztés":
+      - strong: Élesztő
+    - button "Élesztő · Mennyiség szerkesztése": 1 db
+    - button "Szárított élesztő · Megvettem"
+    - button "Szárított élesztő · Szerkesztés":
+      - strong: Szárított élesztő
+    - button "Szárított élesztő · Mennyiség szerkesztése": 1 db
+    - button "Barna cukor · Megvettem"
+    - button "Barna cukor · Szerkesztés":
+      - strong: Barna cukor
+    - button "Barna cukor · Mennyiség szerkesztése": 1 db
+    - button "Porcukor · Megvettem"
+    - button "Porcukor · Szerkesztés":
+      - strong: Porcukor
+    - button "Porcukor · Mennyiség szerkesztése": 1 db
+    - button "Vaníliás cukor · Megvettem"
+    - button "Vaníliás cukor · Szerkesztés":
+      - strong: Vaníliás cukor
+    - button "Vaníliás cukor · Mennyiség szerkesztése": 1 db
+    - button "Édesítőszer · Megvettem"
+    - button "Édesítőszer · Szerkesztés":
+      - strong: Édesítőszer
+    - button "Édesítőszer · Mennyiség szerkesztése": 1 db
+    - button "Puding · Megvettem"
+    - button "Puding · Szerkesztés":
+      - strong: Puding
+    - button "Puding · Mennyiség szerkesztése": 1 db
+    - button "Kókuszreszelék · Megvettem"
+    - button "Kókuszreszelék · Szerkesztés":
+      - strong: Kókuszreszelék
+    - button "Kókuszreszelék · Mennyiség szerkesztése": 1 db
+    - button "Mák · Megvettem"
+    - button "Mák · Szerkesztés":
+      - strong: Mák
+    - button "Mák · Mennyiség szerkesztése": 1 db
+    - button "Mazsola · Megvettem"
+    - button "Mazsola · Szerkesztés":
+      - strong: Mazsola
+    - button "Mazsola · Mennyiség szerkesztése": 1 db
+    - button "Zselatin · Megvettem"
+    - button "Zselatin · Szerkesztés":
+      - strong: Zselatin
+    - button "Zselatin · Mennyiség szerkesztése": 1 db
+    - button "Kukoricaliszt · Megvettem"
+    - button "Kukoricaliszt · Szerkesztés":
+      - strong: Kukoricaliszt
+    - button "Kukoricaliszt · Mennyiség szerkesztése": 1 db
+    - button "Zabliszt · Megvettem"
+    - button "Zabliszt · Szerkesztés":
+      - strong: Zabliszt
+    - button "Zabliszt · Mennyiség szerkesztése": 1 db
+    - button "Gluténmentes lisztkeverék · Megvettem"
+    - button "Gluténmentes lisztkeverék · Szerkesztés":
+      - strong: Gluténmentes lisztkeverék
+    - button "Gluténmentes lisztkeverék · Mennyiség szerkesztése": 1 db
+    - button "Sütőcsokoládé · Megvettem"
+    - button "Sütőcsokoládé · Szerkesztés":
+      - strong: Sütőcsokoládé
+    - button "Sütőcsokoládé · Mennyiség szerkesztése": 1 db
+    - button "Tortabevonó · Megvettem"
+    - button "Tortabevonó · Szerkesztés":
+      - strong: Tortabevonó
+    - button "Tortabevonó · Mennyiség szerkesztése": 1 db
+    - button "Habfixáló · Megvettem"
+    - button "Habfixáló · Szerkesztés":
+      - strong: Habfixáló
+    - button "Habfixáló · Mennyiség szerkesztése": 1 db
+    - button "Tortazselé · Megvettem"
+    - button "Tortazselé · Szerkesztés":
+      - strong: Tortazselé
+    - button "Tortazselé · Mennyiség szerkesztése": 1 db
+    - button "Vaníliaaroma · Megvettem"
+    - button "Vaníliaaroma · Szerkesztés":
+      - strong: Vaníliaaroma
+    - button "Vaníliaaroma · Mennyiség szerkesztése": 1 db
+    - button "Citromlé · Megvettem"
+    - button "Citromlé · Szerkesztés":
+      - strong: Citromlé
+    - button "Citromlé · Mennyiség szerkesztése": 1 db
+    - button "Citromhéj · Megvettem"
+    - button "Citromhéj · Szerkesztés":
+      - strong: Citromhéj
+    - button "Citromhéj · Mennyiség szerkesztése": 1 db
+    - button "Sütőrum · Megvettem"
+    - button "Sütőrum · Szerkesztés":
+      - strong: Sütőrum
+    - button "Sütőrum · Mennyiség szerkesztése": 1 db
+    - button "Marcipán · Megvettem"
+    - button "Marcipán · Szerkesztés":
+      - strong: Marcipán
+    - button "Marcipán · Mennyiség szerkesztése": 1 db
+    - button "Ételfesték · Megvettem"
+    - button "Ételfesték · Szerkesztés":
+      - strong: Ételfesték
+    - button "Ételfesték · Mennyiség szerkesztése": 1 db
+    - button "Leveles tésztalap · Megvettem"
+    - button "Leveles tésztalap · Szerkesztés":
+      - strong: Leveles tésztalap
+    - button "Leveles tésztalap · Mennyiség szerkesztése": 1 db
+    - button "Réteslap · Megvettem"
+    - button "Réteslap · Szerkesztés":
+      - strong: Réteslap
+    - button "Réteslap · Mennyiség szerkesztése": 1 db
+    - button "Piskótalap · Megvettem"
+    - button "Piskótalap · Szerkesztés":
+      - strong: Piskótalap
+    - button "Piskótalap · Mennyiség szerkesztése": 1 db
+  - group:
+    - text: Takarítás és mosás 27 ›
+    - button "Mosogatószer · Megvettem"
+    - button "Mosogatószer · Szerkesztés":
+      - strong: Mosogatószer
+    - button "Mosogatószer · Mennyiség szerkesztése": 1 db
+    - button "Mosószer · Megvettem"
+    - button "Mosószer · Szerkesztés":
+      - strong: Mosószer
+    - button "Mosószer · Mennyiség szerkesztése": 1 db
+    - button "Mosogatógép-tabletta · Megvettem"
+    - button "Mosogatógép-tabletta · Szerkesztés":
+      - strong: Mosogatógép-tabletta
+    - button "Mosogatógép-tabletta · Mennyiség szerkesztése": 1 db
+    - button "Szivacs · Megvettem"
+    - button "Szivacs · Szerkesztés":
+      - strong: Szivacs
+    - button "Szivacs · Mennyiség szerkesztése": 1 db
+    - button "Öblítő · Megvettem"
+    - button "Öblítő · Szerkesztés":
+      - strong: Öblítő
+    - button "Öblítő · Mennyiség szerkesztése": 1 db
+    - button "Tisztítószer · Megvettem"
+    - button "Tisztítószer · Szerkesztés":
+      - strong: Tisztítószer
+    - button "Tisztítószer · Mennyiség szerkesztése": 1 db
+    - button "Mosógél · Megvettem"
+    - button "Mosógél · Szerkesztés":
+      - strong: Mosógél
+    - button "Mosógél · Mennyiség szerkesztése": 1 db
+    - button "Mosókapszula · Megvettem"
+    - button "Mosókapszula · Szerkesztés":
+      - strong: Mosókapszula
+    - button "Mosókapszula · Mennyiség szerkesztése": 1 db
+    - button "Folteltávolító · Megvettem"
+    - button "Folteltávolító · Szerkesztés":
+      - strong: Folteltávolító
+    - button "Folteltávolító · Mennyiség szerkesztése": 1 db
+    - button "Fehérítő · Megvettem"
+    - button "Fehérítő · Szerkesztés":
+      - strong: Fehérítő
+    - button "Fehérítő · Mennyiség szerkesztése": 1 db
+    - button "Vízlágyító · Megvettem"
+    - button "Vízlágyító · Szerkesztés":
+      - strong: Vízlágyító
+    - button "Vízlágyító · Mennyiség szerkesztése": 1 db
+    - button "Mosogatógépsó · Megvettem"
+    - button "Mosogatógépsó · Szerkesztés":
+      - strong: Mosogatógépsó
+    - button "Mosogatógépsó · Mennyiség szerkesztése": 1 db
+    - button "Öblítőszer · Megvettem"
+    - button "Öblítőszer · Szerkesztés":
+      - strong: Öblítőszer
+    - button "Öblítőszer · Mennyiség szerkesztése": 1 db
+    - button "Ablaktisztító · Megvettem"
+    - button "Ablaktisztító · Szerkesztés":
+      - strong: Ablaktisztító
+    - button "Ablaktisztító · Mennyiség szerkesztése": 1 db
+    - button "Fürdőszobai tisztítószer · Megvettem"
+    - button "Fürdőszobai tisztítószer · Szerkesztés":
+      - strong: Fürdőszobai tisztítószer
+    - button "Fürdőszobai tisztítószer · Mennyiség szerkesztése": 1 db
+    - button "WC-tisztító · Megvettem"
+    - button "WC-tisztító · Szerkesztés":
+      - strong: WC-tisztító
+    - button "WC-tisztító · Mennyiség szerkesztése": 1 db
+    - button "Vízkőoldó · Megvettem"
+    - button "Vízkőoldó · Szerkesztés":
+      - strong: Vízkőoldó
+    - button "Vízkőoldó · Mennyiség szerkesztése": 1 db
+    - button "Lefolyótisztító · Megvettem"
+    - button "Lefolyótisztító · Szerkesztés":
+      - strong: Lefolyótisztító
+    - button "Lefolyótisztító · Mennyiség szerkesztése": 1 db
+    - button "Zsíroldó · Megvettem"
+    - button "Zsíroldó · Szerkesztés":
+      - strong: Zsíroldó
+    - button "Zsíroldó · Mennyiség szerkesztése": 1 db
+    - button "Felmosószer · Megvettem"
+    - button "Felmosószer · Szerkesztés":
+      - strong: Felmosószer
+    - button "Felmosószer · Mennyiség szerkesztése": 1 db
+    - button "Fertőtlenítőszer · Megvettem"
+    - button "Fertőtlenítőszer · Szerkesztés":
+      - strong: Fertőtlenítőszer
+    - button "Fertőtlenítőszer · Mennyiség szerkesztése": 1 db
+    - button "Törlőkendő · Megvettem"
+    - button "Törlőkendő · Szerkesztés":
+      - strong: Törlőkendő
+    - button "Törlőkendő · Mennyiség szerkesztése": 1 db
+    - button "Gumikesztyű · Megvettem"
+    - button "Gumikesztyű · Szerkesztés":
+      - strong: Gumikesztyű
+    - button "Gumikesztyű · Mennyiség szerkesztése": 1 db
+    - button "Súrolószivacs · Megvettem"
+    - button "Súrolószivacs · Szerkesztés":
+      - strong: Súrolószivacs
+    - button "Súrolószivacs · Mennyiség szerkesztése": 1 db
+    - button "Mikroszálas kendő · Megvettem"
+    - button "Mikroszálas kendő · Szerkesztés":
+      - strong: Mikroszálas kendő
+    - button "Mikroszálas kendő · Mennyiség szerkesztése": 1 db
+    - button "Felmosófej · Megvettem"
+    - button "Felmosófej · Szerkesztés":
+      - strong: Felmosófej
+    - button "Felmosófej · Mennyiség szerkesztése": 1 db
+    - button "Légfrissítő · Megvettem"
+    - button "Légfrissítő · Szerkesztés":
+      - strong: Légfrissítő
+    - button "Légfrissítő · Mennyiség szerkesztése": 1 db
+  - group:
+    - text: Papír és konyhai kellékek 20 ›
+    - button "WC-papír · Megvettem"
+    - button "WC-papír · Szerkesztés":
+      - strong: WC-papír
+    - button "WC-papír · Mennyiség szerkesztése": 1 db
+    - button "Papírtörlő · Megvettem"
+    - button "Papírtörlő · Szerkesztés":
+      - strong: Papírtörlő
+    - button "Papírtörlő · Mennyiség szerkesztése": 1 db
+    - button "Szemeteszsák · Megvettem"
+    - button "Szemeteszsák · Szerkesztés":
+      - strong: Szemeteszsák
+    - button "Szemeteszsák · Mennyiség szerkesztése": 1 db
+    - button "Papír zsebkendő · Megvettem"
+    - button "Papír zsebkendő · Szerkesztés":
+      - strong: Papír zsebkendő
+    - button "Papír zsebkendő · Mennyiség szerkesztése": 1 db
+    - button "Alufólia · Megvettem"
+    - button "Alufólia · Szerkesztés":
+      - strong: Alufólia
+    - button "Alufólia · Mennyiség szerkesztése": 1 db
+    - button "Sütőpapír · Megvettem"
+    - button "Sütőpapír · Szerkesztés":
+      - strong: Sütőpapír
+    - button "Sütőpapír · Mennyiség szerkesztése": 1 db
+    - button "Frissentartó fólia · Megvettem"
+    - button "Frissentartó fólia · Szerkesztés":
+      - strong: Frissentartó fólia
+    - button "Frissentartó fólia · Mennyiség szerkesztése": 1 db
+    - button "Fagyasztózacskó · Megvettem"
+    - button "Fagyasztózacskó · Szerkesztés":
+      - strong: Fagyasztózacskó
+    - button "Fagyasztózacskó · Mennyiség szerkesztése": 1 db
+    - button "Szalvéta · Megvettem"
+    - button "Szalvéta · Szerkesztés":
+      - strong: Szalvéta
+    - button "Szalvéta · Mennyiség szerkesztése": 1 db
+    - button "Uzsonnás zacskó · Megvettem"
+    - button "Uzsonnás zacskó · Szerkesztés":
+      - strong: Uzsonnás zacskó
+    - button "Uzsonnás zacskó · Mennyiség szerkesztése": 1 db
+    - button "Sütőzacskó · Megvettem"
+    - button "Sütőzacskó · Szerkesztés":
+      - strong: Sütőzacskó
+    - button "Sütőzacskó · Mennyiség szerkesztése": 1 db
+    - button "Jégkockazacskó · Megvettem"
+    - button "Jégkockazacskó · Szerkesztés":
+      - strong: Jégkockazacskó
+    - button "Jégkockazacskó · Mennyiség szerkesztése": 1 db
+    - button "Muffinpapír · Megvettem"
+    - button "Muffinpapír · Szerkesztés":
+      - strong: Muffinpapír
+    - button "Muffinpapír · Mennyiség szerkesztése": 1 db
+    - button "Fogpiszkáló · Megvettem"
+    - button "Fogpiszkáló · Szerkesztés":
+      - strong: Fogpiszkáló
+    - button "Fogpiszkáló · Mennyiség szerkesztése": 1 db
+    - button "Saslikpálca · Megvettem"
+    - button "Saslikpálca · Szerkesztés":
+      - strong: Saslikpálca
+    - button "Saslikpálca · Mennyiség szerkesztése": 1 db
+    - button "Kávéfilter · Megvettem"
+    - button "Kávéfilter · Szerkesztés":
+      - strong: Kávéfilter
+    - button "Kávéfilter · Mennyiség szerkesztése": 1 db
+    - button "Papírpohár · Megvettem"
+    - button "Papírpohár · Szerkesztés":
+      - strong: Papírpohár
+    - button "Papírpohár · Mennyiség szerkesztése": 1 db
+    - button "Papírtányér · Megvettem"
+    - button "Papírtányér · Szerkesztés":
+      - strong: Papírtányér
+    - button "Papírtányér · Mennyiség szerkesztése": 1 db
+    - button "Ételtároló doboz · Megvettem"
+    - button "Ételtároló doboz · Szerkesztés":
+      - strong: Ételtároló doboz
+    - button "Ételtároló doboz · Mennyiség szerkesztése": 1 db
+    - button "Befőttesüveg · Megvettem"
+    - button "Befőttesüveg · Szerkesztés":
+      - strong: Befőttesüveg
+    - button "Befőttesüveg · Mennyiség szerkesztése": 1 db
+  - group:
+    - text: Tisztálkodás és szépségápolás 21 ›
+    - button "Tusfürdő · Megvettem"
+    - button "Tusfürdő · Szerkesztés":
+      - strong: Tusfürdő
+    - button "Tusfürdő · Mennyiség szerkesztése": 1 db
+    - button "Sampon · Megvettem"
+    - button "Sampon · Szerkesztés":
+      - strong: Sampon
+    - button "Sampon · Mennyiség szerkesztése": 1 db
+    - button "Folyékony szappan · Megvettem"
+    - button "Folyékony szappan · Szerkesztés":
+      - strong: Folyékony szappan
+    - button "Folyékony szappan · Mennyiség szerkesztése": 1 db
+    - button "Szappan · Megvettem"
+    - button "Szappan · Szerkesztés":
+      - strong: Szappan
+    - button "Szappan · Mennyiség szerkesztése": 1 db
+    - button "Hajbalzsam · Megvettem"
+    - button "Hajbalzsam · Szerkesztés":
+      - strong: Hajbalzsam
+    - button "Hajbalzsam · Mennyiség szerkesztése": 1 db
+    - button "Szárazsampon · Megvettem"
+    - button "Szárazsampon · Szerkesztés":
+      - strong: Szárazsampon
+    - button "Szárazsampon · Mennyiség szerkesztése": 1 db
+    - button "Dezodor · Megvettem"
+    - button "Dezodor · Szerkesztés":
+      - strong: Dezodor
+    - button "Dezodor · Mennyiség szerkesztése": 1 db
+    - button "Izzadásgátló · Megvettem"
+    - button "Izzadásgátló · Szerkesztés":
+      - strong: Izzadásgátló
+    - button "Izzadásgátló · Mennyiség szerkesztése": 1 db
+    - button "Testápoló · Megvettem"
+    - button "Testápoló · Szerkesztés":
+      - strong: Testápoló
+    - button "Testápoló · Mennyiség szerkesztése": 1 db
+    - button "Kézkrém · Megvettem"
+    - button "Kézkrém · Szerkesztés":
+      - strong: Kézkrém
+    - button "Kézkrém · Mennyiség szerkesztése": 1 db
+    - button "Arckrém · Megvettem"
+    - button "Arckrém · Szerkesztés":
+      - strong: Arckrém
+    - button "Arckrém · Mennyiség szerkesztése": 1 db
+    - button "Arclemosó · Megvettem"
+    - button "Arclemosó · Szerkesztés":
+      - strong: Arclemosó
+    - button "Arclemosó · Mennyiség szerkesztése": 1 db
+    - button "Sminklemosó · Megvettem"
+    - button "Sminklemosó · Szerkesztés":
+      - strong: Sminklemosó
+    - button "Sminklemosó · Mennyiség szerkesztése": 1 db
+    - button "Micellás víz · Megvettem"
+    - button "Micellás víz · Szerkesztés":
+      - strong: Micellás víz
+    - button "Micellás víz · Mennyiség szerkesztése": 1 db
+    - button "Naptej · Megvettem"
+    - button "Naptej · Szerkesztés":
+      - strong: Naptej
+    - button "Naptej · Mennyiség szerkesztése": 1 db
+    - button "Ajakápoló · Megvettem"
+    - button "Ajakápoló · Szerkesztés":
+      - strong: Ajakápoló
+    - button "Ajakápoló · Mennyiség szerkesztése": 1 db
+    - button "Borotva · Megvettem"
+    - button "Borotva · Szerkesztés":
+      - strong: Borotva
+    - button "Borotva · Mennyiség szerkesztése": 1 db
+    - button "Borotvahab · Megvettem"
+    - button "Borotvahab · Szerkesztés":
+      - strong: Borotvahab
+    - button "Borotvahab · Mennyiség szerkesztése": 1 db
+    - button "Borotvabetét · Megvettem"
+    - button "Borotvabetét · Szerkesztés":
+      - strong: Borotvabetét
+    - button "Borotvabetét · Mennyiség szerkesztése": 1 db
+    - button "Hajfesték · Megvettem"
+    - button "Hajfesték · Szerkesztés":
+      - strong: Hajfesték
+    - button "Hajfesték · Mennyiség szerkesztése": 1 db
+    - button "Hajlakk · Megvettem"
+    - button "Hajlakk · Szerkesztés":
+      - strong: Hajlakk
+    - button "Hajlakk · Mennyiség szerkesztése": 1 db
+  - group:
+    - text: Fogápolás és higiénia 14 ›
+    - button "Fogkrém · Megvettem"
+    - button "Fogkrém · Szerkesztés":
+      - strong: Fogkrém
+    - button "Fogkrém · Mennyiség szerkesztése": 1 db
+    - button "Fogkefe · Megvettem"
+    - button "Fogkefe · Szerkesztés":
+      - strong: Fogkefe
+    - button "Fogkefe · Mennyiség szerkesztése": 1 db
+    - button "Elektromos fogkefefej · Megvettem"
+    - button "Elektromos fogkefefej · Szerkesztés":
+      - strong: Elektromos fogkefefej
+    - button "Elektromos fogkefefej · Mennyiség szerkesztése": 1 db
+    - button "Fogselyem · Megvettem"
+    - button "Fogselyem · Szerkesztés":
+      - strong: Fogselyem
+    - button "Fogselyem · Mennyiség szerkesztése": 1 db
+    - button "Szájvíz · Megvettem"
+    - button "Szájvíz · Szerkesztés":
+      - strong: Szájvíz
+    - button "Szájvíz · Mennyiség szerkesztése": 1 db
+    - button "Vattakorong · Megvettem"
+    - button "Vattakorong · Szerkesztés":
+      - strong: Vattakorong
+    - button "Vattakorong · Mennyiség szerkesztése": 1 db
+    - button "Fültisztító pálcika · Megvettem"
+    - button "Fültisztító pálcika · Szerkesztés":
+      - strong: Fültisztító pálcika
+    - button "Fültisztító pálcika · Mennyiség szerkesztése": 1 db
+    - button "Nedves törlőkendő · Megvettem"
+    - button "Nedves törlőkendő · Szerkesztés":
+      - strong: Nedves törlőkendő
+    - button "Nedves törlőkendő · Mennyiség szerkesztése": 1 db
+    - button "Egészségügyi betét · Megvettem"
+    - button "Egészségügyi betét · Szerkesztés":
+      - strong: Egészségügyi betét
+    - button "Egészségügyi betét · Mennyiség szerkesztése": 1 db
+    - button "Tisztasági betét · Megvettem"
+    - button "Tisztasági betét · Szerkesztés":
+      - strong: Tisztasági betét
+    - button "Tisztasági betét · Mennyiség szerkesztése": 1 db
+    - button "Tampon · Megvettem"
+    - button "Tampon · Szerkesztés":
+      - strong: Tampon
+    - button "Tampon · Mennyiség szerkesztése": 1 db
+    - button "Óvszer · Megvettem"
+    - button "Óvszer · Szerkesztés":
+      - strong: Óvszer
+    - button "Óvszer · Mennyiség szerkesztése": 1 db
+    - button "Sebtapasz · Megvettem"
+    - button "Sebtapasz · Szerkesztés":
+      - strong: Sebtapasz
+    - button "Sebtapasz · Mennyiség szerkesztése": 1 db
+    - button "Kézfertőtlenítő · Megvettem"
+    - button "Kézfertőtlenítő · Szerkesztés":
+      - strong: Kézfertőtlenítő
+    - button "Kézfertőtlenítő · Mennyiség szerkesztése": 1 db
+  - group:
+    - text: Lekvárok és kenhető krémek 9 ›
+    - button "Méz · Megvettem"
+    - button "Méz · Szerkesztés":
+      - strong: Méz
+    - button "Méz · Mennyiség szerkesztése": 1 db
+    - button "Baracklekvár · Megvettem"
+    - button "Baracklekvár · Szerkesztés":
+      - strong: Baracklekvár
+    - button "Baracklekvár · Mennyiség szerkesztése": 1 db
+    - button "Eperlekvár · Megvettem"
+    - button "Eperlekvár · Szerkesztés":
+      - strong: Eperlekvár
+    - button "Eperlekvár · Mennyiség szerkesztése": 1 db
+    - button "Szilvalekvár · Megvettem"
+    - button "Szilvalekvár · Szerkesztés":
+      - strong: Szilvalekvár
+    - button "Szilvalekvár · Mennyiség szerkesztése": 1 db
+    - button "Mogyoróvaj · Megvettem"
+    - button "Mogyoróvaj · Szerkesztés":
+      - strong: Mogyoróvaj
+    - button "Mogyoróvaj · Mennyiség szerkesztése": 1 db
+    - button "Málnalekvár · Megvettem"
+    - button "Málnalekvár · Szerkesztés":
+      - strong: Málnalekvár
+    - button "Málnalekvár · Mennyiség szerkesztése": 1 db
+    - button "Áfonyalekvár · Megvettem"
+    - button "Áfonyalekvár · Szerkesztés":
+      - strong: Áfonyalekvár
+    - button "Áfonyalekvár · Mennyiség szerkesztése": 1 db
+    - button "Meggy lekvár · Megvettem"
+    - button "Meggy lekvár · Szerkesztés":
+      - strong: Meggy lekvár
+    - button "Meggy lekvár · Mennyiség szerkesztése": 1 db
+    - button "Almapüré · Megvettem"
+    - button "Almapüré · Szerkesztés":
+      - strong: Almapüré
+    - button "Almapüré · Mennyiség szerkesztése": 1 db
+  - group:
+    - text: Növényi alapok 19 ›
+    - button "Tofu · Megvettem"
+    - button "Tofu · Szerkesztés":
+      - strong: Tofu
+    - button "Tofu · Mennyiség szerkesztése": 1 db
+    - button "Füstölt tofu · Megvettem"
+    - button "Füstölt tofu · Szerkesztés":
+      - strong: Füstölt tofu
+    - button "Füstölt tofu · Mennyiség szerkesztése": 1 db
+    - button "Tempeh · Megvettem"
+    - button "Tempeh · Szerkesztés":
+      - strong: Tempeh
+    - button "Tempeh · Mennyiség szerkesztése": 1 db
+    - button "Hummusz · Megvettem"
+    - button "Hummusz · Szerkesztés":
+      - strong: Hummusz
+    - button "Hummusz · Mennyiség szerkesztése": 1 db
+    - button "Zabital · Megvettem"
+    - button "Zabital · Szerkesztés":
+      - strong: Zabital
+    - button "Zabital · Mennyiség szerkesztése": 1 db
+    - button "Mandulaital · Megvettem"
+    - button "Mandulaital · Szerkesztés":
+      - strong: Mandulaital
+    - button "Mandulaital · Mennyiség szerkesztése": 1 db
+    - button "Szójaital · Megvettem"
+    - button "Szójaital · Szerkesztés":
+      - strong: Szójaital
+    - button "Szójaital · Mennyiség szerkesztése": 1 db
+    - button "Kókusztej · Megvettem"
+    - button "Kókusztej · Szerkesztés":
+      - strong: Kókusztej
+    - button "Kókusztej · Mennyiség szerkesztése": 1 db
+    - button "Növényi tejszín · Megvettem"
+    - button "Növényi tejszín · Szerkesztés":
+      - strong: Növényi tejszín
+    - button "Növényi tejszín · Mennyiség szerkesztése": 1 db
+    - button "Növényi joghurt · Megvettem"
+    - button "Növényi joghurt · Szerkesztés":
+      - strong: Növényi joghurt
+    - button "Növényi joghurt · Mennyiség szerkesztése": 1 db
+    - button "Vegán sajt · Megvettem"
+    - button "Vegán sajt · Szerkesztés":
+      - strong: Vegán sajt
+    - button "Vegán sajt · Mennyiség szerkesztése": 1 db
+    - button "Seitan · Megvettem"
+    - button "Seitan · Szerkesztés":
+      - strong: Seitan
+    - button "Seitan · Mennyiség szerkesztése": 1 db
+    - button "Rizsital · Megvettem"
+    - button "Rizsital · Szerkesztés":
+      - strong: Rizsital
+    - button "Rizsital · Mennyiség szerkesztése": 1 db
+    - button "Kókuszital · Megvettem"
+    - button "Kókuszital · Szerkesztés":
+      - strong: Kókuszital
+    - button "Kókuszital · Mennyiség szerkesztése": 1 db
+    - button "Növényi vaj · Megvettem"
+    - button "Növényi vaj · Szerkesztés":
+      - strong: Növényi vaj
+    - button "Növényi vaj · Mennyiség szerkesztése": 1 db
+    - button "Növényi tejföl · Megvettem"
+    - button "Növényi tejföl · Szerkesztés":
+      - strong: Növényi tejföl
+    - button "Növényi tejföl · Mennyiség szerkesztése": 1 db
+    - button "Vegán felvágott · Megvettem"
+    - button "Vegán felvágott · Szerkesztés":
+      - strong: Vegán felvágott
+    - button "Vegán felvágott · Mennyiség szerkesztése": 1 db
+    - button "Növényi burger · Megvettem"
+    - button "Növényi burger · Szerkesztés":
+      - strong: Növényi burger
+    - button "Növényi burger · Mennyiség szerkesztése": 1 db
+    - button "Szójagranulátum · Megvettem"
+    - button "Szójagranulátum · Szerkesztés":
+      - strong: Szójagranulátum
+    - button "Szójagranulátum · Mennyiség szerkesztése": 1 db
+  - group:
+    - text: Hal és tengeri 17 ›
+    - button "Hal · Megvettem"
+    - button "Hal · Szerkesztés":
+      - strong: Hal
+    - button "Hal · Mennyiség szerkesztése": 1 db
+    - button "Lazac · Megvettem"
+    - button "Lazac · Szerkesztés":
+      - strong: Lazac
+    - button "Lazac · Mennyiség szerkesztése": 1 db
+    - button "Tőkehal · Megvettem"
+    - button "Tőkehal · Szerkesztés":
+      - strong: Tőkehal
+    - button "Tőkehal · Mennyiség szerkesztése": 1 db
+    - button "Hekk · Megvettem"
+    - button "Hekk · Szerkesztés":
+      - strong: Hekk
+    - button "Hekk · Mennyiség szerkesztése": 1 db
+    - button "Pisztráng · Megvettem"
+    - button "Pisztráng · Szerkesztés":
+      - strong: Pisztráng
+    - button "Pisztráng · Mennyiség szerkesztése": 1 db
+    - button "Ponty · Megvettem"
+    - button "Ponty · Szerkesztés":
+      - strong: Ponty
+    - button "Ponty · Mennyiség szerkesztése": 1 db
+    - button "Tonhalkonzerv · Megvettem"
+    - button "Tonhalkonzerv · Szerkesztés":
+      - strong: Tonhalkonzerv
+    - button "Tonhalkonzerv · Mennyiség szerkesztése": 1 db
+    - button "Szardíniakonzerv · Megvettem"
+    - button "Szardíniakonzerv · Szerkesztés":
+      - strong: Szardíniakonzerv
+    - button "Szardíniakonzerv · Mennyiség szerkesztése": 1 db
+    - button "Garnéla · Megvettem"
+    - button "Garnéla · Szerkesztés":
+      - strong: Garnéla
+    - button "Garnéla · Mennyiség szerkesztése": 1 db
+    - button "Kagyló · Megvettem"
+    - button "Kagyló · Szerkesztés":
+      - strong: Kagyló
+    - button "Kagyló · Mennyiség szerkesztése": 1 db
+    - button "Halrudacska · Megvettem"
+    - button "Halrudacska · Szerkesztés":
+      - strong: Halrudacska
+    - button "Halrudacska · Mennyiség szerkesztése": 1 db
+    - button "Makréla · Megvettem"
+    - button "Makréla · Szerkesztés":
+      - strong: Makréla
+    - button "Makréla · Mennyiség szerkesztése": 1 db
+    - button "Szardínia · Megvettem"
+    - button "Szardínia · Szerkesztés":
+      - strong: Szardínia
+    - button "Szardínia · Mennyiség szerkesztése": 1 db
+    - button "Harcsa · Megvettem"
+    - button "Harcsa · Szerkesztés":
+      - strong: Harcsa
+    - button "Harcsa · Mennyiség szerkesztése": 1 db
+    - button "Tintahal · Megvettem"
+    - button "Tintahal · Szerkesztés":
+      - strong: Tintahal
+    - button "Tintahal · Mennyiség szerkesztése": 1 db
+    - button "Füstölt lazac · Megvettem"
+    - button "Füstölt lazac · Szerkesztés":
+      - strong: Füstölt lazac
+    - button "Füstölt lazac · Mennyiség szerkesztése": 1 db
+    - button "Halkrém · Megvettem"
+    - button "Halkrém · Szerkesztés":
+      - strong: Halkrém
+    - button "Halkrém · Mennyiség szerkesztése": 1 db
+  - group:
+    - text: Magvak és rágcsálnivalók 20 ›
+    - button "Dió · Megvettem"
+    - button "Dió · Szerkesztés":
+      - strong: Dió
+    - button "Dió · Mennyiség szerkesztése": 1 db
+    - button "Mandula · Megvettem"
+    - button "Mandula · Szerkesztés":
+      - strong: Mandula
+    - button "Mandula · Mennyiség szerkesztése": 1 db
+    - button "Mogyoró · Megvettem"
+    - button "Mogyoró · Szerkesztés":
+      - strong: Mogyoró
+    - button "Mogyoró · Mennyiség szerkesztése": 1 db
+    - button "Tökmag · Megvettem"
+    - button "Tökmag · Szerkesztés":
+      - strong: Tökmag
+    - button "Tökmag · Mennyiség szerkesztése": 1 db
+    - button "Napraforgómag · Megvettem"
+    - button "Napraforgómag · Szerkesztés":
+      - strong: Napraforgómag
+    - button "Napraforgómag · Mennyiség szerkesztése": 1 db
+    - button "Aszalt gyümölcs · Megvettem"
+    - button "Aszalt gyümölcs · Szerkesztés":
+      - strong: Aszalt gyümölcs
+    - button "Aszalt gyümölcs · Mennyiség szerkesztése": 1 db
+    - button "Datolya · Megvettem"
+    - button "Datolya · Szerkesztés":
+      - strong: Datolya
+    - button "Datolya · Mennyiség szerkesztése": 1 db
+    - button "Chips · Megvettem"
+    - button "Chips · Szerkesztés":
+      - strong: Chips
+    - button "Chips · Mennyiség szerkesztése": 1 db
+    - button "Sós keksz · Megvettem"
+    - button "Sós keksz · Szerkesztés":
+      - strong: Sós keksz
+    - button "Sós keksz · Mennyiség szerkesztése": 1 db
+    - button "Pattogatott kukorica · Megvettem"
+    - button "Pattogatott kukorica · Szerkesztés":
+      - strong: Pattogatott kukorica
+    - button "Pattogatott kukorica · Mennyiség szerkesztése": 1 db
+    - button "Kesudió · Megvettem"
+    - button "Kesudió · Szerkesztés":
+      - strong: Kesudió
+    - button "Kesudió · Mennyiség szerkesztése": 1 db
+    - button "Pisztácia · Megvettem"
+    - button "Pisztácia · Szerkesztés":
+      - strong: Pisztácia
+    - button "Pisztácia · Mennyiség szerkesztése": 1 db
+    - button "Földimogyoró · Megvettem"
+    - button "Földimogyoró · Szerkesztés":
+      - strong: Földimogyoró
+    - button "Földimogyoró · Mennyiség szerkesztése": 1 db
+    - button "Pekándió · Megvettem"
+    - button "Pekándió · Szerkesztés":
+      - strong: Pekándió
+    - button "Pekándió · Mennyiség szerkesztése": 1 db
+    - button "Sós perec · Megvettem"
+    - button "Sós perec · Szerkesztés":
+      - strong: Sós perec
+    - button "Sós perec · Mennyiség szerkesztése": 1 db
+    - button "Ropi · Megvettem"
+    - button "Ropi · Szerkesztés":
+      - strong: Ropi
+    - button "Ropi · Mennyiség szerkesztése": 1 db
+    - button "Tortillachips · Megvettem"
+    - button "Tortillachips · Szerkesztés":
+      - strong: Tortillachips
+    - button "Tortillachips · Mennyiség szerkesztése": 1 db
+    - button "Diákcsemege · Megvettem"
+    - button "Diákcsemege · Szerkesztés":
+      - strong: Diákcsemege
+    - button "Diákcsemege · Mennyiség szerkesztése": 1 db
+    - button "Aszalt szilva · Megvettem"
+    - button "Aszalt szilva · Szerkesztés":
+      - strong: Aszalt szilva
+    - button "Aszalt szilva · Mennyiség szerkesztése": 1 db
+    - button "Aszalt sárgabarack · Megvettem"
+    - button "Aszalt sárgabarack · Szerkesztés":
+      - strong: Aszalt sárgabarack
+    - button "Aszalt sárgabarack · Mennyiség szerkesztése": 1 db
+  - group:
+    - text: Édességek 16 ›
+    - button "Étcsokoládé · Megvettem"
+    - button "Étcsokoládé · Szerkesztés":
+      - strong: Étcsokoládé
+    - button "Étcsokoládé · Mennyiség szerkesztése": 1 db
+    - button "Tejcsokoládé · Megvettem"
+    - button "Tejcsokoládé · Szerkesztés":
+      - strong: Tejcsokoládé
+    - button "Tejcsokoládé · Mennyiség szerkesztése": 1 db
+    - button "Fehér csokoládé · Megvettem"
+    - button "Fehér csokoládé · Szerkesztés":
+      - strong: Fehér csokoládé
+    - button "Fehér csokoládé · Mennyiség szerkesztése": 1 db
+    - button "Keksz · Megvettem"
+    - button "Keksz · Szerkesztés":
+      - strong: Keksz
+    - button "Keksz · Mennyiség szerkesztése": 1 db
+    - button "Babapiskóta · Megvettem"
+    - button "Babapiskóta · Szerkesztés":
+      - strong: Babapiskóta
+    - button "Babapiskóta · Mennyiség szerkesztése": 1 db
+    - button "Mogyorókrém · Megvettem"
+    - button "Mogyorókrém · Szerkesztés":
+      - strong: Mogyorókrém
+    - button "Mogyorókrém · Mennyiség szerkesztése": 1 db
+    - button "Túró Rudi · Megvettem"
+    - button "Túró Rudi · Szerkesztés":
+      - strong: Túró Rudi
+    - button "Túró Rudi · Mennyiség szerkesztése": 1 db
+    - button "Csokiszelet · Megvettem"
+    - button "Csokiszelet · Szerkesztés":
+      - strong: Csokiszelet
+    - button "Csokiszelet · Mennyiség szerkesztése": 1 db
+    - button "Bonbon · Megvettem"
+    - button "Bonbon · Szerkesztés":
+      - strong: Bonbon
+    - button "Bonbon · Mennyiség szerkesztése": 1 db
+    - button "Nápolyi · Megvettem"
+    - button "Nápolyi · Szerkesztés":
+      - strong: Nápolyi
+    - button "Nápolyi · Mennyiség szerkesztése": 1 db
+    - button "Gumicukor · Megvettem"
+    - button "Gumicukor · Szerkesztés":
+      - strong: Gumicukor
+    - button "Gumicukor · Mennyiség szerkesztése": 1 db
+    - button "Cukorka · Megvettem"
+    - button "Cukorka · Szerkesztés":
+      - strong: Cukorka
+    - button "Cukorka · Mennyiség szerkesztése": 1 db
+    - button "Nyalóka · Megvettem"
+    - button "Nyalóka · Szerkesztés":
+      - strong: Nyalóka
+    - button "Nyalóka · Mennyiség szerkesztése": 1 db
+    - button "Rágógumi · Megvettem"
+    - button "Rágógumi · Szerkesztés":
+      - strong: Rágógumi
+    - button "Rágógumi · Mennyiség szerkesztése": 1 db
+    - button "Müzliszelet · Megvettem"
+    - button "Müzliszelet · Szerkesztés":
+      - strong: Müzliszelet
+    - button "Müzliszelet · Mennyiség szerkesztése": 1 db
+    - button "Piskótaszelet · Megvettem"
+    - button "Piskótaszelet · Szerkesztés":
+      - strong: Piskótaszelet
+    - button "Piskótaszelet · Mennyiség szerkesztése": 1 db
+  - group:
+    - text: Készételek és gyors fogások 12 ›
+    - button "Instant leves · Megvettem"
+    - button "Instant leves · Szerkesztés":
+      - strong: Instant leves
+    - button "Instant leves · Mennyiség szerkesztése": 1 db
+    - button "Leveskonzerv · Megvettem"
+    - button "Leveskonzerv · Szerkesztés":
+      - strong: Leveskonzerv
+    - button "Leveskonzerv · Mennyiség szerkesztése": 1 db
+    - button "Kész főzelék · Megvettem"
+    - button "Kész főzelék · Szerkesztés":
+      - strong: Kész főzelék
+    - button "Kész főzelék · Mennyiség szerkesztése": 1 db
+    - button "Kész rizses étel · Megvettem"
+    - button "Kész rizses étel · Szerkesztés":
+      - strong: Kész rizses étel
+    - button "Kész rizses étel · Mennyiség szerkesztése": 1 db
+    - button "Kész tésztaétel · Megvettem"
+    - button "Kész tésztaétel · Szerkesztés":
+      - strong: Kész tésztaétel
+    - button "Kész tésztaétel · Mennyiség szerkesztése": 1 db
+    - button "Burgonyapürépor · Megvettem"
+    - button "Burgonyapürépor · Szerkesztés":
+      - strong: Burgonyapürépor
+    - button "Burgonyapürépor · Mennyiség szerkesztése": 1 db
+    - button "Kész saláta · Megvettem"
+    - button "Kész saláta · Szerkesztés":
+      - strong: Kész saláta
+    - button "Kész saláta · Mennyiség szerkesztése": 1 db
+    - button "Szendvics · Megvettem"
+    - button "Szendvics · Szerkesztés":
+      - strong: Szendvics
+    - button "Szendvics · Mennyiség szerkesztése": 1 db
+    - button "Sushi · Megvettem"
+    - button "Sushi · Szerkesztés":
+      - strong: Sushi
+    - button "Sushi · Mennyiség szerkesztése": 1 db
+    - button "Falafel · Megvettem"
+    - button "Falafel · Szerkesztés":
+      - strong: Falafel
+    - button "Falafel · Mennyiség szerkesztése": 1 db
+    - button "Körözött · Megvettem"
+    - button "Körözött · Szerkesztés":
+      - strong: Körözött
+    - button "Körözött · Mennyiség szerkesztése": 1 db
+    - button "Padlizsánkrém · Megvettem"
+    - button "Padlizsánkrém · Szerkesztés":
+      - strong: Padlizsánkrém
+    - button "Padlizsánkrém · Mennyiség szerkesztése": 1 db
+  - group:
+    - text: Baba és kisgyerek 14 ›
+    - button "Pelenka · Megvettem"
+    - button "Pelenka · Szerkesztés":
+      - strong: Pelenka
+    - button "Pelenka · Mennyiség szerkesztése": 1 db
+    - button "Úszópelenka · Megvettem"
+    - button "Úszópelenka · Szerkesztés":
+      - strong: Úszópelenka
+    - button "Úszópelenka · Mennyiség szerkesztése": 1 db
+    - button "Babatörlőkendő · Megvettem"
+    - button "Babatörlőkendő · Szerkesztés":
+      - strong: Babatörlőkendő
+    - button "Babatörlőkendő · Mennyiség szerkesztése": 1 db
+    - button "Popsikrém · Megvettem"
+    - button "Popsikrém · Szerkesztés":
+      - strong: Popsikrém
+    - button "Popsikrém · Mennyiség szerkesztése": 1 db
+    - button "Babafürdető · Megvettem"
+    - button "Babafürdető · Szerkesztés":
+      - strong: Babafürdető
+    - button "Babafürdető · Mennyiség szerkesztése": 1 db
+    - button "Babasampon · Megvettem"
+    - button "Babasampon · Szerkesztés":
+      - strong: Babasampon
+    - button "Babasampon · Mennyiség szerkesztése": 1 db
+    - button "Babaolaj · Megvettem"
+    - button "Babaolaj · Szerkesztés":
+      - strong: Babaolaj
+    - button "Babaolaj · Mennyiség szerkesztése": 1 db
+    - button "Tápszer · Megvettem"
+    - button "Tápszer · Szerkesztés":
+      - strong: Tápszer
+    - button "Tápszer · Mennyiség szerkesztése": 1 db
+    - button "Bébiétel · Megvettem"
+    - button "Bébiétel · Szerkesztés":
+      - strong: Bébiétel
+    - button "Bébiétel · Mennyiség szerkesztése": 1 db
+    - button "Babakása · Megvettem"
+    - button "Babakása · Szerkesztés":
+      - strong: Babakása
+    - button "Babakása · Mennyiség szerkesztése": 1 db
+    - button "Babakeksz · Megvettem"
+    - button "Babakeksz · Szerkesztés":
+      - strong: Babakeksz
+    - button "Babakeksz · Mennyiség szerkesztése": 1 db
+    - button "Gyümölcspüré tasak · Megvettem"
+    - button "Gyümölcspüré tasak · Szerkesztés":
+      - strong: Gyümölcspüré tasak
+    - button "Gyümölcspüré tasak · Mennyiség szerkesztése": 1 db
+    - button "Cumisüveg · Megvettem"
+    - button "Cumisüveg · Szerkesztés":
+      - strong: Cumisüveg
+    - button "Cumisüveg · Mennyiség szerkesztése": 1 db
+    - button "Cumi · Megvettem"
+    - button "Cumi · Szerkesztés":
+      - strong: Cumi
+    - button "Cumi · Mennyiség szerkesztése": 1 db
+  - group:
+    - text: Állateledel és kellékek 12 ›
+    - button "Száraz kutyaeledel · Megvettem"
+    - button "Száraz kutyaeledel · Szerkesztés":
+      - strong: Száraz kutyaeledel
+    - button "Száraz kutyaeledel · Mennyiség szerkesztése": 1 db
+    - button "Száraz macskaeledel · Megvettem"
+    - button "Száraz macskaeledel · Szerkesztés":
+      - strong: Száraz macskaeledel
+    - button "Száraz macskaeledel · Mennyiség szerkesztése": 1 db
+    - button "Nedves kutyaeledel · Megvettem"
+    - button "Nedves kutyaeledel · Szerkesztés":
+      - strong: Nedves kutyaeledel
+    - button "Nedves kutyaeledel · Mennyiség szerkesztése": 1 db
+    - button "Nedves macskaeledel · Megvettem"
+    - button "Nedves macskaeledel · Szerkesztés":
+      - strong: Nedves macskaeledel
+    - button "Nedves macskaeledel · Mennyiség szerkesztése": 1 db
+    - button "Kutya jutalomfalat · Megvettem"
+    - button "Kutya jutalomfalat · Szerkesztés":
+      - strong: Kutya jutalomfalat
+    - button "Kutya jutalomfalat · Mennyiség szerkesztése": 1 db
+    - button "Macska jutalomfalat · Megvettem"
+    - button "Macska jutalomfalat · Szerkesztés":
+      - strong: Macska jutalomfalat
+    - button "Macska jutalomfalat · Mennyiség szerkesztése": 1 db
+    - button "Macskaalom · Megvettem"
+    - button "Macskaalom · Szerkesztés":
+      - strong: Macskaalom
+    - button "Macskaalom · Mennyiség szerkesztése": 1 db
+    - button "Kutyapiszokzacskó · Megvettem"
+    - button "Kutyapiszokzacskó · Szerkesztés":
+      - strong: Kutyapiszokzacskó
+    - button "Kutyapiszokzacskó · Mennyiség szerkesztése": 1 db
+    - button "Rágócsont · Megvettem"
+    - button "Rágócsont · Szerkesztés":
+      - strong: Rágócsont
+    - button "Rágócsont · Mennyiség szerkesztése": 1 db
+    - button "Madáreleség · Megvettem"
+    - button "Madáreleség · Szerkesztés":
+      - strong: Madáreleség
+    - button "Madáreleség · Mennyiség szerkesztése": 1 db
+    - button "Rágcsálóeledel · Megvettem"
+    - button "Rágcsálóeledel · Szerkesztés":
+      - strong: Rágcsálóeledel
+    - button "Rágcsálóeledel · Mennyiség szerkesztése": 1 db
+    - button "Alom kisállatnak · Megvettem"
+    - button "Alom kisállatnak · Szerkesztés":
+      - strong: Alom kisállatnak
+    - button "Alom kisállatnak · Mennyiség szerkesztése": 1 db
+  - group:
+    - text: Sör, bor és szeszes italok 16 ›
+    - button "Sör · Megvettem"
+    - button "Sör · Szerkesztés":
+      - strong: Sör
+    - button "Sör · Mennyiség szerkesztése": 1 db
+    - button "Bor · Megvettem"
+    - button "Bor · Szerkesztés":
+      - strong: Bor
+    - button "Bor · Mennyiség szerkesztése": 1 db
+    - button "Alkoholmentes sör · Megvettem"
+    - button "Alkoholmentes sör · Szerkesztés":
+      - strong: Alkoholmentes sör
+    - button "Alkoholmentes sör · Mennyiség szerkesztése": 1 db
+    - button "Radler · Megvettem"
+    - button "Radler · Szerkesztés":
+      - strong: Radler
+    - button "Radler · Mennyiség szerkesztése": 1 db
+    - button "Almabor · Megvettem"
+    - button "Almabor · Szerkesztés":
+      - strong: Almabor
+    - button "Almabor · Mennyiség szerkesztése": 1 db
+    - button "Vörösbor · Megvettem"
+    - button "Vörösbor · Szerkesztés":
+      - strong: Vörösbor
+    - button "Vörösbor · Mennyiség szerkesztése": 1 db
+    - button "Fehérbor · Megvettem"
+    - button "Fehérbor · Szerkesztés":
+      - strong: Fehérbor
+    - button "Fehérbor · Mennyiség szerkesztése": 1 db
+    - button "Rozé · Megvettem"
+    - button "Rozé · Szerkesztés":
+      - strong: Rozé
+    - button "Rozé · Mennyiség szerkesztése": 1 db
+    - button "Pezsgő · Megvettem"
+    - button "Pezsgő · Szerkesztés":
+      - strong: Pezsgő
+    - button "Pezsgő · Mennyiség szerkesztése": 1 db
+    - button "Prosecco · Megvettem"
+    - button "Prosecco · Szerkesztés":
+      - strong: Prosecco
+    - button "Prosecco · Mennyiség szerkesztése": 1 db
+    - button "Vodka · Megvettem"
+    - button "Vodka · Szerkesztés":
+      - strong: Vodka
+    - button "Vodka · Mennyiség szerkesztése": 1 db
+    - button "Gin · Megvettem"
+    - button "Gin · Szerkesztés":
+      - strong: Gin
+    - button "Gin · Mennyiség szerkesztése": 1 db
+    - button "Rum · Megvettem"
+    - button "Rum · Szerkesztés":
+      - strong: Rum
+    - button "Rum · Mennyiség szerkesztése": 1 db
+    - button "Whisky · Megvettem"
+    - button "Whisky · Szerkesztés":
+      - strong: Whisky
+    - button "Whisky · Mennyiség szerkesztése": 1 db
+    - button "Pálinka · Megvettem"
+    - button "Pálinka · Szerkesztés":
+      - strong: Pálinka
+    - button "Pálinka · Mennyiség szerkesztése": 1 db
+    - button "Likőr · Megvettem"
+    - button "Likőr · Szerkesztés":
+      - strong: Likőr
+    - button "Likőr · Mennyiség szerkesztése": 1 db
+  - group:
+    - text: Otthoni apróságok 14 ›
+    - button "Elem AA · Megvettem"
+    - button "Elem AA · Szerkesztés":
+      - strong: Elem AA
+    - button "Elem AA · Mennyiség szerkesztése": 1 db
+    - button "Elem AAA · Megvettem"
+    - button "Elem AAA · Szerkesztés":
+      - strong: Elem AAA
+    - button "Elem AAA · Mennyiség szerkesztése": 1 db
+    - button "Gombelem · Megvettem"
+    - button "Gombelem · Szerkesztés":
+      - strong: Gombelem
+    - button "Gombelem · Mennyiség szerkesztése": 1 db
+    - button "Izzó · Megvettem"
+    - button "Izzó · Szerkesztés":
+      - strong: Izzó
+    - button "Izzó · Mennyiség szerkesztése": 1 db
+    - button "Gyufa · Megvettem"
+    - button "Gyufa · Szerkesztés":
+      - strong: Gyufa
+    - button "Gyufa · Mennyiség szerkesztése": 1 db
+    - button "Öngyújtó · Megvettem"
+    - button "Öngyújtó · Szerkesztés":
+      - strong: Öngyújtó
+    - button "Öngyújtó · Mennyiség szerkesztése": 1 db
+    - button "Gyertya · Megvettem"
+    - button "Gyertya · Szerkesztés":
+      - strong: Gyertya
+    - button "Gyertya · Mennyiség szerkesztése": 1 db
+    - button "Ragasztószalag · Megvettem"
+    - button "Ragasztószalag · Szerkesztés":
+      - strong: Ragasztószalag
+    - button "Ragasztószalag · Mennyiség szerkesztése": 1 db
+    - button "Pillanatragasztó · Megvettem"
+    - button "Pillanatragasztó · Szerkesztés":
+      - strong: Pillanatragasztó
+    - button "Pillanatragasztó · Mennyiség szerkesztése": 1 db
+    - button "Szemetesvödör · Megvettem"
+    - button "Szemetesvödör · Szerkesztés":
+      - strong: Szemetesvödör
+    - button "Szemetesvödör · Mennyiség szerkesztése": 1 db
+    - button "Rovarirtó · Megvettem"
+    - button "Rovarirtó · Szerkesztés":
+      - strong: Rovarirtó
+    - button "Rovarirtó · Mennyiség szerkesztése": 1 db
+    - button "Szúnyogriasztó · Megvettem"
+    - button "Szúnyogriasztó · Szerkesztés":
+      - strong: Szúnyogriasztó
+    - button "Szúnyogriasztó · Mennyiség szerkesztése": 1 db
+    - button "Cipőápoló · Megvettem"
+    - button "Cipőápoló · Szerkesztés":
+      - strong: Cipőápoló
+    - button "Cipőápoló · Mennyiség szerkesztése": 1 db
+    - button "Varrókészlet · Megvettem"
+    - button "Varrókészlet · Szerkesztés":
+      - strong: Varrókészlet
+    - button "Varrókészlet · Mennyiség szerkesztése": 1 db
+- navigation "Fő navigáció":
+  - button "Áttekintés"
+  - button "Lista 667"
+  - button "Morzsa"
+  - button "Készlet"
+  - button "Receptek"
+- status
+- group "Vásárlási nézet":
+  - button "Boltban vagyok Nagy pipák, könnyű követés":
+    - strong: Boltban vagyok
+    - text: Nagy pipák, könnyű követés
+  - button "Kérdezz Morzsától"

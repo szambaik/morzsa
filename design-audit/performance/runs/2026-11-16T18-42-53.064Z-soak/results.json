@@ -1,0 +1,4935 @@
+{
+  "mode": "soak",
+  "run": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/design-audit/performance/runs/2026-11-16T18-42-53.064Z-soak",
+  "startedAt": "2026-11-16T18:42:53.065Z",
+  "environment": {
+    "node": "v26.5.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "labOnly": true,
+    "browserFallback": "browserType.launch: Target page, context or browser has been closed",
+    "browser": "157.0.8103.51"
+  },
+  "startup": [],
+  "checks": [],
+  "actions": [
+    {
+      "name": "navigation",
+      "destination": "overview",
+      "duration": 159.50162500000033
+    },
+    {
+      "name": "navigation",
+      "destination": "pantry",
+      "duration": 167.83908399999927
+    },
+    {
+      "name": "navigation",
+      "destination": "shopping",
+      "duration": 116.18141700000069
+    },
+    {
+      "name": "navigation",
+      "destination": "recipes",
+      "duration": 1333.8466250000001
+    },
+    {
+      "name": "navigation",
+      "destination": "chat",
+      "duration": 166.2185410000002
+    },
+    {
+      "name": "navigation",
+      "destination": "pantry",
+      "duration": 166.87195900000006
+    }
+  ],
+  "memory": [],
+  "network": [
+    {
+      "path": "/",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.252655,
+      "type": "Document",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 3.732999990461394,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 3.6069999914616346,
+      "responseBytes": 6111
+    },
+    {
+      "path": "/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap",
+      "origin": "https://fonts.googleapis.com",
+      "method": "GET",
+      "start": 86898.262477,
+      "type": "Stylesheet",
+      "requestBytes": 0,
+      "failure": "",
+      "blockedReason": "inspector"
+    },
+    {
+      "path": "/styles.css?v=history-rail1",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.259609,
+      "type": "Stylesheet",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 2.6519999955780804,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.3459999938495457,
+      "responseBytes": 144876
+    },
+    {
+      "path": "/translations.js?v=1",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.259956,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 4.366000008303672,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 4.135000010137446,
+      "responseBytes": 8805
+    },
+    {
+      "path": "/desktop.css?v=vision1",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.259725,
+      "type": "Stylesheet",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 4.830999998375773,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 4.805000004125759,
+      "responseBytes": 8830
+    },
+    {
+      "path": "/i18n.js?v=sidebar-settings1",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.259977,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 6.269000004976988,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 6.0040000098524615,
+      "responseBytes": 16577
+    },
+    {
+      "path": "/quick-entry.js?v=1",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.259992,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 6.500999996205792,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 6.376999997883104,
+      "responseBytes": 1660
+    },
+    {
+      "path": "/workspace.css?v=first-audit-20261116",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.259749,
+      "type": "Stylesheet",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 7.452999998349696,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 7.554999989224598,
+      "responseBytes": 147524
+    },
+    {
+      "path": "/kitchen-model.js?v=pantry-shopping-20261116",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260011,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 9.39999999536667,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 9.123999989242293,
+      "responseBytes": 9457
+    },
+    {
+      "path": "/workspace-entry.js?v=vision1",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260029,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 9.72899999760557,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 9.567000000970438,
+      "responseBytes": 2056
+    },
+    {
+      "path": "/surprise-recipe.js?v=1",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260043,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 10.181000005104579,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 10.062000001198612,
+      "responseBytes": 1181
+    },
+    {
+      "path": "/proactive.css?v=proactive1",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.259771,
+      "type": "Stylesheet",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 10.779999996884726,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 10.745000006863847,
+      "responseBytes": 5432
+    },
+    {
+      "path": "/recipe-chat.js?v=1",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260055,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 11.84899998770561,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 11.728999990737066,
+      "responseBytes": 998
+    },
+    {
+      "path": "/recipe-prompt.js?v=3",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260068,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 12.216999995871447,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 12.080000000423752,
+      "responseBytes": 4068
+    },
+    {
+      "path": "/shopping-model.js?v=shopping-refine1",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260084,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 12.574000007589348,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 12.468000000808388,
+      "responseBytes": 1697
+    },
+    {
+      "path": "/voice-model.js?v=vision1",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260098,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 13.097999995807186,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 12.950000003911555,
+      "responseBytes": 5053
+    },
+    {
+      "path": "/catalog.js?v=morzsa-companion1",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.259912,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 13.993000000482425,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 13.605000000097789,
+      "responseBytes": 26069
+    },
+    {
+      "path": "/pantry-review-model.js?v=library-intro5",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260116,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 15.145999990636483,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 14.121999993221834,
+      "responseBytes": 2660
+    },
+    {
+      "path": "/cooking-session.js?v=cooking3",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.26013,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 15.19900000130292,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 14.527000006637536,
+      "responseBytes": 6240
+    },
+    {
+      "path": "/recipe-portions.js?v=1",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260142,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 15.23099999758415,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 14.907000004313886,
+      "responseBytes": 5477
+    },
+    {
+      "path": "/recipe-room-model.js?v=cooking3",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260153,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 15.457000001333654,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 15.299000006052665,
+      "responseBytes": 6322
+    },
+    {
+      "path": "/quantity-model.js?v=customer-audit-20261116",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260168,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 15.92200000595767,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 15.813000005437061,
+      "responseBytes": 1697
+    },
+    {
+      "path": "/recipes.js?v=shopping-resume1",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.259939,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 16.53999999689404,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 16.41599999857135,
+      "responseBytes": 5492
+    },
+    {
+      "path": "/pantry-library.js?v=first-audit-20261116",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260196,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 20.03600000170991,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 17.48500000394415,
+      "responseBytes": 12963
+    },
+    {
+      "path": "/app.js?v=customer-audit-20261116",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260183,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 20.102999988012016,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 17.213999992236495,
+      "responseBytes": 79820
+    },
+    {
+      "path": "/ai-mode.js?v=plus1",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260209,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 20.525999992969446,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 17.823000001953915,
+      "responseBytes": 746
+    },
+    {
+      "path": "/household-config.js?v=project1",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260221,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 20.56299999821931,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 18.08799999707844,
+      "responseBytes": 250
+    },
+    {
+      "path": "/persistence-model.js?v=library4",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260234,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 20.59299999382347,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 18.395999999484047,
+      "responseBytes": 4691
+    },
+    {
+      "path": "/household-model.js?v=first-audit-20261116",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.26025,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 20.621999996365048,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 18.747999987681396,
+      "responseBytes": 5365
+    },
+    {
+      "path": "/auth-link.js?v=3",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260271,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 20.641999988583848,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 19.695999988471158,
+      "responseBytes": 1956
+    },
+    {
+      "path": "/household-live.js?v=persist1",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260285,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 20.788000008906238,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 20.019000003230758,
+      "responseBytes": 5939
+    },
+    {
+      "path": "/chat-stream.js?v=1",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260301,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 20.820999998250045,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 20.319999995990656,
+      "responseBytes": 1466
+    },
+    {
+      "path": "/voice-ui.js?v=first-audit-20261116",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260323,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 21.399000004748814,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 21.13900000404101,
+      "responseBytes": 26951
+    },
+    {
+      "path": "/household.js?v=first-audit-20261116",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260312,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 21.527000004425645,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 20.866000006208196,
+      "responseBytes": 50101
+    },
+    {
+      "path": "/realtime-model.js?v=voice-state3",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260336,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 23.7009999982547,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 21.490999992238358,
+      "responseBytes": 5413
+    },
+    {
+      "path": "/realtime-voice.js?v=ux-audit-20261116",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260351,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 23.73000000079628,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 21.99300000211224,
+      "responseBytes": 18326
+    },
+    {
+      "path": "/pantry-review-ui.js?v=proactive1",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260364,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 23.763000004692003,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 22.345999997924082,
+      "responseBytes": 14729
+    },
+    {
+      "path": "/assistant-ui.js?v=shopping-resume1",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260375,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 23.79099999961909,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 22.708000004058704,
+      "responseBytes": 2492
+    },
+    {
+      "path": "/recipe-crafting.js?v=chat-crafting-20261116",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.26039,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 23.838000008254312,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 23.03799999936018,
+      "responseBytes": 14723
+    },
+    {
+      "path": "/recipe-shopping.js?v=customer-audit-20261116",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260404,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 32.286999994539656,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 23.547000004327856,
+      "responseBytes": 3243
+    },
+    {
+      "path": "/weekly-plan-ui.js?v=chat-crafting-20261116",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.26043,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 32.35200000926852,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 24.585999999544583,
+      "responseBytes": 11787
+    },
+    {
+      "path": "/kitchen-measures.js?v=1",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260442,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 32.391000000643544,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 24.887000006856397,
+      "responseBytes": 4263
+    },
+    {
+      "path": "/recipe-export.js?v=portions1",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260455,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 32.419000010122545,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 25.16299999842886,
+      "responseBytes": 4706
+    },
+    {
+      "path": "/recipe-library.js?v=ux-audit-20261116",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.26047,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 32.451000006403774,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 25.529000005917624,
+      "responseBytes": 11371
+    },
+    {
+      "path": "/weekly-plan-model.js?v=ux-audit-20261116",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260415,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 32.64099999796599,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 28.60000000509899,
+      "responseBytes": 7507
+    },
+    {
+      "path": "/cooking-ui.js?v=ux-audit-20261116",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260481,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 32.68599999137223,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 30.153999992762692,
+      "responseBytes": 5716
+    },
+    {
+      "path": "/recipe-ingredients-panel.js?v=library4",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260505,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 32.71200000017416,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 30.878000005031936,
+      "responseBytes": 2995
+    },
+    {
+      "path": "/recipe-room-ui.js?v=customer-audit-20261116",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260493,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 32.75800000119489,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 30.651000008219853,
+      "responseBytes": 38724
+    },
+    {
+      "path": "/recipe-photos.js?v=groq-images1",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260517,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 32.772999998996966,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 31.229999993229285,
+      "responseBytes": 2053
+    },
+    {
+      "path": "/chat-photo.js?v=1",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260528,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 32.7980000001844,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 31.57400000782218,
+      "responseBytes": 1358
+    },
+    {
+      "path": "/rest/v1/households?id=eq.90000000-0000-4000-8000-000000000001&select=id,name",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.283682,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 9.274000010918826,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 4.884000009042211,
+      "responseBytes": 334
+    },
+    {
+      "path": "/persistence.js?v=persist1",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260541,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 33.196000003954396,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 32.313000003341585,
+      "responseBytes": 14403
+    },
+    {
+      "path": "/rest/v1/rpc/list_household_email_invites",
+      "origin": "http://127.0.0.1:58514",
+      "method": "POST",
+      "start": 86898.283875,
+      "type": "Fetch",
+      "requestBytes": 2,
+      "status": 200,
+      "ttfb": 9.228000009898096,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 6.374000004143454,
+      "responseBytes": 175
+    },
+    {
+      "path": "/companion-model.js?v=customer-audit-20261116",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260556,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 33.31300000718329,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 32.83600001304876,
+      "responseBytes": 13208
+    },
+    {
+      "path": "/panel-gestures.js?v=cooking3",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260568,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 33.48100000584964,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 33.14300000783987,
+      "responseBytes": 4245
+    },
+    {
+      "path": "/chat-format.js?v=1",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.26058,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 33.653999998932704,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 33.496000003651716,
+      "responseBytes": 1536
+    },
+    {
+      "path": "/assets/ui/layout-grid.svg",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.25982,
+      "type": "Image",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 34.605999986524694,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 34.57499999785796,
+      "responseBytes": 704
+    },
+    {
+      "path": "/assets/ui/shopping-cart.svg",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.259838,
+      "type": "Image",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 35.13099999690894,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 34.93999999773223,
+      "responseBytes": 663
+    },
+    {
+      "path": "/assets/brands/morzsa.svg",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.2598,
+      "type": "Image",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 35.929000005126,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 35.877000002074055,
+      "responseBytes": 848
+    },
+    {
+      "path": "/ingredient-mentions.js?v=1",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260591,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 35.780000005615875,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 35.47299999627285,
+      "responseBytes": 3037
+    },
+    {
+      "path": "/recipe-images.js?v=ux-audit-20261116",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260603,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 36.01300000445917,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 35.831999994115904,
+      "responseBytes": 10627
+    },
+    {
+      "path": "/shopping-mode-model.js?v=shopping-refine1",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260615,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 36.56399999454152,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 36.37699999671895,
+      "responseBytes": 4618
+    },
+    {
+      "path": "/rest/v1/household_records?household_id=eq.90000000-0000-4000-8000-000000000001&select=bucket,key,value,revision&order=bucket,key&limit=1000&offset=0",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.293972,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 4.5039999968139455,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 4.486999998334795,
+      "responseBytes": 175
+    },
+    {
+      "path": "/shopping-mode-ui.js?v=proactive1",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260628,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 39.063999996869825,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 38.61599999072496,
+      "responseBytes": 32319
+    },
+    {
+      "path": "/session-model.js?v=portions1",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260643,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 40.07899999851361,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 39.569000000483356,
+      "responseBytes": 1862
+    },
+    {
+      "path": "/onboarding-model.js?v=pantry-start1",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.26067,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 40.66499999316875,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 40.53399999975227,
+      "responseBytes": 1693
+    },
+    {
+      "path": "/companion-ui.js?v=proactive1",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260655,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 41.287000000011176,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 40.184999990742654,
+      "responseBytes": 107011
+    },
+    {
+      "path": "/assets/ui/house.svg",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.259863,
+      "type": "Image",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 55.066000000806525,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 46.629000004031695,
+      "responseBytes": 673
+    },
+    {
+      "path": "/assets/ui/chef-hat.svg",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.25989,
+      "type": "Image",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 55.540000001201406,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 46.84799999813549,
+      "responseBytes": 692
+    },
+    {
+      "path": "/assets/ui/menu.svg",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.30548,
+      "type": "Image",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 10.181999998167157,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.37800000468269,
+      "responseBytes": 613
+    },
+    {
+      "path": "/assets/ui/plus.svg",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.314664,
+      "type": "Image",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 1.2069999938830733,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 1.1660000018309802,
+      "responseBytes": 537
+    },
+    {
+      "path": "/onboarding.js?v=customer-audit-20261116",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.2607,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 55.366000000503846,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 41.079000002355315,
+      "responseBytes": 15803
+    },
+    {
+      "path": "/assets/illustrations/morzsa-mascot.webp",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.314712,
+      "type": "Image",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 1.4009999867994338,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 1.3949999993201345,
+      "responseBytes": 4430
+    },
+    {
+      "path": "/workspace-ui.js?v=proactive1",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260711,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 55.51600000762846,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 41.55900000478141,
+      "responseBytes": 21194
+    },
+    {
+      "path": "/assets/ui/sparkles.svg",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.314736,
+      "type": "Image",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 1.8730000010691583,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 1.803999999538064,
+      "responseBytes": 853
+    },
+    {
+      "path": "/kitchen-ui.js?v=customer-audit-20261116",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260726,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 56.135000006179325,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 44.82400001143105,
+      "responseBytes": 12799
+    },
+    {
+      "path": "/proactive-model.js?v=proactive1",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260737,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 56.167000002460554,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 45.170999990659766,
+      "responseBytes": 6708
+    },
+    {
+      "path": "/proactive-ui.js?v=proactive1",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.260749,
+      "type": "Script",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 56.195000011939555,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 45.48300000897143,
+      "responseBytes": 19677
+    },
+    {
+      "path": "/assets/ui/heart.svg",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.314756,
+      "type": "Image",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 2.223999996203929,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.154999994672835,
+      "responseBytes": 642
+    },
+    {
+      "path": "/assets/ui/arrow-up.svg",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.314775,
+      "type": "Image",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 2.438999988953583,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.390999987255782,
+      "responseBytes": 546
+    },
+    {
+      "path": "/assets/ui/sliders-horizontal.svg",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.318737,
+      "type": "Image",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 109.30600001302082,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 0.8680000028107315,
+      "responseBytes": 878
+    },
+    {
+      "path": "/assets/ui/square-pen.svg",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.318771,
+      "type": "Image",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 109.81699998956174,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 1.097999993362464,
+      "responseBytes": 488
+    },
+    {
+      "path": "/rest/v1/household_pantry_reviews?household_id=eq.90000000-0000-4000-8000-000000000001&select=product_name,last_confirmed_at,stock_revision",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.298952,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 17.334000003756955,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 4.570999997667968,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/rpc/conversation_index",
+      "origin": "http://127.0.0.1:58514",
+      "method": "POST",
+      "start": 86898.304729,
+      "type": "Fetch",
+      "requestBytes": 17,
+      "status": 200,
+      "ttfb": 12.436999997589737,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 4.945000007865019,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/household_kitchen_preferences?household_id=eq.90000000-0000-4000-8000-000000000001&select=key,value,revision",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.319053,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 113.35800000233576,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 1.8859999981941655,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/household_kitchen_events?household_id=eq.90000000-0000-4000-8000-000000000001&select=id,actor_id,created_at,event_type,subject,item_count&order=id.desc&limit=12",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.319108,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 113.37099999946076,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.485999997588806,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/household_kitchen_events?household_id=eq.90000000-0000-4000-8000-000000000001&event_type=eq.recipe_completed&select=event_type,subject,created_at&order=id.desc&limit=8",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.319147,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 113.36899999878369,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 3.1069999968167394,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/rpc/read_proactive_suggestions",
+      "origin": "http://127.0.0.1:58514",
+      "method": "POST",
+      "start": 86898.427699,
+      "type": "Fetch",
+      "requestBytes": 46,
+      "status": 200,
+      "ttfb": 61.078999991877936,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 7.543999992776662,
+      "responseBytes": 206
+    },
+    {
+      "path": "/rest/v1/rpc/conversation_page",
+      "origin": "http://127.0.0.1:58514",
+      "method": "POST",
+      "start": 86898.486961,
+      "type": "Fetch",
+      "requestBytes": 64,
+      "status": 400,
+      "ttfb": 56.19000000297092,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.714000002015382,
+      "responseBytes": 223
+    },
+    {
+      "path": "/assets/brands/morzsa.svg",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.652355,
+      "type": "Other",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 109.3410000030417,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 1.273000001674518,
+      "responseBytes": 165
+    },
+    {
+      "path": "/rest/v1/rpc/sync_conversation",
+      "origin": "http://127.0.0.1:58514",
+      "method": "POST",
+      "start": 86898.760692,
+      "type": "Fetch",
+      "requestBytes": 160,
+      "status": 200,
+      "ttfb": 3.815000003669411,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 3.74700000975281,
+      "responseBytes": 201
+    },
+    {
+      "path": "/rest/v1/rpc/conversation_index",
+      "origin": "http://127.0.0.1:58514",
+      "method": "POST",
+      "start": 86898.764939,
+      "type": "Fetch",
+      "requestBytes": 17,
+      "status": 200,
+      "ttfb": 2.4719999928493053,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.426000006380491,
+      "responseBytes": 372
+    },
+    {
+      "path": "/rest/v1/rpc/conversation_page",
+      "origin": "http://127.0.0.1:58514",
+      "method": "POST",
+      "start": 86898.872076,
+      "type": "Fetch",
+      "requestBytes": 64,
+      "status": 200,
+      "ttfb": 2.5889999960782006,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.5440000026719645,
+      "responseBytes": 220
+    },
+    {
+      "path": "/rest/v1/households?id=eq.90000000-0000-4000-8000-000000000001&select=id,name",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86898.873449,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 107.35999999451451,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.167999991797842,
+      "responseBytes": 334
+    },
+    {
+      "path": "/rest/v1/rpc/conversation_index",
+      "origin": "http://127.0.0.1:58514",
+      "method": "POST",
+      "start": 86899.085436,
+      "type": "Fetch",
+      "requestBytes": 17,
+      "status": 200,
+      "ttfb": 2.443000004859641,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.394000010099262,
+      "responseBytes": 372
+    },
+    {
+      "path": "/rest/v1/household_records?household_id=eq.90000000-0000-4000-8000-000000000001&select=bucket,key,value,revision&order=bucket,key&limit=1000&offset=0",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86899.086067,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 109.98200000904035,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.378999997745268,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/rpc/conversation_page",
+      "origin": "http://127.0.0.1:58514",
+      "method": "POST",
+      "start": 86899.194963,
+      "type": "Fetch",
+      "requestBytes": 64,
+      "status": 200,
+      "ttfb": 2.3459999938495457,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.322999993339181,
+      "responseBytes": 220
+    },
+    {
+      "path": "/rest/v1/household_pantry_reviews?household_id=eq.90000000-0000-4000-8000-000000000001&select=product_name,last_confirmed_at,stock_revision",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86899.196389,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 2.007999995839782,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 1.9739999988814816,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/household_shopping_sessions?household_id=eq.90000000-0000-4000-8000-000000000001&finished_at=is.null&select=*",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86899.196675,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 55.73000000731554,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.510999998776242,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/household_shopping_routes?household_id=eq.90000000-0000-4000-8000-000000000001&select=*",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86899.196759,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 55.840000000898726,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 3.2670000073267147,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/household_kitchen_preferences?household_id=eq.90000000-0000-4000-8000-000000000001&select=key,value,revision",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86899.196823,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 55.83599999954458,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 3.7529999972321093,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/household_kitchen_events?household_id=eq.90000000-0000-4000-8000-000000000001&select=id,actor_id,created_at,event_type,subject,item_count&order=id.desc&limit=12",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86899.196865,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 55.83099999057595,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 4.2169999942416325,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/household_kitchen_events?household_id=eq.90000000-0000-4000-8000-000000000001&event_type=eq.recipe_completed&select=event_type,subject,created_at&order=id.desc&limit=8",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86899.196907,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 55.828999989898875,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 4.71599999582395,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/household_shopping_sessions?household_id=eq.90000000-0000-4000-8000-000000000001&finished_at=is.null&select=*",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86899.196958,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 55.81599999277387,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 5.470999996759929,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/household_shopping_routes?household_id=eq.90000000-0000-4000-8000-000000000001&select=*",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86899.196995,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 55.81099999835715,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 7.685999997192994,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/rpc/sync_conversation",
+      "origin": "http://127.0.0.1:58514",
+      "method": "POST",
+      "start": 86899.869984,
+      "type": "Fetch",
+      "requestBytes": 160,
+      "status": 200,
+      "ttfb": 14.179999998304993,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 3.2579999970039353,
+      "responseBytes": 201
+    },
+    {
+      "path": "/rest/v1/rpc/conversation_index",
+      "origin": "http://127.0.0.1:58514",
+      "method": "POST",
+      "start": 86899.884516,
+      "type": "Fetch",
+      "requestBytes": 17,
+      "status": 200,
+      "ttfb": 2.4759999942034483,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.4279999925056472,
+      "responseBytes": 372
+    },
+    {
+      "path": "/rest/v1/rpc/conversation_page",
+      "origin": "http://127.0.0.1:58514",
+      "method": "POST",
+      "start": 86899.994489,
+      "type": "Fetch",
+      "requestBytes": 64,
+      "status": 200,
+      "ttfb": 22.033999994164333,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.303000001120381,
+      "responseBytes": 220
+    },
+    {
+      "path": "/rest/v1/rpc/begin_conversation_turn",
+      "origin": "http://127.0.0.1:58514",
+      "method": "POST",
+      "start": 86900.016971,
+      "type": "Fetch",
+      "requestBytes": 91,
+      "status": 200,
+      "ttfb": 2.3089999885996804,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.2649999882560223,
+      "responseBytes": 177
+    },
+    {
+      "path": "/rest/v1/rpc/conversation_page",
+      "origin": "http://127.0.0.1:58514",
+      "method": "POST",
+      "start": 86900.019482,
+      "type": "Fetch",
+      "requestBytes": 64,
+      "status": 200,
+      "ttfb": 1.596999994944781,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 1.5549999952781945,
+      "responseBytes": 220
+    },
+    {
+      "path": "/rest/v1/rpc/sync_conversation",
+      "origin": "http://127.0.0.1:58514",
+      "method": "POST",
+      "start": 86900.273636,
+      "type": "Fetch",
+      "requestBytes": 292,
+      "status": 200,
+      "ttfb": 3.1869999947957695,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 3.1359999993583187,
+      "responseBytes": 201
+    },
+    {
+      "path": "/functions/v1/voice-command",
+      "origin": "http://127.0.0.1:58514",
+      "method": "POST",
+      "start": 86900.078989,
+      "type": "Fetch",
+      "requestBytes": 322,
+      "status": 200,
+      "ttfb": 1.827999993111007,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 203.05699999153148,
+      "responseBytes": 420
+    },
+    {
+      "path": "/rest/v1/rpc/end_conversation_turn",
+      "origin": "http://127.0.0.1:58514",
+      "method": "POST",
+      "start": 86900.335971,
+      "type": "Fetch",
+      "requestBytes": 91,
+      "status": 200,
+      "ttfb": 2.6750000106403604,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.6360000047134236,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/rpc/sync_conversation",
+      "origin": "http://127.0.0.1:58514",
+      "method": "POST",
+      "start": 86900.336302,
+      "type": "Fetch",
+      "requestBytes": 306,
+      "status": 200,
+      "ttfb": 3.528000001097098,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 3.491000010399148,
+      "responseBytes": 201
+    },
+    {
+      "path": "/assets/brands/morzsa.svg",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86900.336235,
+      "type": "Image",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 3.951999999117106,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 3.676000007544644,
+      "responseBytes": 165
+    },
+    {
+      "path": "/rest/v1/rpc/conversation_index",
+      "origin": "http://127.0.0.1:58514",
+      "method": "POST",
+      "start": 86900.340071,
+      "type": "Fetch",
+      "requestBytes": 17,
+      "status": 200,
+      "ttfb": 2.1280000073602423,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.0840000070165843,
+      "responseBytes": 384
+    },
+    {
+      "path": "/rest/v1/rpc/conversation_page",
+      "origin": "http://127.0.0.1:58514",
+      "method": "POST",
+      "start": 86900.396244,
+      "type": "Fetch",
+      "requestBytes": 64,
+      "status": 200,
+      "ttfb": 2.7989999944111332,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.741999996942468,
+      "responseBytes": 517
+    },
+    {
+      "path": "/rest/v1/rpc/conversation_index",
+      "origin": "http://127.0.0.1:58514",
+      "method": "POST",
+      "start": 86900.535451,
+      "type": "Fetch",
+      "requestBytes": 17,
+      "status": 200,
+      "ttfb": 2.3010000004433095,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.2529999987455085,
+      "responseBytes": 384
+    },
+    {
+      "path": "/rest/v1/rpc/conversation_page",
+      "origin": "http://127.0.0.1:58514",
+      "method": "POST",
+      "start": 86900.592606,
+      "type": "Fetch",
+      "requestBytes": 64,
+      "status": 200,
+      "ttfb": 2.339999991818331,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.295999991474673,
+      "responseBytes": 517
+    },
+    {
+      "path": "/assets/icons/egg.webp",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86900.792604,
+      "type": "Image",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 2.110999994329177,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 1.7389999993611127,
+      "responseBytes": 4178
+    },
+    {
+      "path": "/assets/ui/mic.svg",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86900.792821,
+      "type": "Image",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 2.203000010922551,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.086000007693656,
+      "responseBytes": 641
+    },
+    {
+      "path": "/assets/ui/calendar-days.svg",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86900.792847,
+      "type": "Image",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 2.6470000011613593,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.5689999893074855,
+      "responseBytes": 481
+    },
+    {
+      "path": "/assets/ui/arrow-right.svg",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86900.792869,
+      "type": "Image",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 3.82700000773184,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 3.7339999980758876,
+      "responseBytes": 549
+    },
+    {
+      "path": "/assets/ui/search.svg",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86900.958079,
+      "type": "Image",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 3.308999992441386,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.1899999992456287,
+      "responseBytes": 556
+    },
+    {
+      "path": "/rest/v1/recipe_library_entries?select=recipe_id,favourite,status,recipe_documents(id,content,tags,published)&order=updated_at.desc",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86901.135642,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 160.76000001339708,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.2779999999329448,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/rpc/recipe_feed",
+      "origin": "http://127.0.0.1:58514",
+      "method": "POST",
+      "start": 86901.29462,
+      "type": "Fetch",
+      "requestBytes": 58,
+      "status": 200,
+      "ttfb": 56.47399999725167,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 3.532000002451241,
+      "responseBytes": 10735
+    },
+    {
+      "path": "/assets/icons/broccoli.webp",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86901.725888,
+      "type": "Image",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 2.6510000025155023,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 1.7819999920902774,
+      "responseBytes": 7608
+    },
+    {
+      "path": "/assets/icons/potato.webp",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86901.725956,
+      "type": "Image",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 2.693000002182089,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.059000005829148,
+      "responseBytes": 4910
+    },
+    {
+      "path": "/assets/icons/frozen-vegetables.webp",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86901.726069,
+      "type": "Image",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 2.6409999991301447,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.5790000072447583,
+      "responseBytes": 6998
+    },
+    {
+      "path": "/assets/icons/onion.webp",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86901.725989,
+      "type": "Image",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 3.049999999348074,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 3.020999996806495,
+      "responseBytes": 5274
+    },
+    {
+      "path": "/assets/icons/carrot.webp",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86901.726007,
+      "type": "Image",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 3.5339999885763973,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 3.564999991795048,
+      "responseBytes": 4986
+    },
+    {
+      "path": "/assets/icons/tea.webp",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86901.726029,
+      "type": "Image",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 3.8860000058775768,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 3.800000005867332,
+      "responseBytes": 4856
+    },
+    {
+      "path": "/assets/icons/rice.webp",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86901.726045,
+      "type": "Image",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 4.281000001356006,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 4.24399999610614,
+      "responseBytes": 5400
+    },
+    {
+      "path": "/assets/icons/ham.webp",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86901.726105,
+      "type": "Image",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 4.97900000482332,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 4.949000009219162,
+      "responseBytes": 5986
+    },
+    {
+      "path": "/assets/icons/mushroom.webp",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86901.726124,
+      "type": "Image",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 5.388000005041249,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 5.333000008249655,
+      "responseBytes": 6308
+    },
+    {
+      "path": "/assets/icons/oats.webp",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86901.726141,
+      "type": "Image",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 5.813999989186414,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 5.7809999998426065,
+      "responseBytes": 5202
+    },
+    {
+      "path": "/rest/v1/rpc/conversation_index",
+      "origin": "http://127.0.0.1:58514",
+      "method": "POST",
+      "start": 86901.729416,
+      "type": "Fetch",
+      "requestBytes": 17,
+      "status": 200,
+      "ttfb": 4.126999992877245,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 4.094000003533438,
+      "responseBytes": 384
+    },
+    {
+      "path": "/assets/icons/milk.webp",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86901.726164,
+      "type": "Image",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 338.96399999503046,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 7.914999994682148,
+      "responseBytes": 4294
+    },
+    {
+      "path": "/assets/icons/pasta.webp",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86901.72609,
+      "type": "Image",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 339.15100000740495,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 8.272999999462627,
+      "responseBytes": 6276
+    },
+    {
+      "path": "/assets/icons/apple.webp",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86901.72618,
+      "type": "Image",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 339.124999998603,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 9.999000001698732,
+      "responseBytes": 5778
+    },
+    {
+      "path": "/assets/icons/flour.webp",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86901.726203,
+      "type": "Image",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 339.15600000182167,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 10.617000007187016,
+      "responseBytes": 5158
+    },
+    {
+      "path": "/assets/icons/sugar.webp",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86901.726227,
+      "type": "Image",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 339.1879999981029,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 11.224999994738027,
+      "responseBytes": 4974
+    },
+    {
+      "path": "/rest/v1/rpc/conversation_page",
+      "origin": "http://127.0.0.1:58514",
+      "method": "POST",
+      "start": 86902.064725,
+      "type": "Fetch",
+      "requestBytes": 64,
+      "status": 200,
+      "ttfb": 2.570999989984557,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.4609999964013696,
+      "responseBytes": 517
+    },
+    {
+      "path": "/rest/v1/rpc/conversation_index",
+      "origin": "http://127.0.0.1:58514",
+      "method": "POST",
+      "start": 86902.987682,
+      "type": "Fetch",
+      "requestBytes": 17,
+      "status": 200,
+      "ttfb": 9.835999997449107,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 9.697999994386919,
+      "responseBytes": 384
+    },
+    {
+      "path": "/rest/v1/rpc/conversation_page",
+      "origin": "http://127.0.0.1:58514",
+      "method": "POST",
+      "start": 86902.99914,
+      "type": "Fetch",
+      "requestBytes": 64,
+      "status": 200,
+      "ttfb": 2.5489999970886856,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.4680000060470775,
+      "responseBytes": 517
+    },
+    {
+      "path": "/rest/v1/households?id=eq.90000000-0000-4000-8000-000000000001&select=id,name",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86906.302432,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 9.374000001116656,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 9.15700000768993,
+      "responseBytes": 334
+    },
+    {
+      "path": "/rest/v1/household_records?household_id=eq.90000000-0000-4000-8000-000000000001&select=bucket,key,value,revision&order=bucket,key&limit=1000&offset=0",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86906.312539,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 3.0279999919002876,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.9429999995045364,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/household_pantry_reviews?household_id=eq.90000000-0000-4000-8000-000000000001&select=product_name,last_confirmed_at,stock_revision",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86906.315916,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 3.1159999925876036,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 3.0429999897023663,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/household_shopping_sessions?household_id=eq.90000000-0000-4000-8000-000000000001&finished_at=is.null&select=*",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86906.316067,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 4.508999991230667,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 4.451999993762001,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/household_shopping_routes?household_id=eq.90000000-0000-4000-8000-000000000001&select=*",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86906.316154,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 6.229000005987473,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 6.158999996841885,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/household_kitchen_preferences?household_id=eq.90000000-0000-4000-8000-000000000001&select=key,value,revision",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86906.316278,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 7.2579999978188425,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 7.204000008641742,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/household_kitchen_events?household_id=eq.90000000-0000-4000-8000-000000000001&select=id,actor_id,created_at,event_type,subject,item_count&order=id.desc&limit=12",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86906.316356,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 8.233000000473112,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 8.184000005712733,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/household_kitchen_events?household_id=eq.90000000-0000-4000-8000-000000000001&event_type=eq.recipe_completed&select=event_type,subject,created_at&order=id.desc&limit=8",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86906.316428,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 9.192999990773387,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 9.132999999565072,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/rpc/conversation_index",
+      "origin": "http://127.0.0.1:58514",
+      "method": "POST",
+      "start": 86913.29519,
+      "type": "Fetch",
+      "requestBytes": 17,
+      "status": 200,
+      "ttfb": 9.341999990283512,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 9.190999990096316,
+      "responseBytes": 384
+    },
+    {
+      "path": "/rest/v1/rpc/conversation_page",
+      "origin": "http://127.0.0.1:58514",
+      "method": "POST",
+      "start": 86913.305397,
+      "type": "Fetch",
+      "requestBytes": 64,
+      "status": 200,
+      "ttfb": 3.9129999931901693,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 3.811000002315268,
+      "responseBytes": 517
+    },
+    {
+      "path": "/rest/v1/rpc/conversation_index",
+      "origin": "http://127.0.0.1:58514",
+      "method": "POST",
+      "start": 86913.310163,
+      "type": "Fetch",
+      "requestBytes": 17,
+      "status": 200,
+      "ttfb": 3.4020000020973384,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 3.3419999963371083,
+      "responseBytes": 384
+    },
+    {
+      "path": "/rest/v1/rpc/conversation_page",
+      "origin": "http://127.0.0.1:58514",
+      "method": "POST",
+      "start": 86913.313977,
+      "type": "Fetch",
+      "requestBytes": 64,
+      "status": 200,
+      "ttfb": 2.58100000792183,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.4960000009741634,
+      "responseBytes": 517
+    },
+    {
+      "path": "/rest/v1/households?id=eq.90000000-0000-4000-8000-000000000001&select=id,name",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86914.301679,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 4.505000004428439,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 4.365000000689179,
+      "responseBytes": 334
+    },
+    {
+      "path": "/rest/v1/household_records?household_id=eq.90000000-0000-4000-8000-000000000001&select=bucket,key,value,revision&order=bucket,key&limit=1000&offset=0",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86914.306894,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 2.5759999989531934,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.5000000023283064,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/household_pantry_reviews?household_id=eq.90000000-0000-4000-8000-000000000001&select=product_name,last_confirmed_at,stock_revision",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86914.309745,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 2.8409999940777197,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.7679999911924824,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/household_shopping_sessions?household_id=eq.90000000-0000-4000-8000-000000000001&finished_at=is.null&select=*",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86914.30986,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 4.302000001189299,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 4.188000006251968,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/household_shopping_routes?household_id=eq.90000000-0000-4000-8000-000000000001&select=*",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86914.309934,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 5.294999995385297,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 5.237999997916631,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/household_kitchen_preferences?household_id=eq.90000000-0000-4000-8000-000000000001&select=key,value,revision",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86914.310049,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 6.727999993017875,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 6.676999997580424,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/household_kitchen_events?household_id=eq.90000000-0000-4000-8000-000000000001&select=id,actor_id,created_at,event_type,subject,item_count&order=id.desc&limit=12",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86914.310122,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 7.743000009213574,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 7.691999999224208,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/household_kitchen_events?household_id=eq.90000000-0000-4000-8000-000000000001&event_type=eq.recipe_completed&select=event_type,subject,created_at&order=id.desc&limit=8",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86914.310183,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 8.534000007784925,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 8.457000003545545,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/household_shopping_sessions?household_id=eq.90000000-0000-4000-8000-000000000001&finished_at=is.null&select=*",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86918.301656,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 7.415000000037253,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 7.2619999991729856,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/household_shopping_routes?household_id=eq.90000000-0000-4000-8000-000000000001&select=*",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86918.302125,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 10.78100000449922,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 10.626999996020459,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/households?id=eq.90000000-0000-4000-8000-000000000001&select=id,name",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86922.302641,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 7.876999996369705,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 7.714999999734573,
+      "responseBytes": 334
+    },
+    {
+      "path": "/rest/v1/household_records?household_id=eq.90000000-0000-4000-8000-000000000001&select=bucket,key,value,revision&order=bucket,key&limit=1000&offset=0",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86922.311558,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 3.5510000016074628,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 3.4630000009201467,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/household_pantry_reviews?household_id=eq.90000000-0000-4000-8000-000000000001&select=product_name,last_confirmed_at,stock_revision",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86922.315519,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 3.0600000027334318,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.9900000081397593,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/household_shopping_sessions?household_id=eq.90000000-0000-4000-8000-000000000001&finished_at=is.null&select=*",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86922.315672,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 4.1520000086165965,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 4.043000008095987,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/household_shopping_routes?household_id=eq.90000000-0000-4000-8000-000000000001&select=*",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86922.315778,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 5.687999990186654,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 5.634999994072132,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/household_kitchen_preferences?household_id=eq.90000000-0000-4000-8000-000000000001&select=key,value,revision",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86922.315927,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 6.886000002850778,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 6.807999990996905,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/household_kitchen_events?household_id=eq.90000000-0000-4000-8000-000000000001&select=id,actor_id,created_at,event_type,subject,item_count&order=id.desc&limit=12",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86922.316009,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 7.935000001452863,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 7.882999998400919,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/household_kitchen_events?household_id=eq.90000000-0000-4000-8000-000000000001&event_type=eq.recipe_completed&select=event_type,subject,created_at&order=id.desc&limit=8",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86922.316082,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 9.116000001085922,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 9.009999994304962,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/rpc/list_household_email_invites",
+      "origin": "http://127.0.0.1:58514",
+      "method": "POST",
+      "start": 86928.286794,
+      "type": "Fetch",
+      "requestBytes": 2,
+      "status": 200,
+      "ttfb": 2.7510000072652474,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.6689999940572307,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/rpc/conversation_index",
+      "origin": "http://127.0.0.1:58514",
+      "method": "POST",
+      "start": 86928.294943,
+      "type": "Fetch",
+      "requestBytes": 17,
+      "status": 200,
+      "ttfb": 3.595999995013699,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 3.543999991961755,
+      "responseBytes": 384
+    },
+    {
+      "path": "/rest/v1/rpc/conversation_page",
+      "origin": "http://127.0.0.1:58514",
+      "method": "POST",
+      "start": 86928.29892,
+      "type": "Fetch",
+      "requestBytes": 64,
+      "status": 200,
+      "ttfb": 2.05199999618344,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.0090000034542754,
+      "responseBytes": 517
+    },
+    {
+      "path": "/rest/v1/rpc/conversation_index",
+      "origin": "http://127.0.0.1:58514",
+      "method": "POST",
+      "start": 86928.301249,
+      "type": "Fetch",
+      "requestBytes": 17,
+      "status": 200,
+      "ttfb": 2.170000007026829,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.1050000068498775,
+      "responseBytes": 384
+    },
+    {
+      "path": "/rest/v1/rpc/conversation_page",
+      "origin": "http://127.0.0.1:58514",
+      "method": "POST",
+      "start": 86928.303736,
+      "type": "Fetch",
+      "requestBytes": 64,
+      "status": 200,
+      "ttfb": 2.3769999970681965,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.3320000036619604,
+      "responseBytes": 517
+    },
+    {
+      "path": "/rest/v1/rpc/read_proactive_suggestions",
+      "origin": "http://127.0.0.1:58514",
+      "method": "POST",
+      "start": 86928.390589,
+      "type": "Fetch",
+      "requestBytes": 46,
+      "status": 200,
+      "ttfb": 3.692999991471879,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 3.6309999995864928,
+      "responseBytes": 206
+    },
+    {
+      "path": "/rest/v1/households?id=eq.90000000-0000-4000-8000-000000000001&select=id,name",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86930.30148,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 1.9900000042980537,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 1.9220000103814527,
+      "responseBytes": 334
+    },
+    {
+      "path": "/rest/v1/household_records?household_id=eq.90000000-0000-4000-8000-000000000001&select=bucket,key,value,revision&order=bucket,key&limit=1000&offset=0",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86930.303775,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 1.6180000093299896,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 1.560000004246831,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/household_pantry_reviews?household_id=eq.90000000-0000-4000-8000-000000000001&select=product_name,last_confirmed_at,stock_revision",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86930.305568,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 2.2730000055162236,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.227999997558072,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/household_shopping_sessions?household_id=eq.90000000-0000-4000-8000-000000000001&finished_at=is.null&select=*",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86930.305644,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 2.949000001535751,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 2.9140000115148723,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/household_shopping_routes?household_id=eq.90000000-0000-4000-8000-000000000001&select=*",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86930.305697,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 3.9609999948879704,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 3.9289999986067414,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/household_kitchen_preferences?household_id=eq.90000000-0000-4000-8000-000000000001&select=key,value,revision",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86930.305775,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 4.944999993313104,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 4.920999999740161,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/household_kitchen_events?household_id=eq.90000000-0000-4000-8000-000000000001&select=id,actor_id,created_at,event_type,subject,item_count&order=id.desc&limit=12",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86930.30582,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 6.013000005623326,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 5.9640000108629465,
+      "responseBytes": 175
+    },
+    {
+      "path": "/rest/v1/household_kitchen_events?household_id=eq.90000000-0000-4000-8000-000000000001&event_type=eq.recipe_completed&select=event_type,subject,created_at&order=id.desc&limit=8",
+      "origin": "http://127.0.0.1:58514",
+      "method": "GET",
+      "start": 86930.305863,
+      "type": "Fetch",
+      "requestBytes": 0,
+      "status": 200,
+      "ttfb": 6.857000000309199,
+      "fromDiskCache": false,
+      "protocol": "http/1.1",
+      "duration": 6.829000005382113,
+      "responseBytes": 175
+    }
+  ],
+  "errors": [
+    {
+      "type": "console",
+      "message": "Failed to load resource: the server responded with a status of 400 (Bad Request)"
+    }
+  ],
+  "blocked": [],
+  "screenshots": [],
+  "journeys": [],
+  "soak": [],
+  "fatal": {
+    "message": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-pantry-details=\"Tojás\"]')\u001b[22m\n",
+    "stack": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-pantry-details=\"Tojás\"]')\u001b[22m\n\n    at runSupplement (/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/design-audit/performance/supplement.mjs:9:75)\n    at async file:///Users/I769428/Documents/ChatGPT/F%C5%91z%C3%A9s/morzsa-performance-audit-20261116T182653Z/design-audit/performance/runner.mjs:63:101"
+  },
+  "fixtureCalls": [
+    {
+      "method": "GET",
+      "path": "/",
+      "start": 1620.241875,
+      "status": 200,
+      "actor": "guest",
+      "duration": 2.141208000000006
+    },
+    {
+      "method": "GET",
+      "path": "/styles.css?v=history-rail1",
+      "start": 1626.714292,
+      "status": 200,
+      "actor": "guest",
+      "duration": 1.0696250000000873
+    },
+    {
+      "method": "GET",
+      "path": "/translations.js?v=1",
+      "start": 1629.549042,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.5684579999999642
+    },
+    {
+      "method": "GET",
+      "path": "/desktop.css?v=vision1",
+      "start": 1630.157792,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.5384160000000975
+    },
+    {
+      "method": "GET",
+      "path": "/i18n.js?v=sidebar-settings1",
+      "start": 1631.333833,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.6341670000001614
+    },
+    {
+      "method": "GET",
+      "path": "/quick-entry.js?v=1",
+      "start": 1632.030125,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.5255420000000868
+    },
+    {
+      "method": "GET",
+      "path": "/workspace.css?v=first-audit-20261116",
+      "start": 1632.612583,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.46029199999998127
+    },
+    {
+      "method": "GET",
+      "path": "/kitchen-model.js?v=pantry-shopping-20261116",
+      "start": 1634.745042,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.519416000000092
+    },
+    {
+      "method": "GET",
+      "path": "/workspace-entry.js?v=vision1",
+      "start": 1635.336625,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.4523750000000746
+    },
+    {
+      "method": "GET",
+      "path": "/surprise-recipe.js?v=1",
+      "start": 1635.880042,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.41129099999989194
+    },
+    {
+      "method": "GET",
+      "path": "/proactive.css?v=proactive1",
+      "start": 1636.32425,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.37933300000008785
+    },
+    {
+      "method": "GET",
+      "path": "/recipe-chat.js?v=1",
+      "start": 1637.583958,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.36466700000005403
+    },
+    {
+      "method": "GET",
+      "path": "/recipe-prompt.js?v=3",
+      "start": 1637.981292,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.34750000000008185
+    },
+    {
+      "method": "GET",
+      "path": "/shopping-model.js?v=shopping-refine1",
+      "start": 1638.354875,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.37637500000005275
+    },
+    {
+      "method": "GET",
+      "path": "/voice-model.js?v=vision1",
+      "start": 1638.766667,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.47499999999990905
+    },
+    {
+      "method": "GET",
+      "path": "/catalog.js?v=morzsa-companion1",
+      "start": 1639.264208,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.3878749999998945
+    },
+    {
+      "method": "GET",
+      "path": "/pantry-review-model.js?v=library-intro5",
+      "start": 1640.128375,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.3084169999999631
+    },
+    {
+      "method": "GET",
+      "path": "/cooking-session.js?v=cooking3",
+      "start": 1640.462417,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.3396250000000691
+    },
+    {
+      "method": "GET",
+      "path": "/recipe-portions.js?v=1",
+      "start": 1640.820208,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.3732919999999922
+    },
+    {
+      "method": "GET",
+      "path": "/recipe-room-model.js?v=cooking3",
+      "start": 1641.222458,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.43162499999994
+    },
+    {
+      "method": "GET",
+      "path": "/quantity-model.js?v=customer-audit-20261116",
+      "start": 1641.702583,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.4717920000000504
+    },
+    {
+      "method": "GET",
+      "path": "/recipes.js?v=shopping-resume1",
+      "start": 1642.201375,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.3400829999998223
+    },
+    {
+      "method": "GET",
+      "path": "/app.js?v=customer-audit-20261116",
+      "start": 1643.111708,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.3353340000001026
+    },
+    {
+      "method": "GET",
+      "path": "/pantry-library.js?v=first-audit-20261116",
+      "start": 1643.470417,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.40554100000008475
+    },
+    {
+      "method": "GET",
+      "path": "/ai-mode.js?v=plus1",
+      "start": 1643.898417,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.2918329999999969
+    },
+    {
+      "method": "GET",
+      "path": "/household-config.js?v=project1",
+      "start": 1644.2175,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.18329199999993762
+    },
+    {
+      "method": "GET",
+      "path": "/persistence-model.js?v=library4",
+      "start": 1644.432458,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.3565840000001117
+    },
+    {
+      "method": "GET",
+      "path": "/household-model.js?v=first-audit-20261116",
+      "start": 1644.809833,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.3577499999998963
+    },
+    {
+      "method": "GET",
+      "path": "/auth-link.js?v=3",
+      "start": 1645.798208,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.31233399999996436
+    },
+    {
+      "method": "GET",
+      "path": "/household-live.js?v=persist1",
+      "start": 1646.13475,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.3367920000000595
+    },
+    {
+      "method": "GET",
+      "path": "/chat-stream.js?v=1",
+      "start": 1646.488833,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.31995899999992616
+    },
+    {
+      "method": "GET",
+      "path": "/household.js?v=first-audit-20261116",
+      "start": 1646.821875,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.3943749999998545
+    },
+    {
+      "method": "GET",
+      "path": "/voice-ui.js?v=first-audit-20261116",
+      "start": 1647.237708,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.31208399999991343
+    },
+    {
+      "method": "GET",
+      "path": "/realtime-model.js?v=voice-state3",
+      "start": 1647.579125,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.43508300000007694
+    },
+    {
+      "method": "GET",
+      "path": "/realtime-voice.js?v=ux-audit-20261116",
+      "start": 1648.170708,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.3156249999999545
+    },
+    {
+      "method": "GET",
+      "path": "/pantry-review-ui.js?v=proactive1",
+      "start": 1648.525542,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.375583000000006
+    },
+    {
+      "method": "GET",
+      "path": "/assistant-ui.js?v=shopping-resume1",
+      "start": 1648.930458,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.3254589999999098
+    },
+    {
+      "method": "GET",
+      "path": "/recipe-crafting.js?v=chat-crafting-20261116",
+      "start": 1649.278875,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.3451669999999467
+    },
+    {
+      "method": "GET",
+      "path": "/recipe-shopping.js?v=customer-audit-20261116",
+      "start": 1649.64725,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.38837499999999636
+    },
+    {
+      "method": "GET",
+      "path": "/weekly-plan-ui.js?v=chat-crafting-20261116",
+      "start": 1650.815458,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.34816699999987577
+    },
+    {
+      "method": "GET",
+      "path": "/kitchen-measures.js?v=1",
+      "start": 1651.184125,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.3095829999999751
+    },
+    {
+      "method": "GET",
+      "path": "/recipe-export.js?v=portions1",
+      "start": 1651.509917,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.2867079999998623
+    },
+    {
+      "method": "GET",
+      "path": "/recipe-library.js?v=ux-audit-20261116",
+      "start": 1651.814458,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.3789170000000013
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/households?id=eq.90000000-0000-4000-8000-000000000001&select=id,name",
+      "start": 1652.2785,
+      "status": 200,
+      "actor": "a",
+      "duration": 2.3990830000000187
+    },
+    {
+      "method": "GET",
+      "path": "/weekly-plan-model.js?v=ux-audit-20261116",
+      "start": 1654.773208,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.41554199999995944
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/list_household_email_invites",
+      "start": 1655.799875,
+      "status": 200,
+      "actor": "a",
+      "duration": 0.6035830000000715
+    },
+    {
+      "method": "GET",
+      "path": "/cooking-ui.js?v=ux-audit-20261116",
+      "start": 1656.4195,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.3610000000001037
+    },
+    {
+      "method": "GET",
+      "path": "/recipe-room-ui.js?v=customer-audit-20261116",
+      "start": 1656.807583,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.3850840000000062
+    },
+    {
+      "method": "GET",
+      "path": "/recipe-ingredients-panel.js?v=library4",
+      "start": 1657.211,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.375583000000006
+    },
+    {
+      "method": "GET",
+      "path": "/recipe-photos.js?v=groq-images1",
+      "start": 1657.608875,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.33254200000010314
+    },
+    {
+      "method": "GET",
+      "path": "/chat-photo.js?v=1",
+      "start": 1658.0025,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.2983329999999569
+    },
+    {
+      "method": "GET",
+      "path": "/persistence.js?v=persist1",
+      "start": 1658.666167,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.30066599999986465
+    },
+    {
+      "method": "GET",
+      "path": "/companion-model.js?v=customer-audit-20261116",
+      "start": 1658.986458,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.5391669999999067
+    },
+    {
+      "method": "GET",
+      "path": "/panel-gestures.js?v=cooking3",
+      "start": 1659.542292,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.3681249999999636
+    },
+    {
+      "method": "GET",
+      "path": "/chat-format.js?v=1",
+      "start": 1659.956875,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.28333299999985684
+    },
+    {
+      "method": "GET",
+      "path": "/assets/ui/layout-grid.svg",
+      "start": 1660.254542,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.3274580000002061
+    },
+    {
+      "method": "GET",
+      "path": "/assets/ui/shopping-cart.svg",
+      "start": 1660.657167,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.30720799999994597
+    },
+    {
+      "method": "GET",
+      "path": "/assets/brands/morzsa.svg",
+      "start": 1661.569125,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.2750829999999951
+    },
+    {
+      "method": "GET",
+      "path": "/ingredient-mentions.js?v=1",
+      "start": 1661.858583,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.4199590000000626
+    },
+    {
+      "method": "GET",
+      "path": "/recipe-images.js?v=ux-audit-20261116",
+      "start": 1662.317125,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.29204200000003766
+    },
+    {
+      "method": "GET",
+      "path": "/shopping-mode-model.js?v=shopping-refine1",
+      "start": 1662.642833,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.5422089999999571
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_records?household_id=eq.90000000-0000-4000-8000-000000000001&select=bucket,key,value,revision&order=bucket,key&limit=1000&offset=0",
+      "start": 1663.208417,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.3531659999998737
+    },
+    {
+      "method": "GET",
+      "path": "/shopping-mode-ui.js?v=proactive1",
+      "start": 1664.653958,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.6395839999997861
+    },
+    {
+      "method": "GET",
+      "path": "/session-model.js?v=portions1",
+      "start": 1665.892375,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.4519999999999982
+    },
+    {
+      "method": "GET",
+      "path": "/companion-ui.js?v=proactive1",
+      "start": 1666.379125,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.4149170000000595
+    },
+    {
+      "method": "GET",
+      "path": "/onboarding-model.js?v=pantry-start1",
+      "start": 1666.834917,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.5227910000000975
+    },
+    {
+      "method": "GET",
+      "path": "/onboarding.js?v=customer-audit-20261116",
+      "start": 1667.390125,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.5547080000001188
+    },
+    {
+      "method": "GET",
+      "path": "/workspace-ui.js?v=proactive1",
+      "start": 1667.964208,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.45374999999989996
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_pantry_reviews?household_id=eq.90000000-0000-4000-8000-000000000001&select=product_name,last_confirmed_at,stock_revision",
+      "start": 1668.508292,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.1762080000000878
+    },
+    {
+      "method": "GET",
+      "path": "/kitchen-ui.js?v=customer-audit-20261116",
+      "start": 1671.222833,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.49099999999998545
+    },
+    {
+      "method": "GET",
+      "path": "/proactive-model.js?v=proactive1",
+      "start": 1671.746333,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.35562499999991815
+    },
+    {
+      "method": "GET",
+      "path": "/proactive-ui.js?v=proactive1",
+      "start": 1672.121833,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.29712500000005093
+    },
+    {
+      "method": "GET",
+      "path": "/assets/ui/house.svg",
+      "start": 1672.436,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.2480830000001788
+    },
+    {
+      "method": "GET",
+      "path": "/assets/ui/chef-hat.svg",
+      "start": 1672.696625,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.24125000000003638
+    },
+    {
+      "method": "GET",
+      "path": "/assets/ui/menu.svg",
+      "start": 1673.754667,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.2838330000001861
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "start": 1674.078333,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.7545000000000073
+    },
+    {
+      "method": "GET",
+      "path": "/assets/ui/plus.svg",
+      "start": 1681.481958,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.5193749999998545
+    },
+    {
+      "method": "GET",
+      "path": "/assets/illustrations/morzsa-mascot.webp",
+      "start": 1682.022083,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.30195899999989706
+    },
+    {
+      "method": "GET",
+      "path": "/assets/ui/sparkles.svg",
+      "start": 1682.481792,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.25854099999992286
+    },
+    {
+      "method": "GET",
+      "path": "/assets/ui/heart.svg",
+      "start": 1682.766167,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.3139160000000629
+    },
+    {
+      "method": "GET",
+      "path": "/assets/ui/arrow-up.svg",
+      "start": 1683.095833,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.2710419999998521
+    },
+    {
+      "method": "GET",
+      "path": "/assets/ui/sliders-horizontal.svg",
+      "start": 1685.395208,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.3999590000000808
+    },
+    {
+      "method": "GET",
+      "path": "/assets/ui/square-pen.svg",
+      "start": 1685.82,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.25070800000003146
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_preferences?household_id=eq.90000000-0000-4000-8000-000000000001&select=key,value,revision",
+      "start": 1686.10875,
+      "status": 200,
+      "actor": "a",
+      "duration": 0.9952919999998358
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events?household_id=eq.90000000-0000-4000-8000-000000000001&select=id,actor_id,created_at,event_type,subject,item_count&order=id.desc&limit=12",
+      "start": 1687.12775,
+      "status": 200,
+      "actor": "a",
+      "duration": 0.6444169999999758
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events?household_id=eq.90000000-0000-4000-8000-000000000001&event_type=eq.recipe_completed&select=event_type,subject,created_at&order=id.desc&limit=8",
+      "start": 1687.7855,
+      "status": 200,
+      "actor": "a",
+      "duration": 0.6092920000000959
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/read_proactive_suggestions",
+      "start": 1794.634167,
+      "status": 200,
+      "actor": "a",
+      "duration": 6.666000000000167
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "start": 1853.855333,
+      "status": 400,
+      "actor": "a",
+      "error": {
+        "message": "Conversation access denied"
+      },
+      "duration": 1.9494589999999334
+    },
+    {
+      "method": "GET",
+      "path": "/assets/brands/morzsa.svg",
+      "start": 2019.444917,
+      "status": 304,
+      "actor": "guest",
+      "duration": 0.22770799999989322
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "start": 2127.54875,
+      "status": 200,
+      "actor": "a",
+      "duration": 2.9659169999999904
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "start": 2131.620083,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.8772090000002208
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "start": 2238.978375,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.7593749999996362
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/households?id=eq.90000000-0000-4000-8000-000000000001&select=id,name",
+      "start": 2240.833167,
+      "status": 200,
+      "actor": "a",
+      "duration": 0.866041000000223
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "start": 2452.332042,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.5577079999998205
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_records?household_id=eq.90000000-0000-4000-8000-000000000001&select=bucket,key,value,revision&order=bucket,key&limit=1000&offset=0",
+      "start": 2453.970292,
+      "status": 200,
+      "actor": "a",
+      "duration": 0.6217500000002474
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "start": 2561.910833,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.5054170000003069
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_pantry_reviews?household_id=eq.90000000-0000-4000-8000-000000000001&select=product_name,last_confirmed_at,stock_revision",
+      "start": 2563.507625,
+      "status": 200,
+      "actor": "a",
+      "duration": 0.9622079999999187
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_sessions?household_id=eq.90000000-0000-4000-8000-000000000001&finished_at=is.null&select=*",
+      "start": 2564.49475,
+      "status": 200,
+      "actor": "a",
+      "duration": 0.8338750000002619
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_routes?household_id=eq.90000000-0000-4000-8000-000000000001&select=*",
+      "start": 2565.615208,
+      "status": 200,
+      "actor": "a",
+      "duration": 0.602292000000034
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_preferences?household_id=eq.90000000-0000-4000-8000-000000000001&select=key,value,revision",
+      "start": 2566.232833,
+      "status": 200,
+      "actor": "a",
+      "duration": 0.5275419999998121
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events?household_id=eq.90000000-0000-4000-8000-000000000001&select=id,actor_id,created_at,event_type,subject,item_count&order=id.desc&limit=12",
+      "start": 2566.778292,
+      "status": 200,
+      "actor": "a",
+      "duration": 0.5013749999998254
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events?household_id=eq.90000000-0000-4000-8000-000000000001&event_type=eq.recipe_completed&select=event_type,subject,created_at&order=id.desc&limit=8",
+      "start": 2567.290833,
+      "status": 200,
+      "actor": "a",
+      "duration": 0.5141669999998157
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_sessions?household_id=eq.90000000-0000-4000-8000-000000000001&finished_at=is.null&select=*",
+      "start": 2568.076458,
+      "status": 200,
+      "actor": "a",
+      "duration": 0.5292500000000473
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_routes?household_id=eq.90000000-0000-4000-8000-000000000001&select=*",
+      "start": 2569.656833,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.0682090000000244
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "start": 3236.897875,
+      "status": 200,
+      "actor": "a",
+      "duration": 2.3524579999998423
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "start": 3251.440583,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.517334000000119
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "start": 3361.420333,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.387083999999959
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/begin_conversation_turn",
+      "start": 3383.641042,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.6804159999996955
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "start": 3386.137042,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.0313330000003589
+    },
+    {
+      "method": "POST",
+      "path": "/functions/v1/voice-command",
+      "start": 3445.867625,
+      "status": 200,
+      "actor": "a",
+      "duration": 202.26491699999997
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "start": 3640.466125,
+      "status": 200,
+      "actor": "a",
+      "duration": 2.3427919999999176
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/end_conversation_turn",
+      "start": 3702.917458,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.7587499999999636
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "start": 3704.8885,
+      "status": 200,
+      "actor": "a",
+      "duration": 0.9740000000001601
+    },
+    {
+      "method": "GET",
+      "path": "/assets/brands/morzsa.svg",
+      "start": 3705.885583,
+      "status": 304,
+      "actor": "guest",
+      "duration": 0.15837499999997817
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "start": 3706.775708,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.4987919999998667
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "start": 3763.179375,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.93100000000004
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "start": 3902.265917,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.498124999999618
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "start": 3959.483125,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.5149999999998727
+    },
+    {
+      "method": "GET",
+      "path": "/assets/icons/egg.webp",
+      "start": 4159.595875,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.7877079999998386
+    },
+    {
+      "method": "GET",
+      "path": "/assets/ui/mic.svg",
+      "start": 4160.421667,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.597541000000092
+    },
+    {
+      "method": "GET",
+      "path": "/assets/ui/calendar-days.svg",
+      "start": 4161.121958,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.3674590000000535
+    },
+    {
+      "method": "GET",
+      "path": "/assets/ui/arrow-right.svg",
+      "start": 4161.530792,
+      "status": 200,
+      "actor": "guest",
+      "duration": 1.173000000000684
+    },
+    {
+      "method": "GET",
+      "path": "/assets/ui/search.svg",
+      "start": 4324.965208,
+      "status": 200,
+      "actor": "guest",
+      "duration": 1.408542000000125
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/recipe_library_entries?select=recipe_id,favourite,status,recipe_documents(id,content,tags,published)&order=updated_at.desc",
+      "start": 4502.422667,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.5322500000002037
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/recipe_feed",
+      "start": 4661.544292,
+      "status": 200,
+      "actor": "guest",
+      "duration": 2.741416000000754
+    },
+    {
+      "method": "GET",
+      "path": "/assets/icons/broccoli.webp",
+      "start": 5092.898167,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.8204159999995682
+    },
+    {
+      "method": "GET",
+      "path": "/assets/icons/potato.webp",
+      "start": 5093.765958,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.41449999999986176
+    },
+    {
+      "method": "GET",
+      "path": "/assets/icons/frozen-vegetables.webp",
+      "start": 5094.343708,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.4251669999994192
+    },
+    {
+      "method": "GET",
+      "path": "/assets/icons/onion.webp",
+      "start": 5094.795875,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.4092080000000351
+    },
+    {
+      "method": "GET",
+      "path": "/assets/icons/carrot.webp",
+      "start": 5095.234083,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.3517089999995733
+    },
+    {
+      "method": "GET",
+      "path": "/assets/icons/tea.webp",
+      "start": 5095.619167,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.4037079999998241
+    },
+    {
+      "method": "GET",
+      "path": "/assets/icons/rice.webp",
+      "start": 5096.053708,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.4457089999996242
+    },
+    {
+      "method": "GET",
+      "path": "/assets/icons/ham.webp",
+      "start": 5096.896125,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.30258299999968585
+    },
+    {
+      "method": "GET",
+      "path": "/assets/icons/mushroom.webp",
+      "start": 5097.22225,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.4078330000002097
+    },
+    {
+      "method": "GET",
+      "path": "/assets/icons/oats.webp",
+      "start": 5097.66225,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.42004199999973935
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "start": 5098.117,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.5375420000000304
+    },
+    {
+      "method": "GET",
+      "path": "/assets/icons/milk.webp",
+      "start": 5099.678958,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.4963339999994787
+    },
+    {
+      "method": "GET",
+      "path": "/assets/icons/pasta.webp",
+      "start": 5100.197333,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.3491249999997308
+    },
+    {
+      "method": "GET",
+      "path": "/assets/icons/apple.webp",
+      "start": 5101.204875,
+      "status": 200,
+      "actor": "guest",
+      "duration": 1.0552499999994325
+    },
+    {
+      "method": "GET",
+      "path": "/assets/icons/flour.webp",
+      "start": 5102.291833,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.626749999999447
+    },
+    {
+      "method": "GET",
+      "path": "/assets/icons/sugar.webp",
+      "start": 5102.942708,
+      "status": 200,
+      "actor": "guest",
+      "duration": 0.6384170000001177
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "start": 5431.663875,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.5740420000001905
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "start": 6356.980375,
+      "status": 200,
+      "actor": "a",
+      "duration": 6.188791999999921
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "start": 6366.152375,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.5428750000000946
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/households?id=eq.90000000-0000-4000-8000-000000000001&select=id,name",
+      "start": 9671.694708,
+      "status": 200,
+      "actor": "a",
+      "duration": 5.957541999998284
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_records?household_id=eq.90000000-0000-4000-8000-000000000001&select=bucket,key,value,revision&order=bucket,key&limit=1000&offset=0",
+      "start": 9679.645833,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.939209000000119
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_pantry_reviews?household_id=eq.90000000-0000-4000-8000-000000000001&select=product_name,last_confirmed_at,stock_revision",
+      "start": 9682.997542,
+      "status": 200,
+      "actor": "a",
+      "duration": 2.010208000001512
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_sessions?household_id=eq.90000000-0000-4000-8000-000000000001&finished_at=is.null&select=*",
+      "start": 9685.063917,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.5458330000001297
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_routes?household_id=eq.90000000-0000-4000-8000-000000000001&select=*",
+      "start": 9686.760042,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.6631250000009459
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_preferences?household_id=eq.90000000-0000-4000-8000-000000000001&select=key,value,revision",
+      "start": 9688.501458,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.0848339999993186
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events?household_id=eq.90000000-0000-4000-8000-000000000001&select=id,actor_id,created_at,event_type,subject,item_count&order=id.desc&limit=12",
+      "start": 9689.63025,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.0079580000001442
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events?household_id=eq.90000000-0000-4000-8000-000000000001&event_type=eq.recipe_completed&select=event_type,subject,created_at&order=id.desc&limit=8",
+      "start": 9690.673125,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.0583750000005239
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "start": 16664.36225,
+      "status": 200,
+      "actor": "a",
+      "duration": 5.823083000002953
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "start": 16672.429042,
+      "status": 200,
+      "actor": "a",
+      "duration": 2.683000000000902
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "start": 16677.119375,
+      "status": 200,
+      "actor": "a",
+      "duration": 2.4177080000008573
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "start": 16680.810792,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.732958000000508
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/households?id=eq.90000000-0000-4000-8000-000000000001&select=id,name",
+      "start": 17669.248,
+      "status": 200,
+      "actor": "a",
+      "duration": 2.6094169999996666
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_records?household_id=eq.90000000-0000-4000-8000-000000000001&select=bucket,key,value,revision&order=bucket,key&limit=1000&offset=0",
+      "start": 17673.961917,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.4712079999990237
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_pantry_reviews?household_id=eq.90000000-0000-4000-8000-000000000001&select=product_name,last_confirmed_at,stock_revision",
+      "start": 17677.145083,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.3279170000023441
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_sessions?household_id=eq.90000000-0000-4000-8000-000000000001&finished_at=is.null&select=*",
+      "start": 17678.861708,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.3282919999983278
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_routes?household_id=eq.90000000-0000-4000-8000-000000000001&select=*",
+      "start": 17680.384042,
+      "status": 200,
+      "actor": "a",
+      "duration": 0.9458749999976135
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_preferences?household_id=eq.90000000-0000-4000-8000-000000000001&select=key,value,revision",
+      "start": 17681.667708,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.1998749999984284
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events?household_id=eq.90000000-0000-4000-8000-000000000001&select=id,actor_id,created_at,event_type,subject,item_count&order=id.desc&limit=12",
+      "start": 17683.06875,
+      "status": 200,
+      "actor": "a",
+      "duration": 0.8531670000011218
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events?household_id=eq.90000000-0000-4000-8000-000000000001&event_type=eq.recipe_completed&select=event_type,subject,created_at&order=id.desc&limit=8",
+      "start": 17684.026125,
+      "status": 200,
+      "actor": "a",
+      "duration": 0.7435000000004948
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_sessions?household_id=eq.90000000-0000-4000-8000-000000000001&finished_at=is.null&select=*",
+      "start": 21670.742542,
+      "status": 200,
+      "actor": "a",
+      "duration": 4.0190829999992275
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_routes?household_id=eq.90000000-0000-4000-8000-000000000001&select=*",
+      "start": 21674.861333,
+      "status": 200,
+      "actor": "a",
+      "duration": 3.7750840000007884
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/households?id=eq.90000000-0000-4000-8000-000000000001&select=id,name",
+      "start": 25671.320417,
+      "status": 200,
+      "actor": "a",
+      "duration": 4.651416000000609
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_records?household_id=eq.90000000-0000-4000-8000-000000000001&select=bucket,key,value,revision&order=bucket,key&limit=1000&offset=0",
+      "start": 25678.780167,
+      "status": 200,
+      "actor": "a",
+      "duration": 2.1699999999982538
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_pantry_reviews?household_id=eq.90000000-0000-4000-8000-000000000001&select=product_name,last_confirmed_at,stock_revision",
+      "start": 25682.475667,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.7971660000002885
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_sessions?household_id=eq.90000000-0000-4000-8000-000000000001&finished_at=is.null&select=*",
+      "start": 25684.419292,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.3240829999995185
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_routes?household_id=eq.90000000-0000-4000-8000-000000000001&select=*",
+      "start": 25686.376833,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.1042500000003201
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_preferences?household_id=eq.90000000-0000-4000-8000-000000000001&select=key,value,revision",
+      "start": 25687.779458,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.0303339999991294
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events?household_id=eq.90000000-0000-4000-8000-000000000001&select=id,actor_id,created_at,event_type,subject,item_count&order=id.desc&limit=12",
+      "start": 25688.950125,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.0511250000017753
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events?household_id=eq.90000000-0000-4000-8000-000000000001&event_type=eq.recipe_completed&select=event_type,subject,created_at&order=id.desc&limit=8",
+      "start": 25690.125083,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.0351250000021537
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/list_household_email_invites",
+      "start": 31654.084625,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.4410420000021986
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "start": 31662.021292,
+      "status": 200,
+      "actor": "a",
+      "duration": 2.525707999997394
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "start": 31665.619667,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.482958000000508
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "start": 31667.939083,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.5255839999990712
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "start": 31670.492667,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.662958000000799
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v1/rpc/read_proactive_suggestions",
+      "start": 31757.566417,
+      "status": 200,
+      "actor": "a",
+      "duration": 2.6885410000031698
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/households?id=eq.90000000-0000-4000-8000-000000000001&select=id,name",
+      "start": 33668.37275,
+      "status": 200,
+      "actor": "a",
+      "duration": 1.083082999997714
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_records?household_id=eq.90000000-0000-4000-8000-000000000001&select=bucket,key,value,revision&order=bucket,key&limit=1000&offset=0",
+      "start": 33670.427625,
+      "status": 200,
+      "actor": "a",
+      "duration": 0.9833750000034343
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_pantry_reviews?household_id=eq.90000000-0000-4000-8000-000000000001&select=product_name,last_confirmed_at,stock_revision",
+      "start": 33672.654667,
+      "status": 200,
+      "actor": "a",
+      "duration": 0.8222909999967669
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_sessions?household_id=eq.90000000-0000-4000-8000-000000000001&finished_at=is.null&select=*",
+      "start": 33674.106292,
+      "status": 200,
+      "actor": "a",
+      "duration": 0.5942910000012489
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_routes?household_id=eq.90000000-0000-4000-8000-000000000001&select=*",
+      "start": 33675.033083,
+      "status": 200,
+      "actor": "a",
+      "duration": 0.7397500000006403
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_preferences?household_id=eq.90000000-0000-4000-8000-000000000001&select=key,value,revision",
+      "start": 33676.023292,
+      "status": 200,
+      "actor": "a",
+      "duration": 0.764208000000508
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events?household_id=eq.90000000-0000-4000-8000-000000000001&select=id,actor_id,created_at,event_type,subject,item_count&order=id.desc&limit=12",
+      "start": 33677.07,
+      "status": 200,
+      "actor": "a",
+      "duration": 0.8369170000005397
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events?household_id=eq.90000000-0000-4000-8000-000000000001&event_type=eq.recipe_completed&select=event_type,subject,created_at&order=id.desc&limit=8",
+      "start": 33678.05,
+      "status": 200,
+      "actor": "a",
+      "duration": 0.8082499999945867
+    }
+  ],
+  "sqlTimings": [
+    {
+      "sql": "\n      SELECT b.oid, b.typarray\n      FROM pg_catalog.pg_type a\n      LEFT JOIN pg_catalog.pg_type b ON b.oid = a.typelem\n      WHERE a.typcategory = 'A'\n      GROUP BY b.oid, b.typarray\n      ORDER BY b.oid\n    ",
+      "duration": 2.839917000000014
+    },
+    {
+      "sql": "insert into auth.users values($1)",
+      "duration": 1.063083000000006
+    },
+    {
+      "sql": "insert into auth.users values($1)",
+      "duration": 0.21349999999995362
+    },
+    {
+      "sql": "insert into auth.users values($1)",
+      "duration": 0.1672919999999749
+    },
+    {
+      "sql": "insert into public.households values($1,'Audit kitchen',$2,now())",
+      "duration": 0.8953749999999445
+    },
+    {
+      "sql": "insert into public.household_members values($1,$2)",
+      "duration": 0.31366700000000947
+    },
+    {
+      "sql": "insert into public.household_members values($1,$2)",
+      "duration": 0.2101670000000695
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.604665999999952
+    },
+    {
+      "sql": "select * from public.households",
+      "duration": 1.2003330000000005
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.20929200000000492
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.27670800000009876
+    },
+    {
+      "sql": "select * from public.household_records",
+      "duration": 0.5218330000000151
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.3029999999998836
+    },
+    {
+      "sql": "select * from public.household_pantry_reviews",
+      "duration": 0.3322080000000369
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.2299160000000029
+    },
+    {
+      "sql": "select public.conversation_index(page_offset := $1) data",
+      "duration": 1.1075000000000728
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.264458999999988
+    },
+    {
+      "sql": "select * from public.household_kitchen_preferences",
+      "duration": 0.32074999999986176
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.1670419999998103
+    },
+    {
+      "sql": "select * from public.household_kitchen_events",
+      "duration": 0.24383299999999508
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.16045800000006238
+    },
+    {
+      "sql": "select * from public.household_kitchen_events",
+      "duration": 0.20087499999999636
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.38733400000000984
+    },
+    {
+      "sql": "select public.read_proactive_suggestions(hid := $1) data",
+      "duration": 5.844875000000002
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.30637499999988904
+    },
+    {
+      "sql": "select public.conversation_page(cid := $1,before_seq := $2) data",
+      "duration": 1.0640829999999823
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.355750000000171
+    },
+    {
+      "sql": "select public.sync_conversation(cid := $1,meta := $2,expected := $3,items := $4,recipe_ids := $5) data",
+      "duration": 2.077957999999853
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.20020800000020245
+    },
+    {
+      "sql": "select public.conversation_index(page_offset := $1) data",
+      "duration": 1.3269159999999829
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.3739999999997963
+    },
+    {
+      "sql": "select public.conversation_page(cid := $1,before_seq := $2) data",
+      "duration": 0.8438339999997879
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.19383400000015172
+    },
+    {
+      "sql": "select * from public.households",
+      "duration": 0.308875000000171
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.27845799999977316
+    },
+    {
+      "sql": "select public.conversation_index(page_offset := $1) data",
+      "duration": 0.7701660000002448
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.17033300000002782
+    },
+    {
+      "sql": "select * from public.household_records",
+      "duration": 0.18095799999991868
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.33537499999965803
+    },
+    {
+      "sql": "select public.conversation_page(cid := $1,before_seq := $2) data",
+      "duration": 0.6166670000002341
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.34779100000014296
+    },
+    {
+      "sql": "select * from public.household_pantry_reviews",
+      "duration": 0.20020800000020245
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.2019999999997708
+    },
+    {
+      "sql": "select * from public.household_shopping_sessions",
+      "duration": 0.3036250000000109
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.16412499999978536
+    },
+    {
+      "sql": "select * from public.household_shopping_routes",
+      "duration": 0.18441699999993943
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.13995900000008987
+    },
+    {
+      "sql": "select * from public.household_kitchen_preferences",
+      "duration": 0.15504199999986668
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.14520900000024994
+    },
+    {
+      "sql": "select * from public.household_kitchen_events",
+      "duration": 0.15554199999996854
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.13062500000023647
+    },
+    {
+      "sql": "select * from public.household_kitchen_events",
+      "duration": 0.15716699999984485
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.15287500000022192
+    },
+    {
+      "sql": "select * from public.household_shopping_sessions",
+      "duration": 0.1516670000000886
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.27883299999984956
+    },
+    {
+      "sql": "select * from public.household_shopping_routes",
+      "duration": 0.275333000000046
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.5099170000003141
+    },
+    {
+      "sql": "select public.sync_conversation(cid := $1,meta := $2,expected := $3,items := $4,recipe_ids := $5) data",
+      "duration": 1.0135000000000218
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.2576249999997344
+    },
+    {
+      "sql": "select public.conversation_index(page_offset := $1) data",
+      "duration": 0.8484169999996993
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.3184590000000753
+    },
+    {
+      "sql": "select public.conversation_page(cid := $1,before_seq := $2) data",
+      "duration": 0.561500000000251
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.37066600000025574
+    },
+    {
+      "sql": "select public.begin_conversation_turn(cid := $1,tid := $2) data",
+      "duration": 0.8198339999999007
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.21174999999993815
+    },
+    {
+      "sql": "select public.conversation_page(cid := $1,before_seq := $2) data",
+      "duration": 0.46325000000024374
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.2562910000001466
+    },
+    {
+      "sql": "select public.sync_conversation(cid := $1,meta := $2,expected := $3,items := $4,recipe_ids := $5) data",
+      "duration": 1.6255420000002232
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.34383299999990413
+    },
+    {
+      "sql": "select public.end_conversation_turn(cid := $1,tid := $2) data",
+      "duration": 0.8390410000001793
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.14550000000008367
+    },
+    {
+      "sql": "select public.sync_conversation(cid := $1,meta := $2,expected := $3,items := $4,recipe_ids := $5) data",
+      "duration": 0.5398329999998168
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.2533749999997781
+    },
+    {
+      "sql": "select public.conversation_index(page_offset := $1) data",
+      "duration": 0.8100829999998496
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.4682089999996606
+    },
+    {
+      "sql": "select public.conversation_page(cid := $1,before_seq := $2) data",
+      "duration": 0.8550000000000182
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.2595000000001164
+    },
+    {
+      "sql": "select public.conversation_index(page_offset := $1) data",
+      "duration": 0.7705829999999878
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.32283400000005713
+    },
+    {
+      "sql": "select public.conversation_page(cid := $1,before_seq := $2) data",
+      "duration": 0.6869159999996555
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.3073339999991731
+    },
+    {
+      "sql": "select l.*,jsonb_build_object('id',r.id,'content',r.content,'tags',r.tags,'published',r.published) recipe_documents from public.recipe_library_entries l join public.recipe_documents r on r.id=l.recipe_id order by l.updated_at desc",
+      "duration": 0.6957920000004378
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.5859580000005735
+    },
+    {
+      "sql": "select public.recipe_feed(page_offset := $1,page_size := $2,search_text := $3,tag := $4) data",
+      "duration": 1.5239999999994325
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.2852499999999054
+    },
+    {
+      "sql": "select public.conversation_index(page_offset := $1) data",
+      "duration": 0.8024579999992056
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.29541599999993196
+    },
+    {
+      "sql": "select public.conversation_page(cid := $1,before_seq := $2) data",
+      "duration": 0.6255840000003445
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.8947500000003856
+    },
+    {
+      "sql": "select public.conversation_index(page_offset := $1) data",
+      "duration": 3.2356659999995827
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.31758300000001327
+    },
+    {
+      "sql": "select public.conversation_page(cid := $1,before_seq := $2) data",
+      "duration": 0.6803749999999127
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 1.9177500000005239
+    },
+    {
+      "sql": "select * from public.households",
+      "duration": 1.656542000000627
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.5067089999993186
+    },
+    {
+      "sql": "select * from public.household_records",
+      "duration": 0.4983750000010332
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.6506669999998849
+    },
+    {
+      "sql": "select * from public.household_pantry_reviews",
+      "duration": 0.5362089999998716
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.3984999999993306
+    },
+    {
+      "sql": "select * from public.household_shopping_sessions",
+      "duration": 0.36883299999863084
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.5041249999994761
+    },
+    {
+      "sql": "select * from public.household_shopping_routes",
+      "duration": 0.3781250000010914
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.2860420000015438
+    },
+    {
+      "sql": "select * from public.household_kitchen_preferences",
+      "duration": 0.32462500000110595
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.2695000000003347
+    },
+    {
+      "sql": "select * from public.household_kitchen_events",
+      "duration": 0.3215829999990092
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.26912499999889405
+    },
+    {
+      "sql": "select * from public.household_kitchen_events",
+      "duration": 0.3377909999999247
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.7526670000006561
+    },
+    {
+      "sql": "select public.conversation_index(page_offset := $1) data",
+      "duration": 3.0091250000004948
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.5281250000007276
+    },
+    {
+      "sql": "select public.conversation_page(cid := $1,before_seq := $2) data",
+      "duration": 1.228624999999738
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.4297499999993306
+    },
+    {
+      "sql": "select public.conversation_index(page_offset := $1) data",
+      "duration": 1.2944170000009763
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.36508300000059535
+    },
+    {
+      "sql": "select public.conversation_page(cid := $1,before_seq := $2) data",
+      "duration": 0.7915830000019923
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.6932919999999285
+    },
+    {
+      "sql": "select * from public.households",
+      "duration": 0.8261669999992591
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.4276669999999285
+    },
+    {
+      "sql": "select * from public.household_records",
+      "duration": 0.3574159999989206
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.38624999999956344
+    },
+    {
+      "sql": "select * from public.household_pantry_reviews",
+      "duration": 0.32704200000080164
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.3231659999983094
+    },
+    {
+      "sql": "select * from public.household_shopping_sessions",
+      "duration": 0.5022500000013679
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.2861659999980475
+    },
+    {
+      "sql": "select * from public.household_shopping_routes",
+      "duration": 0.28133299999899464
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.33633300000292365
+    },
+    {
+      "sql": "select * from public.household_kitchen_preferences",
+      "duration": 0.326375000000553
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.22224999999889405
+    },
+    {
+      "sql": "select * from public.household_kitchen_events",
+      "duration": 0.27658299999893643
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.20066599999699974
+    },
+    {
+      "sql": "select * from public.household_kitchen_events",
+      "duration": 0.22237500000119326
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 1.0979999999981374
+    },
+    {
+      "sql": "select * from public.household_shopping_sessions",
+      "duration": 0.7550000000010186
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 1.4563339999986056
+    },
+    {
+      "sql": "select * from public.household_shopping_routes",
+      "duration": 0.7914170000003651
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 1.3696249999993597
+    },
+    {
+      "sql": "select * from public.households",
+      "duration": 1.6048750000009022
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.6560419999987062
+    },
+    {
+      "sql": "select * from public.household_records",
+      "duration": 0.48870800000076997
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.5059169999985897
+    },
+    {
+      "sql": "select * from public.household_pantry_reviews",
+      "duration": 0.4373340000020107
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.35187500000029104
+    },
+    {
+      "sql": "select * from public.household_shopping_sessions",
+      "duration": 0.38654200000019046
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.30258299999695737
+    },
+    {
+      "sql": "select * from public.household_shopping_routes",
+      "duration": 0.3055420000018785
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.27204100000017206
+    },
+    {
+      "sql": "select * from public.household_kitchen_preferences",
+      "duration": 0.30770900000061374
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.29133400000137044
+    },
+    {
+      "sql": "select * from public.household_kitchen_events",
+      "duration": 0.3207079999992857
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.29508399999758694
+    },
+    {
+      "sql": "select * from public.household_kitchen_events",
+      "duration": 0.2937920000003942
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.5344999999979336
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.4390419999981532
+    },
+    {
+      "sql": "select public.conversation_index(page_offset := $1) data",
+      "duration": 1.4341249999997672
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.3253329999970447
+    },
+    {
+      "sql": "select public.conversation_page(cid := $1,before_seq := $2) data",
+      "duration": 0.6563749999986612
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.2392500000023574
+    },
+    {
+      "sql": "select public.conversation_index(page_offset := $1) data",
+      "duration": 0.9049999999988358
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.3459999999977299
+    },
+    {
+      "sql": "select public.conversation_page(cid := $1,before_seq := $2) data",
+      "duration": 0.7322080000012647
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.2635420000005979
+    },
+    {
+      "sql": "select public.read_proactive_suggestions(hid := $1) data",
+      "duration": 1.7634580000012647
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.26579200000560377
+    },
+    {
+      "sql": "select * from public.households",
+      "duration": 0.35587500000110595
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.28566699999646517
+    },
+    {
+      "sql": "select * from public.household_records",
+      "duration": 0.22220799999922747
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.25420799999847077
+    },
+    {
+      "sql": "select * from public.household_pantry_reviews",
+      "duration": 0.18004199999995762
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.1650840000002063
+    },
+    {
+      "sql": "select * from public.household_shopping_sessions",
+      "duration": 0.16229200000088895
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.22487499999988358
+    },
+    {
+      "sql": "select * from public.household_shopping_routes",
+      "duration": 0.1895829999994021
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.27554200000304263
+    },
+    {
+      "sql": "select * from public.household_kitchen_preferences",
+      "duration": 0.17525000000023283
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.1603750000067521
+    },
+    {
+      "sql": "select * from public.household_kitchen_events",
+      "duration": 0.2803749999948195
+    },
+    {
+      "sql": "select set_config('request.jwt.claim.sub',$1,false)",
+      "duration": 0.19233299999905284
+    },
+    {
+      "sql": "select * from public.household_kitchen_events",
+      "duration": 0.26920800000516465
+    }
+  ],
+  "unsupportedFixtureRequests": [],
+  "finishedAt": "2026-11-16T18:43:28.955Z"
+}

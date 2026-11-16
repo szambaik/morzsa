@@ -1,0 +1,465 @@
+{
+  "validatedAt": "2026-11-16T19:06:10.054236+00:00",
+  "report": "reports/2026-11-16T19-06-09.972866+00-00",
+  "artifactIntegrityPassed": false,
+  "counts": {
+    "json": 37,
+    "png": 82,
+    "traceZip": 9,
+    "cpuProfile": 6,
+    "networkRequests": 9198
+  },
+  "findings": 11,
+  "sourceVerification": {
+    "verifiedAt": "2026-11-16T19:06:10.054236+00:00",
+    "snapshotSourceChanged": [],
+    "concurrentSourceDrift": [
+      ".gitignore",
+      "AGENTS.md",
+      "docs/UX-FIRST-AUDIT-FIX-LOG-2026-11-16.md",
+      "proactive-ui.js",
+      "proactive.css",
+      "supabase/migrations/20261116_proactive_suggestions.sql",
+      "tests/proactive-sql.test.mjs",
+      "tests/proactive.browser.js"
+    ],
+    "auditSourceUnchanged": true,
+    "scope": "The 377 source files captured in snapshot.json; concurrent additions are not enumerated."
+  },
+  "successfulExternalBrowserResponses": 0,
+  "errors": [
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/02-backend-and-api.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/pantry-library.js:28"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/02-backend-and-api.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/pantry-library.js:44"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/02-backend-and-api.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/pantry-library.js:51"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/02-backend-and-api.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/household.js:144"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/02-backend-and-api.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/household.js:111"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/02-backend-and-api.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/household.js:111"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/02-backend-and-api.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/household.js:120"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/02-backend-and-api.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/household.js:125"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/02-backend-and-api.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/household.js:157"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/02-backend-and-api.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/persistence.js:101"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/02-backend-and-api.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/persistence.js:103"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/02-backend-and-api.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/supabase/functions/voice-command/handler.mjs:87"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/02-backend-and-api.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/supabase/functions/voice-command/handler.mjs:90"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/02-backend-and-api.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/supabase/functions/voice-command/handler.mjs:94"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/02-backend-and-api.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/supabase/functions/voice-command/provider.mjs:6"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/03-database-and-realtime.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/household.js:111"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/03-database-and-realtime.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/household.js:120"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/03-database-and-realtime.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/household.js:125"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/03-database-and-realtime.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/household.js:157"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/03-database-and-realtime.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/persistence.js:101"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/03-database-and-realtime.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/persistence.js:103"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/03-database-and-realtime.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/supabase/migrations/20261114_persistent_library.sql:153"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/03-database-and-realtime.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/supabase/migrations/20261114_persistent_library.sql:29"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/01-frontend-performance.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/app.js:15"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/01-frontend-performance.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/app.js:175"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/01-frontend-performance.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/app.js:198"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/01-frontend-performance.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/quick-entry.js:2"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/01-frontend-performance.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/quick-entry.js:4"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/01-frontend-performance.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/quick-entry.js:5"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/01-frontend-performance.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/quick-entry.js:6"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/01-frontend-performance.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/recipe-library.js:26"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/01-frontend-performance.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/kitchen-model.js:58"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/01-frontend-performance.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/index.html:1"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/01-frontend-performance.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/scripts/build-mobile.mjs:5"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/01-frontend-performance.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/styles.css:1"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/01-frontend-performance.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/workspace.css:1"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/01-frontend-performance.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/recipe-images.js:23"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/01-frontend-performance.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/recipe-images.js:47"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/01-frontend-performance.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/recipe-images.js:48"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/07-root-cause-analysis.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/persistence.js:73"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/07-root-cause-analysis.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/persistence.js:88"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/07-root-cause-analysis.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/persistence.js:104"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/app.js:15"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/app.js:175"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/app.js:198"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/quick-entry.js:2"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/quick-entry.js:4"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/quick-entry.js:5"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/quick-entry.js:6"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/recipe-library.js:26"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/kitchen-model.js:58"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/companion-ui.js:199"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/companion-ui.js:201"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/companion-ui.js:206"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/persistence.js:44"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/persistence.js:102"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/persistence.js:104"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/pantry-library.js:28"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/pantry-library.js:44"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/pantry-library.js:51"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/household.js:144"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/household.js:111"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/index.html:1"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/scripts/build-mobile.mjs:5"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/styles.css:1"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/workspace.css:1"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/household.js:111"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/household.js:120"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/household.js:125"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/household.js:157"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/persistence.js:101"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/persistence.js:103"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/supabase/migrations/20261114_persistent_library.sql:153"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/supabase/migrations/20261114_persistent_library.sql:29"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/recipe-images.js:3"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/recipe-images.js:49"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/recipe-images.js:70"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/recipe-images.js:23"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/recipe-images.js:47"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/recipe-images.js:48"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/supabase/functions/voice-command/handler.mjs:87"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/supabase/functions/voice-command/handler.mjs:90"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/supabase/functions/voice-command/handler.mjs:94"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/supabase/functions/voice-command/provider.mjs:6"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/persistence.js:73"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/persistence.js:88"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/08-prioritized-remediation-plan.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/persistence.js:104"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/05-reliability-and-error-handling.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/pantry-library.js:28"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/05-reliability-and-error-handling.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/pantry-library.js:44"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/05-reliability-and-error-handling.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/pantry-library.js:51"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/05-reliability-and-error-handling.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/household.js:144"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/05-reliability-and-error-handling.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/household.js:111"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/05-reliability-and-error-handling.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/persistence.js:73"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/05-reliability-and-error-handling.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/persistence.js:88"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/05-reliability-and-error-handling.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/persistence.js:104"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/04-ai-performance.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/companion-ui.js:199"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/04-ai-performance.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/companion-ui.js:201"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/04-ai-performance.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/companion-ui.js:206"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/04-ai-performance.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/persistence.js:44"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/04-ai-performance.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/persistence.js:102"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/04-ai-performance.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/persistence.js:104"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/04-ai-performance.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/recipe-images.js:3"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/04-ai-performance.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/recipe-images.js:49"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/04-ai-performance.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/recipe-images.js:70"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/04-ai-performance.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/supabase/functions/voice-command/handler.mjs:87"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/04-ai-performance.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/supabase/functions/voice-command/handler.mjs:90"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/04-ai-performance.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/supabase/functions/voice-command/handler.mjs:94"
+    },
+    {
+      "file": "reports/2026-11-16T19-06-09.972866+00-00/04-ai-performance.md",
+      "brokenLink": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/supabase/functions/voice-command/provider.mjs:6"
+    }
+  ],
+  "note": "Artifact integrity is distinct from application performance thresholds. Recorded application failures remain findings."
+}

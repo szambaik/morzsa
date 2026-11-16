@@ -1,0 +1,44 @@
+- banner:
+  - button "Beszélgetéstörténet": ☰
+  - link "Morzsa":
+    - /url: "#"
+    - text: morzsa
+  - button "Saját konyha · Konyhaváltás és meghívás": Saját konyha
+  - button "Új Morzsa-beszélgetés"
+- main:
+  - paragraph: Konyhánk
+  - heading "Mi van otthon?" [level=1]
+  - group
+  - paragraph: Egy jó emlékeztető. Mennyiséget csak akkor írj, ha segít.
+  - button "Gyors feltöltés Diktálás és alapcsomagok"
+  - button "Van otthon" [pressed]
+  - button "Kevés"
+  - button "Elfogyott"
+  - button "Mind"
+  - text: 5 alapanyag
+  - searchbox "Keresés az alapanyagok között"
+  - button "Készlethez adás"
+  - 'button "Tojás: részletek és listára vétel"': Tojás Van otthon
+  - button "Tojás · Listára teszem"
+  - button "Tojás · Elfogyott"
+  - 'button "Tej: részletek és listára vétel"': Tej Kevés
+  - button "Tej · Listára teszem"
+  - button "Tej · Elfogyott"
+  - 'button "Alma: részletek és listára vétel"': Alma Van otthon
+  - button "Alma · Listára teszem"
+  - button "Alma · Elfogyott"
+  - 'button "Vaj: részletek és listára vétel"': Vaj Van otthon
+  - button "Vaj · Listára teszem"
+  - button "Vaj · Elfogyott"
+  - 'button "Rizs: részletek és listára vétel"': Rizs Van otthon
+  - button "Rizs · Listára teszem"
+  - button "Rizs · Elfogyott"
+- navigation "Fő navigáció":
+  - button "Áttekintés"
+  - button "Lista"
+  - button "Morzsa"
+  - button "Készlet"
+  - button "Receptek"
+- status
+- group "Gyors műveletek":
+  - button "Kérdezz Morzsától"

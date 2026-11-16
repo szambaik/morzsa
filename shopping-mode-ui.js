@@ -12,7 +12,7 @@ window.ShoppingMode=(()=>{
  function exit(){visible=false;clearFeedback();persist();updateWake();render();window.scrollTo(0,0)}
  function normal(){sync();document.body.classList.remove('shopping-mode');if(page!=='shopping')return;const heading=main.querySelector('.pantry-heading');if(!heading)return;
   main.querySelector('.shopping-recommendations')?.remove();
-  const suggestions=KitchenModel.shoppingRecommendations(state,{products:[...catalog,...state.custom],english:productEnglish,prefs:window.KitchenIntelligence?.prefs()||{}});
+  const suggestions=window.MorzsaProactive?[]:KitchenModel.shoppingRecommendations(state,{products:[...catalog,...state.custom],english:productEnglish,prefs:window.KitchenIntelligence?.prefs()||{}});
   if(suggestions.length){
    const box=document.createElement('section');box.className='shopping-recommendations';box.setAttribute('data-no-translate','');box.setAttribute('aria-label',say('Jól jöhet a listádra','Useful for your list'));
    box.innerHTML='<h2>'+say('Jól jöhet még','You may also need')+'</h2><div class="shopping-recommendation-items">'+suggestions.map(i=>'<button data-shopping-recommend="'+esc(i.name)+'" aria-label="'+esc(displayName(i.name)+' · '+say('Listára teszem','Add to list'))+'"><img src="'+(productArtwork[i.name]||'assets/icons/oats.webp')+'" alt="" width="32" height="32"><span><strong>'+esc(displayName(i.name))+'</strong><small>'+say(i.reason==='out'?'Elfogyottnak jelölted':i.reason==='low'?'Kevésnek jelölted':i.count+' vásárlás az elmúlt 60 napban',i.reason==='out'?'Marked as used up':i.reason==='low'?'Marked as running low':i.count+' trips in the last 60 days')+'</small></span>'+ui('plus')+'</button>').join('')+'</div>';

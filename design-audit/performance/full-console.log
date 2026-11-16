@@ -1,0 +1,87 @@
+2026-11-16T18:34:33.696Z startup 320 fast CPU1 cold 297ms
+2026-11-16T18:34:34.650Z startup 320 fast CPU1 warm 241ms
+2026-11-16T18:34:35.759Z startup 320 fast CPU1 cold 281ms
+2026-11-16T18:34:36.716Z startup 320 fast CPU1 warm 247ms
+2026-11-16T18:34:37.812Z startup 320 fast CPU1 cold 282ms
+2026-11-16T18:34:38.781Z startup 320 fast CPU1 warm 252ms
+2026-11-16T18:34:39.996Z startup 375 fast CPU1 cold 291ms
+2026-11-16T18:34:40.958Z startup 375 fast CPU1 warm 248ms
+2026-11-16T18:34:42.084Z startup 375 fast CPU1 cold 283ms
+2026-11-16T18:34:43.051Z startup 375 fast CPU1 warm 254ms
+2026-11-16T18:34:44.156Z startup 375 fast CPU1 cold 285ms
+2026-11-16T18:34:45.115Z startup 375 fast CPU1 warm 248ms
+2026-11-16T18:34:46.304Z startup 390 fast CPU1 cold 289ms
+2026-11-16T18:34:47.258Z startup 390 fast CPU1 warm 240ms
+2026-11-16T18:34:48.355Z startup 390 fast CPU1 cold 286ms
+2026-11-16T18:34:49.312Z startup 390 fast CPU1 warm 245ms
+2026-11-16T18:34:50.403Z startup 390 fast CPU1 cold 288ms
+2026-11-16T18:34:51.375Z startup 390 fast CPU1 warm 256ms
+2026-11-16T18:34:52.569Z startup 768 fast CPU1 cold 281ms
+2026-11-16T18:34:53.524Z startup 768 fast CPU1 warm 243ms
+2026-11-16T18:34:54.649Z startup 768 fast CPU1 cold 284ms
+2026-11-16T18:34:55.614Z startup 768 fast CPU1 warm 246ms
+2026-11-16T18:34:56.743Z startup 768 fast CPU1 cold 283ms
+2026-11-16T18:34:57.711Z startup 768 fast CPU1 warm 248ms
+2026-11-16T18:34:58.932Z startup 1280 fast CPU1 cold 297ms
+2026-11-16T18:34:59.898Z startup 1280 fast CPU1 warm 258ms
+2026-11-16T18:35:01.146Z startup 1280 fast CPU1 cold 414ms
+2026-11-16T18:35:02.113Z startup 1280 fast CPU1 warm 251ms
+2026-11-16T18:35:03.231Z startup 1280 fast CPU1 cold 294ms
+2026-11-16T18:35:04.208Z startup 1280 fast CPU1 warm 252ms
+2026-11-16T18:35:05.425Z startup 1440 fast CPU1 cold 292ms
+2026-11-16T18:35:06.396Z startup 1440 fast CPU1 warm 257ms
+2026-11-16T18:35:07.519Z startup 1440 fast CPU1 cold 289ms
+2026-11-16T18:35:08.491Z startup 1440 fast CPU1 warm 248ms
+2026-11-16T18:35:09.624Z startup 1440 fast CPU1 cold 288ms
+2026-11-16T18:35:10.595Z startup 1440 fast CPU1 warm 258ms
+2026-11-16T18:35:13.138Z startup 390 mobile CPU1 cold 1723ms
+2026-11-16T18:35:15.268Z startup 390 mobile CPU1 warm 1405ms
+2026-11-16T18:35:17.817Z startup 390 mobile CPU1 cold 1729ms
+2026-11-16T18:35:19.935Z startup 390 mobile CPU1 warm 1394ms
+2026-11-16T18:35:22.495Z startup 390 mobile CPU1 cold 1734ms
+2026-11-16T18:35:24.615Z startup 390 mobile CPU1 warm 1402ms
+2026-11-16T18:35:31.630Z startup 390 slow4g CPU1 cold 6206ms
+2026-11-16T18:35:34.790Z startup 390 slow4g CPU1 warm 2449ms
+2026-11-16T18:35:41.827Z startup 390 slow4g CPU1 cold 6201ms
+2026-11-16T18:35:45.012Z startup 390 slow4g CPU1 warm 2463ms
+2026-11-16T18:35:52.036Z startup 390 slow4g CPU1 cold 6216ms
+2026-11-16T18:35:55.193Z startup 390 slow4g CPU1 warm 2434ms
+2026-11-16T18:36:02.231Z startup 390 highLatency CPU1 cold 6205ms
+2026-11-16T18:36:08.804Z startup 390 highLatency CPU1 warm 5853ms
+2026-11-16T18:36:15.807Z startup 390 highLatency CPU1 cold 6215ms
+2026-11-16T18:36:22.386Z startup 390 highLatency CPU1 warm 5866ms
+2026-11-16T18:36:29.409Z startup 390 highLatency CPU1 cold 6188ms
+2026-11-16T18:36:35.990Z startup 390 highLatency CPU1 warm 5862ms
+2026-11-16T18:36:37.650Z startup 390 fast CPU4 cold 825ms
+2026-11-16T18:36:39.069Z startup 390 fast CPU4 warm 703ms
+2026-11-16T18:36:40.712Z startup 390 fast CPU4 cold 831ms
+2026-11-16T18:36:42.096Z startup 390 fast CPU4 warm 667ms
+2026-11-16T18:36:43.757Z startup 390 fast CPU4 cold 842ms
+2026-11-16T18:36:45.143Z startup 390 fast CPU4 warm 669ms
+2026-11-16T18:36:48.265Z navigation-five-destinations: PASS
+2026-11-16T18:36:50.897Z J3-inventory-add-edit-remove-persist: PASS
+2026-11-16T18:36:52.344Z J4-shopping-batch-edit-rapid-persist-finish: PASS
+2026-11-16T18:37:01.515Z J5-recipe-feed-detail-servings-shopping: PASS
+2026-11-16T18:37:05.341Z J6-ai-stream-and-independent-navigation: PASS
+2026-11-16T18:37:07.407Z J6-ai-failure-retry: PASS
+2026-11-16T18:37:12.342Z J6-ai-cancellation: PASS
+2026-11-16T18:37:16.669Z J6-ai-preflight-delay: PASS
+2026-11-16T18:37:20.413Z J4-shared-rapid-add-realtime-readback: PASS
+2026-11-16T18:37:22.151Z J4-shared-offline-outbox-reconnect: PASS
+2026-11-16T18:37:40.881Z realtime-one-household-plus-one-chat-socket: PASS
+2026-11-16T18:37:40.892Z realtime-burst-fanout-and-idle-polling: PASS
+2026-11-16T18:37:44.119Z J3-shared-slow-pantry-action-blocking: PASS
+2026-11-16T18:37:46.616Z long session 0/25
+2026-11-16T18:37:53.434Z long session 5/25
+2026-11-16T18:38:00.284Z long session 10/25
+2026-11-16T18:38:07.134Z long session 15/25
+2026-11-16T18:38:13.966Z long session 20/25
+2026-11-16T18:38:19.295Z J7-long-session-125-navigation-dialog-cycles: PASS
+2026-11-16T18:38:20.275Z size 50 complete
+2026-11-16T18:38:21.959Z size 250 complete
+2026-11-16T18:38:29.827Z size 667 complete
+2026-11-16T18:39:16.211Z large-pantry-and-list-stress: FAIL
+2026-11-16T18:39:16.211Z Failure retained; continuing independent tests
+2026-11-16T18:39:20.690Z image-cache-read-is-independent: PASS
+2026-11-16T18:39:20.706Z image-serial-queue-blocks-unrelated-cache-read: PASS
+2026-11-16T18:39:21.228Z AUDIT_RUN=/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/design-audit/performance/runs/2026-11-16T18-34-31.217Z-full

@@ -1,0 +1,18 @@
+{"event":"morzsa_provider_ready","model":"gemini-3.1-flash-lite","headersMs":152,"streaming":true}
+{"event":"morzsa_stream_done","firstAnswerMs":null,"totalMs":4}
+healthy 415 ok
+{"event":"morzsa_provider_failure","model":"gemini-3.1-flash-lite","status":503}
+{"event":"morzsa_provider_ready","model":"gemini-3.5-flash-lite","headersMs":153,"streaming":false}
+{"event":"morzsa_stream_done","firstAnswerMs":null,"totalMs":1}
+overload-fallback 401 ok
+{"event":"morzsa_provider_wait","model":"gemini-3.1-flash-lite","elapsedMs":8000,"error":"VOICE_TIMEOUT"}
+{"event":"morzsa_provider_ready","model":"gemini-3.5-flash-lite","headersMs":153,"streaming":false}
+{"event":"morzsa_stream_done","firstAnswerMs":null,"totalMs":0}
+header-stall-default 8399 ok
+{"event":"morzsa_provider_ready","model":"gemini-3.1-flash-lite","headersMs":153,"streaming":true}
+{"event":"morzsa_stream_done","firstAnswerMs":null,"totalMs":0}
+cancelled-client-preflight 399 ok
+{"event":"morzsa_provider_ready","model":"gemini-3.1-flash-lite","headersMs":153,"streaming":true}
+{"event":"morzsa_stream_error","error":"VOICE_INVALID_RESPONSE","firstAnswerMs":0,"totalMs":0}
+malformed-stream 398 VOICE_INVALID_RESPONSE
+PROVIDER_RUN=/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/design-audit/performance/provider-runs/2026-11-16T18-37-26.468Z

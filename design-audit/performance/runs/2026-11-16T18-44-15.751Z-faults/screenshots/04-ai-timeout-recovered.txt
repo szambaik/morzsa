@@ -1,0 +1,31 @@
+- banner:
+  - button "Beszélgetéstörténet": ☰
+  - link "Morzsa":
+    - /url: "#"
+    - text: morzsa
+  - button "Audit kitchen · Konyhaváltás és meghívás": Audit kitchen
+  - button "Új Morzsa-beszélgetés"
+- main:
+  - text: Időtúllépés teszt.
+  - article:
+    - paragraph: Időtúllépés teszt.
+  - alert:
+    - paragraph: Az AI válasza túl sokáig tartott. Próbáld újra; semmit nem módosítottunk.
+    - button "Újrapróbálom"
+  - button "Fotó csatolása"
+  - textbox "Üzenet Morzsának":
+    - /placeholder: Kérdezz…
+  - button "Kérdezés hanggal"
+  - button "Küldés"
+  - text: AI mód
+  - combobox "AI mód":
+    - option "Morzsa Plus"
+    - option "Ingyenes" [selected]
+  - text: A változtatásokat mentés előtt átnézheted.
+- navigation "Fő navigáció":
+  - button "Áttekintés"
+  - button "Lista 1"
+  - button "Morzsa"
+  - button "Készlet"
+  - button "Receptek"
+- status

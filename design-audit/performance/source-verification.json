@@ -1,0 +1,16 @@
+{
+  "verifiedAt": "2026-11-16T19:16:51.678830+00:00",
+  "snapshotSourceChanged": [],
+  "concurrentSourceDrift": [
+    ".gitignore",
+    "AGENTS.md",
+    "docs/UX-FIRST-AUDIT-FIX-LOG-2026-11-16.md",
+    "proactive-ui.js",
+    "proactive.css",
+    "supabase/migrations/20261116_proactive_suggestions.sql",
+    "tests/proactive-sql.test.mjs",
+    "tests/proactive.browser.js"
+  ],
+  "auditSourceUnchanged": true,
+  "scope": "The 377 source files captured in snapshot.json; concurrent additions are not enumerated."
+}

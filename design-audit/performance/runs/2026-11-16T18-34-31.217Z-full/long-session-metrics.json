@@ -1,0 +1,5762 @@
+{
+  "navigation": {
+    "name": "http://127.0.0.1:55903/",
+    "entryType": "navigation",
+    "startTime": 0,
+    "duration": 189.1000000089407,
+    "navigationId": 1140,
+    "initiatorType": "navigation",
+    "deliveryType": "",
+    "nextHopProtocol": "http/1.1",
+    "renderBlockingStatus": "non-blocking",
+    "contentType": "text/html",
+    "contentEncoding": "",
+    "workerStart": 0,
+    "workerRouterEvaluationStart": 0,
+    "workerCacheLookupStart": 0,
+    "workerMatchedSourceType": "",
+    "workerFinalSourceType": "",
+    "redirectStart": 0,
+    "redirectEnd": 0,
+    "fetchStart": 0.20000000298023224,
+    "domainLookupStart": 0.20000000298023224,
+    "domainLookupEnd": 0.20000000298023224,
+    "connectStart": 0.20000000298023224,
+    "secureConnectionStart": 0,
+    "connectEnd": 0.20000000298023224,
+    "requestStart": 0.5,
+    "responseStart": 1,
+    "firstInterimResponseStart": 0,
+    "finalResponseHeadersStart": 1,
+    "responseEnd": 1.1000000089406967,
+    "transferSize": 6193,
+    "encodedBodySize": 5893,
+    "decodedBodySize": 5893,
+    "responseStatus": 200,
+    "serverTiming": [],
+    "unloadEventStart": 0,
+    "unloadEventEnd": 0,
+    "domInteractive": 188.20000000298023,
+    "domContentLoadedEventStart": 188.20000000298023,
+    "domContentLoadedEventEnd": 188.20000000298023,
+    "domComplete": 189.1000000089407,
+    "loadEventStart": 189.1000000089407,
+    "loadEventEnd": 189.1000000089407,
+    "type": "navigate",
+    "redirectCount": 0,
+    "activationStart": 0,
+    "criticalCHRestart": 0,
+    "notRestoredReasons": null,
+    "confidence": {
+      "randomizedTriggerRate": 0.4994798,
+      "value": "low"
+    }
+  },
+  "paints": [
+    {
+      "name": "first-paint",
+      "entryType": "paint",
+      "startTime": 40,
+      "duration": 0,
+      "navigationId": 1140,
+      "paintTime": 35.1000000089407,
+      "presentationTime": 40
+    },
+    {
+      "name": "first-contentful-paint",
+      "entryType": "paint",
+      "startTime": 40,
+      "duration": 0,
+      "navigationId": 1140,
+      "paintTime": 35.1000000089407,
+      "presentationTime": 40
+    }
+  ],
+  "lcp": 188,
+  "cls": 0.004316466554028954,
+  "longTasks": [
+    {
+      "start": 45.80000001192093,
+      "duration": 121
+    },
+    {
+      "start": 329.70000000298023,
+      "duration": 121
+    },
+    {
+      "start": 544.9000000059605,
+      "duration": 117
+    },
+    {
+      "start": 728.8000000119209,
+      "duration": 57
+    },
+    {
+      "start": 844.5,
+      "duration": 184
+    },
+    {
+      "start": 1030.800000011921,
+      "duration": 381
+    },
+    {
+      "start": 1493.5,
+      "duration": 160
+    },
+    {
+      "start": 1727.9000000059605,
+      "duration": 114
+    },
+    {
+      "start": 1911.800000011921,
+      "duration": 108
+    },
+    {
+      "start": 2143.4000000059605,
+      "duration": 116
+    },
+    {
+      "start": 2327.7000000029802,
+      "duration": 113
+    },
+    {
+      "start": 2511.300000011921,
+      "duration": 58
+    },
+    {
+      "start": 2626.5,
+      "duration": 497
+    },
+    {
+      "start": 3194.6000000089407,
+      "duration": 162
+    },
+    {
+      "start": 3426.2000000029802,
+      "duration": 117
+    },
+    {
+      "start": 3611.800000011921,
+      "duration": 112
+    },
+    {
+      "start": 3794.1000000089407,
+      "duration": 54
+    },
+    {
+      "start": 3911.6000000089407,
+      "duration": 494
+    },
+    {
+      "start": 4477,
+      "duration": 157
+    },
+    {
+      "start": 4692.9000000059605,
+      "duration": 113
+    },
+    {
+      "start": 4878.300000011921,
+      "duration": 110
+    },
+    {
+      "start": 5044.70000000298,
+      "duration": 56
+    },
+    {
+      "start": 5160.100000008941,
+      "duration": 505
+    },
+    {
+      "start": 5729.100000008941,
+      "duration": 162
+    },
+    {
+      "start": 5960,
+      "duration": 113
+    },
+    {
+      "start": 6145.100000008941,
+      "duration": 112
+    },
+    {
+      "start": 6327.600000008941,
+      "duration": 55
+    },
+    {
+      "start": 6443.800000011921,
+      "duration": 507
+    },
+    {
+      "start": 7026.70000000298,
+      "duration": 165
+    },
+    {
+      "start": 7262.100000008941,
+      "duration": 117
+    },
+    {
+      "start": 7444.70000000298,
+      "duration": 110
+    },
+    {
+      "start": 7626.4000000059605,
+      "duration": 55
+    },
+    {
+      "start": 7744.800000011921,
+      "duration": 498
+    },
+    {
+      "start": 8310.5,
+      "duration": 163
+    },
+    {
+      "start": 8544.60000000894,
+      "duration": 117
+    },
+    {
+      "start": 8726.90000000596,
+      "duration": 109
+    },
+    {
+      "start": 8960.300000011921,
+      "duration": 121
+    },
+    {
+      "start": 9144.90000000596,
+      "duration": 117
+    },
+    {
+      "start": 9328.5,
+      "duration": 56
+    },
+    {
+      "start": 9443.800000011921,
+      "duration": 510
+    },
+    {
+      "start": 10027.300000011921,
+      "duration": 166
+    },
+    {
+      "start": 10260.300000011921,
+      "duration": 118
+    },
+    {
+      "start": 10444.5,
+      "duration": 109
+    },
+    {
+      "start": 10627.10000000894,
+      "duration": 56
+    },
+    {
+      "start": 10744.60000000894,
+      "duration": 501
+    },
+    {
+      "start": 11311.10000000894,
+      "duration": 158
+    },
+    {
+      "start": 11526.70000000298,
+      "duration": 116
+    },
+    {
+      "start": 11712.300000011921,
+      "duration": 112
+    },
+    {
+      "start": 11894,
+      "duration": 58
+    },
+    {
+      "start": 12011.90000000596,
+      "duration": 505
+    },
+    {
+      "start": 12577.70000000298,
+      "duration": 159
+    },
+    {
+      "start": 12811.90000000596,
+      "duration": 119
+    },
+    {
+      "start": 12994.90000000596,
+      "duration": 113
+    },
+    {
+      "start": 13178,
+      "duration": 57
+    },
+    {
+      "start": 13295,
+      "duration": 500
+    },
+    {
+      "start": 13861.5,
+      "duration": 166
+    },
+    {
+      "start": 14093.5,
+      "duration": 115
+    },
+    {
+      "start": 14277.90000000596,
+      "duration": 111
+    },
+    {
+      "start": 14461.90000000596,
+      "duration": 56
+    },
+    {
+      "start": 14577.5,
+      "duration": 502
+    },
+    {
+      "start": 15145.20000000298,
+      "duration": 164
+    },
+    {
+      "start": 15378.40000000596,
+      "duration": 114
+    },
+    {
+      "start": 15561.800000011921,
+      "duration": 111
+    },
+    {
+      "start": 15811.300000011921,
+      "duration": 120
+    },
+    {
+      "start": 15994.60000000894,
+      "duration": 115
+    },
+    {
+      "start": 16177.90000000596,
+      "duration": 57
+    },
+    {
+      "start": 16294.90000000596,
+      "duration": 518
+    },
+    {
+      "start": 16878.20000000298,
+      "duration": 161
+    },
+    {
+      "start": 17094.70000000298,
+      "duration": 118
+    },
+    {
+      "start": 17278.30000001192,
+      "duration": 111
+    },
+    {
+      "start": 17461.70000000298,
+      "duration": 57
+    },
+    {
+      "start": 17578.20000000298,
+      "duration": 513
+    },
+    {
+      "start": 18160.5,
+      "duration": 168
+    },
+    {
+      "start": 18395.70000000298,
+      "duration": 118
+    },
+    {
+      "start": 18578.40000000596,
+      "duration": 113
+    },
+    {
+      "start": 18760.40000000596,
+      "duration": 57
+    },
+    {
+      "start": 18876.90000000596,
+      "duration": 512
+    },
+    {
+      "start": 19462.10000000894,
+      "duration": 164
+    },
+    {
+      "start": 19693.40000000596,
+      "duration": 117
+    },
+    {
+      "start": 19877.30000001192,
+      "duration": 110
+    },
+    {
+      "start": 20044.60000000894,
+      "duration": 59
+    },
+    {
+      "start": 20177.40000000596,
+      "duration": 497
+    },
+    {
+      "start": 20743.90000000596,
+      "duration": 163
+    },
+    {
+      "start": 20976.60000000894,
+      "duration": 115
+    },
+    {
+      "start": 21160.20000000298,
+      "duration": 109
+    },
+    {
+      "start": 21327.90000000596,
+      "duration": 55
+    },
+    {
+      "start": 21444.5,
+      "duration": 502
+    },
+    {
+      "start": 22011.70000000298,
+      "duration": 162
+    },
+    {
+      "start": 22242.70000000298,
+      "duration": 112
+    },
+    {
+      "start": 22426.80000001192,
+      "duration": 111
+    },
+    {
+      "start": 22660.60000000894,
+      "duration": 117
+    },
+    {
+      "start": 22845.90000000596,
+      "duration": 118
+    },
+    {
+      "start": 23027.10000000894,
+      "duration": 58
+    },
+    {
+      "start": 23144.90000000596,
+      "duration": 506
+    },
+    {
+      "start": 23711.30000001192,
+      "duration": 161
+    },
+    {
+      "start": 23927.80000001192,
+      "duration": 120
+    },
+    {
+      "start": 24128.10000000894,
+      "duration": 112
+    },
+    {
+      "start": 24311.20000000298,
+      "duration": 56
+    },
+    {
+      "start": 24426.80000001192,
+      "duration": 502
+    },
+    {
+      "start": 24994.5,
+      "duration": 165
+    },
+    {
+      "start": 25226.70000000298,
+      "duration": 118
+    },
+    {
+      "start": 25411.40000000596,
+      "duration": 111
+    },
+    {
+      "start": 25593.10000000894,
+      "duration": 57
+    },
+    {
+      "start": 25710.30000001192,
+      "duration": 501
+    },
+    {
+      "start": 26278.10000000894,
+      "duration": 162
+    },
+    {
+      "start": 26511.5,
+      "duration": 122
+    },
+    {
+      "start": 26693.90000000596,
+      "duration": 110
+    },
+    {
+      "start": 26877,
+      "duration": 58
+    },
+    {
+      "start": 26994.5,
+      "duration": 495
+    },
+    {
+      "start": 27560.60000000894,
+      "duration": 165
+    },
+    {
+      "start": 27794.5,
+      "duration": 113
+    },
+    {
+      "start": 27977.70000000298,
+      "duration": 111
+    },
+    {
+      "start": 28160.20000000298,
+      "duration": 56
+    },
+    {
+      "start": 28276,
+      "duration": 497
+    },
+    {
+      "start": 28844.5,
+      "duration": 163
+    },
+    {
+      "start": 29076.5,
+      "duration": 116
+    },
+    {
+      "start": 29261.20000000298,
+      "duration": 108
+    },
+    {
+      "start": 29493.40000000596,
+      "duration": 120
+    },
+    {
+      "start": 29677.60000000894,
+      "duration": 113
+    },
+    {
+      "start": 29860.20000000298,
+      "duration": 58
+    },
+    {
+      "start": 29976.20000000298,
+      "duration": 505
+    },
+    {
+      "start": 30484.10000000894,
+      "duration": 157
+    },
+    {
+      "start": 30711.20000000298,
+      "duration": 160
+    },
+    {
+      "start": 30927.40000000596,
+      "duration": 118
+    },
+    {
+      "start": 31111.30000001192,
+      "duration": 112
+    },
+    {
+      "start": 31294.10000000894,
+      "duration": 57
+    },
+    {
+      "start": 31409.5,
+      "duration": 501
+    },
+    {
+      "start": 31977.10000000894,
+      "duration": 160
+    },
+    {
+      "start": 32193.90000000596,
+      "duration": 119
+    },
+    {
+      "start": 32378,
+      "duration": 111
+    },
+    {
+      "start": 32560.5,
+      "duration": 56
+    },
+    {
+      "start": 32677.5,
+      "duration": 492
+    },
+    {
+      "start": 33243.80000001192,
+      "duration": 159
+    },
+    {
+      "start": 33477,
+      "duration": 117
+    },
+    {
+      "start": 33660.80000001192,
+      "duration": 107
+    },
+    {
+      "start": 33826.80000001192,
+      "duration": 56
+    },
+    {
+      "start": 33944,
+      "duration": 488
+    },
+    {
+      "start": 34493.10000000894,
+      "duration": 161
+    },
+    {
+      "start": 34727.5,
+      "duration": 116
+    }
+  ],
+  "tbt": 18385,
+  "maxInteractionDuration": 520,
+  "events": [
+    {
+      "name": "pointerdown",
+      "start": 329.30000001192093,
+      "duration": 144,
+      "interactionId": 5872
+    },
+    {
+      "name": "pointerup",
+      "start": 329.30000001192093,
+      "duration": 144,
+      "interactionId": 5872
+    },
+    {
+      "name": "click",
+      "start": 329.30000001192093,
+      "duration": 144,
+      "interactionId": 5872
+    },
+    {
+      "name": "pointerdown",
+      "start": 544.9000000059605,
+      "duration": 128,
+      "interactionId": 5879
+    },
+    {
+      "name": "pointerup",
+      "start": 544.9000000059605,
+      "duration": 128,
+      "interactionId": 5879
+    },
+    {
+      "name": "click",
+      "start": 544.9000000059605,
+      "duration": 128,
+      "interactionId": 5879
+    },
+    {
+      "name": "pointerdown",
+      "start": 728.7000000029802,
+      "duration": 64,
+      "interactionId": 5886
+    },
+    {
+      "name": "pointerup",
+      "start": 728.7000000029802,
+      "duration": 64,
+      "interactionId": 5886
+    },
+    {
+      "name": "click",
+      "start": 728.7000000029802,
+      "duration": 64,
+      "interactionId": 5886
+    },
+    {
+      "name": "pointerdown",
+      "start": 844.4000000059605,
+      "duration": 192,
+      "interactionId": 5893
+    },
+    {
+      "name": "pointerup",
+      "start": 844.4000000059605,
+      "duration": 192,
+      "interactionId": 5893
+    },
+    {
+      "name": "click",
+      "start": 844.4000000059605,
+      "duration": 192,
+      "interactionId": 5893
+    },
+    {
+      "name": "pointerdown",
+      "start": 1493.4000000059605,
+      "duration": 160,
+      "interactionId": 5900
+    },
+    {
+      "name": "pointerup",
+      "start": 1493.4000000059605,
+      "duration": 160,
+      "interactionId": 5900
+    },
+    {
+      "name": "click",
+      "start": 1493.4000000059605,
+      "duration": 160,
+      "interactionId": 5900
+    },
+    {
+      "name": "pointerdown",
+      "start": 1727.800000011921,
+      "duration": 120,
+      "interactionId": 5907
+    },
+    {
+      "name": "pointerup",
+      "start": 1727.800000011921,
+      "duration": 120,
+      "interactionId": 5907
+    },
+    {
+      "name": "click",
+      "start": 1727.800000011921,
+      "duration": 120,
+      "interactionId": 5907
+    },
+    {
+      "name": "pointerdown",
+      "start": 1911.7000000029802,
+      "duration": 112,
+      "interactionId": 5914
+    },
+    {
+      "name": "pointerup",
+      "start": 1911.7000000029802,
+      "duration": 112,
+      "interactionId": 5914
+    },
+    {
+      "name": "click",
+      "start": 1911.7000000029802,
+      "duration": 112,
+      "interactionId": 5914
+    },
+    {
+      "name": "pointerdown",
+      "start": 2078.2000000029802,
+      "duration": 16,
+      "interactionId": 5921
+    },
+    {
+      "name": "pointerup",
+      "start": 2078.2000000029802,
+      "duration": 16,
+      "interactionId": 5921
+    },
+    {
+      "name": "click",
+      "start": 2078.2000000029802,
+      "duration": 16,
+      "interactionId": 5921
+    },
+    {
+      "name": "pointerdown",
+      "start": 2110.6000000089407,
+      "duration": 16,
+      "interactionId": 5928
+    },
+    {
+      "name": "pointerup",
+      "start": 2110.6000000089407,
+      "duration": 16,
+      "interactionId": 5928
+    },
+    {
+      "name": "click",
+      "start": 2110.6000000089407,
+      "duration": 16,
+      "interactionId": 5928
+    },
+    {
+      "name": "pointerdown",
+      "start": 2143.300000011921,
+      "duration": 120,
+      "interactionId": 5935
+    },
+    {
+      "name": "pointerup",
+      "start": 2143.300000011921,
+      "duration": 120,
+      "interactionId": 5935
+    },
+    {
+      "name": "click",
+      "start": 2143.300000011921,
+      "duration": 120,
+      "interactionId": 5935
+    },
+    {
+      "name": "pointerdown",
+      "start": 2327.6000000089407,
+      "duration": 112,
+      "interactionId": 5942
+    },
+    {
+      "name": "pointerup",
+      "start": 2327.6000000089407,
+      "duration": 112,
+      "interactionId": 5942
+    },
+    {
+      "name": "click",
+      "start": 2327.6000000089407,
+      "duration": 112,
+      "interactionId": 5942
+    },
+    {
+      "name": "pointerdown",
+      "start": 2511.2000000029802,
+      "duration": 56,
+      "interactionId": 5949
+    },
+    {
+      "name": "pointerup",
+      "start": 2511.2000000029802,
+      "duration": 56,
+      "interactionId": 5949
+    },
+    {
+      "name": "click",
+      "start": 2511.2000000029802,
+      "duration": 56,
+      "interactionId": 5949
+    },
+    {
+      "name": "pointerdown",
+      "start": 2626.300000011921,
+      "duration": 496,
+      "interactionId": 5956
+    },
+    {
+      "name": "pointerup",
+      "start": 2626.4000000059605,
+      "duration": 496,
+      "interactionId": 5956
+    },
+    {
+      "name": "click",
+      "start": 2626.4000000059605,
+      "duration": 496,
+      "interactionId": 5956
+    },
+    {
+      "name": "pointerdown",
+      "start": 3194.5,
+      "duration": 160,
+      "interactionId": 5963
+    },
+    {
+      "name": "pointerup",
+      "start": 3194.5,
+      "duration": 160,
+      "interactionId": 5963
+    },
+    {
+      "name": "click",
+      "start": 3194.5,
+      "duration": 160,
+      "interactionId": 5963
+    },
+    {
+      "name": "pointerdown",
+      "start": 3426.1000000089407,
+      "duration": 120,
+      "interactionId": 5970
+    },
+    {
+      "name": "pointerup",
+      "start": 3426.1000000089407,
+      "duration": 120,
+      "interactionId": 5970
+    },
+    {
+      "name": "click",
+      "start": 3426.1000000089407,
+      "duration": 120,
+      "interactionId": 5970
+    },
+    {
+      "name": "pointerdown",
+      "start": 3611.6000000089407,
+      "duration": 112,
+      "interactionId": 5977
+    },
+    {
+      "name": "pointerup",
+      "start": 3611.7000000029802,
+      "duration": 112,
+      "interactionId": 5977
+    },
+    {
+      "name": "click",
+      "start": 3611.7000000029802,
+      "duration": 112,
+      "interactionId": 5977
+    },
+    {
+      "name": "pointerdown",
+      "start": 3793.9000000059605,
+      "duration": 56,
+      "interactionId": 5984
+    },
+    {
+      "name": "pointerup",
+      "start": 3793.9000000059605,
+      "duration": 56,
+      "interactionId": 5984
+    },
+    {
+      "name": "click",
+      "start": 3793.9000000059605,
+      "duration": 56,
+      "interactionId": 5984
+    },
+    {
+      "name": "pointerdown",
+      "start": 3911.5,
+      "duration": 496,
+      "interactionId": 5991
+    },
+    {
+      "name": "pointerup",
+      "start": 3911.5,
+      "duration": 496,
+      "interactionId": 5991
+    },
+    {
+      "name": "click",
+      "start": 3911.5,
+      "duration": 496,
+      "interactionId": 5991
+    },
+    {
+      "name": "pointerdown",
+      "start": 4476.9000000059605,
+      "duration": 160,
+      "interactionId": 5998
+    },
+    {
+      "name": "pointerup",
+      "start": 4476.9000000059605,
+      "duration": 160,
+      "interactionId": 5998
+    },
+    {
+      "name": "click",
+      "start": 4476.9000000059605,
+      "duration": 160,
+      "interactionId": 5998
+    },
+    {
+      "name": "pointerdown",
+      "start": 4692.800000011921,
+      "duration": 112,
+      "interactionId": 6005
+    },
+    {
+      "name": "pointerup",
+      "start": 4692.800000011921,
+      "duration": 112,
+      "interactionId": 6005
+    },
+    {
+      "name": "click",
+      "start": 4692.800000011921,
+      "duration": 112,
+      "interactionId": 6005
+    },
+    {
+      "name": "pointerdown",
+      "start": 4878.100000008941,
+      "duration": 112,
+      "interactionId": 6012
+    },
+    {
+      "name": "pointerup",
+      "start": 4878.100000008941,
+      "duration": 112,
+      "interactionId": 6012
+    },
+    {
+      "name": "click",
+      "start": 4878.100000008941,
+      "duration": 112,
+      "interactionId": 6012
+    },
+    {
+      "name": "pointerdown",
+      "start": 5044.70000000298,
+      "duration": 56,
+      "interactionId": 6019
+    },
+    {
+      "name": "pointerup",
+      "start": 5044.70000000298,
+      "duration": 56,
+      "interactionId": 6019
+    },
+    {
+      "name": "click",
+      "start": 5044.70000000298,
+      "duration": 56,
+      "interactionId": 6019
+    },
+    {
+      "name": "pointerdown",
+      "start": 5159.9000000059605,
+      "duration": 504,
+      "interactionId": 6026
+    },
+    {
+      "name": "pointerup",
+      "start": 5160,
+      "duration": 504,
+      "interactionId": 6026
+    },
+    {
+      "name": "click",
+      "start": 5160,
+      "duration": 504,
+      "interactionId": 6026
+    },
+    {
+      "name": "pointerdown",
+      "start": 5728.70000000298,
+      "duration": 168,
+      "interactionId": 6033
+    },
+    {
+      "name": "pointerup",
+      "start": 5728.800000011921,
+      "duration": 168,
+      "interactionId": 6033
+    },
+    {
+      "name": "click",
+      "start": 5728.800000011921,
+      "duration": 168,
+      "interactionId": 6033
+    },
+    {
+      "name": "pointerdown",
+      "start": 5959.9000000059605,
+      "duration": 112,
+      "interactionId": 6040
+    },
+    {
+      "name": "pointerup",
+      "start": 5959.9000000059605,
+      "duration": 112,
+      "interactionId": 6040
+    },
+    {
+      "name": "click",
+      "start": 5959.9000000059605,
+      "duration": 112,
+      "interactionId": 6040
+    },
+    {
+      "name": "pointerdown",
+      "start": 6145,
+      "duration": 112,
+      "interactionId": 6047
+    },
+    {
+      "name": "pointerup",
+      "start": 6145,
+      "duration": 112,
+      "interactionId": 6047
+    },
+    {
+      "name": "click",
+      "start": 6145,
+      "duration": 112,
+      "interactionId": 6047
+    },
+    {
+      "name": "pointerdown",
+      "start": 6327.5,
+      "duration": 56,
+      "interactionId": 6054
+    },
+    {
+      "name": "pointerup",
+      "start": 6327.5,
+      "duration": 56,
+      "interactionId": 6054
+    },
+    {
+      "name": "click",
+      "start": 6327.5,
+      "duration": 56,
+      "interactionId": 6054
+    },
+    {
+      "name": "pointerdown",
+      "start": 6443.600000008941,
+      "duration": 512,
+      "interactionId": 6061
+    },
+    {
+      "name": "pointerup",
+      "start": 6443.70000000298,
+      "duration": 512,
+      "interactionId": 6061
+    },
+    {
+      "name": "click",
+      "start": 6443.70000000298,
+      "duration": 512,
+      "interactionId": 6061
+    },
+    {
+      "name": "pointerdown",
+      "start": 7026.70000000298,
+      "duration": 168,
+      "interactionId": 6068
+    },
+    {
+      "name": "pointerup",
+      "start": 7026.70000000298,
+      "duration": 168,
+      "interactionId": 6068
+    },
+    {
+      "name": "click",
+      "start": 7026.70000000298,
+      "duration": 168,
+      "interactionId": 6068
+    },
+    {
+      "name": "pointerdown",
+      "start": 7262,
+      "duration": 120,
+      "interactionId": 6075
+    },
+    {
+      "name": "pointerup",
+      "start": 7262,
+      "duration": 120,
+      "interactionId": 6075
+    },
+    {
+      "name": "click",
+      "start": 7262,
+      "duration": 120,
+      "interactionId": 6075
+    },
+    {
+      "name": "pointerdown",
+      "start": 7444.5,
+      "duration": 112,
+      "interactionId": 6082
+    },
+    {
+      "name": "pointerup",
+      "start": 7444.5,
+      "duration": 112,
+      "interactionId": 6082
+    },
+    {
+      "name": "click",
+      "start": 7444.5,
+      "duration": 112,
+      "interactionId": 6082
+    },
+    {
+      "name": "pointerdown",
+      "start": 7626.300000011921,
+      "duration": 56,
+      "interactionId": 6089
+    },
+    {
+      "name": "pointerup",
+      "start": 7626.300000011921,
+      "duration": 56,
+      "interactionId": 6089
+    },
+    {
+      "name": "click",
+      "start": 7626.300000011921,
+      "duration": 56,
+      "interactionId": 6089
+    },
+    {
+      "name": "pointerdown",
+      "start": 7744.800000011921,
+      "duration": 504,
+      "interactionId": 6096
+    },
+    {
+      "name": "pointerup",
+      "start": 7744.800000011921,
+      "duration": 496,
+      "interactionId": 6096
+    },
+    {
+      "name": "click",
+      "start": 7744.800000011921,
+      "duration": 496,
+      "interactionId": 6096
+    },
+    {
+      "name": "pointerdown",
+      "start": 8310.40000000596,
+      "duration": 168,
+      "interactionId": 6103
+    },
+    {
+      "name": "pointerup",
+      "start": 8310.40000000596,
+      "duration": 168,
+      "interactionId": 6103
+    },
+    {
+      "name": "click",
+      "start": 8310.40000000596,
+      "duration": 168,
+      "interactionId": 6103
+    },
+    {
+      "name": "pointerdown",
+      "start": 8544.5,
+      "duration": 120,
+      "interactionId": 6110
+    },
+    {
+      "name": "pointerup",
+      "start": 8544.5,
+      "duration": 120,
+      "interactionId": 6110
+    },
+    {
+      "name": "click",
+      "start": 8544.5,
+      "duration": 120,
+      "interactionId": 6110
+    },
+    {
+      "name": "pointerdown",
+      "start": 8726.800000011921,
+      "duration": 112,
+      "interactionId": 6117
+    },
+    {
+      "name": "pointerup",
+      "start": 8726.800000011921,
+      "duration": 112,
+      "interactionId": 6117
+    },
+    {
+      "name": "click",
+      "start": 8726.800000011921,
+      "duration": 112,
+      "interactionId": 6117
+    },
+    {
+      "name": "pointerdown",
+      "start": 8893.20000000298,
+      "duration": 16,
+      "interactionId": 6124
+    },
+    {
+      "name": "pointerup",
+      "start": 8893.300000011921,
+      "duration": 16,
+      "interactionId": 6124
+    },
+    {
+      "name": "click",
+      "start": 8893.300000011921,
+      "duration": 16,
+      "interactionId": 6124
+    },
+    {
+      "name": "pointerdown",
+      "start": 8927.90000000596,
+      "duration": 16,
+      "interactionId": 6131
+    },
+    {
+      "name": "pointerup",
+      "start": 8927.90000000596,
+      "duration": 16,
+      "interactionId": 6131
+    },
+    {
+      "name": "click",
+      "start": 8927.90000000596,
+      "duration": 16,
+      "interactionId": 6131
+    },
+    {
+      "name": "pointerdown",
+      "start": 8960.20000000298,
+      "duration": 120,
+      "interactionId": 6138
+    },
+    {
+      "name": "pointerup",
+      "start": 8960.300000011921,
+      "duration": 120,
+      "interactionId": 6138
+    },
+    {
+      "name": "click",
+      "start": 8960.300000011921,
+      "duration": 120,
+      "interactionId": 6138
+    },
+    {
+      "name": "pointerdown",
+      "start": 9144.70000000298,
+      "duration": 120,
+      "interactionId": 6145
+    },
+    {
+      "name": "pointerup",
+      "start": 9144.800000011921,
+      "duration": 120,
+      "interactionId": 6145
+    },
+    {
+      "name": "click",
+      "start": 9144.800000011921,
+      "duration": 120,
+      "interactionId": 6145
+    },
+    {
+      "name": "pointerdown",
+      "start": 9328.40000000596,
+      "duration": 56,
+      "interactionId": 6152
+    },
+    {
+      "name": "pointerup",
+      "start": 9328.40000000596,
+      "duration": 56,
+      "interactionId": 6152
+    },
+    {
+      "name": "click",
+      "start": 9328.40000000596,
+      "duration": 56,
+      "interactionId": 6152
+    },
+    {
+      "name": "pointerdown",
+      "start": 9443.60000000894,
+      "duration": 512,
+      "interactionId": 6159
+    },
+    {
+      "name": "pointerup",
+      "start": 9443.70000000298,
+      "duration": 512,
+      "interactionId": 6159
+    },
+    {
+      "name": "click",
+      "start": 9443.70000000298,
+      "duration": 512,
+      "interactionId": 6159
+    },
+    {
+      "name": "pointerdown",
+      "start": 10027,
+      "duration": 168,
+      "interactionId": 6166
+    },
+    {
+      "name": "pointerup",
+      "start": 10027.10000000894,
+      "duration": 168,
+      "interactionId": 6166
+    },
+    {
+      "name": "click",
+      "start": 10027.10000000894,
+      "duration": 168,
+      "interactionId": 6166
+    },
+    {
+      "name": "pointerdown",
+      "start": 10260.20000000298,
+      "duration": 120,
+      "interactionId": 6173
+    },
+    {
+      "name": "pointerup",
+      "start": 10260.20000000298,
+      "duration": 120,
+      "interactionId": 6173
+    },
+    {
+      "name": "click",
+      "start": 10260.20000000298,
+      "duration": 120,
+      "interactionId": 6173
+    },
+    {
+      "name": "pointerdown",
+      "start": 10444.40000000596,
+      "duration": 112,
+      "interactionId": 6180
+    },
+    {
+      "name": "pointerup",
+      "start": 10444.40000000596,
+      "duration": 112,
+      "interactionId": 6180
+    },
+    {
+      "name": "click",
+      "start": 10444.40000000596,
+      "duration": 112,
+      "interactionId": 6180
+    },
+    {
+      "name": "pointerdown",
+      "start": 10627,
+      "duration": 56,
+      "interactionId": 6187
+    },
+    {
+      "name": "pointerup",
+      "start": 10627,
+      "duration": 56,
+      "interactionId": 6187
+    },
+    {
+      "name": "click",
+      "start": 10627,
+      "duration": 56,
+      "interactionId": 6187
+    },
+    {
+      "name": "pointerdown",
+      "start": 10744.60000000894,
+      "duration": 504,
+      "interactionId": 6194
+    },
+    {
+      "name": "pointerup",
+      "start": 10744.60000000894,
+      "duration": 504,
+      "interactionId": 6194
+    },
+    {
+      "name": "click",
+      "start": 10744.60000000894,
+      "duration": 504,
+      "interactionId": 6194
+    },
+    {
+      "name": "pointerdown",
+      "start": 11311,
+      "duration": 160,
+      "interactionId": 6201
+    },
+    {
+      "name": "pointerup",
+      "start": 11311,
+      "duration": 160,
+      "interactionId": 6201
+    },
+    {
+      "name": "click",
+      "start": 11311,
+      "duration": 160,
+      "interactionId": 6201
+    },
+    {
+      "name": "pointerdown",
+      "start": 11526.5,
+      "duration": 120,
+      "interactionId": 6208
+    },
+    {
+      "name": "pointerup",
+      "start": 11526.5,
+      "duration": 120,
+      "interactionId": 6208
+    },
+    {
+      "name": "click",
+      "start": 11526.5,
+      "duration": 120,
+      "interactionId": 6208
+    },
+    {
+      "name": "pointerdown",
+      "start": 11712.300000011921,
+      "duration": 112,
+      "interactionId": 6215
+    },
+    {
+      "name": "pointerup",
+      "start": 11712.300000011921,
+      "duration": 112,
+      "interactionId": 6215
+    },
+    {
+      "name": "click",
+      "start": 11712.300000011921,
+      "duration": 112,
+      "interactionId": 6215
+    },
+    {
+      "name": "pointerdown",
+      "start": 11893.90000000596,
+      "duration": 64,
+      "interactionId": 6222
+    },
+    {
+      "name": "pointerup",
+      "start": 11893.90000000596,
+      "duration": 64,
+      "interactionId": 6222
+    },
+    {
+      "name": "click",
+      "start": 11893.90000000596,
+      "duration": 64,
+      "interactionId": 6222
+    },
+    {
+      "name": "pointerdown",
+      "start": 12011.70000000298,
+      "duration": 504,
+      "interactionId": 6229
+    },
+    {
+      "name": "pointerup",
+      "start": 12011.800000011921,
+      "duration": 504,
+      "interactionId": 6229
+    },
+    {
+      "name": "click",
+      "start": 12011.800000011921,
+      "duration": 504,
+      "interactionId": 6229
+    },
+    {
+      "name": "pointerdown",
+      "start": 12577.40000000596,
+      "duration": 160,
+      "interactionId": 6236
+    },
+    {
+      "name": "pointerup",
+      "start": 12577.40000000596,
+      "duration": 160,
+      "interactionId": 6236
+    },
+    {
+      "name": "click",
+      "start": 12577.40000000596,
+      "duration": 160,
+      "interactionId": 6236
+    },
+    {
+      "name": "pointerdown",
+      "start": 12811.800000011921,
+      "duration": 120,
+      "interactionId": 6243
+    },
+    {
+      "name": "pointerup",
+      "start": 12811.800000011921,
+      "duration": 120,
+      "interactionId": 6243
+    },
+    {
+      "name": "click",
+      "start": 12811.800000011921,
+      "duration": 120,
+      "interactionId": 6243
+    },
+    {
+      "name": "pointerdown",
+      "start": 12994.90000000596,
+      "duration": 112,
+      "interactionId": 6250
+    },
+    {
+      "name": "pointerup",
+      "start": 12994.90000000596,
+      "duration": 112,
+      "interactionId": 6250
+    },
+    {
+      "name": "click",
+      "start": 12994.90000000596,
+      "duration": 112,
+      "interactionId": 6250
+    },
+    {
+      "name": "pointerdown",
+      "start": 13177.90000000596,
+      "duration": 56,
+      "interactionId": 6257
+    },
+    {
+      "name": "pointerup",
+      "start": 13178,
+      "duration": 56,
+      "interactionId": 6257
+    },
+    {
+      "name": "click",
+      "start": 13178,
+      "duration": 56,
+      "interactionId": 6257
+    },
+    {
+      "name": "pointerdown",
+      "start": 13294.90000000596,
+      "duration": 504,
+      "interactionId": 6264
+    },
+    {
+      "name": "pointerup",
+      "start": 13294.90000000596,
+      "duration": 504,
+      "interactionId": 6264
+    },
+    {
+      "name": "click",
+      "start": 13294.90000000596,
+      "duration": 504,
+      "interactionId": 6264
+    },
+    {
+      "name": "pointerdown",
+      "start": 13861.40000000596,
+      "duration": 168,
+      "interactionId": 6271
+    },
+    {
+      "name": "pointerup",
+      "start": 13861.40000000596,
+      "duration": 168,
+      "interactionId": 6271
+    },
+    {
+      "name": "click",
+      "start": 13861.40000000596,
+      "duration": 168,
+      "interactionId": 6271
+    },
+    {
+      "name": "pointerdown",
+      "start": 14093.300000011921,
+      "duration": 120,
+      "interactionId": 6278
+    },
+    {
+      "name": "pointerup",
+      "start": 14093.40000000596,
+      "duration": 120,
+      "interactionId": 6278
+    },
+    {
+      "name": "click",
+      "start": 14093.40000000596,
+      "duration": 120,
+      "interactionId": 6278
+    },
+    {
+      "name": "pointerdown",
+      "start": 14277.800000011921,
+      "duration": 112,
+      "interactionId": 6285
+    },
+    {
+      "name": "pointerup",
+      "start": 14277.90000000596,
+      "duration": 112,
+      "interactionId": 6285
+    },
+    {
+      "name": "click",
+      "start": 14277.90000000596,
+      "duration": 112,
+      "interactionId": 6285
+    },
+    {
+      "name": "pointerdown",
+      "start": 14461.800000011921,
+      "duration": 56,
+      "interactionId": 6292
+    },
+    {
+      "name": "pointerup",
+      "start": 14461.800000011921,
+      "duration": 56,
+      "interactionId": 6292
+    },
+    {
+      "name": "click",
+      "start": 14461.800000011921,
+      "duration": 56,
+      "interactionId": 6292
+    },
+    {
+      "name": "pointerdown",
+      "start": 14577.300000011921,
+      "duration": 504,
+      "interactionId": 6299
+    },
+    {
+      "name": "pointerup",
+      "start": 14577.300000011921,
+      "duration": 504,
+      "interactionId": 6299
+    },
+    {
+      "name": "click",
+      "start": 14577.300000011921,
+      "duration": 504,
+      "interactionId": 6299
+    },
+    {
+      "name": "pointerdown",
+      "start": 15145,
+      "duration": 168,
+      "interactionId": 6306
+    },
+    {
+      "name": "pointerup",
+      "start": 15145,
+      "duration": 168,
+      "interactionId": 6306
+    },
+    {
+      "name": "click",
+      "start": 15145,
+      "duration": 168,
+      "interactionId": 6306
+    },
+    {
+      "name": "pointerdown",
+      "start": 15378.20000000298,
+      "duration": 120,
+      "interactionId": 6313
+    },
+    {
+      "name": "pointerup",
+      "start": 15378.20000000298,
+      "duration": 120,
+      "interactionId": 6313
+    },
+    {
+      "name": "click",
+      "start": 15378.20000000298,
+      "duration": 120,
+      "interactionId": 6313
+    },
+    {
+      "name": "pointerdown",
+      "start": 15561.60000000894,
+      "duration": 112,
+      "interactionId": 6320
+    },
+    {
+      "name": "pointerup",
+      "start": 15561.70000000298,
+      "duration": 112,
+      "interactionId": 6320
+    },
+    {
+      "name": "click",
+      "start": 15561.70000000298,
+      "duration": 112,
+      "interactionId": 6320
+    },
+    {
+      "name": "pointerdown",
+      "start": 15745,
+      "duration": 16,
+      "interactionId": 6327
+    },
+    {
+      "name": "pointerup",
+      "start": 15745,
+      "duration": 16,
+      "interactionId": 6327
+    },
+    {
+      "name": "click",
+      "start": 15745,
+      "duration": 16,
+      "interactionId": 6327
+    },
+    {
+      "name": "pointerdown",
+      "start": 15778.20000000298,
+      "duration": 16,
+      "interactionId": 6334
+    },
+    {
+      "name": "pointerup",
+      "start": 15778.20000000298,
+      "duration": 16,
+      "interactionId": 6334
+    },
+    {
+      "name": "click",
+      "start": 15778.20000000298,
+      "duration": 16,
+      "interactionId": 6334
+    },
+    {
+      "name": "pointerdown",
+      "start": 15811.20000000298,
+      "duration": 120,
+      "interactionId": 6341
+    },
+    {
+      "name": "pointerup",
+      "start": 15811.20000000298,
+      "duration": 120,
+      "interactionId": 6341
+    },
+    {
+      "name": "click",
+      "start": 15811.20000000298,
+      "duration": 120,
+      "interactionId": 6341
+    },
+    {
+      "name": "pointerdown",
+      "start": 15994.40000000596,
+      "duration": 120,
+      "interactionId": 6348
+    },
+    {
+      "name": "pointerup",
+      "start": 15994.5,
+      "duration": 120,
+      "interactionId": 6348
+    },
+    {
+      "name": "click",
+      "start": 15994.5,
+      "duration": 120,
+      "interactionId": 6348
+    },
+    {
+      "name": "pointerdown",
+      "start": 16177.800000011921,
+      "duration": 56,
+      "interactionId": 6355
+    },
+    {
+      "name": "pointerup",
+      "start": 16177.800000011921,
+      "duration": 56,
+      "interactionId": 6355
+    },
+    {
+      "name": "click",
+      "start": 16177.800000011921,
+      "duration": 56,
+      "interactionId": 6355
+    },
+    {
+      "name": "pointerdown",
+      "start": 16294.800000011921,
+      "duration": 520,
+      "interactionId": 6362
+    },
+    {
+      "name": "pointerup",
+      "start": 16294.800000011921,
+      "duration": 520,
+      "interactionId": 6362
+    },
+    {
+      "name": "click",
+      "start": 16294.800000011921,
+      "duration": 520,
+      "interactionId": 6362
+    },
+    {
+      "name": "pointerdown",
+      "start": 16878.10000000894,
+      "duration": 160,
+      "interactionId": 6369
+    },
+    {
+      "name": "pointerup",
+      "start": 16878.20000000298,
+      "duration": 160,
+      "interactionId": 6369
+    },
+    {
+      "name": "click",
+      "start": 16878.20000000298,
+      "duration": 160,
+      "interactionId": 6369
+    },
+    {
+      "name": "pointerdown",
+      "start": 17094.60000000894,
+      "duration": 120,
+      "interactionId": 6376
+    },
+    {
+      "name": "pointerup",
+      "start": 17094.70000000298,
+      "duration": 120,
+      "interactionId": 6376
+    },
+    {
+      "name": "click",
+      "start": 17094.70000000298,
+      "duration": 120,
+      "interactionId": 6376
+    },
+    {
+      "name": "pointerdown",
+      "start": 17278.20000000298,
+      "duration": 112,
+      "interactionId": 6383
+    },
+    {
+      "name": "pointerup",
+      "start": 17278.20000000298,
+      "duration": 112,
+      "interactionId": 6383
+    },
+    {
+      "name": "click",
+      "start": 17278.20000000298,
+      "duration": 112,
+      "interactionId": 6383
+    },
+    {
+      "name": "pointerdown",
+      "start": 17461.5,
+      "duration": 56,
+      "interactionId": 6390
+    },
+    {
+      "name": "pointerup",
+      "start": 17461.60000000894,
+      "duration": 56,
+      "interactionId": 6390
+    },
+    {
+      "name": "click",
+      "start": 17461.60000000894,
+      "duration": 56,
+      "interactionId": 6390
+    },
+    {
+      "name": "pointerdown",
+      "start": 17578.10000000894,
+      "duration": 512,
+      "interactionId": 6397
+    },
+    {
+      "name": "pointerup",
+      "start": 17578.10000000894,
+      "duration": 512,
+      "interactionId": 6397
+    },
+    {
+      "name": "click",
+      "start": 17578.10000000894,
+      "duration": 512,
+      "interactionId": 6397
+    },
+    {
+      "name": "pointerdown",
+      "start": 18160.30000001192,
+      "duration": 168,
+      "interactionId": 6404
+    },
+    {
+      "name": "pointerup",
+      "start": 18160.40000000596,
+      "duration": 168,
+      "interactionId": 6404
+    },
+    {
+      "name": "click",
+      "start": 18160.40000000596,
+      "duration": 168,
+      "interactionId": 6404
+    },
+    {
+      "name": "pointerdown",
+      "start": 18395.5,
+      "duration": 120,
+      "interactionId": 6411
+    },
+    {
+      "name": "pointerup",
+      "start": 18395.60000000894,
+      "duration": 120,
+      "interactionId": 6411
+    },
+    {
+      "name": "click",
+      "start": 18395.60000000894,
+      "duration": 120,
+      "interactionId": 6411
+    },
+    {
+      "name": "pointerdown",
+      "start": 18578.30000001192,
+      "duration": 112,
+      "interactionId": 6418
+    },
+    {
+      "name": "pointerup",
+      "start": 18578.30000001192,
+      "duration": 112,
+      "interactionId": 6418
+    },
+    {
+      "name": "click",
+      "start": 18578.30000001192,
+      "duration": 112,
+      "interactionId": 6418
+    },
+    {
+      "name": "pointerdown",
+      "start": 18760.30000001192,
+      "duration": 56,
+      "interactionId": 6425
+    },
+    {
+      "name": "pointerup",
+      "start": 18760.40000000596,
+      "duration": 56,
+      "interactionId": 6425
+    },
+    {
+      "name": "click",
+      "start": 18760.40000000596,
+      "duration": 56,
+      "interactionId": 6425
+    },
+    {
+      "name": "pointerdown",
+      "start": 18876.90000000596,
+      "duration": 512,
+      "interactionId": 6432
+    },
+    {
+      "name": "pointerup",
+      "start": 18876.90000000596,
+      "duration": 512,
+      "interactionId": 6432
+    },
+    {
+      "name": "click",
+      "start": 18876.90000000596,
+      "duration": 512,
+      "interactionId": 6432
+    },
+    {
+      "name": "pointerdown",
+      "start": 19462,
+      "duration": 168,
+      "interactionId": 6439
+    },
+    {
+      "name": "pointerup",
+      "start": 19462,
+      "duration": 168,
+      "interactionId": 6439
+    },
+    {
+      "name": "click",
+      "start": 19462,
+      "duration": 168,
+      "interactionId": 6439
+    },
+    {
+      "name": "pointerdown",
+      "start": 19693.40000000596,
+      "duration": 120,
+      "interactionId": 6446
+    },
+    {
+      "name": "pointerup",
+      "start": 19693.40000000596,
+      "duration": 120,
+      "interactionId": 6446
+    },
+    {
+      "name": "click",
+      "start": 19693.40000000596,
+      "duration": 120,
+      "interactionId": 6446
+    },
+    {
+      "name": "pointerdown",
+      "start": 19877.10000000894,
+      "duration": 112,
+      "interactionId": 6453
+    },
+    {
+      "name": "pointerup",
+      "start": 19877.10000000894,
+      "duration": 112,
+      "interactionId": 6453
+    },
+    {
+      "name": "click",
+      "start": 19877.10000000894,
+      "duration": 112,
+      "interactionId": 6453
+    },
+    {
+      "name": "pointerdown",
+      "start": 20044.40000000596,
+      "duration": 64,
+      "interactionId": 6460
+    },
+    {
+      "name": "pointerup",
+      "start": 20044.5,
+      "duration": 64,
+      "interactionId": 6460
+    },
+    {
+      "name": "click",
+      "start": 20044.5,
+      "duration": 64,
+      "interactionId": 6460
+    },
+    {
+      "name": "pointerdown",
+      "start": 20177.20000000298,
+      "duration": 496,
+      "interactionId": 6467
+    },
+    {
+      "name": "pointerup",
+      "start": 20177.30000001192,
+      "duration": 496,
+      "interactionId": 6467
+    },
+    {
+      "name": "click",
+      "start": 20177.30000001192,
+      "duration": 496,
+      "interactionId": 6467
+    },
+    {
+      "name": "pointerdown",
+      "start": 20743.70000000298,
+      "duration": 168,
+      "interactionId": 6474
+    },
+    {
+      "name": "pointerup",
+      "start": 20743.70000000298,
+      "duration": 168,
+      "interactionId": 6474
+    },
+    {
+      "name": "click",
+      "start": 20743.70000000298,
+      "duration": 168,
+      "interactionId": 6474
+    },
+    {
+      "name": "pointerdown",
+      "start": 20976.5,
+      "duration": 120,
+      "interactionId": 6481
+    },
+    {
+      "name": "pointerup",
+      "start": 20976.5,
+      "duration": 120,
+      "interactionId": 6481
+    },
+    {
+      "name": "click",
+      "start": 20976.5,
+      "duration": 120,
+      "interactionId": 6481
+    },
+    {
+      "name": "pointerdown",
+      "start": 21160.10000000894,
+      "duration": 112,
+      "interactionId": 6488
+    },
+    {
+      "name": "pointerup",
+      "start": 21160.10000000894,
+      "duration": 112,
+      "interactionId": 6488
+    },
+    {
+      "name": "click",
+      "start": 21160.10000000894,
+      "duration": 112,
+      "interactionId": 6488
+    },
+    {
+      "name": "pointerdown",
+      "start": 21327.70000000298,
+      "duration": 56,
+      "interactionId": 6495
+    },
+    {
+      "name": "pointerup",
+      "start": 21327.70000000298,
+      "duration": 56,
+      "interactionId": 6495
+    },
+    {
+      "name": "click",
+      "start": 21327.70000000298,
+      "duration": 56,
+      "interactionId": 6495
+    },
+    {
+      "name": "pointerdown",
+      "start": 21444.30000001192,
+      "duration": 504,
+      "interactionId": 6502
+    },
+    {
+      "name": "pointerup",
+      "start": 21444.30000001192,
+      "duration": 504,
+      "interactionId": 6502
+    },
+    {
+      "name": "click",
+      "start": 21444.30000001192,
+      "duration": 504,
+      "interactionId": 6502
+    },
+    {
+      "name": "pointerdown",
+      "start": 22011.60000000894,
+      "duration": 168,
+      "interactionId": 6509
+    },
+    {
+      "name": "pointerup",
+      "start": 22011.60000000894,
+      "duration": 168,
+      "interactionId": 6509
+    },
+    {
+      "name": "click",
+      "start": 22011.60000000894,
+      "duration": 168,
+      "interactionId": 6509
+    },
+    {
+      "name": "pointerdown",
+      "start": 22242.5,
+      "duration": 112,
+      "interactionId": 6516
+    },
+    {
+      "name": "pointerup",
+      "start": 22242.5,
+      "duration": 112,
+      "interactionId": 6516
+    },
+    {
+      "name": "click",
+      "start": 22242.5,
+      "duration": 112,
+      "interactionId": 6516
+    },
+    {
+      "name": "pointerdown",
+      "start": 22426.70000000298,
+      "duration": 112,
+      "interactionId": 6523
+    },
+    {
+      "name": "pointerup",
+      "start": 22426.70000000298,
+      "duration": 112,
+      "interactionId": 6523
+    },
+    {
+      "name": "click",
+      "start": 22426.70000000298,
+      "duration": 112,
+      "interactionId": 6523
+    },
+    {
+      "name": "pointerdown",
+      "start": 22592.70000000298,
+      "duration": 16,
+      "interactionId": 6530
+    },
+    {
+      "name": "pointerup",
+      "start": 22592.70000000298,
+      "duration": 16,
+      "interactionId": 6530
+    },
+    {
+      "name": "click",
+      "start": 22592.70000000298,
+      "duration": 16,
+      "interactionId": 6530
+    },
+    {
+      "name": "pointerdown",
+      "start": 22626.80000001192,
+      "duration": 16,
+      "interactionId": 6537
+    },
+    {
+      "name": "pointerup",
+      "start": 22626.80000001192,
+      "duration": 16,
+      "interactionId": 6537
+    },
+    {
+      "name": "click",
+      "start": 22626.80000001192,
+      "duration": 16,
+      "interactionId": 6537
+    },
+    {
+      "name": "pointerdown",
+      "start": 22660.5,
+      "duration": 120,
+      "interactionId": 6544
+    },
+    {
+      "name": "pointerup",
+      "start": 22660.60000000894,
+      "duration": 120,
+      "interactionId": 6544
+    },
+    {
+      "name": "click",
+      "start": 22660.60000000894,
+      "duration": 120,
+      "interactionId": 6544
+    },
+    {
+      "name": "pointerdown",
+      "start": 22845.70000000298,
+      "duration": 120,
+      "interactionId": 6551
+    },
+    {
+      "name": "pointerup",
+      "start": 22845.70000000298,
+      "duration": 120,
+      "interactionId": 6551
+    },
+    {
+      "name": "click",
+      "start": 22845.70000000298,
+      "duration": 120,
+      "interactionId": 6551
+    },
+    {
+      "name": "pointerdown",
+      "start": 23027,
+      "duration": 64,
+      "interactionId": 6558
+    },
+    {
+      "name": "pointerup",
+      "start": 23027,
+      "duration": 64,
+      "interactionId": 6558
+    },
+    {
+      "name": "click",
+      "start": 23027,
+      "duration": 64,
+      "interactionId": 6558
+    },
+    {
+      "name": "pointerdown",
+      "start": 23144.70000000298,
+      "duration": 512,
+      "interactionId": 6565
+    },
+    {
+      "name": "pointerup",
+      "start": 23144.70000000298,
+      "duration": 512,
+      "interactionId": 6565
+    },
+    {
+      "name": "click",
+      "start": 23144.70000000298,
+      "duration": 512,
+      "interactionId": 6565
+    },
+    {
+      "name": "pointerdown",
+      "start": 23711.10000000894,
+      "duration": 160,
+      "interactionId": 6572
+    },
+    {
+      "name": "pointerup",
+      "start": 23711.20000000298,
+      "duration": 160,
+      "interactionId": 6572
+    },
+    {
+      "name": "click",
+      "start": 23711.20000000298,
+      "duration": 160,
+      "interactionId": 6572
+    },
+    {
+      "name": "pointerdown",
+      "start": 23927.80000001192,
+      "duration": 120,
+      "interactionId": 6579
+    },
+    {
+      "name": "pointerup",
+      "start": 23927.80000001192,
+      "duration": 120,
+      "interactionId": 6579
+    },
+    {
+      "name": "click",
+      "start": 23927.80000001192,
+      "duration": 120,
+      "interactionId": 6579
+    },
+    {
+      "name": "pointerdown",
+      "start": 24128,
+      "duration": 112,
+      "interactionId": 6586
+    },
+    {
+      "name": "pointerup",
+      "start": 24128,
+      "duration": 112,
+      "interactionId": 6586
+    },
+    {
+      "name": "click",
+      "start": 24128,
+      "duration": 112,
+      "interactionId": 6586
+    },
+    {
+      "name": "pointerdown",
+      "start": 24311.20000000298,
+      "duration": 56,
+      "interactionId": 6593
+    },
+    {
+      "name": "pointerup",
+      "start": 24311.20000000298,
+      "duration": 56,
+      "interactionId": 6593
+    },
+    {
+      "name": "click",
+      "start": 24311.20000000298,
+      "duration": 56,
+      "interactionId": 6593
+    },
+    {
+      "name": "pointerdown",
+      "start": 24426.70000000298,
+      "duration": 504,
+      "interactionId": 6600
+    },
+    {
+      "name": "pointerup",
+      "start": 24426.70000000298,
+      "duration": 504,
+      "interactionId": 6600
+    },
+    {
+      "name": "click",
+      "start": 24426.70000000298,
+      "duration": 504,
+      "interactionId": 6600
+    },
+    {
+      "name": "pointerdown",
+      "start": 24994.30000001192,
+      "duration": 168,
+      "interactionId": 6607
+    },
+    {
+      "name": "pointerup",
+      "start": 24994.30000001192,
+      "duration": 168,
+      "interactionId": 6607
+    },
+    {
+      "name": "click",
+      "start": 24994.30000001192,
+      "duration": 168,
+      "interactionId": 6607
+    },
+    {
+      "name": "pointerdown",
+      "start": 25226.70000000298,
+      "duration": 120,
+      "interactionId": 6614
+    },
+    {
+      "name": "pointerup",
+      "start": 25226.70000000298,
+      "duration": 120,
+      "interactionId": 6614
+    },
+    {
+      "name": "click",
+      "start": 25226.70000000298,
+      "duration": 120,
+      "interactionId": 6614
+    },
+    {
+      "name": "pointerdown",
+      "start": 25411.30000001192,
+      "duration": 112,
+      "interactionId": 6621
+    },
+    {
+      "name": "pointerup",
+      "start": 25411.30000001192,
+      "duration": 112,
+      "interactionId": 6621
+    },
+    {
+      "name": "click",
+      "start": 25411.30000001192,
+      "duration": 112,
+      "interactionId": 6621
+    },
+    {
+      "name": "pointerdown",
+      "start": 25593,
+      "duration": 56,
+      "interactionId": 6628
+    },
+    {
+      "name": "pointerup",
+      "start": 25593,
+      "duration": 56,
+      "interactionId": 6628
+    },
+    {
+      "name": "click",
+      "start": 25593,
+      "duration": 56,
+      "interactionId": 6628
+    },
+    {
+      "name": "pointerdown",
+      "start": 25710.20000000298,
+      "duration": 504,
+      "interactionId": 6635
+    },
+    {
+      "name": "pointerup",
+      "start": 25710.20000000298,
+      "duration": 504,
+      "interactionId": 6635
+    },
+    {
+      "name": "click",
+      "start": 25710.20000000298,
+      "duration": 504,
+      "interactionId": 6635
+    },
+    {
+      "name": "pointerdown",
+      "start": 26277.90000000596,
+      "duration": 168,
+      "interactionId": 6642
+    },
+    {
+      "name": "pointerup",
+      "start": 26277.90000000596,
+      "duration": 168,
+      "interactionId": 6642
+    },
+    {
+      "name": "click",
+      "start": 26277.90000000596,
+      "duration": 168,
+      "interactionId": 6642
+    },
+    {
+      "name": "pointerdown",
+      "start": 26511.40000000596,
+      "duration": 120,
+      "interactionId": 6649
+    },
+    {
+      "name": "pointerup",
+      "start": 26511.40000000596,
+      "duration": 120,
+      "interactionId": 6649
+    },
+    {
+      "name": "click",
+      "start": 26511.40000000596,
+      "duration": 120,
+      "interactionId": 6649
+    },
+    {
+      "name": "pointerdown",
+      "start": 26693.80000001192,
+      "duration": 112,
+      "interactionId": 6656
+    },
+    {
+      "name": "pointerup",
+      "start": 26693.80000001192,
+      "duration": 112,
+      "interactionId": 6656
+    },
+    {
+      "name": "click",
+      "start": 26693.80000001192,
+      "duration": 112,
+      "interactionId": 6656
+    },
+    {
+      "name": "pointerdown",
+      "start": 26876.80000001192,
+      "duration": 56,
+      "interactionId": 6663
+    },
+    {
+      "name": "pointerup",
+      "start": 26876.80000001192,
+      "duration": 56,
+      "interactionId": 6663
+    },
+    {
+      "name": "click",
+      "start": 26876.80000001192,
+      "duration": 56,
+      "interactionId": 6663
+    },
+    {
+      "name": "pointerdown",
+      "start": 26994.30000001192,
+      "duration": 496,
+      "interactionId": 6670
+    },
+    {
+      "name": "pointerup",
+      "start": 26994.30000001192,
+      "duration": 496,
+      "interactionId": 6670
+    },
+    {
+      "name": "click",
+      "start": 26994.30000001192,
+      "duration": 496,
+      "interactionId": 6670
+    },
+    {
+      "name": "pointerdown",
+      "start": 27560.40000000596,
+      "duration": 168,
+      "interactionId": 6677
+    },
+    {
+      "name": "pointerup",
+      "start": 27560.5,
+      "duration": 168,
+      "interactionId": 6677
+    },
+    {
+      "name": "click",
+      "start": 27560.5,
+      "duration": 168,
+      "interactionId": 6677
+    },
+    {
+      "name": "pointerdown",
+      "start": 27794.30000001192,
+      "duration": 112,
+      "interactionId": 6684
+    },
+    {
+      "name": "pointerup",
+      "start": 27794.30000001192,
+      "duration": 112,
+      "interactionId": 6684
+    },
+    {
+      "name": "click",
+      "start": 27794.30000001192,
+      "duration": 112,
+      "interactionId": 6684
+    },
+    {
+      "name": "pointerdown",
+      "start": 27977.60000000894,
+      "duration": 112,
+      "interactionId": 6691
+    },
+    {
+      "name": "pointerup",
+      "start": 27977.70000000298,
+      "duration": 112,
+      "interactionId": 6691
+    },
+    {
+      "name": "click",
+      "start": 27977.70000000298,
+      "duration": 112,
+      "interactionId": 6691
+    },
+    {
+      "name": "pointerdown",
+      "start": 28160.10000000894,
+      "duration": 56,
+      "interactionId": 6698
+    },
+    {
+      "name": "pointerup",
+      "start": 28160.10000000894,
+      "duration": 56,
+      "interactionId": 6698
+    },
+    {
+      "name": "click",
+      "start": 28160.10000000894,
+      "duration": 56,
+      "interactionId": 6698
+    },
+    {
+      "name": "pointerdown",
+      "start": 28276,
+      "duration": 496,
+      "interactionId": 6705
+    },
+    {
+      "name": "pointerup",
+      "start": 28276,
+      "duration": 496,
+      "interactionId": 6705
+    },
+    {
+      "name": "click",
+      "start": 28276,
+      "duration": 496,
+      "interactionId": 6705
+    },
+    {
+      "name": "pointerdown",
+      "start": 28844.40000000596,
+      "duration": 168,
+      "interactionId": 6712
+    },
+    {
+      "name": "pointerup",
+      "start": 28844.40000000596,
+      "duration": 168,
+      "interactionId": 6712
+    },
+    {
+      "name": "click",
+      "start": 28844.40000000596,
+      "duration": 168,
+      "interactionId": 6712
+    },
+    {
+      "name": "pointerdown",
+      "start": 29076.40000000596,
+      "duration": 120,
+      "interactionId": 6719
+    },
+    {
+      "name": "pointerup",
+      "start": 29076.40000000596,
+      "duration": 120,
+      "interactionId": 6719
+    },
+    {
+      "name": "click",
+      "start": 29076.40000000596,
+      "duration": 120,
+      "interactionId": 6719
+    },
+    {
+      "name": "pointerdown",
+      "start": 29261.10000000894,
+      "duration": 112,
+      "interactionId": 6726
+    },
+    {
+      "name": "pointerup",
+      "start": 29261.10000000894,
+      "duration": 112,
+      "interactionId": 6726
+    },
+    {
+      "name": "click",
+      "start": 29261.10000000894,
+      "duration": 112,
+      "interactionId": 6726
+    },
+    {
+      "name": "pointerdown",
+      "start": 29427,
+      "duration": 16,
+      "interactionId": 6733
+    },
+    {
+      "name": "pointerup",
+      "start": 29427.10000000894,
+      "duration": 16,
+      "interactionId": 6733
+    },
+    {
+      "name": "click",
+      "start": 29427.10000000894,
+      "duration": 16,
+      "interactionId": 6733
+    },
+    {
+      "name": "pointerdown",
+      "start": 29459,
+      "duration": 16,
+      "interactionId": 6740
+    },
+    {
+      "name": "pointerup",
+      "start": 29459,
+      "duration": 16,
+      "interactionId": 6740
+    },
+    {
+      "name": "click",
+      "start": 29459,
+      "duration": 16,
+      "interactionId": 6740
+    },
+    {
+      "name": "pointerdown",
+      "start": 29493.30000001192,
+      "duration": 120,
+      "interactionId": 6747
+    },
+    {
+      "name": "pointerup",
+      "start": 29493.30000001192,
+      "duration": 120,
+      "interactionId": 6747
+    },
+    {
+      "name": "click",
+      "start": 29493.30000001192,
+      "duration": 120,
+      "interactionId": 6747
+    },
+    {
+      "name": "pointerdown",
+      "start": 29677.5,
+      "duration": 112,
+      "interactionId": 6754
+    },
+    {
+      "name": "pointerup",
+      "start": 29677.5,
+      "duration": 112,
+      "interactionId": 6754
+    },
+    {
+      "name": "click",
+      "start": 29677.5,
+      "duration": 112,
+      "interactionId": 6754
+    },
+    {
+      "name": "pointerdown",
+      "start": 29860.10000000894,
+      "duration": 64,
+      "interactionId": 6761
+    },
+    {
+      "name": "pointerup",
+      "start": 29860.10000000894,
+      "duration": 64,
+      "interactionId": 6761
+    },
+    {
+      "name": "click",
+      "start": 29860.10000000894,
+      "duration": 64,
+      "interactionId": 6761
+    },
+    {
+      "name": "pointerdown",
+      "start": 29976.10000000894,
+      "duration": 504,
+      "interactionId": 6768
+    },
+    {
+      "name": "pointerup",
+      "start": 29976.10000000894,
+      "duration": 504,
+      "interactionId": 6768
+    },
+    {
+      "name": "click",
+      "start": 29976.10000000894,
+      "duration": 504,
+      "interactionId": 6768
+    },
+    {
+      "name": "pointerdown",
+      "start": 30711.10000000894,
+      "duration": 160,
+      "interactionId": 6775
+    },
+    {
+      "name": "pointerup",
+      "start": 30711.20000000298,
+      "duration": 160,
+      "interactionId": 6775
+    },
+    {
+      "name": "click",
+      "start": 30711.20000000298,
+      "duration": 160,
+      "interactionId": 6775
+    },
+    {
+      "name": "pointerdown",
+      "start": 30927.30000001192,
+      "duration": 120,
+      "interactionId": 6782
+    },
+    {
+      "name": "pointerup",
+      "start": 30927.30000001192,
+      "duration": 120,
+      "interactionId": 6782
+    },
+    {
+      "name": "click",
+      "start": 30927.30000001192,
+      "duration": 120,
+      "interactionId": 6782
+    },
+    {
+      "name": "pointerdown",
+      "start": 31111,
+      "duration": 112,
+      "interactionId": 6789
+    },
+    {
+      "name": "pointerup",
+      "start": 31111.10000000894,
+      "duration": 112,
+      "interactionId": 6789
+    },
+    {
+      "name": "click",
+      "start": 31111.10000000894,
+      "duration": 112,
+      "interactionId": 6789
+    },
+    {
+      "name": "pointerdown",
+      "start": 31293.90000000596,
+      "duration": 56,
+      "interactionId": 6796
+    },
+    {
+      "name": "pointerup",
+      "start": 31293.90000000596,
+      "duration": 56,
+      "interactionId": 6796
+    },
+    {
+      "name": "click",
+      "start": 31293.90000000596,
+      "duration": 56,
+      "interactionId": 6796
+    },
+    {
+      "name": "pointerdown",
+      "start": 31409.5,
+      "duration": 504,
+      "interactionId": 6803
+    },
+    {
+      "name": "pointerup",
+      "start": 31409.5,
+      "duration": 504,
+      "interactionId": 6803
+    },
+    {
+      "name": "click",
+      "start": 31409.5,
+      "duration": 504,
+      "interactionId": 6803
+    },
+    {
+      "name": "pointerdown",
+      "start": 31976.90000000596,
+      "duration": 160,
+      "interactionId": 6810
+    },
+    {
+      "name": "pointerup",
+      "start": 31976.90000000596,
+      "duration": 160,
+      "interactionId": 6810
+    },
+    {
+      "name": "click",
+      "start": 31976.90000000596,
+      "duration": 160,
+      "interactionId": 6810
+    },
+    {
+      "name": "pointerdown",
+      "start": 32193.80000001192,
+      "duration": 120,
+      "interactionId": 6817
+    },
+    {
+      "name": "pointerup",
+      "start": 32193.80000001192,
+      "duration": 120,
+      "interactionId": 6817
+    },
+    {
+      "name": "click",
+      "start": 32193.80000001192,
+      "duration": 120,
+      "interactionId": 6817
+    },
+    {
+      "name": "pointerdown",
+      "start": 32377.80000001192,
+      "duration": 112,
+      "interactionId": 6824
+    },
+    {
+      "name": "pointerup",
+      "start": 32377.80000001192,
+      "duration": 112,
+      "interactionId": 6824
+    },
+    {
+      "name": "click",
+      "start": 32377.80000001192,
+      "duration": 112,
+      "interactionId": 6824
+    },
+    {
+      "name": "pointerdown",
+      "start": 32560.30000001192,
+      "duration": 56,
+      "interactionId": 6831
+    },
+    {
+      "name": "pointerup",
+      "start": 32560.30000001192,
+      "duration": 56,
+      "interactionId": 6831
+    },
+    {
+      "name": "click",
+      "start": 32560.30000001192,
+      "duration": 56,
+      "interactionId": 6831
+    },
+    {
+      "name": "pointerdown",
+      "start": 32677.40000000596,
+      "duration": 496,
+      "interactionId": 6838
+    },
+    {
+      "name": "pointerup",
+      "start": 32677.40000000596,
+      "duration": 496,
+      "interactionId": 6838
+    },
+    {
+      "name": "click",
+      "start": 32677.40000000596,
+      "duration": 496,
+      "interactionId": 6838
+    },
+    {
+      "name": "pointerdown",
+      "start": 33243.70000000298,
+      "duration": 160,
+      "interactionId": 6845
+    },
+    {
+      "name": "pointerup",
+      "start": 33243.70000000298,
+      "duration": 160,
+      "interactionId": 6845
+    },
+    {
+      "name": "click",
+      "start": 33243.70000000298,
+      "duration": 160,
+      "interactionId": 6845
+    },
+    {
+      "name": "pointerdown",
+      "start": 33476.90000000596,
+      "duration": 120,
+      "interactionId": 6852
+    },
+    {
+      "name": "pointerup",
+      "start": 33476.90000000596,
+      "duration": 120,
+      "interactionId": 6852
+    },
+    {
+      "name": "click",
+      "start": 33476.90000000596,
+      "duration": 120,
+      "interactionId": 6852
+    },
+    {
+      "name": "pointerdown",
+      "start": 33660.70000000298,
+      "duration": 112,
+      "interactionId": 6859
+    },
+    {
+      "name": "pointerup",
+      "start": 33660.70000000298,
+      "duration": 112,
+      "interactionId": 6859
+    },
+    {
+      "name": "click",
+      "start": 33660.70000000298,
+      "duration": 112,
+      "interactionId": 6859
+    },
+    {
+      "name": "pointerdown",
+      "start": 33826.60000000894,
+      "duration": 56,
+      "interactionId": 6866
+    },
+    {
+      "name": "pointerup",
+      "start": 33826.60000000894,
+      "duration": 56,
+      "interactionId": 6866
+    },
+    {
+      "name": "click",
+      "start": 33826.60000000894,
+      "duration": 56,
+      "interactionId": 6866
+    },
+    {
+      "name": "pointerdown",
+      "start": 33943.90000000596,
+      "duration": 488,
+      "interactionId": 6873
+    },
+    {
+      "name": "pointerup",
+      "start": 33943.90000000596,
+      "duration": 488,
+      "interactionId": 6873
+    },
+    {
+      "name": "click",
+      "start": 33943.90000000596,
+      "duration": 488,
+      "interactionId": 6873
+    },
+    {
+      "name": "pointerdown",
+      "start": 34493.10000000894,
+      "duration": 160,
+      "interactionId": 6880
+    },
+    {
+      "name": "pointerup",
+      "start": 34493.10000000894,
+      "duration": 160,
+      "interactionId": 6880
+    },
+    {
+      "name": "click",
+      "start": 34493.10000000894,
+      "duration": 160,
+      "interactionId": 6880
+    },
+    {
+      "name": "pointerdown",
+      "start": 34727.40000000596,
+      "duration": 120,
+      "interactionId": 6887
+    },
+    {
+      "name": "pointerup",
+      "start": 34727.40000000596,
+      "duration": 120,
+      "interactionId": 6887
+    },
+    {
+      "name": "click",
+      "start": 34727.40000000596,
+      "duration": 120,
+      "interactionId": 6887
+    }
+  ],
+  "mainNodes": 144,
+  "domNodes": 309,
+  "resources": [
+    {
+      "name": "/styles.css",
+      "duration": 1.8999999910593033,
+      "transferSize": 144970,
+      "encodedBodySize": 144670,
+      "decodedBodySize": 144670,
+      "initiatorType": "link"
+    },
+    {
+      "name": "/desktop.css",
+      "duration": 2.199999988079071,
+      "transferSize": 8928,
+      "encodedBodySize": 8628,
+      "decodedBodySize": 8628,
+      "initiatorType": "link"
+    },
+    {
+      "name": "/workspace.css",
+      "duration": 2.7999999970197678,
+      "transferSize": 147618,
+      "encodedBodySize": 147318,
+      "decodedBodySize": 147318,
+      "initiatorType": "link"
+    },
+    {
+      "name": "/proactive.css",
+      "duration": 3.7000000029802322,
+      "transferSize": 5530,
+      "encodedBodySize": 5230,
+      "decodedBodySize": 5230,
+      "initiatorType": "link"
+    },
+    {
+      "name": "/assets/brands/morzsa.svg",
+      "duration": 15.200000002980232,
+      "transferSize": 943,
+      "encodedBodySize": 643,
+      "decodedBodySize": 643,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/catalog.js",
+      "duration": 3.6000000089406967,
+      "transferSize": 26151,
+      "encodedBodySize": 25851,
+      "decodedBodySize": 25851,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/assets/ui/layout-grid.svg",
+      "duration": 16,
+      "transferSize": 799,
+      "encodedBodySize": 499,
+      "decodedBodySize": 499,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/shopping-cart.svg",
+      "duration": 16,
+      "transferSize": 758,
+      "encodedBodySize": 458,
+      "decodedBodySize": 458,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/house.svg",
+      "duration": 16.100000008940697,
+      "transferSize": 768,
+      "encodedBodySize": 468,
+      "decodedBodySize": 468,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/chef-hat.svg",
+      "duration": 16.100000008940697,
+      "transferSize": 787,
+      "encodedBodySize": 487,
+      "decodedBodySize": 487,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/translations.js",
+      "duration": 3.7000000029802322,
+      "transferSize": 8889,
+      "encodedBodySize": 8589,
+      "decodedBodySize": 8589,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/i18n.js",
+      "duration": 3.5999999940395355,
+      "transferSize": 16659,
+      "encodedBodySize": 16359,
+      "decodedBodySize": 16359,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/recipes.js",
+      "duration": 3.5999999940395355,
+      "transferSize": 5576,
+      "encodedBodySize": 5276,
+      "decodedBodySize": 5276,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/quick-entry.js",
+      "duration": 4,
+      "transferSize": 1744,
+      "encodedBodySize": 1444,
+      "decodedBodySize": 1444,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/kitchen-model.js",
+      "duration": 4.5999999940395355,
+      "transferSize": 9541,
+      "encodedBodySize": 9241,
+      "decodedBodySize": 9241,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/shopping-model.js",
+      "duration": 4.4000000059604645,
+      "transferSize": 1781,
+      "encodedBodySize": 1481,
+      "decodedBodySize": 1481,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/workspace-entry.js",
+      "duration": 4.5,
+      "transferSize": 2140,
+      "encodedBodySize": 1840,
+      "decodedBodySize": 1840,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/surprise-recipe.js",
+      "duration": 4.700000002980232,
+      "transferSize": 1267,
+      "encodedBodySize": 967,
+      "decodedBodySize": 967,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/recipe-chat.js",
+      "duration": 4.700000002980232,
+      "transferSize": 1084,
+      "encodedBodySize": 784,
+      "decodedBodySize": 784,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/recipe-prompt.js",
+      "duration": 4.700000002980232,
+      "transferSize": 4152,
+      "encodedBodySize": 3852,
+      "decodedBodySize": 3852,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/voice-model.js",
+      "duration": 5.200000002980232,
+      "transferSize": 5137,
+      "encodedBodySize": 4837,
+      "decodedBodySize": 4837,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/pantry-review-model.js",
+      "duration": 5.4000000059604645,
+      "transferSize": 2744,
+      "encodedBodySize": 2444,
+      "decodedBodySize": 2444,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/cooking-session.js",
+      "duration": 5.5,
+      "transferSize": 6324,
+      "encodedBodySize": 6024,
+      "decodedBodySize": 6024,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/recipe-portions.js",
+      "duration": 6.5,
+      "transferSize": 5561,
+      "encodedBodySize": 5261,
+      "decodedBodySize": 5261,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/recipe-room-model.js",
+      "duration": 6.5,
+      "transferSize": 6406,
+      "encodedBodySize": 6106,
+      "decodedBodySize": 6106,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/app.js",
+      "duration": 5.799999997019768,
+      "transferSize": 79902,
+      "encodedBodySize": 79602,
+      "decodedBodySize": 79602,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/quantity-model.js",
+      "duration": 6.299999997019768,
+      "transferSize": 1781,
+      "encodedBodySize": 1481,
+      "decodedBodySize": 1481,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/pantry-library.js",
+      "duration": 6.200000002980232,
+      "transferSize": 13045,
+      "encodedBodySize": 12745,
+      "decodedBodySize": 12745,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/household-config.js",
+      "duration": 6.700000002980232,
+      "transferSize": 389,
+      "encodedBodySize": 89,
+      "decodedBodySize": 89,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/ai-mode.js",
+      "duration": 6.700000002980232,
+      "transferSize": 832,
+      "encodedBodySize": 532,
+      "decodedBodySize": 532,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/persistence-model.js",
+      "duration": 6.9000000059604645,
+      "transferSize": 4775,
+      "encodedBodySize": 4475,
+      "decodedBodySize": 4475,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/household-model.js",
+      "duration": 7.0999999940395355,
+      "transferSize": 5449,
+      "encodedBodySize": 5149,
+      "decodedBodySize": 5149,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/auth-link.js",
+      "duration": 7.200000002980232,
+      "transferSize": 2040,
+      "encodedBodySize": 1740,
+      "decodedBodySize": 1740,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/household-live.js",
+      "duration": 7.5,
+      "transferSize": 6023,
+      "encodedBodySize": 5723,
+      "decodedBodySize": 5723,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/chat-stream.js",
+      "duration": 7.799999997019768,
+      "transferSize": 1550,
+      "encodedBodySize": 1250,
+      "decodedBodySize": 1250,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/voice-ui.js",
+      "duration": 7.799999997019768,
+      "transferSize": 27033,
+      "encodedBodySize": 26733,
+      "decodedBodySize": 26733,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/realtime-model.js",
+      "duration": 7.799999997019768,
+      "transferSize": 5497,
+      "encodedBodySize": 5197,
+      "decodedBodySize": 5197,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/household.js",
+      "duration": 8.099999994039536,
+      "transferSize": 50183,
+      "encodedBodySize": 49883,
+      "decodedBodySize": 49883,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/realtime-voice.js",
+      "duration": 8,
+      "transferSize": 18408,
+      "encodedBodySize": 18108,
+      "decodedBodySize": 18108,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/pantry-review-ui.js",
+      "duration": 8.200000002980232,
+      "transferSize": 14811,
+      "encodedBodySize": 14511,
+      "decodedBodySize": 14511,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/assistant-ui.js",
+      "duration": 8.800000011920929,
+      "transferSize": 2576,
+      "encodedBodySize": 2276,
+      "decodedBodySize": 2276,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/recipe-crafting.js",
+      "duration": 9.100000008940697,
+      "transferSize": 14805,
+      "encodedBodySize": 14505,
+      "decodedBodySize": 14505,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/recipe-shopping.js",
+      "duration": 9.299999997019768,
+      "transferSize": 3327,
+      "encodedBodySize": 3027,
+      "decodedBodySize": 3027,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/weekly-plan-model.js",
+      "duration": 9.299999997019768,
+      "transferSize": 7591,
+      "encodedBodySize": 7291,
+      "decodedBodySize": 7291,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/recipe-export.js",
+      "duration": 9.399999991059303,
+      "transferSize": 4790,
+      "encodedBodySize": 4490,
+      "decodedBodySize": 4490,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/weekly-plan-ui.js",
+      "duration": 9.799999997019768,
+      "transferSize": 11869,
+      "encodedBodySize": 11569,
+      "decodedBodySize": 11569,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/kitchen-measures.js",
+      "duration": 9.799999997019768,
+      "transferSize": 4347,
+      "encodedBodySize": 4047,
+      "decodedBodySize": 4047,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/cooking-ui.js",
+      "duration": 10.099999994039536,
+      "transferSize": 5800,
+      "encodedBodySize": 5500,
+      "decodedBodySize": 5500,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/recipe-library.js",
+      "duration": 10.099999994039536,
+      "transferSize": 11453,
+      "encodedBodySize": 11153,
+      "decodedBodySize": 11153,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/recipe-ingredients-panel.js",
+      "duration": 10.5,
+      "transferSize": 3079,
+      "encodedBodySize": 2779,
+      "decodedBodySize": 2779,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/recipe-room-ui.js",
+      "duration": 10.299999997019768,
+      "transferSize": 38806,
+      "encodedBodySize": 38506,
+      "decodedBodySize": 38506,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/persistence.js",
+      "duration": 11,
+      "transferSize": 14485,
+      "encodedBodySize": 14185,
+      "decodedBodySize": 14185,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/recipe-photos.js",
+      "duration": 11.399999991059303,
+      "transferSize": 2137,
+      "encodedBodySize": 1837,
+      "decodedBodySize": 1837,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/chat-photo.js",
+      "duration": 11.399999991059303,
+      "transferSize": 1442,
+      "encodedBodySize": 1142,
+      "decodedBodySize": 1142,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/panel-gestures.js",
+      "duration": 11.700000002980232,
+      "transferSize": 4329,
+      "encodedBodySize": 4029,
+      "decodedBodySize": 4029,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/companion-model.js",
+      "duration": 11.599999994039536,
+      "transferSize": 13290,
+      "encodedBodySize": 12990,
+      "decodedBodySize": 12990,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/chat-format.js",
+      "duration": 11.900000005960464,
+      "transferSize": 1620,
+      "encodedBodySize": 1320,
+      "decodedBodySize": 1320,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/session-model.js",
+      "duration": 12.600000008940697,
+      "transferSize": 1946,
+      "encodedBodySize": 1646,
+      "decodedBodySize": 1646,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/ingredient-mentions.js",
+      "duration": 12.900000005960464,
+      "transferSize": 3121,
+      "encodedBodySize": 2821,
+      "decodedBodySize": 2821,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/shopping-mode-ui.js",
+      "duration": 12.900000005960464,
+      "transferSize": 32401,
+      "encodedBodySize": 32101,
+      "decodedBodySize": 32101,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/recipe-images.js",
+      "duration": 13.200000002980232,
+      "transferSize": 10709,
+      "encodedBodySize": 10409,
+      "decodedBodySize": 10409,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/onboarding-model.js",
+      "duration": 13.100000008940697,
+      "transferSize": 1777,
+      "encodedBodySize": 1477,
+      "decodedBodySize": 1477,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/shopping-mode-model.js",
+      "duration": 13.200000002980232,
+      "transferSize": 4702,
+      "encodedBodySize": 4402,
+      "decodedBodySize": 4402,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/companion-ui.js",
+      "duration": 13.5,
+      "transferSize": 107091,
+      "encodedBodySize": 106791,
+      "decodedBodySize": 106791,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/proactive-ui.js",
+      "duration": 14.299999997019768,
+      "transferSize": 19759,
+      "encodedBodySize": 19459,
+      "decodedBodySize": 19459,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/onboarding.js",
+      "duration": 14.5,
+      "transferSize": 15885,
+      "encodedBodySize": 15585,
+      "decodedBodySize": 15585,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/workspace-ui.js",
+      "duration": 14.599999994039536,
+      "transferSize": 21276,
+      "encodedBodySize": 20976,
+      "decodedBodySize": 20976,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/kitchen-ui.js",
+      "duration": 14.799999997019768,
+      "transferSize": 12881,
+      "encodedBodySize": 12581,
+      "decodedBodySize": 12581,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/proactive-model.js",
+      "duration": 14.799999997019768,
+      "transferSize": 6792,
+      "encodedBodySize": 6492,
+      "decodedBodySize": 6492,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/css2",
+      "duration": 0,
+      "transferSize": 0,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "css"
+    },
+    {
+      "name": "/assets/ui/menu.svg",
+      "duration": 0.9000000059604645,
+      "transferSize": 708,
+      "encodedBodySize": 408,
+      "decodedBodySize": 408,
+      "initiatorType": "css"
+    },
+    {
+      "name": "/assets/ui/plus.svg",
+      "duration": 1,
+      "transferSize": 632,
+      "encodedBodySize": 332,
+      "decodedBodySize": 332,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/illustrations/morzsa-mascot.webp",
+      "duration": 1.0999999940395355,
+      "transferSize": 4526,
+      "encodedBodySize": 4226,
+      "decodedBodySize": 4226,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/sparkles.svg",
+      "duration": 1.1000000089406967,
+      "transferSize": 948,
+      "encodedBodySize": 648,
+      "decodedBodySize": 648,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/heart.svg",
+      "duration": 1.1000000089406967,
+      "transferSize": 737,
+      "encodedBodySize": 437,
+      "decodedBodySize": 437,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/arrow-up.svg",
+      "duration": 1.2000000029802322,
+      "transferSize": 641,
+      "encodedBodySize": 341,
+      "decodedBodySize": 341,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/sliders-horizontal.svg",
+      "duration": 0.5999999940395355,
+      "transferSize": 973,
+      "encodedBodySize": 673,
+      "decodedBodySize": 673,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/square-pen.svg",
+      "duration": 0.7000000029802322,
+      "transferSize": 583,
+      "encodedBodySize": 283,
+      "decodedBodySize": 283,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/brands/morzsa.svg",
+      "duration": 0.7000000029802322,
+      "transferSize": 300,
+      "encodedBodySize": 643,
+      "decodedBodySize": 643,
+      "initiatorType": "other"
+    },
+    {
+      "name": "/assets/icons/flour.webp",
+      "duration": 1.199999988079071,
+      "transferSize": 5254,
+      "encodedBodySize": 4954,
+      "decodedBodySize": 4954,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/milk.webp",
+      "duration": 1.2999999970197678,
+      "transferSize": 4390,
+      "encodedBodySize": 4090,
+      "decodedBodySize": 4090,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/rice.webp",
+      "duration": 1.5,
+      "transferSize": 5496,
+      "encodedBodySize": 5196,
+      "decodedBodySize": 5196,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/mic.svg",
+      "duration": 1.5,
+      "transferSize": 736,
+      "encodedBodySize": 436,
+      "decodedBodySize": 436,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/calendar-days.svg",
+      "duration": 1.5999999940395355,
+      "transferSize": 576,
+      "encodedBodySize": 276,
+      "decodedBodySize": 276,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/arrow-right.svg",
+      "duration": 1.7000000029802322,
+      "transferSize": 644,
+      "encodedBodySize": 344,
+      "decodedBodySize": 344,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/frozen-vegetables.webp",
+      "duration": 1.9000000059604645,
+      "transferSize": 7094,
+      "encodedBodySize": 6794,
+      "decodedBodySize": 6794,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/egg.webp",
+      "duration": 2,
+      "transferSize": 4274,
+      "encodedBodySize": 3974,
+      "decodedBodySize": 3974,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/brands/morzsa.svg",
+      "duration": 2.0999999940395355,
+      "transferSize": 300,
+      "encodedBodySize": 643,
+      "decodedBodySize": 643,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/search.svg",
+      "duration": 1,
+      "transferSize": 651,
+      "encodedBodySize": 351,
+      "decodedBodySize": 351,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/x.svg",
+      "duration": 1,
+      "transferSize": 633,
+      "encodedBodySize": 333,
+      "decodedBodySize": 333,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/apple.webp",
+      "duration": 1.5,
+      "transferSize": 5874,
+      "encodedBodySize": 5574,
+      "decodedBodySize": 5574,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/butter.webp",
+      "duration": 2.0999999940395355,
+      "transferSize": 4832,
+      "encodedBodySize": 4532,
+      "decodedBodySize": 4532,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/rest/v1/rpc/recipe_feed",
+      "duration": 2.7999999970197678,
+      "transferSize": 10859,
+      "encodedBodySize": 10559,
+      "decodedBodySize": 10559,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/assets/icons/carrot.webp",
+      "duration": 1.8999999910593033,
+      "transferSize": 5082,
+      "encodedBodySize": 4782,
+      "decodedBodySize": 4782,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/butter.webp",
+      "duration": 2.0999999940395355,
+      "transferSize": 300,
+      "encodedBodySize": 4532,
+      "decodedBodySize": 4532,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/bread.webp",
+      "duration": 2.2000000029802322,
+      "transferSize": 5418,
+      "encodedBodySize": 5118,
+      "decodedBodySize": 5118,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/cheese.webp",
+      "duration": 2.8999999910593033,
+      "transferSize": 5088,
+      "encodedBodySize": 4788,
+      "decodedBodySize": 4788,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/pasta.webp",
+      "duration": 3.3999999910593033,
+      "transferSize": 6372,
+      "encodedBodySize": 6072,
+      "decodedBodySize": 6072,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/ham.webp",
+      "duration": 3.6000000089406967,
+      "transferSize": 6082,
+      "encodedBodySize": 5782,
+      "decodedBodySize": 5782,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/mushroom.webp",
+      "duration": 4.799999997019768,
+      "transferSize": 6404,
+      "encodedBodySize": 6104,
+      "decodedBodySize": 6104,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/sugar.webp",
+      "duration": 6.600000008940697,
+      "transferSize": 5070,
+      "encodedBodySize": 4770,
+      "decodedBodySize": 4770,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/banana.webp",
+      "duration": 10.299999997019768,
+      "transferSize": 4396,
+      "encodedBodySize": 4096,
+      "decodedBodySize": 4096,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/oats.webp",
+      "duration": 10.299999997019768,
+      "transferSize": 5298,
+      "encodedBodySize": 4998,
+      "decodedBodySize": 4998,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/apple.webp",
+      "duration": 10.5,
+      "transferSize": 300,
+      "encodedBodySize": 5574,
+      "decodedBodySize": 5574,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/illustrations/morzsa-mascot.webp",
+      "duration": 1.199999988079071,
+      "transferSize": 300,
+      "encodedBodySize": 4226,
+      "decodedBodySize": 4226,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/search.svg",
+      "duration": 1.2000000029802322,
+      "transferSize": 300,
+      "encodedBodySize": 351,
+      "decodedBodySize": 351,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/x.svg",
+      "duration": 1.1000000089406967,
+      "transferSize": 300,
+      "encodedBodySize": 333,
+      "decodedBodySize": 333,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/search.svg",
+      "duration": 0.9000000059604645,
+      "transferSize": 300,
+      "encodedBodySize": 351,
+      "decodedBodySize": 351,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/x.svg",
+      "duration": 1.1000000089406967,
+      "transferSize": 300,
+      "encodedBodySize": 333,
+      "decodedBodySize": 333,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/apple.webp",
+      "duration": 1.2000000029802322,
+      "transferSize": 300,
+      "encodedBodySize": 5574,
+      "decodedBodySize": 5574,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/butter.webp",
+      "duration": 1.4000000059604645,
+      "transferSize": 300,
+      "encodedBodySize": 4532,
+      "decodedBodySize": 4532,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/carrot.webp",
+      "duration": 1.2000000029802322,
+      "transferSize": 300,
+      "encodedBodySize": 4782,
+      "decodedBodySize": 4782,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/bread.webp",
+      "duration": 1.300000011920929,
+      "transferSize": 300,
+      "encodedBodySize": 5118,
+      "decodedBodySize": 5118,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/cheese.webp",
+      "duration": 1.5,
+      "transferSize": 300,
+      "encodedBodySize": 4788,
+      "decodedBodySize": 4788,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/pasta.webp",
+      "duration": 1.5999999940395355,
+      "transferSize": 300,
+      "encodedBodySize": 6072,
+      "decodedBodySize": 6072,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/oats.webp",
+      "duration": 1.7999999970197678,
+      "transferSize": 300,
+      "encodedBodySize": 4998,
+      "decodedBodySize": 4998,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/sugar.webp",
+      "duration": 2.0999999940395355,
+      "transferSize": 300,
+      "encodedBodySize": 4770,
+      "decodedBodySize": 4770,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/banana.webp",
+      "duration": 2.2999999970197678,
+      "transferSize": 300,
+      "encodedBodySize": 4096,
+      "decodedBodySize": 4096,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/ham.webp",
+      "duration": 2.2999999970197678,
+      "transferSize": 300,
+      "encodedBodySize": 5782,
+      "decodedBodySize": 5782,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/mushroom.webp",
+      "duration": 2.3999999910593033,
+      "transferSize": 300,
+      "encodedBodySize": 6104,
+      "decodedBodySize": 6104,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/illustrations/morzsa-mascot.webp",
+      "duration": 1,
+      "transferSize": 300,
+      "encodedBodySize": 4226,
+      "decodedBodySize": 4226,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/search.svg",
+      "duration": 1.2000000029802322,
+      "transferSize": 300,
+      "encodedBodySize": 351,
+      "decodedBodySize": 351,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/x.svg",
+      "duration": 1.0999999940395355,
+      "transferSize": 300,
+      "encodedBodySize": 333,
+      "decodedBodySize": 333,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/illustrations/morzsa-mascot.webp",
+      "duration": 1.0999999940395355,
+      "transferSize": 300,
+      "encodedBodySize": 4226,
+      "decodedBodySize": 4226,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/search.svg",
+      "duration": 0.8999999910593033,
+      "transferSize": 300,
+      "encodedBodySize": 351,
+      "decodedBodySize": 351,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/x.svg",
+      "duration": 1,
+      "transferSize": 300,
+      "encodedBodySize": 333,
+      "decodedBodySize": 333,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/search.svg",
+      "duration": 1.2000000029802322,
+      "transferSize": 300,
+      "encodedBodySize": 351,
+      "decodedBodySize": 351,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/x.svg",
+      "duration": 1.4000000059604645,
+      "transferSize": 300,
+      "encodedBodySize": 333,
+      "decodedBodySize": 333,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/apple.webp",
+      "duration": 2.0999999940395355,
+      "transferSize": 300,
+      "encodedBodySize": 5574,
+      "decodedBodySize": 5574,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/butter.webp",
+      "duration": 2.4000000059604645,
+      "transferSize": 300,
+      "encodedBodySize": 4532,
+      "decodedBodySize": 4532,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/carrot.webp",
+      "duration": 1.3999999910593033,
+      "transferSize": 300,
+      "encodedBodySize": 4782,
+      "decodedBodySize": 4782,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/bread.webp",
+      "duration": 1.4000000059604645,
+      "transferSize": 300,
+      "encodedBodySize": 5118,
+      "decodedBodySize": 5118,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/cheese.webp",
+      "duration": 1.5,
+      "transferSize": 300,
+      "encodedBodySize": 4788,
+      "decodedBodySize": 4788,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/pasta.webp",
+      "duration": 2,
+      "transferSize": 300,
+      "encodedBodySize": 6072,
+      "decodedBodySize": 6072,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/sugar.webp",
+      "duration": 2.3999999910593033,
+      "transferSize": 300,
+      "encodedBodySize": 4770,
+      "decodedBodySize": 4770,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/mushroom.webp",
+      "duration": 2.3999999910593033,
+      "transferSize": 300,
+      "encodedBodySize": 6104,
+      "decodedBodySize": 6104,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/oats.webp",
+      "duration": 2.2999999970197678,
+      "transferSize": 300,
+      "encodedBodySize": 4998,
+      "decodedBodySize": 4998,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/ham.webp",
+      "duration": 2.3999999910593033,
+      "transferSize": 300,
+      "encodedBodySize": 5782,
+      "decodedBodySize": 5782,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/banana.webp",
+      "duration": 3.0999999940395355,
+      "transferSize": 300,
+      "encodedBodySize": 4096,
+      "decodedBodySize": 4096,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/search.svg",
+      "duration": 0.9000000059604645,
+      "transferSize": 300,
+      "encodedBodySize": 351,
+      "decodedBodySize": 351,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/x.svg",
+      "duration": 0.8999999910593033,
+      "transferSize": 300,
+      "encodedBodySize": 333,
+      "decodedBodySize": 333,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/flour.webp",
+      "duration": 1,
+      "transferSize": 300,
+      "encodedBodySize": 4954,
+      "decodedBodySize": 4954,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/carrot.webp",
+      "duration": 1.0999999940395355,
+      "transferSize": 300,
+      "encodedBodySize": 4782,
+      "decodedBodySize": 4782,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/bread.webp",
+      "duration": 1.2999999970197678,
+      "transferSize": 300,
+      "encodedBodySize": 5118,
+      "decodedBodySize": 5118,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/cheese.webp",
+      "duration": 1.5,
+      "transferSize": 300,
+      "encodedBodySize": 4788,
+      "decodedBodySize": 4788,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/frozen-vegetables.webp",
+      "duration": 1.4000000059604645,
+      "transferSize": 300,
+      "encodedBodySize": 6794,
+      "decodedBodySize": 6794,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/pasta.webp",
+      "duration": 1.4000000059604645,
+      "transferSize": 300,
+      "encodedBodySize": 6072,
+      "decodedBodySize": 6072,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/ham.webp",
+      "duration": 1.6000000089406967,
+      "transferSize": 300,
+      "encodedBodySize": 5782,
+      "decodedBodySize": 5782,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/oats.webp",
+      "duration": 1.7999999970197678,
+      "transferSize": 300,
+      "encodedBodySize": 4998,
+      "decodedBodySize": 4998,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/mushroom.webp",
+      "duration": 2.2999999970197678,
+      "transferSize": 300,
+      "encodedBodySize": 6104,
+      "decodedBodySize": 6104,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/sugar.webp",
+      "duration": 2.5,
+      "transferSize": 300,
+      "encodedBodySize": 4770,
+      "decodedBodySize": 4770,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/arrow-right.svg",
+      "duration": 1.5999999940395355,
+      "transferSize": 300,
+      "encodedBodySize": 344,
+      "decodedBodySize": 344,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/calendar-days.svg",
+      "duration": 1.699999988079071,
+      "transferSize": 300,
+      "encodedBodySize": 276,
+      "decodedBodySize": 276,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/banana.webp",
+      "duration": 2.7999999970197678,
+      "transferSize": 300,
+      "encodedBodySize": 4096,
+      "decodedBodySize": 4096,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/illustrations/morzsa-mascot.webp",
+      "duration": 1,
+      "transferSize": 300,
+      "encodedBodySize": 4226,
+      "decodedBodySize": 4226,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/illustrations/morzsa-mascot.webp",
+      "duration": 0.8999999910593033,
+      "transferSize": 300,
+      "encodedBodySize": 4226,
+      "decodedBodySize": 4226,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/search.svg",
+      "duration": 1,
+      "transferSize": 300,
+      "encodedBodySize": 351,
+      "decodedBodySize": 351,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/x.svg",
+      "duration": 1.0999999940395355,
+      "transferSize": 300,
+      "encodedBodySize": 333,
+      "decodedBodySize": 333,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/search.svg",
+      "duration": 1,
+      "transferSize": 300,
+      "encodedBodySize": 351,
+      "decodedBodySize": 351,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/x.svg",
+      "duration": 1,
+      "transferSize": 300,
+      "encodedBodySize": 333,
+      "decodedBodySize": 333,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/apple.webp",
+      "duration": 1.0999999940395355,
+      "transferSize": 300,
+      "encodedBodySize": 5574,
+      "decodedBodySize": 5574,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/butter.webp",
+      "duration": 1,
+      "transferSize": 300,
+      "encodedBodySize": 4532,
+      "decodedBodySize": 4532,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/carrot.webp",
+      "duration": 1.1000000089406967,
+      "transferSize": 300,
+      "encodedBodySize": 4782,
+      "decodedBodySize": 4782,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/bread.webp",
+      "duration": 1.199999988079071,
+      "transferSize": 300,
+      "encodedBodySize": 5118,
+      "decodedBodySize": 5118,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/cheese.webp",
+      "duration": 1.199999988079071,
+      "transferSize": 300,
+      "encodedBodySize": 4788,
+      "decodedBodySize": 4788,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/pasta.webp",
+      "duration": 1.5,
+      "transferSize": 300,
+      "encodedBodySize": 6072,
+      "decodedBodySize": 6072,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/ham.webp",
+      "duration": 1.5,
+      "transferSize": 300,
+      "encodedBodySize": 5782,
+      "decodedBodySize": 5782,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/mushroom.webp",
+      "duration": 1.5,
+      "transferSize": 300,
+      "encodedBodySize": 6104,
+      "decodedBodySize": 6104,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/oats.webp",
+      "duration": 1.5,
+      "transferSize": 300,
+      "encodedBodySize": 4998,
+      "decodedBodySize": 4998,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/sugar.webp",
+      "duration": 1.8999999910593033,
+      "transferSize": 300,
+      "encodedBodySize": 4770,
+      "decodedBodySize": 4770,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/banana.webp",
+      "duration": 1.8999999910593033,
+      "transferSize": 300,
+      "encodedBodySize": 4096,
+      "decodedBodySize": 4096,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/search.svg",
+      "duration": 1,
+      "transferSize": 300,
+      "encodedBodySize": 351,
+      "decodedBodySize": 351,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/x.svg",
+      "duration": 1.0999999940395355,
+      "transferSize": 300,
+      "encodedBodySize": 333,
+      "decodedBodySize": 333,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/illustrations/morzsa-mascot.webp",
+      "duration": 1.0999999940395355,
+      "transferSize": 300,
+      "encodedBodySize": 4226,
+      "decodedBodySize": 4226,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/search.svg",
+      "duration": 1.2000000029802322,
+      "transferSize": 300,
+      "encodedBodySize": 351,
+      "decodedBodySize": 351,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/x.svg",
+      "duration": 1.0999999940395355,
+      "transferSize": 300,
+      "encodedBodySize": 333,
+      "decodedBodySize": 333,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/carrot.webp",
+      "duration": 1.1000000089406967,
+      "transferSize": 300,
+      "encodedBodySize": 4782,
+      "decodedBodySize": 4782,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/bread.webp",
+      "duration": 1.2000000029802322,
+      "transferSize": 300,
+      "encodedBodySize": 5118,
+      "decodedBodySize": 5118,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/cheese.webp",
+      "duration": 1,
+      "transferSize": 300,
+      "encodedBodySize": 4788,
+      "decodedBodySize": 4788,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/pasta.webp",
+      "duration": 1.2999999970197678,
+      "transferSize": 300,
+      "encodedBodySize": 6072,
+      "decodedBodySize": 6072,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/ham.webp",
+      "duration": 1.2999999970197678,
+      "transferSize": 300,
+      "encodedBodySize": 5782,
+      "decodedBodySize": 5782,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/mushroom.webp",
+      "duration": 1.4000000059604645,
+      "transferSize": 300,
+      "encodedBodySize": 6104,
+      "decodedBodySize": 6104,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/oats.webp",
+      "duration": 1.4000000059604645,
+      "transferSize": 300,
+      "encodedBodySize": 4998,
+      "decodedBodySize": 4998,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/sugar.webp",
+      "duration": 1.5,
+      "transferSize": 300,
+      "encodedBodySize": 4770,
+      "decodedBodySize": 4770,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/banana.webp",
+      "duration": 1.6000000089406967,
+      "transferSize": 300,
+      "encodedBodySize": 4096,
+      "decodedBodySize": 4096,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/illustrations/morzsa-mascot.webp",
+      "duration": 1,
+      "transferSize": 300,
+      "encodedBodySize": 4226,
+      "decodedBodySize": 4226,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/search.svg",
+      "duration": 1,
+      "transferSize": 300,
+      "encodedBodySize": 351,
+      "decodedBodySize": 351,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/x.svg",
+      "duration": 0.9000000059604645,
+      "transferSize": 300,
+      "encodedBodySize": 333,
+      "decodedBodySize": 333,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/search.svg",
+      "duration": 1.1000000089406967,
+      "transferSize": 300,
+      "encodedBodySize": 351,
+      "decodedBodySize": 351,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/x.svg",
+      "duration": 1.2000000029802322,
+      "transferSize": 300,
+      "encodedBodySize": 333,
+      "decodedBodySize": 333,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/apple.webp",
+      "duration": 1.2999999970197678,
+      "transferSize": 300,
+      "encodedBodySize": 5574,
+      "decodedBodySize": 5574,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/butter.webp",
+      "duration": 1.5,
+      "transferSize": 300,
+      "encodedBodySize": 4532,
+      "decodedBodySize": 4532,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/carrot.webp",
+      "duration": 1,
+      "transferSize": 300,
+      "encodedBodySize": 4782,
+      "decodedBodySize": 4782,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/bread.webp",
+      "duration": 1,
+      "transferSize": 300,
+      "encodedBodySize": 5118,
+      "decodedBodySize": 5118,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/cheese.webp",
+      "duration": 1,
+      "transferSize": 300,
+      "encodedBodySize": 4788,
+      "decodedBodySize": 4788,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/pasta.webp",
+      "duration": 1.2000000029802322,
+      "transferSize": 300,
+      "encodedBodySize": 6072,
+      "decodedBodySize": 6072,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/ham.webp",
+      "duration": 1.2000000029802322,
+      "transferSize": 300,
+      "encodedBodySize": 5782,
+      "decodedBodySize": 5782,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/mushroom.webp",
+      "duration": 1.300000011920929,
+      "transferSize": 300,
+      "encodedBodySize": 6104,
+      "decodedBodySize": 6104,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/oats.webp",
+      "duration": 1.300000011920929,
+      "transferSize": 300,
+      "encodedBodySize": 4998,
+      "decodedBodySize": 4998,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/sugar.webp",
+      "duration": 1.4000000059604645,
+      "transferSize": 300,
+      "encodedBodySize": 4770,
+      "decodedBodySize": 4770,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/banana.webp",
+      "duration": 1.6000000089406967,
+      "transferSize": 300,
+      "encodedBodySize": 4096,
+      "decodedBodySize": 4096,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/flour.webp",
+      "duration": 1.2000000029802322,
+      "transferSize": 300,
+      "encodedBodySize": 4954,
+      "decodedBodySize": 4954,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/milk.webp",
+      "duration": 1.2999999970197678,
+      "transferSize": 300,
+      "encodedBodySize": 4090,
+      "decodedBodySize": 4090,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/rice.webp",
+      "duration": 1.4000000059604645,
+      "transferSize": 300,
+      "encodedBodySize": 5196,
+      "decodedBodySize": 5196,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/calendar-days.svg",
+      "duration": 1.5999999940395355,
+      "transferSize": 300,
+      "encodedBodySize": 276,
+      "decodedBodySize": 276,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/arrow-right.svg",
+      "duration": 1.7000000029802322,
+      "transferSize": 300,
+      "encodedBodySize": 344,
+      "decodedBodySize": 344,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/frozen-vegetables.webp",
+      "duration": 1.7000000029802322,
+      "transferSize": 300,
+      "encodedBodySize": 6794,
+      "decodedBodySize": 6794,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/search.svg",
+      "duration": 0.8999999910593033,
+      "transferSize": 300,
+      "encodedBodySize": 351,
+      "decodedBodySize": 351,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/x.svg",
+      "duration": 1.0999999940395355,
+      "transferSize": 300,
+      "encodedBodySize": 333,
+      "decodedBodySize": 333,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/apple.webp",
+      "duration": 1,
+      "transferSize": 300,
+      "encodedBodySize": 5574,
+      "decodedBodySize": 5574,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/butter.webp",
+      "duration": 1,
+      "transferSize": 300,
+      "encodedBodySize": 4532,
+      "decodedBodySize": 4532,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/carrot.webp",
+      "duration": 1,
+      "transferSize": 300,
+      "encodedBodySize": 4782,
+      "decodedBodySize": 4782,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/bread.webp",
+      "duration": 1.1000000089406967,
+      "transferSize": 300,
+      "encodedBodySize": 5118,
+      "decodedBodySize": 5118,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/cheese.webp",
+      "duration": 1.2999999970197678,
+      "transferSize": 300,
+      "encodedBodySize": 4788,
+      "decodedBodySize": 4788,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/pasta.webp",
+      "duration": 1.2999999970197678,
+      "transferSize": 300,
+      "encodedBodySize": 6072,
+      "decodedBodySize": 6072,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/ham.webp",
+      "duration": 1.4000000059604645,
+      "transferSize": 300,
+      "encodedBodySize": 5782,
+      "decodedBodySize": 5782,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/mushroom.webp",
+      "duration": 1.2999999970197678,
+      "transferSize": 300,
+      "encodedBodySize": 6104,
+      "decodedBodySize": 6104,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/oats.webp",
+      "duration": 1.699999988079071,
+      "transferSize": 300,
+      "encodedBodySize": 4998,
+      "decodedBodySize": 4998,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/banana.webp",
+      "duration": 1.4000000059604645,
+      "transferSize": 300,
+      "encodedBodySize": 4096,
+      "decodedBodySize": 4096,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/sugar.webp",
+      "duration": 1.5999999940395355,
+      "transferSize": 300,
+      "encodedBodySize": 4770,
+      "decodedBodySize": 4770,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/illustrations/morzsa-mascot.webp",
+      "duration": 1,
+      "transferSize": 300,
+      "encodedBodySize": 4226,
+      "decodedBodySize": 4226,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/search.svg",
+      "duration": 1,
+      "transferSize": 300,
+      "encodedBodySize": 351,
+      "decodedBodySize": 351,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/x.svg",
+      "duration": 1.0999999940395355,
+      "transferSize": 300,
+      "encodedBodySize": 333,
+      "decodedBodySize": 333,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/search.svg",
+      "duration": 0.8999999910593033,
+      "transferSize": 300,
+      "encodedBodySize": 351,
+      "decodedBodySize": 351,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/x.svg",
+      "duration": 1,
+      "transferSize": 300,
+      "encodedBodySize": 333,
+      "decodedBodySize": 333,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/apple.webp",
+      "duration": 1.1000000089406967,
+      "transferSize": 300,
+      "encodedBodySize": 5574,
+      "decodedBodySize": 5574,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/butter.webp",
+      "duration": 1.2000000029802322,
+      "transferSize": 300,
+      "encodedBodySize": 4532,
+      "decodedBodySize": 4532,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/carrot.webp",
+      "duration": 1,
+      "transferSize": 300,
+      "encodedBodySize": 4782,
+      "decodedBodySize": 4782,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/bread.webp",
+      "duration": 1.1000000089406967,
+      "transferSize": 300,
+      "encodedBodySize": 5118,
+      "decodedBodySize": 5118,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/cheese.webp",
+      "duration": 1.300000011920929,
+      "transferSize": 300,
+      "encodedBodySize": 4788,
+      "decodedBodySize": 4788,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/oats.webp",
+      "duration": 1.5,
+      "transferSize": 300,
+      "encodedBodySize": 4998,
+      "decodedBodySize": 4998,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/sugar.webp",
+      "duration": 1.6000000089406967,
+      "transferSize": 300,
+      "encodedBodySize": 4770,
+      "decodedBodySize": 4770,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/pasta.webp",
+      "duration": 1.800000011920929,
+      "transferSize": 300,
+      "encodedBodySize": 6072,
+      "decodedBodySize": 6072,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/ham.webp",
+      "duration": 1.9000000059604645,
+      "transferSize": 300,
+      "encodedBodySize": 5782,
+      "decodedBodySize": 5782,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/mushroom.webp",
+      "duration": 2,
+      "transferSize": 300,
+      "encodedBodySize": 6104,
+      "decodedBodySize": 6104,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/banana.webp",
+      "duration": 2.2999999970197678,
+      "transferSize": 300,
+      "encodedBodySize": 4096,
+      "decodedBodySize": 4096,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/illustrations/morzsa-mascot.webp",
+      "duration": 1.0999999940395355,
+      "transferSize": 300,
+      "encodedBodySize": 4226,
+      "decodedBodySize": 4226,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/search.svg",
+      "duration": 0.9000000059604645,
+      "transferSize": 300,
+      "encodedBodySize": 351,
+      "decodedBodySize": 351,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/x.svg",
+      "duration": 0.9000000059604645,
+      "transferSize": 300,
+      "encodedBodySize": 333,
+      "decodedBodySize": 333,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/search.svg",
+      "duration": 1,
+      "transferSize": 300,
+      "encodedBodySize": 351,
+      "decodedBodySize": 351,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/x.svg",
+      "duration": 1.1000000089406967,
+      "transferSize": 300,
+      "encodedBodySize": 333,
+      "decodedBodySize": 333,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/apple.webp",
+      "duration": 1.199999988079071,
+      "transferSize": 300,
+      "encodedBodySize": 5574,
+      "decodedBodySize": 5574,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/butter.webp",
+      "duration": 1.199999988079071,
+      "transferSize": 300,
+      "encodedBodySize": 4532,
+      "decodedBodySize": 4532,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/carrot.webp",
+      "duration": 1.2000000029802322,
+      "transferSize": 300,
+      "encodedBodySize": 4782,
+      "decodedBodySize": 4782,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/bread.webp",
+      "duration": 1.1000000089406967,
+      "transferSize": 300,
+      "encodedBodySize": 5118,
+      "decodedBodySize": 5118,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/cheese.webp",
+      "duration": 1.300000011920929,
+      "transferSize": 300,
+      "encodedBodySize": 4788,
+      "decodedBodySize": 4788,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/pasta.webp",
+      "duration": 1.4000000059604645,
+      "transferSize": 300,
+      "encodedBodySize": 6072,
+      "decodedBodySize": 6072,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/ham.webp",
+      "duration": 1.5,
+      "transferSize": 300,
+      "encodedBodySize": 5782,
+      "decodedBodySize": 5782,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/mushroom.webp",
+      "duration": 1.5,
+      "transferSize": 300,
+      "encodedBodySize": 6104,
+      "decodedBodySize": 6104,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/sugar.webp",
+      "duration": 1.5,
+      "transferSize": 300,
+      "encodedBodySize": 4770,
+      "decodedBodySize": 4770,
+      "initiatorType": "img"
+    }
+  ],
+  "heartbeat": [
+    {
+      "start": 3.800000011920929,
+      "delay": 133.8999999910593
+    },
+    {
+      "start": 307,
+      "delay": 116.20000000298023
+    },
+    {
+      "start": 504.90000000596046,
+      "delay": 111.90000000596046
+    },
+    {
+      "start": 705.9000000059605,
+      "delay": 31.200000002980232
+    },
+    {
+      "start": 806.8000000119209,
+      "delay": 173.29999999701977
+    },
+    {
+      "start": 1030.1000000089407,
+      "delay": 335.59999999403954
+    },
+    {
+      "start": 1456.2000000029802,
+      "delay": 148.90000000596046
+    },
+    {
+      "start": 1706,
+      "delay": 87.70000000298023
+    },
+    {
+      "start": 1906.1000000089407,
+      "delay": 66.09999999403954
+    },
+    {
+      "start": 2106,
+      "delay": 104.70000000298023
+    },
+    {
+      "start": 2305.300000011921,
+      "delay": 88
+    },
+    {
+      "start": 2606.800000011921,
+      "delay": 469
+    },
+    {
+      "start": 3156.2000000029802,
+      "delay": 151.5
+    },
+    {
+      "start": 3406.1000000089407,
+      "delay": 88.29999999701977
+    },
+    {
+      "start": 3606.1000000089407,
+      "delay": 70.70000000298023
+    },
+    {
+      "start": 3756.300000011921,
+      "delay": 43
+    },
+    {
+      "start": 3906.7000000029802,
+      "delay": 450.20000000298023
+    },
+    {
+      "start": 4456.5,
+      "delay": 129.20000000298023
+    },
+    {
+      "start": 4655.9000000059605,
+      "delay": 101
+    },
+    {
+      "start": 4855.9000000059605,
+      "delay": 83.79999999701977
+    },
+    {
+      "start": 5006.70000000298,
+      "delay": 44.70000000298023
+    },
+    {
+      "start": 5156.300000011921,
+      "delay": 460.3999999910593
+    },
+    {
+      "start": 5706,
+      "delay": 136.80000001192093
+    },
+    {
+      "start": 5956.300000011921,
+      "delay": 68.19999998807907
+    },
+    {
+      "start": 6105.20000000298,
+      "delay": 104
+    },
+    {
+      "start": 6406.5,
+      "delay": 496.1000000089407
+    },
+    {
+      "start": 7004.4000000059605,
+      "delay": 138.79999999701977
+    },
+    {
+      "start": 7256.100000008941,
+      "delay": 74.5
+    },
+    {
+      "start": 7406.20000000298,
+      "delay": 100.6000000089407
+    },
+    {
+      "start": 7706.300000011921,
+      "delay": 487.79999999701977
+    },
+    {
+      "start": 8306.20000000298,
+      "delay": 118.79999999701977
+    },
+    {
+      "start": 8506.300000011921,
+      "delay": 107.19999998807907
+    },
+    {
+      "start": 8705,
+      "delay": 82.40000000596046
+    },
+    {
+      "start": 8956.60000000894,
+      "delay": 76
+    },
+    {
+      "start": 9106.10000000894,
+      "delay": 108.29999999701977
+    },
+    {
+      "start": 9406.70000000298,
+      "delay": 499.79999999701977
+    },
+    {
+      "start": 10006,
+      "delay": 138.70000000298023
+    },
+    {
+      "start": 10255,
+      "delay": 75.1000000089407
+    },
+    {
+      "start": 10406.20000000298,
+      "delay": 100.1000000089407
+    },
+    {
+      "start": 10604.20000000298,
+      "delay": 30.100000008940697
+    },
+    {
+      "start": 10706.10000000894,
+      "delay": 491
+    },
+    {
+      "start": 11306.90000000596,
+      "delay": 113.79999999701977
+    },
+    {
+      "start": 11506.70000000298,
+      "delay": 87.70000000298023
+    },
+    {
+      "start": 11706.5,
+      "delay": 69.20000000298023
+    },
+    {
+      "start": 11856.40000000596,
+      "delay": 47.400000005960464
+    },
+    {
+      "start": 12006.5,
+      "delay": 463.30000001192093
+    },
+    {
+      "start": 12556.70000000298,
+      "delay": 131.79999999701977
+    },
+    {
+      "start": 12806,
+      "delay": 76.70000000298023
+    },
+    {
+      "start": 12956.10000000894,
+      "delay": 103.09999999403954
+    },
+    {
+      "start": 13256.5,
+      "delay": 490.20000000298023
+    },
+    {
+      "start": 13856.70000000298,
+      "delay": 121.70000000298023
+    },
+    {
+      "start": 14056.800000011921,
+      "delay": 103.5
+    },
+    {
+      "start": 14256.800000011921,
+      "delay": 85
+    },
+    {
+      "start": 14556,
+      "delay": 475.6000000089407
+    },
+    {
+      "start": 15106.40000000596,
+      "delay": 154.59999999403954
+    },
+    {
+      "start": 15356.70000000298,
+      "delay": 87.40000000596046
+    },
+    {
+      "start": 15556.20000000298,
+      "delay": 68.6000000089407
+    },
+    {
+      "start": 15806.40000000596,
+      "delay": 76
+    },
+    {
+      "start": 15955,
+      "delay": 107.20000000298023
+    },
+    {
+      "start": 16256.300000011921,
+      "delay": 509.3999999910593
+    },
+    {
+      "start": 16856.90000000596,
+      "delay": 133.5
+    },
+    {
+      "start": 17056.30000001192,
+      "delay": 108.09999999403954
+    },
+    {
+      "start": 17256.80000001192,
+      "delay": 85.5
+    },
+    {
+      "start": 17556.80000001192,
+      "delay": 485.69999998807907
+    },
+    {
+      "start": 18156.40000000596,
+      "delay": 123.70000000298023
+    },
+    {
+      "start": 18356,
+      "delay": 109
+    },
+    {
+      "start": 18555.80000001192,
+      "delay": 88.09999999403954
+    },
+    {
+      "start": 18856.70000000298,
+      "delay": 483.70000000298023
+    },
+    {
+      "start": 19456.90000000596,
+      "delay": 120.90000000596046
+    },
+    {
+      "start": 19656.10000000894,
+      "delay": 106.09999999403954
+    },
+    {
+      "start": 19856.5,
+      "delay": 82.20000000298023
+    },
+    {
+      "start": 20005.60000000894,
+      "delay": 49.20000000298023
+    },
+    {
+      "start": 20156.60000000894,
+      "delay": 469.79999999701977
+    },
+    {
+      "start": 20705.90000000596,
+      "delay": 152.29999999701977
+    },
+    {
+      "start": 20956.20000000298,
+      "delay": 86.90000000596046
+    },
+    {
+      "start": 21156.5,
+      "delay": 65.1000000089407
+    },
+    {
+      "start": 21406.80000001192,
+      "delay": 491.59999999403954
+    },
+    {
+      "start": 22005.5,
+      "delay": 119.70000000298023
+    },
+    {
+      "start": 22206.70000000298,
+      "delay": 99.79999999701977
+    },
+    {
+      "start": 22406.60000000894,
+      "delay": 82.8999999910593
+    },
+    {
+      "start": 22656.60000000894,
+      "delay": 72.8999999910593
+    },
+    {
+      "start": 22804.60000000894,
+      "delay": 111.70000000298023
+    },
+    {
+      "start": 23106.20000000298,
+      "delay": 497.6000000089407
+    },
+    {
+      "start": 23703.80000001192,
+      "delay": 119.3999999910593
+    },
+    {
+      "start": 23906.40000000596,
+      "delay": 94.29999999701977
+    },
+    {
+      "start": 24105.80000001192,
+      "delay": 86.79999999701977
+    },
+    {
+      "start": 24406.40000000596,
+      "delay": 474.79999999701977
+    },
+    {
+      "start": 24956.40000000596,
+      "delay": 154.90000000596046
+    },
+    {
+      "start": 25206.60000000894,
+      "delay": 89.59999999403954
+    },
+    {
+      "start": 25406.60000000894,
+      "delay": 68.5
+    },
+    {
+      "start": 25556,
+      "delay": 45.1000000089407
+    },
+    {
+      "start": 25706.60000000894,
+      "delay": 456.20000000298023
+    },
+    {
+      "start": 26256.30000001192,
+      "delay": 135.3999999910593
+    },
+    {
+      "start": 26505.90000000596,
+      "delay": 78.59999999403954
+    },
+    {
+      "start": 26655.90000000596,
+      "delay": 100.70000000298023
+    },
+    {
+      "start": 26956.40000000596,
+      "delay": 485.90000000596046
+    },
+    {
+      "start": 27556.40000000596,
+      "delay": 120.90000000596046
+    },
+    {
+      "start": 27756.80000001192,
+      "delay": 101.8999999910593
+    },
+    {
+      "start": 27956.20000000298,
+      "delay": 85
+    },
+    {
+      "start": 28256.5,
+      "delay": 468.30000001192093
+    },
+    {
+      "start": 28806.30000001192,
+      "delay": 152.69999998807907
+    },
+    {
+      "start": 29055.70000000298,
+      "delay": 88.29999999701977
+    },
+    {
+      "start": 29256.60000000894,
+      "delay": 64.29999999701977
+    },
+    {
+      "start": 29456,
+      "delay": 109
+    },
+    {
+      "start": 29655.10000000894,
+      "delay": 88.59999999403954
+    },
+    {
+      "start": 29956.10000000894,
+      "delay": 477.70000000298023
+    },
+    {
+      "start": 30483.80000001192,
+      "delay": 107.79999999701977
+    },
+    {
+      "start": 30706.80000001192,
+      "delay": 115.3999999910593
+    },
+    {
+      "start": 30906.30000001192,
+      "delay": 90.09999999403954
+    },
+    {
+      "start": 31106.90000000596,
+      "delay": 68.70000000298023
+    },
+    {
+      "start": 31256.40000000596,
+      "delay": 45.5
+    },
+    {
+      "start": 31406.20000000298,
+      "delay": 455.79999999701977
+    },
+    {
+      "start": 31956.5,
+      "delay": 132.40000000596046
+    },
+    {
+      "start": 32156.60000000894,
+      "delay": 107.79999999701977
+    },
+    {
+      "start": 32354.5,
+      "delay": 86.6000000089407
+    },
+    {
+      "start": 32656.80000001192,
+      "delay": 465.8999999910593
+    },
+    {
+      "start": 33206.30000001192,
+      "delay": 147.79999999701977
+    },
+    {
+      "start": 33455.60000000894,
+      "delay": 89.8999999910593
+    },
+    {
+      "start": 33655.90000000596,
+      "delay": 63.20000000298023
+    },
+    {
+      "start": 33905.20000000298,
+      "delay": 478.5
+    },
+    {
+      "start": 34456.40000000596,
+      "delay": 149.09999999403954
+    },
+    {
+      "start": 34706.5,
+      "delay": 88.20000000298023
+    }
+  ],
+  "unhandled": []
+}

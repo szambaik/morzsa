@@ -1,0 +1,38 @@
+- banner:
+  - button "Beszélgetéstörténet": ☰
+  - link "Morzsa":
+    - /url: "#"
+    - text: morzsa
+  - button "Saját konyha · Konyhaváltás és meghívás": Saját konyha
+  - button "Új Morzsa-beszélgetés"
+- main:
+  - heading "Mit szeretnél ma megoldani?" [level=1]
+  - paragraph: Ötleteljünk, főzzünk, vagy mondd el, mi változott otthon.
+  - button "Lepj meg"
+  - button "Kotyvasszunk"
+  - button "Bevált ötlet"
+  - complementary:
+    - text: Morzsa figyel
+    - paragraph:
+      - strong: Cukor
+      - text: · Elfogyottnak jelöltétek.
+    - button "Megnézem a javaslatot →"
+    - button "Zöldséges pirított rizs →"
+  - button "Fotó csatolása"
+  - textbox "Üzenet Morzsának":
+    - /placeholder: Kérdezz…
+    - text: Előkészítési próba
+  - button "Kérdezés hanggal"
+  - button "Küldés"
+  - text: AI mód
+  - combobox "AI mód":
+    - option "Morzsa Plus"
+    - option "Ingyenes" [selected]
+  - text: A változtatásokat mentés előtt átnézheted.
+- navigation "Fő navigáció":
+  - button "Áttekintés"
+  - button "Lista 2"
+  - button "Morzsa"
+  - button "Készlet"
+  - button "Receptek"
+- status: Hozzávalók és receptkapcsolatok elmentve.

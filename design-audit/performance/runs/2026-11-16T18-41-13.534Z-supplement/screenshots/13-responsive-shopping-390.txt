@@ -1,0 +1,47 @@
+- banner:
+  - button "Beszélgetéstörténet": ☰
+  - link "Morzsa":
+    - /url: "#"
+    - text: morzsa
+  - button "Saját konyha · Konyhaváltás és meghívás": Saját konyha
+  - button "Új Morzsa-beszélgetés"
+- main:
+  - heading "Bevásárlólista" [level=1]
+  - text: 0 hátravan
+  - group: ···
+  - combobox "Új bevásárlótétel"
+  - button "Listára vétel": +
+  - heading "Jól jöhet a listádra" [level=2]
+  - text: Te választasz
+  - article:
+    - text: Jelzett készlet
+    - heading "Liszt" [level=3]
+    - checkbox "Liszt kiválasztása"
+    - text: Liszt kiválasztása
+    - paragraph: Elfogyottnak jelöltétek.
+    - button "Már megvan"
+    - group: ···
+  - article:
+    - text: Jelzett készlet
+    - heading "Tej" [level=3]
+    - checkbox "Tej kiválasztása"
+    - text: Tej kiválasztása
+    - paragraph: Kevésnek jelöltétek.
+    - button "Van még"
+    - group: ···
+  - button "Kijelöltek a listára · 0" [disabled]
+  - paragraph: A visszajelzést ebben a konyhában, ezen az eszközön jegyzem meg.
+  - strong: Mire lesz szükségetek?
+  - paragraph: A fenti mezőben gyorsan felveheted. Vesszővel több tételt is megadhatsz.
+- navigation "Fő navigáció":
+  - button "Áttekintés"
+  - button "Lista"
+  - button "Morzsa"
+  - button "Készlet"
+  - button "Receptek"
+- status
+- group "Vásárlási nézet":
+  - button "Boltban vagyok Nagy pipák, könnyű követés":
+    - strong: Boltban vagyok
+    - text: Nagy pipák, könnyű követés
+  - button "Kérdezz Morzsától"

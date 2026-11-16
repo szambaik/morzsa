@@ -1,0 +1,28 @@
+- main:
+  - heading "Bevásárlás" [level=1]
+  - text: 1 / 2 megvan · 1 hátravan
+  - button "Boltbejárási sorrend"
+  - progressbar "Vásárlási haladás"
+  - searchbox "Keresés a listán"
+  - button "Minden tétel"
+  - button "Gyümölcsök · 1 hátravan" [pressed]: Gyümölcsök 1
+  - button "Tejtermék és tojás · 0 hátravan": Tej és tojás ✓
+  - heading "Gyümölcsök 1" [level=2]
+  - button "Alma · Megvettem"
+  - button "Alma · Szerkesztés":
+    - strong: Alma
+  - text: Te
+  - button "Alma · Mennyiség szerkesztése": 1 kg
+  - group: Megvásárolva · 1 +
+  - button "Vissza a listához, a pipák megmaradnak": Lista
+  - button "Megvettem még valamit"
+  - button "Befejezés · 1/2"
+- status
+- dialog "Befejezed a vásárlást?":
+  - heading "Befejezed a vásárlást?" [level=2]
+  - paragraph: 1 megvásárolva · 1 hátravan · 0 most hozzáadva · 0 levéve
+  - paragraph: 1 tétel marad a listán.
+  - paragraph: Csak a megvett tételek kerülnek a készletbe és az archívumba. A többi a listán marad.
+  - button "A maradék 1 terméket is megvettem"
+  - button "Befejezem · 1 megvett, 1 marad"
+  - button "Még vásárolok"

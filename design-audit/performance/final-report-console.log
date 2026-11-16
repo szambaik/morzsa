@@ -1,0 +1,7 @@
+
+> audit:performance:report
+> node report.mjs
+
+REPORT_DIR=/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/design-audit/performance/reports/2026-11-16T19-01-05.405960+00-00
+{"allEvidenceExists": true, "findings": 11, "confirmed": 10, "hypotheses": 1, "sourceUnchanged": true, "inputs": {"full": "runs/2026-11-16T18-34-31.217Z-full/results.json", "supplement": "runs/2026-11-16T18-41-13.534Z-supplement/results.json", "faults": "runs/2026-11-16T18-44-15.751Z-faults/results.json", "soak": "runs/2026-11-16T18-45-56.672Z-soak/results.json", "database": "database-runs/2026-11-16T18-35-45.869Z/database.json", "providers": "provider-runs/2026-11-16T18-37-26.468Z/providers.json"}, "soakDurationMs": 353896.242458}
+A hosszú munkamenet 353.9 s-ig futott, 20 mintával, 140 nézetváltással, 20 párbeszédnyitással és 4 szintetikus AI-fordulóval. A GC utáni első/utolsó heap 4.11 / 4.69 MiB; DOM 606 / 828; listener 161 / 174; socket 2 / 2. A kis heap-növekedés a felgyűlt chatadatok és JIT miatt önmagában nem leak-bizonyíték. A kész-kép célzott tesztje ettől külön, konkrét DOM-retenciót igazolt.
