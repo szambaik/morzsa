@@ -1,0 +1,303 @@
+{
+  "agent": "ux",
+  "reviewStatus": "completed",
+  "method": "codex-subagent",
+  "scope": "Independent evidence-led UX review of canonical run 2026-11-16T17-35-10-569Z-99f951: onboarding, pantry, shopping, recipe discovery, guided cooking, assistant state/receipts, and synthetic household collaboration. Applied Nielsen visibility of system status, match to household mental models, user control/recovery, consistency, recognition, and minimalist-design heuristics. Reviewed actual PNGs and contact sheets, journey/assertion evidence, supplemental keyboard/storage observations, and current pantry, shopping and household source without reading other specialist reviews.",
+  "evidenceReviewed": [
+    "context.json",
+    "project-discovery.md",
+    "evidence/results.json",
+    "evidence/supplemental-observations.json",
+    "evidence/supplement-pantry-focus.txt",
+    "evidence/085-G-conflict-recovery-390x844.dom.json",
+    "evidence/001-A-first-open-390x844.png",
+    "evidence/003-A-onboarding-2-390x844.png",
+    "evidence/005-A-onboarding-4-390x844.png",
+    "evidence/006-A-pantry-setup-390x844.png",
+    "evidence/007-A-saved-setup-390x844.png",
+    "evidence/009-B-inventory-390x844.png",
+    "evidence/supplement-pantry-search.png",
+    "evidence/011-B-availability-details-390x844.png",
+    "evidence/010-B-quick-add-390x844.png",
+    "evidence/014-C-shopping-list-390x844.png",
+    "evidence/017-C-post-edit-start-overlap-390x844.png",
+    "evidence/018-C-shopping-mode-390x844.png",
+    "evidence/019-C-finish-review-390x844.png",
+    "evidence/021-D-recipes-390x844.png",
+    "evidence/022-D-recipe-detail-390x844.png",
+    "evidence/023-D-known-stock-recipe-390x844.png",
+    "evidence/024-D-ingredients-panel-390x844.png",
+    "evidence/025-D-missing-preview-390x844.png",
+    "evidence/027-E-guided-cooking-390x844.png",
+    "evidence/030-E-completion-390x844.png",
+    "evidence/085-G-conflict-recovery-390x844.png",
+    "evidence/supplement-pantry-focus.png",
+    "evidence/contact-sheets/contact-03.jpg",
+    "evidence/contact-sheets/contact-04.jpg",
+    "evidence/contact-sheets/contact-05.jpg",
+    "evidence/contact-sheets/contact-06.jpg",
+    "evidence/contact-sheets/contact-07.jpg",
+    "evidence/contact-sheets/contact-08.jpg"
+  ],
+  "strengths": [
+    "The onboarding explains that exact stocktaking is unnecessary, offers optional setup/skip paths, distinguishes own/shared kitchens, and requires explicit saving of selected ingredients. This gives the user a useful mental model without requiring quantities (003, 005, 006 and 007 A screenshots).",
+    "The pantry presents Van otthon / Kevés / Elfogyott as understandable availability states, with detail editing and quick list actions. Quantity entry is not required for pantry availability (009, 010 and 011 B screenshots; B assertions).",
+    "Shopping keeps the checkbox primary and moves notes, category and deletion into the editor. In-store mode provides progress and a purchased grouping. Finish review explicitly keeps unchecked items on the list and asks before treating the remainder as bought (014, 018 and 019 C screenshots).",
+    "Recipe ingredients distinguish missing stock, low stock and unknown quantity. The shopping preview explains recipe quantity versus proposed list quantity before confirmation; it does not equate approximate stock with a known amount (024 and 025 D screenshots).",
+    "Guided cooking offers one step at a time, progress, timers and resume. Completion keeps rating and notes optional and asks about used-up ingredients instead of silently deducting inventory (027 and 030 E screenshots; E resume/persistence checks).",
+    "Assistant contract states are visibly distinct: loading, partial stream, pending proposal, clarification, completed receipt and error/retry. The injected failed-save case leaves a pending proposal and does not claim success (contact sheets 03/04; F state assertions). These observations establish frontend behavior for canned responses only.",
+    "The household selector labels the own kitchen as device-local and the active shared kitchen as shared; pantry copying is an explicit choice. The SQL-backed stale-edit test preserves the partner quantity, although its success receipt remains misleading (contact sheets 07/08 and 085 G screenshot).",
+    "Across the six requested viewport sizes, the overview retains the three kitchen questions and the navigation remains limited to five destinations. Responsive sheets show a coherent transition from mobile navigation to desktop sidebar without a need for a new information architecture (contact sheets 04–07)."
+  ],
+  "limitations": [
+    "This was an expert review of shared current-run browser evidence, not moderated research with household participants. Comprehension, retention and actual cooking effort require user sessions.",
+    "All identities and household records were synthetic. SQL persistence/conflict behavior was exercised locally, but real authentication, invitation delivery, production authorization and realtime WebSocket delivery were not tested. No invitation or message was sent.",
+    "AI text and streaming responses were deterministic fixtures. Model accuracy, intent classification in the wild, latency, transcription, audio quality and real generated images are not established.",
+    "External font loading was blocked; fallback-font appearance is not treated as a production typography defect.",
+    "The 022 recipe-detail screenshot is visibly transitional/cropped and was rejected for layout conclusions. Stable 023 and the ingredients-panel captures support the recipe assessment.",
+    "The first baseline initializes empty local state and explicitly opens onboarding if needed; the initial chat screenshot therefore does not demonstrate a missing automatic tour.",
+    "The standalone Codex CLI provider smoke had an authentication failure. This review was performed by an actual in-session Codex subagent; no future unattended CLI specialist execution is claimed.",
+    "Full screen-reader operation, native-device keyboard/microphone behavior and every optional surface in the 23-screen inventory remain outside this UX review. The keyboard finding is limited to the recorded post-save focus loss, not a claim that Tab escaping to browser chrome breaks modal containment."
+  ],
+  "findings": [
+    {
+      "id": "UX-001",
+      "title": "Pantry search bypasses the selected availability filter without showing the changed scope",
+      "category": "reproducible-usability",
+      "severity": "Medium",
+      "priority": "P2",
+      "confidence": "High",
+      "affectedScreen": "Pantry ingredient search",
+      "routeOrComponent": "renderPantry / pantry-library-filters / catalog-search",
+      "reproductionSteps": [
+        "Open a fresh synthetic own kitchen with no stock entries.",
+        "Open Készlet and leave Van otthon selected.",
+        "Search for Tej.",
+        "Compare the selected availability filter with the returned cards and count."
+      ],
+      "expectedBehavior": "Search results and their heading/filter state should describe the same scope. Global catalog search can be convenient, but unknown products must visibly be catalog results rather than appearing beneath an unchanged at-home selection.",
+      "actualBehavior": "Van otthon remains selected while the empty kitchen returns 13 catalog matches marked Nincs jelölve. Source matching treats every nonempty query as sufficient to bypass the stock filter; the filter buttons remain tied to stockView.",
+      "userImpact": "A household user checking whether an ingredient is at home must reconcile conflicting signals and inspect individual labels. The filter becomes unreliable precisely when the user tries to find something quickly. This violates consistency and visibility of system status without inventing actual stock.",
+      "evidence": [
+        {
+          "path": "evidence/supplement-pantry-search.png",
+          "description": "At-home filter selected above 13 unmarked catalog results for Tej.",
+          "kind": "screenshot"
+        },
+        {
+          "path": "evidence/supplemental-observations.json",
+          "description": "search-scope records selected Van otthon, empty stock and 13 unknown results.",
+          "kind": "test"
+        },
+        {
+          "path": "evidence/results.json",
+          "description": "PANTRY-SEARCH-SCOPE fails on visibly inconsistent search scope.",
+          "kind": "test"
+        }
+      ],
+      "screenshotRefs": [
+        "evidence/supplement-pantry-search.png"
+      ],
+      "sourceFiles": [
+        "pantry-library.js:6",
+        "pantry-library.js:8",
+        "pantry-library.js:12"
+      ],
+      "recommendedSolution": "Preserve the fast search/add flow but make its scope explicit. Either retain the selected availability filter with an explicit search-all-catalog action, or visibly switch/label the results as all ingredients while remembering the previous stock filter for clearing the search. Keep unknown, low and used-up labels explicit.",
+      "acceptanceCriteria": [
+        "An empty at-home pantry search never presents unmarked catalog results beneath an unchanged at-home result scope.",
+        "Home, low, used-up and all scopes remain understandable during typing and after clearing the query in Hungarian and English.",
+        "Adding an unknown ingredient from search remains a short, explicit flow and does not invent quantity or expiry."
+      ],
+      "validationStatus": "verified",
+      "duplicateKey": "pantry-search-scope",
+      "regressionTests": [
+        "Repeat PANTRY-SEARCH-SCOPE with empty and mixed synthetic stock across all four filters.",
+        "Check search clear/restore behavior and Hungarian/English result labels."
+      ]
+    },
+    {
+      "id": "UX-002",
+      "title": "The shopping save receipt covers the next primary action",
+      "category": "reproducible-usability",
+      "severity": "Medium",
+      "priority": "P2",
+      "confidence": "High",
+      "affectedScreen": "Shopping planning list after editing quantity",
+      "routeOrComponent": "ShoppingMode feedback / shopping-action-toast / shopping primary dock",
+      "reproductionSteps": [
+        "Add a synthetic shopping item and open its editor at 390 × 844.",
+        "Save a quantity change.",
+        "Immediately try to activate Boltban vagyok while the Mentve receipt and Undo action are visible."
+      ],
+      "expectedBehavior": "Confirmation and undo should remain visible while the user can immediately begin the next shopping step.",
+      "actualBehavior": "The fixed green save/undo receipt overlays the Boltban vagyok control. The deterministic center hit test fails without a forced click. The obstruction is transient: the receipt removes itself after 10 seconds and shopping can then continue.",
+      "userImpact": "A routine edit interrupts the next obvious action and makes the interface appear unresponsive or unfinished at the moment the user is ready to shop. Undo is useful, but its placement competes with task completion.",
+      "evidence": [
+        {
+          "path": "evidence/017-C-post-edit-start-overlap-390x844.png",
+          "description": "The green Mentve: 500 ml receipt occupies the primary shopping-start control area.",
+          "kind": "screenshot"
+        },
+        {
+          "path": "evidence/results.json",
+          "description": "C-start-reachable failed its unforced center hit test; C proceeded after the receipt cleared.",
+          "kind": "test"
+        },
+        {
+          "path": "evidence/018-C-shopping-mode-390x844.png",
+          "description": "In-store mode is reachable after the temporary overlap, limiting the finding to the receipt interval.",
+          "kind": "screenshot"
+        }
+      ],
+      "screenshotRefs": [
+        "evidence/017-C-post-edit-start-overlap-390x844.png",
+        "evidence/018-C-shopping-mode-390x844.png"
+      ],
+      "sourceFiles": [
+        "shopping-mode-ui.js:37",
+        "shopping-mode-ui.js:41",
+        "workspace.css:563",
+        "workspace.css:596"
+      ],
+      "recommendedSolution": "Reserve a nonblocking feedback area above the active dock, using its actual measured dimensions in planning and in-store modes. Preserve undo and its readable label. Retire or reposition receipts on navigation so an old operation does not cover another screen’s primary controls.",
+      "acceptanceCriteria": [
+        "The shopping-start control can be hit-tested and activated immediately after a quantity save at every required viewport.",
+        "Undo remains available and reverses only the relevant persisted change.",
+        "Feedback never obscures primary actions when switching between planning, in-store mode and other destinations."
+      ],
+      "validationStatus": "verified",
+      "duplicateKey": "shopping-save-toast-overlap",
+      "regressionTests": [
+        "Repeat C-start-reachable immediately after save at all six required viewports.",
+        "Exercise save → navigate and save → undo without waiting or force-clicking."
+      ]
+    },
+    {
+      "id": "UX-003",
+      "title": "Saving an ingredient availability state loses keyboard focus and return position",
+      "category": "accessibility",
+      "severity": "Medium",
+      "priority": "P2",
+      "confidence": "High",
+      "affectedScreen": "Pantry ingredient detail dialog",
+      "routeOrComponent": "openPantryDetails / pantry-item-dialog",
+      "reproductionSteps": [
+        "Open the synthetic Tej ingredient detail dialog.",
+        "Use the keyboard to focus Kevés and press Enter.",
+        "After save finishes, inspect focus before further navigation.",
+        "Press Escape and inspect the returned focus."
+      ],
+      "expectedBehavior": "After a status change, focus should remain on a meaningful control in the open dialog, preferably the chosen replacement status button. Closing should restore focus to the surviving ingredient trigger or another deliberate location if filtering removed it.",
+      "actualBehavior": "The selected status persists, but afterSave records active BODY with dialogOpen true. After Escape, active remains BODY. The status save disables all controls and replaces dialog innerHTML; the replacement controls receive no restored focus, and the underlying catalog is also rerendered.",
+      "userImpact": "Keyboard users lose their place after a successful edit and must rediscover where to continue. The action succeeds but recovery and continuation become harder, undermining the otherwise simple availability model.",
+      "evidence": [
+        {
+          "path": "evidence/supplemental-observations.json",
+          "description": "pantry-focus records BODY immediately after status save and again after closing; stored state is 1.",
+          "kind": "test"
+        },
+        {
+          "path": "evidence/supplement-pantry-focus.png",
+          "description": "The dialog remains open with Kevés selected and no focused replacement control.",
+          "kind": "screenshot"
+        },
+        {
+          "path": "evidence/supplement-pantry-focus.txt",
+          "description": "Current dialog and underlying catalog after the save.",
+          "kind": "dom"
+        },
+        {
+          "path": "evidence/results.json",
+          "description": "PANTRY-DIALOG-FOCUS fails the meaningful-focus assertion.",
+          "kind": "test"
+        }
+      ],
+      "screenshotRefs": [
+        "evidence/supplement-pantry-focus.png"
+      ],
+      "sourceFiles": [
+        "pantry-library.js:35",
+        "pantry-library.js:47",
+        "pantry-library.js:49"
+      ],
+      "recommendedSolution": "Carry the active control’s semantic identity across dialog repaint and restore focus after save. Store a stable ingredient identity for close-return focus and choose an explicit fallback when a filter removes that ingredient. Cover failure and household-switch paths as well as success.",
+      "acceptanceCriteria": [
+        "Enter/Space on an availability state leaves focus on a meaningful visible control in the open dialog after successful save.",
+        "Escape or Close returns focus to the correct surviving ingredient trigger or a documented logical fallback.",
+        "Failed save preserves actionable focus and announces the error.",
+        "No test treats normal native-dialog Tab movement to browser chrome as proof of underlying-page focus escape."
+      ],
+      "validationStatus": "verified",
+      "duplicateKey": "pantry-status-focus",
+      "regressionTests": [
+        "Repeat the supplemental pantry-focus sequence for all three states with and without a query.",
+        "Check close-return after filter removal, failed storage and shared save completion."
+      ]
+    },
+    {
+      "id": "UX-004",
+      "title": "A rejected shared quantity edit still displays a successful saved receipt",
+      "category": "confirmed-bug",
+      "severity": "Medium",
+      "priority": "P1",
+      "confidence": "High",
+      "affectedScreen": "Shared shopping list after concurrent edits",
+      "routeOrComponent": "ShoppingMode.editItem / household.editCart / flushCart",
+      "reproductionSteps": [
+        "Use two synthetic accounts in the same local test household with Tej on the shopping list.",
+        "Open the item editor in both accounts.",
+        "Save 3 l from the second account and wait for its cart outbox to finish.",
+        "In the still-open first editor, submit 2 l and wait for the shared outbox and conflict recovery to finish.",
+        "Compare the retained list value, conflict message and save receipt."
+      ],
+      "expectedBehavior": "The final receipt must describe the actual outcome. A locally queued change can say that it is waiting to sync; a rejected stale change must replace or remove the success receipt and clearly state which shared value was retained.",
+      "actualBehavior": "The real SQL conflict path keeps the partner’s 3 l and shows a message that the latest shared list was retained, while a separate persistent receipt simultaneously says Mentve: 2 l with Visszavonás. editCart returns true after saving a local outbox intent; the editor immediately labels that optimistic result Saved, and later conflict recovery does not reconcile that receipt.",
+      "userImpact": "Household members receive contradictory confirmations about the same ingredient and cannot confidently tell which quantity the shared list contains. The data protection works, but the success claim violates the product’s persistence-confirmed action principle and could misdirect shopping.",
+      "evidence": [
+        {
+          "path": "evidence/085-G-conflict-recovery-390x844.png",
+          "description": "Same frame shows Tej 3 l, latest-list-retained conflict feedback, and Mentve: 2 l success receipt.",
+          "kind": "screenshot"
+        },
+        {
+          "path": "evidence/085-G-conflict-recovery-390x844.dom.json",
+          "description": "DOM text independently contains the retained 3 l and conflicting Saved 2 l receipt after recovery.",
+          "kind": "dom"
+        },
+        {
+          "path": "evidence/results.json",
+          "description": "G-conflict proves the stale change was rejected and partner quantity 3 retained; this passing data assertion does not verify receipt truthfulness.",
+          "kind": "test"
+        }
+      ],
+      "screenshotRefs": [
+        "evidence/085-G-conflict-recovery-390x844.png"
+      ],
+      "sourceFiles": [
+        "shopping-mode-ui.js:79",
+        "shopping-mode-ui.js:37",
+        "household.js:14",
+        "household.js:18",
+        "household.js:28",
+        "household.js:31"
+      ],
+      "recommendedSolution": "Represent queued, committed and rejected outcomes separately and reconcile the visible receipt with the shared outbox result. Keep the immediate local interaction responsive, but use pending language until authoritative confirmation. On rejection, replace the optimistic receipt with a concise item-specific explanation of the retained value and a way to reopen the current item; remove undo for an edit that never committed.",
+      "acceptanceCriteria": [
+        "After the two-account stale quantity edit, no visible receipt says the rejected 2 l was saved when the shared row is 3 l.",
+        "Queued and failed-to-sync edits are visibly distinct from confirmed shared saves.",
+        "Successful shared edits show the committed quantity only after confirmation.",
+        "Undo applies to a confirmed change or a clearly cancellable pending intent and cannot imply a rejected edit was committed."
+      ],
+      "validationStatus": "verified",
+      "duplicateKey": "shopping-conflict-false-receipt",
+      "regressionTests": [
+        "Extend G-conflict to assert receipt text and pending/committed/rejected state as well as final SQL quantity.",
+        "Repeat with delayed successful RPC, offline/retry and two stale edits to different fields."
+      ],
+      "notes": [
+        "This is a verified feedback defect, not data loss: the observed backend conflict protection correctly retains 3 l. Request a separate orchestrator reproduction before retaining P1 in the final backlog."
+      ]
+    }
+  ]
+}

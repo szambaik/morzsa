@@ -10,6 +10,7 @@ window.RecipeImages=(()=>{
   PLUS_ACCESS_REQUIRED:['Ehhez a fiókhoz vagy konyhához még nincs Plus-hozzáférés. Az ingyenes mód választható a chatben.','Plus access is not enabled for this account or kitchen. Select Free in the chat.'],
   PLUS_LIMIT:['A Plus keret elfogyott. Folytathatod ingyenes módban.','The Plus allowance is used up. You can continue in Free mode.'],
   IMAGE_UNCERTAIN:['A képkérés állapota ellenőrzésre vár. Új generálást nem indítunk, hogy ne fizess kétszer.','The image request needs checking. We will not generate again and charge twice.'],
+  IMAGE_REFRESH_DENIED:['A közös receptkép itt nem írható felül. Készíts saját receptváltozatot.','This shared recipe image cannot be replaced here. Create your own recipe version.'],
   IMAGE_ACCESS_DENIED:['Ehhez a képhez már nincs hozzáférésed.','You no longer have access to this image.'],
   IMAGE_TIMEOUT:['A kép lekérése túl sokáig tartott. Próbáld újra.','The image request timed out. Try again.'],
   IMAGE_SETUP_REQUIRED:['A képszolgáltatás beállítását ellenőrizni kell.','The image service configuration needs checking.'],
@@ -29,8 +30,10 @@ window.RecipeImages=(()=>{
    // A cache-only lookup may finish after the cooking hero was mounted.
    if(entry.status==='missing'&&visible&&options.autoCreate&&!autoAttempted&&!autoCreated.has(id)){autoAttempted=true;autoCreated.add(id);load(true);return}
    if(entry.status==='ready'){
-    const img=document.createElement('img');img.src=entry.url;img.alt=recipe.title+' · '+say(step<0?'AI-illusztráció a recepthez':'AI-illusztráció a főzési lépéshez',step<0?'AI recipe illustration':'AI cooking step illustration');img.loading=options.hero?'eager':'lazy';if(options.hero)img.fetchPriority='high';img.width=640;img.height=480;
-    img.onerror=()=>{if(entry.status!=='ready'||entry.url!==img.src)return;entry.status='failed';entry.error='IMAGE_LOAD_FAILED';refresh()};const caption=document.createElement('small');caption.textContent=say('AI-illusztráció · Morzsa','AI illustration · Morzsa');host.append(img,caption);return;
+    const img=document.createElement('img');img.src=entry.url;img.alt=recipe.title+' · '+say(step<0?'AI-illusztráció a recepthez':'AI-illusztráció a főzési lépéshez',step<0?'AI recipe illustration':'AI cooking step illustration');img.loading=options.hero?'eager':'lazy';if(options.hero)img.fetchPriority='high';img.width=768;img.height=512;
+    img.onerror=()=>{if(entry.status!=='ready'||entry.url!==img.src)return;entry.status='failed';entry.error='IMAGE_LOAD_FAILED';refresh()};const caption=document.createElement('small');caption.textContent=say('AI-illusztráció · Morzsa','AI illustration · Morzsa');const cover=entries.get(key(recipe,-1));const duplicate=step>=0&&cover?.url&&new URL(cover.url).pathname===new URL(entry.url).pathname;if(!duplicate)host.append(img,caption);else{host.dataset.duplicateCover='true';const note=document.createElement('small');note.textContent=say('Ehhez a lépéshez nincs külön illusztráció.','No separate illustration for this step.');host.append(note)}
+    if(step>=0&&!options.cacheOnly&&entry.canReplace){const replace=document.createElement('button');replace.type='button';replace.className='image-replace';replace.textContent=say('Másik képet kérek','Create a different image');replace.onclick=()=>{
+      replace.disabled=true;const confirm=document.createElement('div');confirm.className='image-replace-confirm';const note=document.createElement('span');note.textContent=say('Új képet generálunk és mentünk. Ez a képkeretből fogyaszt.','Generate and cache a replacement. This uses your image allowance.');const yes=document.createElement('button'),no=document.createElement('button');yes.type=no.type='button';yes.textContent=say('Új kép készítése','Generate replacement');no.textContent=say('Mégsem','Cancel');yes.onclick=()=>load(true,true);no.onclick=()=>{confirm.remove();replace.disabled=false};confirm.append(note,yes,no);host.append(confirm)};host.append(replace)}return;
    }
    if(options.cacheOnly)return;
    const b=document.createElement('button');b.type='button';b.className='small-button';b.disabled=entry.status==='loading';
@@ -44,17 +47,17 @@ window.RecipeImages=(()=>{
   };
   entry.views??=new Map();entry.views.set(host,paint);
   const refresh=()=>{for(const draw of entry.views.values())draw()};
-  async function load(create){
+  async function load(create,regenerate=false){
    autoAttempted ||= create;
-   if(entry.status==='loading'||entry.retryAt>Date.now())return;entry.status='loading';delete entry.error;refresh();
+   if(entry.status==='loading'||entry.retryAt>Date.now())return;entry.status='loading';delete entry.error;if(create)entry.requestedAt=Date.now();refresh();
    const work=async()=>{
     // Navigation may detach every view while another image occupies the queue.
     // Keep a replacement view of the same recipe alive, but skip abandoned work.
     if(key(recipe,step)!==id||create&&![...entry.views.keys()].some(view=>view.isConnected)){entry.status='new';autoCreated.delete(id);return}
-    try{let r;if(household.libraryImage&&(recipe.recipeId||window.MorzsaPersistence&&household.dataRpc)){const saved=recipe.recipeId?recipe:await MorzsaPersistence.ensureRecipe(recipe);r=await household.libraryImage({recipeId:saved.recipeId,step,create})}else r=await household.recipeImage({recipe,step,create});if(r.status==='ready'){
+    try{let r;if(household.libraryImage&&(recipe.recipeId||window.MorzsaPersistence&&household.dataRpc)){const saved=recipe.recipeId?recipe:await MorzsaPersistence.ensureRecipe(recipe);r=await household.libraryImage({recipeId:saved.recipeId,step,create,...(regenerate?{regenerate:true}:{})})}else r=await household.recipeImage({recipe,step,create});if(r.status==='ready'){
       const base=window.MORZSA_CLOUD?.url;if(typeof r.url!=='string'||!base||!(r.url.startsWith(base+'/storage/v1/object/sign/')||recipe.recipeId&&r.url.startsWith(base+'/storage/v1/object/public/recipe-catalog/')))throw Error('IMAGE_UNAVAILABLE');
-      Object.assign(entry,{status:'ready',url:r.url,expiresAt:r.expiresAt});
-     }else {entry.status=r.status==='pending'?'pending':'missing';if(entry.status==='pending'&&!entry.polls){entry.polls=1;setTimeout(()=>{if(live()){entry.polls=0;load(false)}},5000)}};
+      Object.assign(entry,{status:'ready',url:r.url,expiresAt:r.expiresAt,canReplace:r.canReplace===true});
+     }else {entry.status=r.status==='pending'?'pending':'missing';if(entry.status==='pending'&&!entry.polls&&Date.now()-(entry.requestedAt||Date.now())<90000){entry.polls=1;entry.requestedAt??=Date.now();setTimeout(()=>{entry.polls=0;if(key(recipe,step)===id&&[...entry.views.keys()].some(view=>view.isConnected))load(false)},4000)}};
     }catch(e){entry.error=Object.hasOwn(errors,e.message)||e.message==='IMAGE_LIMIT'?e.message:e.httpStatus===401?'IMAGE_SIGN_IN_REQUIRED':['AbortError','TimeoutError'].includes(e.name)?'IMAGE_TIMEOUT':'IMAGE_UNAVAILABLE';entry.status=entry.error==='IMAGE_LIMIT'?'limit':'failed';
      if(['IMAGE_COOLDOWN','IMAGE_PROVIDER_LIMIT'].includes(entry.error)){const seconds=Math.min(300,Math.max(1,Number(e.retryAfter)||60));entry.retryAt=Date.now()+seconds*1000;setTimeout(()=>{delete entry.retryAt;refresh()},seconds*1000)}
     }

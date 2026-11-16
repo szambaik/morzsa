@@ -1,0 +1,36 @@
+- banner:
+  - button "Beszélgetéstörténet": ☰
+  - link "Morzsa":
+    - /url: "#"
+    - text: morzsa
+  - button "Audit kitchen · Konyhaváltás és meghívás": Audit kitchen
+  - button "Új Morzsa-beszélgetés"
+- main:
+  - heading "Bevásárlólista" [level=1]
+  - text: 1 hátravan
+  - group: ···
+  - combobox "Új bevásárlótétel"
+  - button "Listára vétel": +
+  - group:
+    - text: Tejtermék és tojás 1 ›
+    - button "Tej · Megvettem"
+    - button "Tej · Szerkesztés":
+      - strong: Tej
+      - text: Partner note
+    - button "Tej · Mennyiség szerkesztése": 7 l
+  - group: Megvásárolva · 1 +
+- navigation "Fő navigáció":
+  - button "Áttekintés"
+  - button "Készlet"
+  - button "Morzsa"
+  - button "Lista 1"
+  - button "Receptek"
+- status: A közös lista mentve, de az eszköz gyorsítótára nem frissült.
+- group "Vásárlási nézet":
+  - button "Boltban vagyok Nagy pipák, könnyű követés":
+    - strong: Boltban vagyok
+    - text: Nagy pipák, könnyű követés
+  - button "Kérdezz Morzsától"
+- status:
+  - text: "Mentve: 7 l"
+  - button "Visszavonás"

@@ -1,0 +1,39 @@
+- banner:
+  - button "Beszélgetéstörténet": ☰
+  - link "Morzsa":
+    - /url: "#"
+    - text: morzsa
+  - button "Saját konyha · Konyhaváltás és meghívás": Saját konyha
+  - button "Új Morzsa-beszélgetés"
+- main:
+  - text: Teszt operation
+  - article:
+    - paragraph: Teszt operation
+  - article:
+    - text: Morzsa
+    - paragraph: Így módosítanám. Nézd át, mielőtt mentjük.
+    - text: Javaslat, nincs mentve.
+  - region "Javasolt módosítások":
+    - text: Javaslat · még nincs mentve
+    - strong: Tej
+    - text: Listára · 1 l
+    - button "Mentés"
+    - button "Pontosítás"
+    - button "Mégsem"
+  - button "Fotó csatolása" [disabled]
+  - textbox "Üzenet Morzsának":
+    - /placeholder: Kérdezz…
+  - button "Hangbeszélgetés Morzsával" [disabled]
+  - button "Küldés" [disabled]
+  - text: AI mód
+  - combobox "AI mód" [disabled]:
+    - option "Morzsa Plus" [selected]
+    - option "Ingyenes"
+  - text: A változtatásokat mentés előtt átnézheted.
+- navigation "Fő navigáció":
+  - button "Áttekintés"
+  - button "Készlet"
+  - button "Morzsa"
+  - button "Lista"
+  - button "Receptek"
+- status

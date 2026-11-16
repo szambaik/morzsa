@@ -1,0 +1,41 @@
+
+> test
+> node --test test/*.test.mjs
+
+✔ fixture serves only UI assets, substitutes cloud config and blocks external-effect RPCs (709.09425ms)
+✔ browser rerun refuses to overwrite existing evidence before browser launch (4.594208ms)
+AUDIT_RUN_DIR=/var/folders/q4/6pbm4dpn79j02zvn_ld15mw40000gn/T/morzsa-audit-engine-GfwIYc/design-audit/runs/2026-11-16T18-15-52-194Z-9ee7b0
+AUDIT_RUN_DIR=/var/folders/q4/6pbm4dpn79j02zvn_ld15mw40000gn/T/morzsa-audit-engine-iBBEOk/design-audit/runs/2026-11-16T18-15-52-376Z-3f1f16
+✔ schema requires every requested field and rejects unknown severity (14.409083ms)
+✔ missing and escaping evidence is rejected including symlinks (10.2485ms)
+✔ hypothesis cannot masquerade as a confirmed or high confidence finding (8.074625ms)
+✔ duplicate merging retains every evidence reference and reviewer and flags disagreement (7.327167ms)
+✔ important findings require separate validation with existing evidence (7.673917ms)
+✔ conflicting duplicates remain pending until an explicit resolution (12.04ms)
+✔ unavailable specialists cannot fabricate findings (9.765541ms)
+✔ runs and report snapshots never destroy earlier results (64.820541ms)
+✔ actual review import archives previous version (12.731583ms)
+✔ report flags missing baseline evidence instead of asserting completeness (26.963209ms)
+✔ comparison detects deterministic regressions without claiming absent findings fixed (67.634875ms)
+✔ unknown profiles and unsafe provider assumptions are rejected (0.289ms)
+✔ unavailable Codex executable is an honest provider failure (10.85625ms)
+✔ orchestrator survives browser failure, records it and generates limited reports (145.822042ms)
+✔ orchestrator calls browser with the selected profile and emits success evidence (270.782375ms)
+✔ hypotheses remain unconfirmed even if an imported validator attempts promotion (9.9065ms)
+✔ submitted rejected findings do not appear as active backlog (11.346375ms)
+AUDIT_RUN_DIR=/var/folders/q4/6pbm4dpn79j02zvn_ld15mw40000gn/T/morzsa-audit-engine-pqqAmP/design-audit/runs/2026-11-16T18-15-53-165Z-85de65
+✔ provider subprocess adapter passes read-only flags and parses structured output (534.96375ms)
+✔ blocked browser journeys remain incomplete and cause an engine failure (83.011625ms)
+✔ additive validation updates counts without rewriting the original baseline (26.258042ms)
+✔ rejected screenshots remain indexed but are excluded from report gallery (25.701541ms)
+✔ an invalid regression baseline is rejected before browser execution (6.8115ms)
+✔ provider diagnostics redact credentials while retaining failure cause (0.225875ms)
+✔ explicit duplicate grouping retains independent submissions and reconciles different keys (27.905125ms)
+ℹ tests 26
+ℹ suites 0
+ℹ pass 26
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1474.359833

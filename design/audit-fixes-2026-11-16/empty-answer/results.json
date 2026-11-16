@@ -1,0 +1,215 @@
+{
+  "question": "Mit jelent a blansírozás?",
+  "observed": {
+    "text": "☰\nmorzsa\nSaját konyha\nMorzsa · a kuktád\nMa\n\nMit jelent a blansírozás?\n\nMorzsa most nem adott választ. Próbáld újra; a kérdésed megmaradt, semmit nem módosítottunk.\n\nÚjrapróbálom\nAI mód\nMorzsa Plus\nIngyenes\nA változtatásokat mentés előtt átnézheted.\nÁttekintés\nKészlet\nMorzsa\nLista\nReceptek",
+    "retry": true,
+    "error": true,
+    "canApply": false,
+    "state": "{\"stock\":{\"Alma\":2,\"Tej\":1,\"Liszt\":0,\"Tojás\":2,\"Rizs\":2,\"Vaj\":2},\"cart\":[]}"
+  },
+  "checks": [
+    {
+      "id": "F-EMPTY-STATE-REPRO",
+      "title": "Empty AI response does not mutate inventory or list",
+      "status": "passed"
+    },
+    {
+      "id": "F-EMPTY-RECOVERY-REPRO",
+      "title": "Empty service output exposes recovery instead of inventing a clarification",
+      "status": "passed"
+    }
+  ],
+  "requests": [
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/list_household_email_invites",
+      "body": {}
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "body": {
+        "page_offset": 0
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "2e13868b-8940-4a9d-a235-4a91dd52f912",
+        "before_seq": null
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "body": {
+        "cid": "2e13868b-8940-4a9d-a235-4a91dd52f912",
+        "meta": {
+          "kind": "main",
+          "title": "",
+          "language": "hu",
+          "updated": 1794852665620
+        },
+        "expected": 0,
+        "items": [],
+        "recipe_ids": []
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "body": {
+        "page_offset": 0
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "2e13868b-8940-4a9d-a235-4a91dd52f912",
+        "before_seq": null
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "body": {
+        "cid": "2e13868b-8940-4a9d-a235-4a91dd52f912",
+        "meta": {
+          "kind": "main",
+          "title": "",
+          "language": "hu",
+          "updated": 1794852665620
+        },
+        "expected": 1,
+        "items": [],
+        "recipe_ids": []
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/begin_conversation_turn",
+      "body": {
+        "cid": "2e13868b-8940-4a9d-a235-4a91dd52f912",
+        "tid": "122f05fe-13fb-48a2-b9af-bf0573731abc"
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "2e13868b-8940-4a9d-a235-4a91dd52f912",
+        "before_seq": null
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/functions/v1/plus-assistant",
+      "body": {
+        "assistant": true,
+        "companion": true,
+        "destination": "stock",
+        "language": "hu",
+        "context": {
+          "preferences": {
+            "servings": 2,
+            "maxMinutes": 0,
+            "diet": "any",
+            "avoid": []
+          },
+          "recentCooked": [],
+          "low": [
+            "Tej"
+          ],
+          "patterns": {
+            "frequentProducts": [],
+            "favouriteRecipes": []
+          },
+          "stock": [
+            "Alma",
+            "Tej",
+            "Tojás",
+            "Rizs",
+            "Vaj"
+          ],
+          "cart": [],
+          "uncertain": [
+            "Tej",
+            "Tojás",
+            "Alma",
+            "Vaj",
+            "Rizs"
+          ]
+        },
+        "history": [],
+        "text": "Mit jelent a blansírozás?",
+        "stream": true,
+        "task": "chat",
+        "householdId": null,
+        "requestId": "c21f9fb1-0619-455d-8fc0-9a3b8f3fed20"
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/end_conversation_turn",
+      "body": {
+        "cid": "2e13868b-8940-4a9d-a235-4a91dd52f912",
+        "tid": "122f05fe-13fb-48a2-b9af-bf0573731abc"
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "body": {
+        "cid": "2e13868b-8940-4a9d-a235-4a91dd52f912",
+        "meta": {
+          "kind": "main",
+          "title": "Mit jelent a blansírozás?",
+          "language": "hu",
+          "updated": 1794852665734
+        },
+        "expected": 1,
+        "items": [
+          {
+            "id": "57edf64d-4a3a-4db0-850b-92b7da49d6f5",
+            "role": "user",
+            "text": "Mit jelent a blansírozás?",
+            "createdAt": 1794852665734,
+            "recipes": []
+          }
+        ],
+        "recipe_ids": []
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "body": {
+        "page_offset": 0
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "2e13868b-8940-4a9d-a235-4a91dd52f912",
+        "before_seq": null
+      }
+    }
+  ]
+}

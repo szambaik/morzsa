@@ -1,0 +1,2657 @@
+{
+  "checks": [
+    {
+      "id": "RECEIPT-PENDING",
+      "status": "passed",
+      "details": "Mentésre vár…"
+    },
+    {
+      "id": "RECEIPT-CONFIRMED",
+      "status": "passed",
+      "details": "Mentve: 2 l\nVisszavonás"
+    },
+    {
+      "id": "UNDO-PRESERVES-PARTNER",
+      "status": "passed",
+      "details": {
+        "done": false,
+        "name": "Tej",
+        "unit": "l",
+        "notes": "Partner note",
+        "source": "Gyors felvétel",
+        "addedAt": "2026-11-16T18:17:22.057+00:00",
+        "addedBy": "00000000-0000-4000-8000-000000000001",
+        "quantity": 1
+      }
+    },
+    {
+      "id": "UNDO-CONFIRMED",
+      "status": "passed"
+    },
+    {
+      "id": "RECEIPT-FAILED",
+      "status": "passed",
+      "details": "A mentés még nem sikerült. A módosítás megmaradt ezen az eszközön.\nÚjrapróbálás"
+    },
+    {
+      "id": "RECEIPT-RETRY",
+      "status": "passed"
+    },
+    {
+      "id": "RECEIPT-LATEST-ACTION",
+      "status": "passed",
+      "details": "Alma · Megvásárolva\nVisszavonás"
+    },
+    {
+      "id": "RECEIPT-PLANNING-320",
+      "status": "passed",
+      "details": {
+        "reachable": true,
+        "separate": true,
+        "overflow": false
+      }
+    },
+    {
+      "id": "RECEIPT-PLANNING-360",
+      "status": "passed",
+      "details": {
+        "reachable": true,
+        "separate": true,
+        "overflow": false
+      }
+    },
+    {
+      "id": "RECEIPT-PLANNING-390",
+      "status": "passed",
+      "details": {
+        "reachable": true,
+        "separate": true,
+        "overflow": false
+      }
+    },
+    {
+      "id": "RECEIPT-PLANNING-1280",
+      "status": "passed",
+      "details": {
+        "reachable": true,
+        "separate": true,
+        "overflow": false
+      }
+    },
+    {
+      "id": "RECEIPT-INSTORE-320",
+      "status": "passed",
+      "details": {
+        "reachable": true,
+        "separate": true,
+        "overflow": false
+      }
+    },
+    {
+      "id": "RECEIPT-INSTORE-360",
+      "status": "passed",
+      "details": {
+        "reachable": true,
+        "separate": true,
+        "overflow": false
+      }
+    },
+    {
+      "id": "RECEIPT-INSTORE-390",
+      "status": "passed",
+      "details": {
+        "reachable": true,
+        "separate": true,
+        "overflow": false
+      }
+    },
+    {
+      "id": "RECEIPT-INSTORE-1280",
+      "status": "passed",
+      "details": {
+        "reachable": true,
+        "separate": true,
+        "overflow": false
+      }
+    },
+    {
+      "id": "RECEIPT-NAVIGATION",
+      "status": "passed"
+    },
+    {
+      "id": "RECEIPT-NO-RESURRECTION",
+      "status": "passed"
+    },
+    {
+      "id": "RECEIPT-CACHE-FAILURE",
+      "status": "passed"
+    },
+    {
+      "id": "SEARCH-hu-home",
+      "status": "passed"
+    },
+    {
+      "id": "SEARCH-CLEAR-hu-home",
+      "status": "passed"
+    },
+    {
+      "id": "SEARCH-hu-low",
+      "status": "passed"
+    },
+    {
+      "id": "SEARCH-CLEAR-hu-low",
+      "status": "passed"
+    },
+    {
+      "id": "SEARCH-hu-out",
+      "status": "passed"
+    },
+    {
+      "id": "SEARCH-CLEAR-hu-out",
+      "status": "passed"
+    },
+    {
+      "id": "SEARCH-hu-all",
+      "status": "passed"
+    },
+    {
+      "id": "SEARCH-CLEAR-hu-all",
+      "status": "passed"
+    },
+    {
+      "id": "SEARCH-en-home",
+      "status": "passed"
+    },
+    {
+      "id": "SEARCH-CLEAR-en-home",
+      "status": "passed"
+    },
+    {
+      "id": "SEARCH-en-low",
+      "status": "passed"
+    },
+    {
+      "id": "SEARCH-CLEAR-en-low",
+      "status": "passed"
+    },
+    {
+      "id": "SEARCH-en-out",
+      "status": "passed"
+    },
+    {
+      "id": "SEARCH-CLEAR-en-out",
+      "status": "passed"
+    },
+    {
+      "id": "SEARCH-en-all",
+      "status": "passed"
+    },
+    {
+      "id": "SEARCH-CLEAR-en-all",
+      "status": "passed"
+    },
+    {
+      "id": "SEARCH-NO-WRITES",
+      "status": "passed"
+    },
+    {
+      "id": "PANTRY-FOCUS-2",
+      "status": "passed"
+    },
+    {
+      "id": "PANTRY-RETURN-2",
+      "status": "passed"
+    },
+    {
+      "id": "PANTRY-FOCUS-1",
+      "status": "passed"
+    },
+    {
+      "id": "PANTRY-RETURN-1",
+      "status": "passed"
+    },
+    {
+      "id": "PANTRY-FOCUS-0",
+      "status": "passed"
+    },
+    {
+      "id": "PANTRY-RETURN-0",
+      "status": "passed"
+    },
+    {
+      "id": "PANTRY-FILTERED-OPENER",
+      "status": "passed"
+    },
+    {
+      "id": "PANTRY-FAILED-FOCUS",
+      "status": "passed"
+    },
+    {
+      "id": "PANTRY-CLOSE-NO-FOCUS-STEAL",
+      "status": "passed"
+    },
+    {
+      "id": "AI-EMPTY-0",
+      "status": "passed"
+    },
+    {
+      "id": "AI-SAME-PROMPT-RETRY-0",
+      "status": "passed"
+    },
+    {
+      "id": "AI-EMPTY-5",
+      "status": "passed"
+    },
+    {
+      "id": "AI-SAME-PROMPT-RETRY-5",
+      "status": "passed"
+    },
+    {
+      "id": "AI-EMPTY-NO-WRITES",
+      "status": "passed"
+    },
+    {
+      "id": "AI-VALID-clarification",
+      "status": "passed"
+    },
+    {
+      "id": "AI-VALID-recipe",
+      "status": "passed"
+    },
+    {
+      "id": "AI-WHITESPACE-NOT-CLARIFICATION",
+      "status": "passed"
+    },
+    {
+      "id": "AI-VALID-operation",
+      "status": "passed"
+    },
+    {
+      "id": "AI-PROPOSAL-NOT-COMMITTED",
+      "status": "passed"
+    }
+  ],
+  "requests": [
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/households",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/list_household_email_invites",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "body": {
+        "page_offset": 0
+      }
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_records",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "8facd7a5-301c-4e4e-b7ee-a60fd5584d6e",
+        "before_seq": null
+      }
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_pantry_reviews",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_preferences",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "body": {
+        "cid": "8facd7a5-301c-4e4e-b7ee-a60fd5584d6e",
+        "meta": {
+          "kind": "main",
+          "title": "",
+          "language": "hu",
+          "updated": 1794853041758
+        },
+        "expected": 0,
+        "items": [],
+        "recipe_ids": []
+      }
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "body": {
+        "page_offset": 0
+      }
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "8facd7a5-301c-4e4e-b7ee-a60fd5584d6e",
+        "before_seq": null
+      }
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_sessions",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_routes",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "body": {
+        "page_offset": 0
+      }
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "8facd7a5-301c-4e4e-b7ee-a60fd5584d6e",
+        "before_seq": null
+      }
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/apply_household_changes",
+      "body": {
+        "hid": "90000000-0000-4000-8000-000000000001",
+        "changes": [
+          {
+            "bucket": "cart",
+            "key": "Tej",
+            "value": {
+              "quantity": 1,
+              "unit": "l",
+              "done": false,
+              "source": "Gyors felvétel",
+              "name": "Tej"
+            },
+            "expected": 0
+          },
+          {
+            "bucket": "cart",
+            "key": "Alma",
+            "value": {
+              "quantity": 1,
+              "unit": "kg",
+              "done": false,
+              "source": "Gyors felvétel",
+              "name": "Alma"
+            },
+            "expected": 0
+          }
+        ]
+      }
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_records",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_sessions",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_routes",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_preferences",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/apply_household_changes",
+      "body": {
+        "hid": "90000000-0000-4000-8000-000000000001",
+        "changes": [
+          {
+            "bucket": "cart",
+            "key": "Tej",
+            "value": {
+              "done": false,
+              "name": "Tej",
+              "unit": "l",
+              "source": "Gyors felvétel",
+              "addedAt": "2026-11-16T18:17:22.057+00:00",
+              "addedBy": "00000000-0000-4000-8000-000000000001",
+              "quantity": 2
+            },
+            "expected": 1
+          }
+        ]
+      }
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_records",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_sessions",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_routes",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_preferences",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events",
+      "body": {}
+    },
+    {
+      "actor": "b",
+      "method": "GET",
+      "path": "/rest/v1/households",
+      "body": {}
+    },
+    {
+      "actor": "b",
+      "method": "POST",
+      "path": "/rest/v1/rpc/list_household_email_invites",
+      "body": {}
+    },
+    {
+      "actor": "b",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "body": {
+        "page_offset": 0
+      }
+    },
+    {
+      "actor": "b",
+      "method": "GET",
+      "path": "/rest/v1/household_records",
+      "body": {}
+    },
+    {
+      "actor": "b",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "7adfe0b8-7816-4826-9f26-8ee7664742cb",
+        "before_seq": null
+      }
+    },
+    {
+      "actor": "b",
+      "method": "GET",
+      "path": "/rest/v1/household_pantry_reviews",
+      "body": {}
+    },
+    {
+      "actor": "b",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_preferences",
+      "body": {}
+    },
+    {
+      "actor": "b",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events",
+      "body": {}
+    },
+    {
+      "actor": "b",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events",
+      "body": {}
+    },
+    {
+      "actor": "b",
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "body": {
+        "cid": "7adfe0b8-7816-4826-9f26-8ee7664742cb",
+        "meta": {
+          "kind": "main",
+          "title": "",
+          "language": "hu",
+          "updated": 1794853042444
+        },
+        "expected": 0,
+        "items": [],
+        "recipe_ids": []
+      }
+    },
+    {
+      "actor": "b",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "body": {
+        "page_offset": 0
+      }
+    },
+    {
+      "actor": "b",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "7adfe0b8-7816-4826-9f26-8ee7664742cb",
+        "before_seq": null
+      }
+    },
+    {
+      "actor": "b",
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_sessions",
+      "body": {}
+    },
+    {
+      "actor": "b",
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_routes",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "body": {
+        "page_offset": 0
+      }
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "8facd7a5-301c-4e4e-b7ee-a60fd5584d6e",
+        "before_seq": null
+      }
+    },
+    {
+      "actor": "b",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "body": {
+        "page_offset": 0
+      }
+    },
+    {
+      "actor": "b",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "7adfe0b8-7816-4826-9f26-8ee7664742cb",
+        "before_seq": null
+      }
+    },
+    {
+      "actor": "b",
+      "method": "POST",
+      "path": "/rest/v1/rpc/apply_household_changes",
+      "body": {
+        "hid": "90000000-0000-4000-8000-000000000001",
+        "changes": [
+          {
+            "bucket": "cart",
+            "key": "Tej",
+            "value": {
+              "done": false,
+              "name": "Tej",
+              "unit": "l",
+              "source": "Gyors felvétel",
+              "addedAt": "2026-11-16T18:17:22.057+00:00",
+              "addedBy": "00000000-0000-4000-8000-000000000001",
+              "quantity": 2,
+              "notes": "Partner note"
+            },
+            "expected": 2
+          }
+        ]
+      }
+    },
+    {
+      "actor": "b",
+      "method": "GET",
+      "path": "/rest/v1/household_records",
+      "body": {}
+    },
+    {
+      "actor": "b",
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_sessions",
+      "body": {}
+    },
+    {
+      "actor": "b",
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_routes",
+      "body": {}
+    },
+    {
+      "actor": "b",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_preferences",
+      "body": {}
+    },
+    {
+      "actor": "b",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events",
+      "body": {}
+    },
+    {
+      "actor": "b",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/apply_household_changes",
+      "body": {
+        "hid": "90000000-0000-4000-8000-000000000001",
+        "changes": [
+          {
+            "bucket": "cart",
+            "key": "Tej",
+            "value": {
+              "done": false,
+              "name": "Tej",
+              "unit": "l",
+              "source": "Gyors felvétel",
+              "addedAt": "2026-11-16T18:17:22.057+00:00",
+              "addedBy": "00000000-0000-4000-8000-000000000001",
+              "quantity": 1
+            },
+            "expected": 2
+          }
+        ]
+      }
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/households",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_records",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/apply_household_changes",
+      "body": {
+        "hid": "90000000-0000-4000-8000-000000000001",
+        "changes": [
+          {
+            "bucket": "cart",
+            "key": "Tej",
+            "value": {
+              "done": false,
+              "name": "Tej",
+              "unit": "l",
+              "notes": "Partner note",
+              "source": "Gyors felvétel",
+              "addedAt": "2026-11-16T18:17:22.057+00:00",
+              "addedBy": "00000000-0000-4000-8000-000000000001",
+              "quantity": 1
+            },
+            "expected": 3
+          }
+        ]
+      }
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_records",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_sessions",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_routes",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_preferences",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events",
+      "body": {}
+    },
+    {
+      "actor": "b",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "body": {
+        "page_offset": 0
+      }
+    },
+    {
+      "actor": "b",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "7adfe0b8-7816-4826-9f26-8ee7664742cb",
+        "before_seq": null
+      }
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/households",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_records",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/apply_household_changes",
+      "body": {
+        "hid": "90000000-0000-4000-8000-000000000001",
+        "changes": [
+          {
+            "bucket": "cart",
+            "key": "Tej",
+            "value": {
+              "done": false,
+              "name": "Tej",
+              "unit": "l",
+              "notes": "Partner note",
+              "source": "Gyors felvétel",
+              "addedAt": "2026-11-16T18:17:22.057+00:00",
+              "addedBy": "00000000-0000-4000-8000-000000000001",
+              "quantity": 4
+            },
+            "expected": 4
+          }
+        ]
+      }
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_records",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_sessions",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_routes",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_preferences",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/apply_household_changes",
+      "body": {
+        "hid": "90000000-0000-4000-8000-000000000001",
+        "changes": [
+          {
+            "bucket": "cart",
+            "key": "Tej",
+            "value": {
+              "done": true,
+              "name": "Tej",
+              "unit": "l",
+              "notes": "Partner note",
+              "source": "Gyors felvétel",
+              "addedAt": "2026-11-16T18:17:22.057+00:00",
+              "addedBy": "00000000-0000-4000-8000-000000000001",
+              "quantity": 4,
+              "purchasedBy": "00000000-0000-4000-8000-000000000001",
+              "purchasedAt": "2026-11-16T18:17:23.232Z"
+            },
+            "expected": 5
+          }
+        ]
+      }
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_records",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/apply_household_changes",
+      "body": {
+        "hid": "90000000-0000-4000-8000-000000000001",
+        "changes": [
+          {
+            "bucket": "cart",
+            "key": "Alma",
+            "value": {
+              "done": true,
+              "name": "Alma",
+              "unit": "kg",
+              "source": "Gyors felvétel",
+              "addedAt": "2026-11-16T18:17:22.057+00:00",
+              "addedBy": "00000000-0000-4000-8000-000000000001",
+              "quantity": 1,
+              "purchasedBy": "00000000-0000-4000-8000-000000000001",
+              "purchasedAt": "2026-11-16T18:17:23.383Z"
+            },
+            "expected": 1
+          }
+        ]
+      }
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_records",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_sessions",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_routes",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_preferences",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/apply_household_changes",
+      "body": {
+        "hid": "90000000-0000-4000-8000-000000000001",
+        "changes": [
+          {
+            "bucket": "cart",
+            "key": "Tej",
+            "value": {
+              "done": true,
+              "name": "Tej",
+              "unit": "l",
+              "notes": "Partner note",
+              "source": "Gyors felvétel",
+              "addedAt": "2026-11-16T18:17:22.057+00:00",
+              "addedBy": "00000000-0000-4000-8000-000000000001",
+              "quantity": 5,
+              "purchasedAt": "2026-11-16T18:17:23.388+00:00",
+              "purchasedBy": "00000000-0000-4000-8000-000000000001"
+            },
+            "expected": 6
+          }
+        ]
+      }
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_records",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_sessions",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_routes",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_preferences",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "body": {
+        "page_offset": 0
+      }
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "8facd7a5-301c-4e4e-b7ee-a60fd5584d6e",
+        "before_seq": null
+      }
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/start_shopping_session",
+      "body": {
+        "hid": "90000000-0000-4000-8000-000000000001",
+        "sid": "8770afa7-e179-4f7d-9253-39e4a88d213e"
+      }
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/apply_household_changes",
+      "body": {
+        "hid": "90000000-0000-4000-8000-000000000001",
+        "changes": [
+          {
+            "bucket": "cart",
+            "key": "Tej",
+            "value": {
+              "done": false,
+              "name": "Tej",
+              "unit": "l",
+              "notes": "Partner note",
+              "source": "Gyors felvétel",
+              "addedAt": "2026-11-16T18:17:22.057+00:00",
+              "addedBy": "00000000-0000-4000-8000-000000000001",
+              "quantity": 5,
+              "purchasedAt": null,
+              "purchasedBy": null
+            },
+            "expected": 7
+          }
+        ]
+      }
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_records",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_sessions",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_routes",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_preferences",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "body": {
+        "page_offset": 0
+      }
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "8facd7a5-301c-4e4e-b7ee-a60fd5584d6e",
+        "before_seq": null
+      }
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/apply_household_changes",
+      "body": {
+        "hid": "90000000-0000-4000-8000-000000000001",
+        "changes": [
+          {
+            "bucket": "cart",
+            "key": "Tej",
+            "value": {
+              "done": false,
+              "name": "Tej",
+              "unit": "l",
+              "notes": "Partner note",
+              "source": "Gyors felvétel",
+              "addedAt": "2026-11-16T18:17:22.057+00:00",
+              "addedBy": "00000000-0000-4000-8000-000000000001",
+              "quantity": 6
+            },
+            "expected": 8
+          }
+        ]
+      }
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_records",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_sessions",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_routes",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_preferences",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/apply_household_changes",
+      "body": {
+        "hid": "90000000-0000-4000-8000-000000000001",
+        "changes": [
+          {
+            "bucket": "cart",
+            "key": "Tej",
+            "value": {
+              "done": false,
+              "name": "Tej",
+              "unit": "l",
+              "notes": "Partner note",
+              "source": "Gyors felvétel",
+              "addedAt": "2026-11-16T18:17:22.057+00:00",
+              "addedBy": "00000000-0000-4000-8000-000000000001",
+              "quantity": 7
+            },
+            "expected": 9
+          }
+        ]
+      }
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_records",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_sessions",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_routes",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_preferences",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events",
+      "body": {}
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/list_household_email_invites",
+      "body": {}
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "body": {
+        "page_offset": 0
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "b6409d30-e81a-4675-acf8-7cf18c48a237",
+        "before_seq": null
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "body": {
+        "cid": "b6409d30-e81a-4675-acf8-7cf18c48a237",
+        "meta": {
+          "kind": "main",
+          "title": "",
+          "language": "hu",
+          "updated": 1794853047116
+        },
+        "expected": 0,
+        "items": [],
+        "recipe_ids": []
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "body": {
+        "page_offset": 0
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "b6409d30-e81a-4675-acf8-7cf18c48a237",
+        "before_seq": null
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "body": {
+        "cid": "b6409d30-e81a-4675-acf8-7cf18c48a237",
+        "meta": {
+          "kind": "main",
+          "title": "",
+          "language": "hu",
+          "updated": 1794853047116
+        },
+        "expected": 1,
+        "items": [],
+        "recipe_ids": []
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/begin_conversation_turn",
+      "body": {
+        "cid": "b6409d30-e81a-4675-acf8-7cf18c48a237",
+        "tid": "b1aac7a6-b587-4b30-be3e-a493e133bb25"
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "b6409d30-e81a-4675-acf8-7cf18c48a237",
+        "before_seq": null
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/functions/v1/plus-assistant",
+      "body": {
+        "assistant": true,
+        "companion": true,
+        "destination": "stock",
+        "language": "hu",
+        "context": {
+          "preferences": {
+            "servings": 2,
+            "maxMinutes": 0,
+            "diet": "any",
+            "avoid": []
+          },
+          "recentCooked": [],
+          "low": [
+            "Tej"
+          ],
+          "patterns": {
+            "frequentProducts": [],
+            "favouriteRecipes": []
+          },
+          "stock": [
+            "Alma",
+            "Tej",
+            "Tojás",
+            "Rizs",
+            "Vaj"
+          ],
+          "cart": [],
+          "uncertain": [
+            "Tej",
+            "Tojás",
+            "Alma",
+            "Vaj",
+            "Rizs"
+          ]
+        },
+        "history": [],
+        "text": "Mit jelent a blansírozás?",
+        "stream": true,
+        "task": "chat",
+        "householdId": null,
+        "requestId": "7aa4bf8d-6b1a-4363-baff-ec078a094021"
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/end_conversation_turn",
+      "body": {
+        "cid": "b6409d30-e81a-4675-acf8-7cf18c48a237",
+        "tid": "b1aac7a6-b587-4b30-be3e-a493e133bb25"
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "body": {
+        "cid": "b6409d30-e81a-4675-acf8-7cf18c48a237",
+        "meta": {
+          "kind": "main",
+          "title": "Mit jelent a blansírozás?",
+          "language": "hu",
+          "updated": 1794853047200
+        },
+        "expected": 1,
+        "items": [
+          {
+            "id": "f4051b48-3ba4-4de5-94af-a73e620d2fcb",
+            "role": "user",
+            "text": "Mit jelent a blansírozás?",
+            "createdAt": 1794853047200,
+            "recipes": []
+          }
+        ],
+        "recipe_ids": []
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "body": {
+        "page_offset": 0
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "b6409d30-e81a-4675-acf8-7cf18c48a237",
+        "before_seq": null
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "body": {
+        "cid": "b6409d30-e81a-4675-acf8-7cf18c48a237",
+        "meta": {
+          "kind": "main",
+          "title": "Mit jelent a blansírozás?",
+          "language": "hu",
+          "updated": 1794853047200
+        },
+        "expected": 2,
+        "items": [],
+        "recipe_ids": []
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "body": {
+        "page_offset": 0
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "b6409d30-e81a-4675-acf8-7cf18c48a237",
+        "before_seq": null
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/begin_conversation_turn",
+      "body": {
+        "cid": "b6409d30-e81a-4675-acf8-7cf18c48a237",
+        "tid": "d5a37392-750d-4fa8-889f-fbe63d6bbfaf"
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "b6409d30-e81a-4675-acf8-7cf18c48a237",
+        "before_seq": null
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/functions/v1/plus-assistant",
+      "body": {
+        "assistant": true,
+        "companion": true,
+        "destination": "stock",
+        "language": "hu",
+        "context": {
+          "preferences": {
+            "servings": 2,
+            "maxMinutes": 0,
+            "diet": "any",
+            "avoid": []
+          },
+          "recentCooked": [],
+          "low": [
+            "Tej"
+          ],
+          "patterns": {
+            "frequentProducts": [],
+            "favouriteRecipes": []
+          },
+          "stock": [
+            "Alma",
+            "Tej",
+            "Tojás",
+            "Rizs",
+            "Vaj"
+          ],
+          "cart": [],
+          "uncertain": [
+            "Tej",
+            "Tojás",
+            "Alma",
+            "Vaj",
+            "Rizs"
+          ]
+        },
+        "history": [],
+        "text": "Mit jelent a blansírozás?",
+        "stream": true,
+        "task": "chat",
+        "householdId": null,
+        "requestId": "f9634805-d129-42e2-b4e1-3964693ad1e4"
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/end_conversation_turn",
+      "body": {
+        "cid": "b6409d30-e81a-4675-acf8-7cf18c48a237",
+        "tid": "d5a37392-750d-4fa8-889f-fbe63d6bbfaf"
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "body": {
+        "cid": "b6409d30-e81a-4675-acf8-7cf18c48a237",
+        "meta": {
+          "kind": "main",
+          "title": "Mit jelent a blansírozás?",
+          "language": "hu",
+          "updated": 1794853047314
+        },
+        "expected": 2,
+        "items": [
+          {
+            "id": "bab78026-60b2-472e-b24e-f1914889a38e",
+            "role": "model",
+            "text": "Rövid forrázás, majd jeges víz.",
+            "createdAt": 1794853047314,
+            "recipes": []
+          }
+        ],
+        "recipe_ids": []
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "body": {
+        "page_offset": 0
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "b6409d30-e81a-4675-acf8-7cf18c48a237",
+        "before_seq": null
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "body": {
+        "cid": "b6409d30-e81a-4675-acf8-7cf18c48a237",
+        "meta": {
+          "kind": "main",
+          "title": "Mit jelent a blansírozás?",
+          "language": "hu",
+          "updated": 1794853047314
+        },
+        "expected": 3,
+        "items": [],
+        "recipe_ids": []
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "body": {
+        "cid": "582740dd-f33e-4fd2-aec4-778bda3eb033",
+        "meta": {
+          "kind": "chat",
+          "title": "",
+          "language": "hu",
+          "updated": 1794853047331
+        },
+        "expected": 0,
+        "items": [],
+        "recipe_ids": []
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/begin_conversation_turn",
+      "body": {
+        "cid": "582740dd-f33e-4fd2-aec4-778bda3eb033",
+        "tid": "52ce5c32-0a32-46d6-8636-0e4e6618d625"
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "582740dd-f33e-4fd2-aec4-778bda3eb033",
+        "before_seq": null
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/functions/v1/plus-assistant",
+      "body": {
+        "assistant": true,
+        "companion": true,
+        "destination": "stock",
+        "language": "hu",
+        "context": {
+          "preferences": {
+            "servings": 2,
+            "maxMinutes": 0,
+            "diet": "any",
+            "avoid": []
+          },
+          "recentCooked": [],
+          "low": [
+            "Tej"
+          ],
+          "patterns": {
+            "frequentProducts": [],
+            "favouriteRecipes": []
+          },
+          "stock": [
+            "Alma",
+            "Tej",
+            "Tojás",
+            "Rizs",
+            "Vaj"
+          ],
+          "cart": [],
+          "uncertain": [
+            "Tej",
+            "Tojás",
+            "Alma",
+            "Vaj",
+            "Rizs"
+          ]
+        },
+        "history": [],
+        "text": "Mit jelent a blansírozás?",
+        "stream": true,
+        "task": "chat",
+        "householdId": null,
+        "requestId": "20dc4251-49d9-4a57-bf39-505056ac44d2"
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/end_conversation_turn",
+      "body": {
+        "cid": "582740dd-f33e-4fd2-aec4-778bda3eb033",
+        "tid": "52ce5c32-0a32-46d6-8636-0e4e6618d625"
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "body": {
+        "cid": "582740dd-f33e-4fd2-aec4-778bda3eb033",
+        "meta": {
+          "kind": "chat",
+          "title": "Mit jelent a blansírozás?",
+          "language": "hu",
+          "updated": 1794853047351
+        },
+        "expected": 1,
+        "items": [
+          {
+            "id": "b5fb8033-19c6-4e3f-a17b-76af6e3b6915",
+            "role": "user",
+            "text": "Mit jelent a blansírozás?",
+            "createdAt": 1794853047351,
+            "recipes": []
+          }
+        ],
+        "recipe_ids": []
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "body": {
+        "page_offset": 0
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "582740dd-f33e-4fd2-aec4-778bda3eb033",
+        "before_seq": null
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "body": {
+        "cid": "b6409d30-e81a-4675-acf8-7cf18c48a237",
+        "meta": {
+          "kind": "main",
+          "title": "Mit jelent a blansírozás?",
+          "language": "hu",
+          "updated": 1794853047314
+        },
+        "expected": 3,
+        "items": [],
+        "recipe_ids": []
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "body": {
+        "cid": "582740dd-f33e-4fd2-aec4-778bda3eb033",
+        "meta": {
+          "kind": "chat",
+          "title": "Mit jelent a blansírozás?",
+          "language": "hu",
+          "updated": 1794853047351
+        },
+        "expected": 2,
+        "items": [],
+        "recipe_ids": []
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "body": {
+        "page_offset": 0
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "582740dd-f33e-4fd2-aec4-778bda3eb033",
+        "before_seq": null
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/begin_conversation_turn",
+      "body": {
+        "cid": "582740dd-f33e-4fd2-aec4-778bda3eb033",
+        "tid": "6e757bb6-0b50-4d03-ac97-e3875069258e"
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "582740dd-f33e-4fd2-aec4-778bda3eb033",
+        "before_seq": null
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/functions/v1/plus-assistant",
+      "body": {
+        "assistant": true,
+        "companion": true,
+        "destination": "stock",
+        "language": "hu",
+        "context": {
+          "preferences": {
+            "servings": 2,
+            "maxMinutes": 0,
+            "diet": "any",
+            "avoid": []
+          },
+          "recentCooked": [],
+          "low": [
+            "Tej"
+          ],
+          "patterns": {
+            "frequentProducts": [],
+            "favouriteRecipes": []
+          },
+          "stock": [
+            "Alma",
+            "Tej",
+            "Tojás",
+            "Rizs",
+            "Vaj"
+          ],
+          "cart": [],
+          "uncertain": [
+            "Tej",
+            "Tojás",
+            "Alma",
+            "Vaj",
+            "Rizs"
+          ]
+        },
+        "history": [],
+        "text": "Mit jelent a blansírozás?",
+        "stream": true,
+        "task": "chat",
+        "householdId": null,
+        "requestId": "4280098f-a25e-4192-9a03-8b84e13db3b0"
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "body": {
+        "cid": "b6409d30-e81a-4675-acf8-7cf18c48a237",
+        "meta": {
+          "kind": "main",
+          "title": "Mit jelent a blansírozás?",
+          "language": "hu",
+          "updated": 1794853047314
+        },
+        "expected": 3,
+        "items": [],
+        "recipe_ids": []
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/end_conversation_turn",
+      "body": {
+        "cid": "582740dd-f33e-4fd2-aec4-778bda3eb033",
+        "tid": "6e757bb6-0b50-4d03-ac97-e3875069258e"
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "body": {
+        "cid": "582740dd-f33e-4fd2-aec4-778bda3eb033",
+        "meta": {
+          "kind": "chat",
+          "title": "Mit jelent a blansírozás?",
+          "language": "hu",
+          "updated": 1794853047449
+        },
+        "expected": 2,
+        "items": [
+          {
+            "id": "c6cc5515-1a92-43b9-b875-259a556920a7",
+            "role": "model",
+            "text": "Rövid forrázás, majd jeges víz.",
+            "createdAt": 1794853047449,
+            "recipes": []
+          }
+        ],
+        "recipe_ids": []
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "body": {
+        "page_offset": 0
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "582740dd-f33e-4fd2-aec4-778bda3eb033",
+        "before_seq": null
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "body": {
+        "cid": "b6409d30-e81a-4675-acf8-7cf18c48a237",
+        "meta": {
+          "kind": "main",
+          "title": "Mit jelent a blansírozás?",
+          "language": "hu",
+          "updated": 1794853047314
+        },
+        "expected": 3,
+        "items": [],
+        "recipe_ids": []
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "body": {
+        "cid": "4e79b49c-010c-409e-9cc4-4e8530902c73",
+        "meta": {
+          "kind": "chat",
+          "title": "",
+          "language": "hu",
+          "updated": 1794853047468
+        },
+        "expected": 0,
+        "items": [],
+        "recipe_ids": []
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "body": {
+        "cid": "582740dd-f33e-4fd2-aec4-778bda3eb033",
+        "meta": {
+          "kind": "chat",
+          "title": "Mit jelent a blansírozás?",
+          "language": "hu",
+          "updated": 1794853047449
+        },
+        "expected": 3,
+        "items": [],
+        "recipe_ids": []
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/begin_conversation_turn",
+      "body": {
+        "cid": "4e79b49c-010c-409e-9cc4-4e8530902c73",
+        "tid": "52c339fe-439c-49d7-a3d1-2a2ed4d29189"
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "4e79b49c-010c-409e-9cc4-4e8530902c73",
+        "before_seq": null
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/functions/v1/plus-assistant",
+      "body": {
+        "assistant": true,
+        "companion": true,
+        "destination": "stock",
+        "language": "hu",
+        "context": {
+          "preferences": {
+            "servings": 2,
+            "maxMinutes": 0,
+            "diet": "any",
+            "avoid": []
+          },
+          "recentCooked": [],
+          "low": [
+            "Tej"
+          ],
+          "patterns": {
+            "frequentProducts": [],
+            "favouriteRecipes": []
+          },
+          "stock": [
+            "Alma",
+            "Tej",
+            "Tojás",
+            "Rizs",
+            "Vaj"
+          ],
+          "cart": [],
+          "uncertain": [
+            "Tej",
+            "Tojás",
+            "Alma",
+            "Vaj",
+            "Rizs"
+          ]
+        },
+        "history": [],
+        "text": "Teszt clarification",
+        "stream": true,
+        "task": "chat",
+        "householdId": null,
+        "requestId": "efc33bfd-f062-49a5-83bf-c9701737e3a2"
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/end_conversation_turn",
+      "body": {
+        "cid": "4e79b49c-010c-409e-9cc4-4e8530902c73",
+        "tid": "52c339fe-439c-49d7-a3d1-2a2ed4d29189"
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "body": {
+        "cid": "4e79b49c-010c-409e-9cc4-4e8530902c73",
+        "meta": {
+          "kind": "chat",
+          "title": "Teszt clarification",
+          "language": "hu",
+          "updated": 1794853047490
+        },
+        "expected": 1,
+        "items": [
+          {
+            "id": "6859b7ba-b94f-43ce-8eed-d9bbe5616120",
+            "role": "user",
+            "text": "Teszt clarification",
+            "createdAt": 1794853047486,
+            "recipes": []
+          },
+          {
+            "id": "5eeaac75-defc-4f3f-80f0-c63b2f514be3",
+            "role": "model",
+            "text": "Hány főre főzzünk?",
+            "createdAt": 1794853047490,
+            "recipes": [],
+            "result": "Pontosítás szükséges."
+          }
+        ],
+        "recipe_ids": []
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "body": {
+        "page_offset": 0
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "4e79b49c-010c-409e-9cc4-4e8530902c73",
+        "before_seq": null
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "body": {
+        "cid": "b6409d30-e81a-4675-acf8-7cf18c48a237",
+        "meta": {
+          "kind": "main",
+          "title": "Mit jelent a blansírozás?",
+          "language": "hu",
+          "updated": 1794853047314
+        },
+        "expected": 3,
+        "items": [],
+        "recipe_ids": []
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "body": {
+        "cid": "0fd665a3-1c0c-479e-b640-f4a8f693ee91",
+        "meta": {
+          "kind": "chat",
+          "title": "",
+          "language": "hu",
+          "updated": 1794853047511
+        },
+        "expected": 0,
+        "items": [],
+        "recipe_ids": []
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "body": {
+        "cid": "4e79b49c-010c-409e-9cc4-4e8530902c73",
+        "meta": {
+          "kind": "chat",
+          "title": "Teszt clarification",
+          "language": "hu",
+          "updated": 1794853047490
+        },
+        "expected": 2,
+        "items": [],
+        "recipe_ids": []
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "body": {
+        "cid": "582740dd-f33e-4fd2-aec4-778bda3eb033",
+        "meta": {
+          "kind": "chat",
+          "title": "Mit jelent a blansírozás?",
+          "language": "hu",
+          "updated": 1794853047449
+        },
+        "expected": 3,
+        "items": [],
+        "recipe_ids": []
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/begin_conversation_turn",
+      "body": {
+        "cid": "0fd665a3-1c0c-479e-b640-f4a8f693ee91",
+        "tid": "946f7457-50e7-4488-ace6-f69f114167f1"
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "0fd665a3-1c0c-479e-b640-f4a8f693ee91",
+        "before_seq": null
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/functions/v1/plus-assistant",
+      "body": {
+        "assistant": true,
+        "companion": true,
+        "destination": "stock",
+        "language": "hu",
+        "context": {
+          "preferences": {
+            "servings": 2,
+            "maxMinutes": 0,
+            "diet": "any",
+            "avoid": []
+          },
+          "recentCooked": [],
+          "low": [
+            "Tej"
+          ],
+          "patterns": {
+            "frequentProducts": [],
+            "favouriteRecipes": []
+          },
+          "stock": [
+            "Alma",
+            "Tej",
+            "Tojás",
+            "Rizs",
+            "Vaj"
+          ],
+          "cart": [],
+          "uncertain": [
+            "Tej",
+            "Tojás",
+            "Alma",
+            "Vaj",
+            "Rizs"
+          ]
+        },
+        "history": [],
+        "text": "Teszt recipe",
+        "stream": true,
+        "task": "chat",
+        "householdId": null,
+        "requestId": "0bacaf5a-4e10-4cfa-bc90-938c16b2ceb7"
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/end_conversation_turn",
+      "body": {
+        "cid": "0fd665a3-1c0c-479e-b640-f4a8f693ee91",
+        "tid": "946f7457-50e7-4488-ace6-f69f114167f1"
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/save_recipe_document",
+      "body": {
+        "rid": "b93c88c5-cf57-4ff7-8eb3-86c82d83acd6",
+        "recipe": {
+          "title": "Audit teszt recept",
+          "summary": "Teszt",
+          "minutes": 15,
+          "servings": 2,
+          "ingredients": [
+            {
+              "name": "Alma",
+              "amount": "2 db"
+            }
+          ],
+          "steps": [
+            "Mosd meg és szeleteld fel az almát.",
+            "Tálald egy kis tányérban."
+          ]
+        }
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/functions/v1/recipe-image",
+      "body": {
+        "recipeId": "b93c88c5-cf57-4ff7-8eb3-86c82d83acd6",
+        "step": -1,
+        "create": true,
+        "householdId": null,
+        "quality": "plus"
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "body": {
+        "cid": "0fd665a3-1c0c-479e-b640-f4a8f693ee91",
+        "meta": {
+          "kind": "chat",
+          "title": "Teszt recipe",
+          "language": "hu",
+          "updated": 1794853047542
+        },
+        "expected": 1,
+        "items": [
+          {
+            "id": "c1de99ec-2d83-4167-b730-d32c368edbb0",
+            "role": "user",
+            "text": "Teszt recipe",
+            "createdAt": 1794853047539,
+            "recipes": []
+          },
+          {
+            "id": "e2f4b6cc-7870-42e2-b0ae-f50174459f11",
+            "role": "model",
+            "text": "Hoztam egy receptötletet.",
+            "createdAt": 1794853047542,
+            "recipes": [
+              {
+                "title": "Audit teszt recept",
+                "summary": "Teszt",
+                "minutes": 15,
+                "servings": 2,
+                "ingredients": [
+                  {
+                    "name": "Alma",
+                    "amount": "2 db"
+                  }
+                ],
+                "steps": [
+                  "Mosd meg és szeleteld fel az almát.",
+                  "Tálald egy kis tányérban."
+                ],
+                "recipeId": "b93c88c5-cf57-4ff7-8eb3-86c82d83acd6"
+              }
+            ]
+          }
+        ],
+        "recipe_ids": [
+          "b93c88c5-cf57-4ff7-8eb3-86c82d83acd6"
+        ]
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "body": {
+        "page_offset": 0
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "0fd665a3-1c0c-479e-b640-f4a8f693ee91",
+        "before_seq": null
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/functions/v1/recipe-image",
+      "body": {
+        "recipeId": "b93c88c5-cf57-4ff7-8eb3-86c82d83acd6",
+        "step": -1,
+        "create": false,
+        "householdId": null,
+        "quality": "plus"
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "body": {
+        "cid": "b6409d30-e81a-4675-acf8-7cf18c48a237",
+        "meta": {
+          "kind": "main",
+          "title": "Mit jelent a blansírozás?",
+          "language": "hu",
+          "updated": 1794853047314
+        },
+        "expected": 3,
+        "items": [],
+        "recipe_ids": []
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "body": {
+        "cid": "301fd334-42b4-4de0-becf-1173362bb7b2",
+        "meta": {
+          "kind": "chat",
+          "title": "",
+          "language": "hu",
+          "updated": 1794853047579
+        },
+        "expected": 0,
+        "items": [],
+        "recipe_ids": []
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "body": {
+        "cid": "0fd665a3-1c0c-479e-b640-f4a8f693ee91",
+        "meta": {
+          "kind": "chat",
+          "title": "Teszt recipe",
+          "language": "hu",
+          "updated": 1794853047542
+        },
+        "expected": 2,
+        "items": [
+          {
+            "id": "e2f4b6cc-7870-42e2-b0ae-f50174459f11",
+            "role": "model",
+            "text": "Hoztam egy receptötletet.",
+            "createdAt": 1794853047542,
+            "recipes": [
+              {
+                "recipeId": "b93c88c5-cf57-4ff7-8eb3-86c82d83acd6",
+                "title": "Audit teszt recept",
+                "summary": "Teszt",
+                "minutes": 15,
+                "servings": 2,
+                "ingredients": [
+                  {
+                    "name": "Alma",
+                    "amount": "2 db"
+                  }
+                ],
+                "steps": [
+                  "Mosd meg és szeleteld fel az almát.",
+                  "Tálald egy kis tányérban."
+                ]
+              }
+            ]
+          }
+        ],
+        "recipe_ids": [
+          "b93c88c5-cf57-4ff7-8eb3-86c82d83acd6"
+        ]
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "body": {
+        "cid": "4e79b49c-010c-409e-9cc4-4e8530902c73",
+        "meta": {
+          "kind": "chat",
+          "title": "Teszt clarification",
+          "language": "hu",
+          "updated": 1794853047490
+        },
+        "expected": 2,
+        "items": [],
+        "recipe_ids": []
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "body": {
+        "cid": "582740dd-f33e-4fd2-aec4-778bda3eb033",
+        "meta": {
+          "kind": "chat",
+          "title": "Mit jelent a blansírozás?",
+          "language": "hu",
+          "updated": 1794853047449
+        },
+        "expected": 3,
+        "items": [],
+        "recipe_ids": []
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/begin_conversation_turn",
+      "body": {
+        "cid": "301fd334-42b4-4de0-becf-1173362bb7b2",
+        "tid": "4222add1-70f3-4bad-9eeb-e3b04fb4a1e6"
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "301fd334-42b4-4de0-becf-1173362bb7b2",
+        "before_seq": null
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/functions/v1/plus-assistant",
+      "body": {
+        "assistant": true,
+        "companion": true,
+        "destination": "stock",
+        "language": "hu",
+        "context": {
+          "preferences": {
+            "servings": 2,
+            "maxMinutes": 0,
+            "diet": "any",
+            "avoid": []
+          },
+          "recentCooked": [],
+          "low": [
+            "Tej"
+          ],
+          "patterns": {
+            "frequentProducts": [],
+            "favouriteRecipes": []
+          },
+          "stock": [
+            "Alma",
+            "Tej",
+            "Tojás",
+            "Rizs",
+            "Vaj"
+          ],
+          "cart": [],
+          "uncertain": [
+            "Tej",
+            "Tojás",
+            "Alma",
+            "Vaj",
+            "Rizs"
+          ]
+        },
+        "history": [],
+        "text": "Teszt operation",
+        "stream": true,
+        "task": "chat",
+        "householdId": null,
+        "requestId": "1438f956-0405-418d-9aaf-e756231b34b7"
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/end_conversation_turn",
+      "body": {
+        "cid": "301fd334-42b4-4de0-becf-1173362bb7b2",
+        "tid": "4222add1-70f3-4bad-9eeb-e3b04fb4a1e6"
+      }
+    },
+    {
+      "actor": "c",
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "body": {
+        "cid": "301fd334-42b4-4de0-becf-1173362bb7b2",
+        "meta": {
+          "kind": "chat",
+          "title": "Teszt operation",
+          "language": "hu",
+          "updated": 1794853047613
+        },
+        "expected": 1,
+        "items": [
+          {
+            "id": "97338023-0ce7-4e67-992a-40367bf3fcd2",
+            "role": "user",
+            "text": "Teszt operation",
+            "createdAt": 1794853047608,
+            "recipes": []
+          },
+          {
+            "id": "d8d943a2-1192-469e-9095-0cfb8a979661",
+            "role": "model",
+            "text": "Így módosítanám. Nézd át, mielőtt mentjük.",
+            "createdAt": 1794853047613,
+            "recipes": [],
+            "result": "Javaslat, nincs mentve."
+          }
+        ],
+        "recipe_ids": []
+      }
+    }
+  ],
+  "limitations": [
+    "Synthetic SQL and AI HTTP outputs; no production services, paid calls, real speech or screen reader testing."
+  ]
+}

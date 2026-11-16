@@ -6,6 +6,9 @@
  let cartOutbox=[],cartSync=false,refreshing=false,cartTimer=null,cartFailed=false;
  Object.defineProperty(cloud,'cartPending',{get:()=>cartOutbox.length});
  Object.defineProperty(cloud,'cartInteractive',{get:()=>!!cloud.active&&(!cloud.busy||cartSync||refreshing)});
+ const cartReceipts=new WeakMap();
+ const reportCart=(intent,outcome)=>{try{cartReceipts.get(intent)?.(outcome)}catch{/* A presentation callback must not interrupt synchronization. */}};
+ cloud.retryCart=()=>flushCart();
  const outboxKey=()=> 'morzsa-cart-outbox-'+session?.user?.id+'-'+cloud.active;
  const persistCart=()=>{if(cartOutbox.length)localStorage.setItem(outboxKey(),JSON.stringify(cartOutbox));else localStorage.removeItem(outboxKey())};
  const overlayCart=rows=>HouseholdModel.applyCartIntents(HouseholdModel.decode(rows,state),cartOutbox);
@@ -13,25 +16,30 @@
  function cartStatus(failed=false){const el=document.getElementById('cloud-status');el.dataset.cartSync='true';el.hidden=!cartOutbox.length;el.textContent=say(failed?'Mentésre vár · ':'Szinkronizálás…',failed?'Waiting to sync · ':'Syncing…');if(failed){const b=document.createElement('button');b.textContent=say('Újrapróbálás','Retry');b.onclick=()=>flushCart();el.append(b)}}
  cloud.editCart=(next,options={})=>{
   if(!cloud.cartInteractive)return false;
-  const intent=HouseholdModel.cartIntent(state,next);if(options.onlyIfMissing)intent.cart.forEach(op=>{if(op.create)op.onlyIfMissing=true});if(options.expected)intent.cart.forEach(op=>{if(options.expected[op.name])op.when=options.expected[op.name]});if(!intent.cart.length&&!intent.custom.length)return true;
+  const intent=HouseholdModel.cartIntent(state,next);if(options.onlyIfMissing)intent.cart.forEach(op=>{if(op.create)op.onlyIfMissing=true});if(options.expected)intent.cart.forEach(op=>{if(options.expected[op.name])op.when=options.expected[op.name]});if(!intent.cart.length&&!intent.custom.length){options.onStatus?.({status:'saved',state});return true;}
   cartOutbox.push(intent);try{persistCart()}catch{cartOutbox.pop();toast(say('Nem sikerült helyben menteni.','Could not save on this device.'));return false}
-  state=next;updateCount();clearTimeout(cartTimer);cartTimer=setTimeout(flushCart,120);return true;
+  if(options.onStatus)cartReceipts.set(intent,options.onStatus);state=next;reportCart(intent,{status:'queued'});updateCount();clearTimeout(cartTimer);cartTimer=setTimeout(flushCart,120);return true;
  };
  async function flushCart(){
   if(!cloud.active||cloud.busy||!cartOutbox.length)return;
-  cloud.busy=true;cartSync=true;const hid=cloud.active;const indicator=setTimeout(()=>cartStatus(),500);
+  cloud.busy=true;cartSync=true;const hid=cloud.active,user=session?.user?.id,valid=()=>hid===cloud.active&&user===session?.user?.id;const indicator=setTimeout(()=>{if(valid())cartStatus()},500);
   try{
-   if(cartFailed)cloud.rows=await fetchRows(hid,true);cartFailed=false;
-   while(cartOutbox.length){const batch=cartOutbox.slice();let done=false;
+   if(cartFailed){const rows=await fetchRows(hid,true);if(!valid())return;cloud.rows=rows}cartFailed=false;
+   while(cartOutbox.length){const batch=cartOutbox.slice();let done=false,rejected;for(const intent of batch)reportCart(intent,{status:'pending'});
     for(let attempt=0;attempt<3&&!done;attempt++){
-     const rejected=[],target=HouseholdModel.applyCartIntents(HouseholdModel.decode(cloud.rows,state),batch,name=>rejected.push(name)),changes=HouseholdModel.diff(cloud.rows,target);
-     try{if(changes.length)await rpc('apply_household_changes',{hid,changes});cloud.rows=await fetchRows(hid,false);done=true;if(rejected.length)toast(say('A közben módosult tételeknél a friss listát tartottuk meg.','For changed items, the latest shared list was kept.'))}
-     catch(e){if(!e.message?.includes('Conflict')||attempt===2)throw e;cloud.rows=await fetchRows(hid,true)}
+     rejected=new Map();const target=HouseholdModel.applyCartIntents(HouseholdModel.decode(cloud.rows,state),batch,(name,intent)=>rejected.set(intent,[...(rejected.get(intent)||[]),name])),changes=HouseholdModel.diff(cloud.rows,target);
+     try{if(changes.length)await rpc('apply_household_changes',{hid,changes});if(!valid())return;const rows=await fetchRows(hid,false);if(!valid())return;cloud.rows=rows;done=true;if([...rejected.keys()].some(intent=>!cartReceipts.has(intent)))toast(say('A közben módosult tételeknél a friss listát tartottuk meg.','For changed items, the latest shared list was kept.'))}
+     catch(e){if(!valid())return;if(!e.message?.includes('Conflict')||attempt===2)throw e;const rows=await fetchRows(hid,true);if(!valid())return;cloud.rows=rows}
     }
-    cartOutbox.splice(0,batch.length);persistCart();state=overlayCart(cloud.rows);localStorage.setItem(cloud.storageKey(),JSON.stringify(state));paintCart();
+    cartOutbox.splice(0,batch.length);state=overlayCart(cloud.rows);
+    // The server has acknowledged this batch. A cache failure cannot turn it
+    // back into an unconfirmed edit or strand its presentation callback.
+    try{persistCart();localStorage.setItem(cloud.storageKey(),JSON.stringify(state))}catch{toast(say('A közös lista mentve, de az eszköz gyorsítótára nem frissült.','Shared list saved, but this device’s cache could not update.'))}
+    paintCart();
+    const confirmed=HouseholdModel.decode(cloud.rows,state);for(const intent of batch){reportCart(intent,{status:rejected.has(intent)?'conflict':'saved',state:confirmed,rejected:rejected.get(intent)||[]});cartReceipts.delete(intent)}
    }
    window.KitchenIntelligence?.refresh();window.ShoppingMode?.refresh();status('Közös háztartás · szinkronizálva','Shared household · synced');
-  }catch{cartFailed=true;cartStatus(true)}
+  }catch{if(valid()){cartFailed=true;cartStatus(true);for(const intent of cartOutbox)reportCart(intent,{status:'failed'})}}
   finally{clearTimeout(indicator);cloud.busy=false;cartSync=false;if(!cartFailed&&cartOutbox.length)cartTimer=setTimeout(flushCart,120)}
  }
  const pendingCart=()=>{if(!cartOutbox.length)return false;toast(say('A listád még mentésre vár. Próbáld újra a szinkronizálást.','Your list is waiting to save. Retry syncing first.'));return true};
@@ -201,7 +209,8 @@
   q.style.width=width+'px';q.style.left=Math.max(12,Math.min(anchor.right-width,innerWidth-width-12))+'px';q.style.top=top+'px';q.style.maxHeight=Math.max(140,offset+height-top-12)+'px';
  }
  async function open(){
-  q.innerHTML='<button class="close" aria-label="'+say('Bezárás','Close')+'">×</button><h2>'+say('Konyháim','My kitchens')+'</h2><p class="household-error" role="alert"></p><div id="household-body"></div>';
+  document.getElementById('companion-history')?.close();
+  q.setAttribute('aria-labelledby','household-title');q.innerHTML='<button class="close" aria-label="'+say('Bezárás','Close')+'">×</button><h2 id="household-title">'+say('Konyháim','My kitchens')+'</h2><p class="household-error" role="alert"></p><div id="household-body"></div>';
   q.querySelector('.close').onclick=()=>q.close();const guide=document.createElement('button');guide.className='kitchen-help';guide.textContent=say('Hogyan használjam?','How do I use this?');guide.onclick=()=>{q.close();document.getElementById("companion-history")?.close();window.MorzsaOnboarding?.open()};q.querySelector('h2').after(guide);q.classList.add('household-menu');positionHouseholdMenu();if(!q.open)q.showModal();document.getElementById('household-button').setAttribute('aria-expanded','true');const body=q.querySelector('#household-body');
   if(!configured){body.innerHTML='<p>'+say('A közös háztartás előkészítve. A bejelentkezéshez és megosztáshoz még be kell kötni a felhőszolgáltatást.','Shared households are prepared. Connect the cloud service to enable sign-in and sharing.')+'</p><p>'+say('Addig a készleted és listád csak ezen a böngészőn mentődik.','Until then, your pantry and list are saved in this browser only.')+'</p>';return}
   if(authPending){body.innerHTML='<p role="status">'+say('Belépési link ellenőrzése…','Checking your sign-in link…')+'</p>';return}

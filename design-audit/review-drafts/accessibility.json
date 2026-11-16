@@ -1,0 +1,246 @@
+{
+  "agent": "accessibility",
+  "reviewStatus": "completed",
+  "method": "codex-subagent",
+  "scope": "Independent accessibility review of canonical synthetic run 2026-11-16T17-35-10-569Z-99f951: 32 raw axe scans, recorded actual keyboard events, supplemental keyboard-save reproduction, sampled DOM geometry and 12 directly inspected screenshots. Current source inspected for focus lifecycle, labels, status/error roles and color ownership. Other specialist drafts were not read. This assesses observed browser behavior and does not establish WCAG conformance.",
+  "evidenceReviewed": [
+    "context.json",
+    "project-discovery.md",
+    "evidence/results.json",
+    "evidence/keyboard-events.json",
+    "evidence/supplemental-observations.json",
+    "evidence/supplement-pantry-focus.txt",
+    "evidence/027-E-guided-cooking-390x844.png",
+    "evidence/030-E-completion-390x844.png",
+    "evidence/034-F-inventory-proposal-390x844.png",
+    "evidence/017-C-post-edit-start-overlap-390x844.png",
+    "evidence/074-responsive-dialog-320-320x640.png",
+    "evidence/080-keyboard-dialog-focus-390x844.png",
+    "evidence/081-keyboard-combobox-390x844.png",
+    "evidence/supplement-pantry-focus.png",
+    "evidence/016-C-invalid-quantity-390x844.png",
+    "evidence/038-F-provider-error-390x844.png",
+    "evidence/069-responsive-overview-1440x900.png",
+    "evidence/082-G-household-invitations-390x844.png",
+    "evidence/074-responsive-dialog-320-320x640.dom.json",
+    "evidence/080-keyboard-dialog-focus-390x844.dom.json",
+    "evidence/081-keyboard-combobox-390x844.dom.json",
+    "evidence/016-C-invalid-quantity-390x844.dom.json",
+    "evidence/038-F-provider-error-390x844.dom.json",
+    "evidence/082-G-household-invitations-390x844.dom.json",
+    "evidence/001-A-first-open-390x844.axe.json",
+    "evidence/006-A-pantry-setup-390x844.axe.json",
+    "evidence/009-B-inventory-390x844.axe.json",
+    "evidence/010-B-quick-add-390x844.axe.json",
+    "evidence/011-B-availability-details-390x844.axe.json",
+    "evidence/013-C-empty-shopping-390x844.axe.json",
+    "evidence/014-C-shopping-list-390x844.axe.json",
+    "evidence/015-C-item-editor-390x844.axe.json",
+    "evidence/018-C-shopping-mode-390x844.axe.json",
+    "evidence/019-C-finish-review-390x844.axe.json",
+    "evidence/021-D-recipes-390x844.axe.json",
+    "evidence/022-D-recipe-detail-390x844.axe.json",
+    "evidence/024-D-ingredients-panel-390x844.axe.json",
+    "evidence/026-E-preparation-390x844.axe.json",
+    "evidence/027-E-guided-cooking-390x844.axe.json",
+    "evidence/029-E-contextual-question-390x844.axe.json",
+    "evidence/030-E-completion-390x844.axe.json",
+    "evidence/032-F-simple-answer-390x844.axe.json",
+    "evidence/034-F-inventory-proposal-390x844.axe.json",
+    "evidence/038-F-provider-error-390x844.axe.json",
+    "evidence/044-responsive-overview-320x640.axe.json",
+    "evidence/045-responsive-pantry-320x640.axe.json",
+    "evidence/046-responsive-shopping-320x640.axe.json",
+    "evidence/047-responsive-recipes-320x640.axe.json",
+    "evidence/048-responsive-chat-320x640.axe.json",
+    "evidence/069-responsive-overview-1440x900.axe.json",
+    "evidence/070-responsive-pantry-1440x900.axe.json",
+    "evidence/071-responsive-shopping-1440x900.axe.json",
+    "evidence/072-responsive-recipes-1440x900.axe.json",
+    "evidence/073-responsive-chat-1440x900.axe.json",
+    "evidence/074-responsive-dialog-320-320x640.axe.json",
+    "evidence/082-G-household-invitations-390x844.axe.json"
+  ],
+  "strengths": [
+    "The baseline pantry dialog can be opened by keyboard, exposes an accessible title, shows a clear 3px terracotta focus outline, closes with Escape and returns focus to its opener when no content-changing save has occurred. Keyboard events and screenshot 080 support this limited positive result.",
+    "Quick entry exposes a combobox and an active descendant after ArrowDown. Enter stages the chosen ingredient without saving it; the visible final save button remains a separate action (keyboard checks and screenshot 081).",
+    "Availability is expressed with visible text and aria-pressed rather than color alone. The 320px pantry dialog fits within its viewport and wraps status controls without clipping (screenshot and DOM 074).",
+    "Invalid shopping quantity produces an explicit visible explanation and keeps focus on the quantity field. Mocked AI failure provides a visible retry action and states that nothing changed (screenshots 016 and 038). Source uses alert/status roles in relevant error and save surfaces; spoken delivery still needs assistive-technology testing.",
+    "The baseline recorded no horizontal page overflow across five core screens at all six required widths. Sampled pantry-dialog and quick-entry control rectangles did not expose a sub-24px target; this is a limited sample, not a complete target-size assessment."
+  ],
+  "limitations": [
+    "Axe produced 23 violating node occurrences across 13 of 32 scans, all under color-contrast, representing 12 unique target/text combinations. The remaining 19 scans having no automated violations does not establish accessibility compliance.",
+    "Actual Playwright keyboard events were reviewed, including an additional pantry save reproduction. No VoiceOver, NVDA, JAWS, switch control, speech-input, real mobile assistive technology or native-container session was run. Screen-reader reading order, announcement timing and conversation-stream delivery require separate testing.",
+    "Incomplete axe results are manual follow-ups, not confirmed user-impact defects: aria-label on generic shopping-category-nav and cooking-cover divs; duplicate recipe-measures-reading IDs on hidden paragraphs when recipe and ingredient panels coexist; and unresolved contrast on gradient backgrounds. Test their accessibility-tree and spoken-output effects before assigning defect severity.",
+    "DOM snapshots list some input names as empty because the capture helper does not compute the full accessible name. Nested visible labels must be assessed through their real label association or the accessibility tree; these snapshot strings were not treated as unlabeled-control defects. A 22px checkbox also has an associated label, so its box alone was not treated as a target-size violation.",
+    "BODY appeared once while Tab traversed native browser chrome in an otherwise ordinary dialog cycle. No underlying application control received focus. This was not reported as modal focus escape; the separate focus loss immediately after a save is supported by its own evidence.",
+    "The shopping save receipt visibly covers the start-shopping action in screenshot 017 and the baseline center hit-test fails. This belongs in interaction cross-validation; there is no keyboard-focus capture proving WCAG Focus Not Obscured for the covered control, so no separate accessibility conformance violation is asserted.",
+    "The browser was isolated installed Chrome after bundled Chromium failed. External traffic and Google Fonts were blocked, so screenshots use fallback fonts. Contrast colors and small-text thresholds are still measurable, but production typography and platform-specific text rendering need a connected safe-environment follow-up.",
+    "All data is synthetic; AI responses are canned; collaboration uses an isolated SQL fixture and polling/refresh with WebSockets blocked. Provider quality, real-time production delivery, real speech recognition, authentication services and real household privacy were not verified.",
+    "Responsive viewport checks are not browser zoom or text-resize tests. No complete 200% text-size, 400% zoom/reflow, forced-colors, reduced-motion, orientation, touch-spacing or low-vision usability session was performed. These remain follow-up coverage rather than inferred defects."
+  ],
+  "findings": [
+    {
+      "id": "A11Y-001",
+      "title": "Changing pantry availability loses keyboard focus inside the open dialog",
+      "category": "accessibility",
+      "severity": "Medium",
+      "priority": "P2",
+      "confidence": "High",
+      "affectedScreen": "Inventory ingredient details after saving an availability change",
+      "routeOrComponent": "pantry / #pantry-item-dialog / openPantryDetails",
+      "reproductionSteps": [
+        "Start with the isolated guest pantry and search for Tej.",
+        "Open Tej details and move keyboard focus to Kevés.",
+        "Press Enter and wait for the confirmed local save and dialog repaint.",
+        "Observe document.activeElement and whether it remains inside the open dialog.",
+        "Press Escape and observe the focus destination after closing."
+      ],
+      "expectedBehavior": "After a successful status update, keyboard focus remains on the corresponding status control in the still-open dialog. Closing returns focus to the current matching ingredient opener, or a meaningful nearby fallback when that item leaves the filtered result.",
+      "actualBehavior": "The synthetic Tej status persists as 1, but the dialog remains open while activeElement becomes BODY and insideDialog is false. Escape then closes the dialog with focus still on BODY. The render function replaces the focused button with innerHTML; the source contains no corresponding focus restoration after paint or after the changed underlying pantry is rerendered.",
+      "userImpact": "A keyboard user loses their visible position immediately after a routine inventory action and must find the controls again. Closing also loses the user's place in the ingredient list. The successfully persisted change is not itself lost.",
+      "evidence": [
+        {
+          "path": "evidence/supplemental-observations.json",
+          "description": "pantry-focus records afterSave active=BODY, insideDialog=false, dialogOpen=true, stored=1; afterClose active=BODY with no active label.",
+          "kind": "test"
+        },
+        {
+          "path": "evidence/supplement-pantry-focus.txt",
+          "description": "Persisted availability and focus reproduction output.",
+          "kind": "test"
+        },
+        {
+          "path": "evidence/supplement-pantry-focus.png",
+          "description": "Open Tej dialog after the saved Kevés action, with no status-button focus ring.",
+          "kind": "screenshot"
+        },
+        {
+          "path": "evidence/keyboard-events.json",
+          "description": "Ordinary unmodified-dialog Tab behavior provides a comparison; the save-specific failure must not be generalized to every dialog traversal.",
+          "kind": "test"
+        }
+      ],
+      "screenshotRefs": [
+        "evidence/supplement-pantry-focus.png",
+        "evidence/080-keyboard-dialog-focus-390x844.png"
+      ],
+      "sourceFiles": [
+        "pantry-library.js:43",
+        "pantry-library.js:46",
+        "pantry-library.js:49",
+        "pantry-library.js:52"
+      ],
+      "recommendedSolution": "Preserve the initiating control's identity across asynchronous save and repaint, then focus its replacement after the confirmed result. Track the opener by ingredient identity rather than a stale element reference, restore it when the dialog closes, and use a nearby logical fallback if a changed filter removes that ingredient. Preserve failure feedback and do not move focus away from a user who has deliberately moved it elsewhere.",
+      "acceptanceCriteria": [
+        "Using Enter or Space to update each availability state retains visible focus on the corresponding replacement status button while the dialog remains open.",
+        "Escape and the close button restore focus to a connected, visible pantry control after a status save, including when the active filter removes the ingredient.",
+        "Injected save rejection leaves the persisted state unchanged, exposes the existing failure message and preserves meaningful focus.",
+        "The ordinary open, Tab, Shift+Tab and Escape behavior continues to work."
+      ],
+      "validationStatus": "reproduced",
+      "duplicateKey": "pantry-status-focus",
+      "regressionTests": [
+        "Extend PANTRY-DIALOG-FOCUS to assert activeElement is the selected status button after persistence and paint, then assert a meaningful connected focus destination after Escape.",
+        "Cover both search results and a status-filtered list where the saved ingredient disappears; repeat with simulated persistence failure."
+      ],
+      "notes": [
+        "Supported by a targeted keyboard reproduction and current source. This is a focus-continuity problem; no screen-reader announcement outcome is claimed.",
+        "The baseline keyboard-restore pass applies to the unchanged dialog. It does not contradict the independently reproduced post-save failure."
+      ]
+    },
+    {
+      "id": "A11Y-002",
+      "title": "Small secondary text falls below 4.5:1 contrast on several Morzsa surfaces",
+      "category": "accessibility",
+      "severity": "Medium",
+      "priority": "P2",
+      "confidence": "High",
+      "affectedScreen": "Overview, guided cooking and timers, shopping purchased summary, assistant proposal/nudge, selected history date and kitchen selector",
+      "routeOrComponent": "Shared secondary-text styles on sage, cream, proposal and nudge backgrounds",
+      "reproductionSteps": [
+        "Load the canonical synthetic state and open the 320px or 1440px overview, then inspect the dashboard labels.",
+        "Start the synthetic recipe in guided mode, create a timer and reach the completion state.",
+        "Show an assistant inventory proposal, a shopping completion nudge and the selected shared-kitchen panel.",
+        "Run axe color-contrast against these rendered states and compare each reported small-text foreground/background pair with the 4.5:1 normal-text threshold."
+      ],
+      "expectedBehavior": "Visible normal-size text, including secondary labels and action hints, has at least 4.5:1 contrast against its actual background under WCAG 1.4.3 AA. Morzsa's existing palette and mascot remain recognizable.",
+      "actualBehavior": "Axe records 23 violating node occurrences across 13 scans and 12 unique target/text combinations. Examples include Vezetett főzés at 4.37:1 (#BF4E2C on #F8F3E9, 12px), timer 1. lépés at 4.25:1 (#667260 on #E8EDDE, 11px), proposal Készletbe at 4.44:1, sage dashboard/purchased/selected-kitchen labels at 4.30:1, desktop Bevásárlólistán at 4.12:1, and nudge text/Most nem at 4.48:1 and 4.38:1. These are small regular text, so the large-text exception does not apply.",
+      "userImpact": "Low-vision users have less readable cues for availability, shopping progress, household sharing and cooking context. The differences from the threshold are modest, but these are functional labels used repeatedly across core journeys.",
+      "evidence": [
+        {
+          "path": "evidence/027-E-guided-cooking-390x844.axe.json",
+          "description": "Guided-cooking label is measured at 4.37:1; screenshot directly reviewed.",
+          "kind": "test"
+        },
+        {
+          "path": "evidence/030-E-completion-390x844.axe.json",
+          "description": "Timer step label is measured at 4.25:1; screenshot directly reviewed.",
+          "kind": "test"
+        },
+        {
+          "path": "evidence/034-F-inventory-proposal-390x844.axe.json",
+          "description": "Készletbe proposal label is measured at 4.44:1; screenshot directly reviewed.",
+          "kind": "test"
+        },
+        {
+          "path": "evidence/044-responsive-overview-320x640.axe.json",
+          "description": "320px dashboard labels at 4.30:1 and maintenance text at 4.47:1.",
+          "kind": "test"
+        },
+        {
+          "path": "evidence/046-responsive-shopping-320x640.axe.json",
+          "description": "Megvásárolva summary measured at 4.30:1.",
+          "kind": "test"
+        },
+        {
+          "path": "evidence/048-responsive-chat-320x640.axe.json",
+          "description": "Nudge text at 4.48:1 and Most nem at 4.38:1.",
+          "kind": "test"
+        },
+        {
+          "path": "evidence/069-responsive-overview-1440x900.axe.json",
+          "description": "Desktop shopping-count label at 4.12:1 and selected history date at 4.30:1, with other repeated labels; screenshot directly reviewed.",
+          "kind": "test"
+        },
+        {
+          "path": "evidence/082-G-household-invitations-390x844.axe.json",
+          "description": "Selected kitchen Közös konyha text at 4.30:1; screenshot directly reviewed.",
+          "kind": "test"
+        }
+      ],
+      "screenshotRefs": [
+        "evidence/027-E-guided-cooking-390x844.png",
+        "evidence/030-E-completion-390x844.png",
+        "evidence/034-F-inventory-proposal-390x844.png",
+        "evidence/069-responsive-overview-1440x900.png",
+        "evidence/082-G-household-invitations-390x844.png"
+      ],
+      "sourceFiles": [
+        "workspace.css:2",
+        "workspace.css:240",
+        "workspace.css:241",
+        "workspace.css:726",
+        "workspace.css:787",
+        "workspace.css:790",
+        "styles.css:566"
+      ],
+      "recommendedSolution": "Introduce or apply darker semantic text variants for sage, cream, nudge and proposal backgrounds. Keep the brand background and accent palette; adjust text foregrounds only where required, and verify the resulting computed pairs instead of applying a blanket visual redesign. Audit all repeated consumers of the same muted tokens.",
+      "acceptanceCriteria": [
+        "Every recorded normal-text pair reaches at least 4.5:1 on the actual rendered background at the tested mobile and desktop widths.",
+        "A repeat of all 32 current axe states reports no color-contrast violations for these selectors. Unresolved/incomplete contrast cases remain separately documented until manually evaluated.",
+        "Screenshots retain Morzsa's cream, sage, forest and terracotta identity, with secondary information still visually subordinate and readable."
+      ],
+      "validationStatus": "verified",
+      "duplicateKey": "secondary-text-contrast",
+      "regressionTests": [
+        "Keep raw axe node results for overview, shopping, proposal, nudge, history selection, kitchen selection, guided cooking and active timers at 320px and 1440px.",
+        "Add direct computed-color contrast assertions for small text on shared surface tokens so an untested screen using the same token pair cannot silently reintroduce the defect."
+      ],
+      "notes": [
+        "This is one cross-surface text-contrast finding, not 23 separate defects. Merge any narrower cooking-text-contrast finding while preserving its evidence.",
+        "Borderline values are reported at the precision returned by axe, not rounded up to a pass. Potentially incomplete contrast checks on gradients are excluded from the confirmed count."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,159 @@
+{
+  "agent": "product",
+  "reviewStatus": "completed",
+  "method": "codex-subagent",
+  "scope": "Independent product-strategy review of the canonical local working-tree audit: the household loop from approximate stock to shopping, recipe selection and guided cooking; natural-language action trust; sharing clarity; whether additional feature complexity is justified. Reviewed screenshots and source independently, without reading other specialist drafts. This is an expert evidence review, not participant research or live model evaluation.",
+  "evidenceReviewed": [
+    "context.json",
+    "project-discovery.md",
+    "evidence/results.json",
+    "evidence/contact-sheets/contact-01.jpg",
+    "evidence/contact-sheets/contact-02.jpg",
+    "evidence/contact-sheets/contact-03.jpg",
+    "evidence/contact-sheets/contact-04.jpg",
+    "evidence/025-D-missing-preview-390x844.png",
+    "evidence/034-F-inventory-proposal-390x844.png",
+    "evidence/035-F-inventory-receipt-390x844.png",
+    "evidence/039-F-empty-response-390x844.png",
+    "evidence/039-F-empty-response-390x844.dom.json",
+    "evidence/043-F-save-failure-390x844.png",
+    "evidence/054-responsive-overview-390x844.png",
+    "evidence/082-G-household-invitations-390x844.png",
+    "evidence/supplement-pantry-search.png",
+    "evidence/supplemental-observations.json",
+    "reproduction-shared-receipt/conflicting-save.png",
+    "reproduction-shared-receipt/results.json"
+  ],
+  "strengths": [
+    "The tested product has a coherent household loop. Overview 054 answers what is home, what is low or used up, what to buy and what to cook, while keeping weekly planning contextual instead of adding a sixth navigation destination. The evidence does not justify removing these core destinations or replacing them with a dashboard redesign.",
+    "Pantry setup and ingredient details make approximate availability useful without mandatory stock quantities or expiry dates. The current setup stages an explicit selection before saving; this supports convenience over precision and avoids making the household maintain a detailed ledger.",
+    "The ingredient preview 025 explicitly distinguishes recipe need, purchase quantity and unknown pantry quantity. Low stock prompts a check rather than an invented exact deficit. This connects recipe discovery to the shopping list while preserving uncertainty.",
+    "The tested assistant action flow has a useful trust contract: 034 clearly says the proposal is not saved, 035 supplies a specific receipt after confirmation, and injected save failure 043 preserves the proposal with truthful failure feedback. Keep this pattern and make shared-list editing follow the same persistence standard.",
+    "Shopping uses checkboxes as its ordinary completion interaction and moves detailed quantity/category/note editing into a dialog. The completion review distinguishes purchased from remaining items. Guided cooking shows one current step and a clear next action, with timers and optional completion feedback, instead of duplicating all recipe controls at once.",
+    "The household selector 082 explicitly labels the own kitchen as device-local and the selected shared kitchen as shared. Invitation and copying controls are disclosed in sections. This is a practical foundation for household adoption; actual comprehension and adoption are unmeasured."
+  ],
+  "limitations": [
+    "No participant interviews, household field trial, task-time benchmark, retention data or comparative product study ran. Statements about convenience and coherence are expert interpretation of the captured experience; impact size, adoption and retention remain unmeasured.",
+    "AI answers and empty/error outputs were explicit synthetic HTTP fixtures. The review verifies presentation and state boundaries, not live model usefulness, intent accuracy, recipe safety, ranking quality, latency or provider frequency of empty replies.",
+    "Sharing evidence uses two synthetic identities and actual local SQL conflict behavior; production authentication, privacy policy enforcement, WebSocket delivery, real invitations and account recovery were not tested. No invitation was sent.",
+    "Voice, physical cooking conditions, background timers on native devices, accessibility with a real screen reader and native mobile clients remain outside this product review.",
+    "Screenshots use fallback fonts because outbound font requests were blocked. The unsettled 022 recipe detail image was excluded from product layout conclusions. Contact sheets establish broad flow context; detailed claims use opened full-size images and DOM/source checks.",
+    "The source already offers a guest sign-in disclosure and preserves the draft when opening sign-in. I did not retain the initially considered claim that the account requirement is wholly undisclosed. No evidence supports removing sign-in or weakening authentication."
+  ],
+  "findings": [
+    {
+      "id": "PRODUCT-001",
+      "title": "Shared shopping confirms a quantity that conflict recovery rejected",
+      "category": "confirmed-bug",
+      "severity": "High",
+      "priority": "P1",
+      "confidence": "High",
+      "affectedScreen": "Shared shopping list after editing an item",
+      "routeOrComponent": "shopping / ShoppingMode.editItem and household cart outbox",
+      "reproductionSteps": [
+        "Open the same synthetic shared kitchen in two isolated account contexts and add Tej.",
+        "Open Tej's editor in both contexts so the first account retains the old item version.",
+        "Save 3 l from the second account and wait for SQL synchronization.",
+        "Save 2 l from the first account's stale editor and wait until the outbox and busy flags clear.",
+        "Compare the settled list row, saved receipt, conflict notice and authoritative SQL value."
+      ],
+      "expectedBehavior": "A shared action receipt describes the acknowledged result. A rejected stale update must replace its provisional success message with one clear explanation that 3 l remains, and it must not imply that 2 l was saved.",
+      "actualBehavior": "The settled row and SQL both contain 3 l, and a separate notice says the latest shared list was kept, but the prominent receipt simultaneously says Mentve: 2 l with Undo. The outbox is empty and household.busy is false. shopping-mode-ui.js treats local enqueue acceptance as success; later conflict recovery does not reconcile that receipt.",
+      "userImpact": "A household member can leave believing the shopping instruction changed to 2 l while the shared list still requires 3 l. This breaks the central trust promise of a shared kitchen assistant and makes partners verify each other's changes manually. No data loss was observed; the defect is a false completion claim.",
+      "evidence": [
+        {"path": "reproduction-shared-receipt/conflicting-save.png", "description": "Settled shared list shows Tej 3 l, conflict notice and Mentve: 2 l at the same time", "kind": "screenshot"},
+        {"path": "reproduction-shared-receipt/results.json", "description": "Independent two-context reproduction records empty outbox, SQL 3 l and stale 2 l success receipt", "kind": "test"}
+      ],
+      "screenshotRefs": ["reproduction-shared-receipt/conflicting-save.png"],
+      "sourceFiles": ["shopping-mode-ui.js:37", "shopping-mode-ui.js:79", "household.js:14", "household.js:20"],
+      "recommendedSolution": "Use a receipt lifecycle that distinguishes locally queued, shared acknowledged, and rejected changes. Reconcile the existing receipt when the outbox resolves, showing the retained quantity for a conflict and offering a deliberate reopen/retry action. Keep the existing revision protection and avoid adding another parallel toast.",
+      "acceptanceCriteria": [
+        "After the reproduced 3 l versus 2 l conflict, no visible or announced message says 2 l was saved.",
+        "The final receipt agrees with the shared row and SQL value and explains the retained partner change.",
+        "Pending, failed and acknowledged shared edits have distinguishable feedback; success follows acknowledgment.",
+        "Undo cannot imply reversal of a change that was rejected, and unrelated partner edits remain intact."
+      ],
+      "validationStatus": "verified",
+      "duplicateKey": "shopping-conflict-false-receipt",
+      "regressionTests": [
+        "Extend the two-context stale-edit check to assert final receipt text and Undo semantics in addition to SQL data.",
+        "Exercise delayed success, rejected conflict and network failure with explicit pending/final receipt assertions."
+      ],
+      "notes": ["High severity reflects the core shared-action trust promise; the authoritative data protection passed. This review inspected the parent's independent narrow reproduction rather than claiming to have run another browser session."]
+    },
+    {
+      "id": "PRODUCT-002",
+      "title": "Pantry search makes the selected at-home scope misleading",
+      "category": "reproducible-usability",
+      "severity": "Medium",
+      "priority": "P2",
+      "confidence": "High",
+      "affectedScreen": "Pantry library search",
+      "routeOrComponent": "pantry / catalog search and availability filter",
+      "reproductionSteps": [
+        "Open an empty synthetic pantry with Van otthon selected.",
+        "Search Tej.",
+        "Compare the selected availability filter, result count and item availability labels."
+      ],
+      "expectedBehavior": "The user can tell whether results describe food known to be at home or catalog options available to add. Searching broadly may remain convenient, but the active scope and count must describe the actual result set.",
+      "actualBehavior": "Van otthon remains visibly selected and the heading asks Mi van otthon?, while the empty pantry search returns 13 catalog results labelled Nincs jelölve. The matching predicate bypasses the availability filter whenever a query exists.",
+      "userImpact": "The main product question—what is at home—becomes unreliable at the moment someone searches for a specific ingredient. The user must reinterpret the selected filter and inspect every result label, adding mental work to an intentionally approximate inventory. No stock was invented or persisted by this search.",
+      "evidence": [
+        {"path": "evidence/supplement-pantry-search.png", "description": "Selected Van otthon filter with 13 unmarked catalog results", "kind": "screenshot"},
+        {"path": "evidence/supplemental-observations.json", "description": "DOM observation confirms empty stock, selected home scope and 13 unknown matches", "kind": "test"}
+      ],
+      "screenshotRefs": ["evidence/supplement-pantry-search.png"],
+      "sourceFiles": ["pantry-library.js:6", "pantry-library.js:10"],
+      "recommendedSolution": "Keep the quick search-and-add convenience while making catalog matches explicit. Either retain the availability filter and offer a clearly labelled catalog search, or visibly switch the search scope to all ingredients and distinguish known household stock from addable catalog items.",
+      "acceptanceCriteria": [
+        "An empty pantry never presents unknown catalog matches as results under an unchanged at-home scope.",
+        "The result count and selected scope describe the same set.",
+        "Users can still find and add an unknown ingredient without entering a precise quantity.",
+        "Search and clearing search do not silently modify any availability state."
+      ],
+      "validationStatus": "verified",
+      "duplicateKey": "pantry-search-scope",
+      "regressionTests": ["Check empty and populated stock under home/low/out/all filters with a query and after clearing it; verify the visible scope and result availability labels."],
+      "notes": ["The broad search behavior may be intentional for easy addition. The confirmed problem is the contradictory scope communication, not the existence of catalog search."]
+    },
+    {
+      "id": "PRODUCT-003",
+      "title": "Empty AI output is presented as a request for user clarification",
+      "category": "reproducible-usability",
+      "severity": "Medium",
+      "priority": "P2",
+      "confidence": "High",
+      "affectedScreen": "Morzsa conversation after an empty service response",
+      "routeOrComponent": "chat / companion receive fallback",
+      "reproductionSteps": [
+        "In the isolated assistant journey, submit a prompt and return the explicit empty response contract: empty answer, clarification, operations and recipes.",
+        "Allow the request to settle.",
+        "Inspect the assistant message and available recovery controls."
+      ],
+      "expectedBehavior": "A response containing neither content nor an explicit clarification is identified as an unsuccessful answer, with a retry path that preserves the user's request. Genuine model clarification remains a separate interaction.",
+      "actualBehavior": "The empty response is rendered as Pontosítanád egy kicsit? (Could you clarify?) as an ordinary assistant reply. No retry control is present. companion-ui.js:193 supplies this fallback whenever answer and clarification are empty and no resolved operations exist. The baseline assertion passes because it only checks that no action was claimed, not whether the recovery explanation is truthful.",
+      "userImpact": "The household member is asked to reformulate a request even though the service supplied no actual clarification question. This shifts recovery work to the user and blurs the distinction between ambiguous intent and a missing answer. No inventory or shopping mutation was observed in this fixture.",
+      "evidence": [
+        {"path": "evidence/039-F-empty-response-390x844.png", "description": "Empty-response fixture displayed as Could you clarify without retry", "kind": "screenshot"},
+        {"path": "evidence/039-F-empty-response-390x844.dom.json", "description": "Recorded assistant text and controls contain clarification fallback and no retry action", "kind": "dom"},
+        {"path": "evidence/results.json", "description": "F-empty-honest passes a narrower no-completed-action check; F-error-visible confirms a separate error retry path already exists", "kind": "test"}
+      ],
+      "screenshotRefs": ["evidence/039-F-empty-response-390x844.png"],
+      "sourceFiles": ["companion-ui.js:189", "companion-ui.js:193", "companion-ui.js:211"],
+      "recommendedSolution": "Treat a fully empty response as an unsuccessful response and reuse the existing concise error/retry presentation. Preserve the original prompt. Use clarification wording only when the response explicitly supplies a clarification question; retain valid recipe-only or operation-only output behavior.",
+      "acceptanceCriteria": [
+        "An output with no answer, clarification, recipes or valid operations shows a truthful no-answer message and retry control.",
+        "Retry reuses the original prompt without requiring retyping or silently changing household data.",
+        "An explicit clarification remains a clarification; valid operation-only and recipe-only results are not discarded as empty.",
+        "No completed-action receipt appears for an empty or failed response."
+      ],
+      "validationStatus": "verified",
+      "duplicateKey": "assistant-empty-response-clarification",
+      "regressionTests": [
+        "Use a normal kitchen question with a completely empty provider fixture and assert truthful recovery plus retry of the same prompt.",
+        "Compare empty, explicit clarification, recipe-only, operation-only and 503 outputs to ensure each has the correct state and no unintended mutation."
+      ],
+      "notes": ["Verified fallback behavior is limited to the explicit empty synthetic response and its current owning source. The existing screenshot uses the deliberately artificial prompt Üres választ kérek; replay with a normal kitchen question for a more realistic acceptance fixture. Live frequency and user confusion are unmeasured."]
+    }
+  ]
+}

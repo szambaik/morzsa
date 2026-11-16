@@ -1,0 +1,170 @@
+{
+  "agent": "visual",
+  "reviewStatus": "completed",
+  "method": "codex-subagent",
+  "scope": "Independent visual review of current baseline screenshots, interaction evidence and owning CSS. Focus on hierarchy, density, responsive composition, feedback and Morzsa identity. No other specialist reports inspected.",
+  "evidenceReviewed": [
+    "evidence/001-A-first-open-390x844.png",
+    "evidence/003-A-onboarding-2-390x844.png",
+    "evidence/004-A-onboarding-3-390x844.png",
+    "evidence/005-A-onboarding-4-390x844.png",
+    "evidence/006-A-pantry-setup-390x844.png",
+    "evidence/007-A-saved-setup-390x844.png",
+    "evidence/008-A-first-pantry-390x844.png",
+    "evidence/009-B-inventory-390x844.png",
+    "evidence/010-B-quick-add-390x844.png",
+    "evidence/011-B-availability-details-390x844.png",
+    "evidence/013-C-empty-shopping-390x844.png",
+    "evidence/014-C-shopping-list-390x844.png",
+    "evidence/015-C-item-editor-390x844.png",
+    "evidence/016-C-invalid-quantity-390x844.png",
+    "evidence/017-C-journey-failure-390x844.png",
+    "evidence/018-D-recipes-390x844.png",
+    "evidence/019-D-recipe-detail-390x844.png",
+    "evidence/020-D-known-stock-recipe-390x844.png",
+    "evidence/021-D-ingredients-panel-390x844.png",
+    "evidence/022-D-missing-preview-390x844.png",
+    "evidence/023-E-preparation-390x844.png",
+    "evidence/024-E-guided-cooking-390x844.png",
+    "evidence/025-E-resumed-cooking-390x844.png",
+    "evidence/026-E-contextual-question-390x844.png",
+    "evidence/027-E-completion-390x844.png",
+    "evidence/results.json",
+    "evidence/024-E-guided-cooking-390x844.axe.json",
+    "evidence/027-E-completion-390x844.axe.json"
+  ],
+  "strengths": [
+    "Warm cream/sage surfaces, forest text, restrained terracotta actions and food/mascot artwork remain coherent across onboarding, pantry, list, recipes and cooking. No generic dashboard redesign is warranted.",
+    "Onboarding has one prominent next action per card, practical examples and optional shortcuts. Pantry setup shows zero selected items until the user chooses, then offers explicit save.",
+    "Shopping rows give the checkbox and ingredient name priority; quantities remain readable while notes, categories and deletion are revealed in the item editor.",
+    "Ingredient details present Van otthon, Kevés and Elfogyott in plain text. The recipe ingredients sheet distinguishes unknown available quantity, low stock and an explicit shortage.",
+    "Guided cooking prioritizes one instruction and a large fixed next-step button. Completion keeps ratings/notes optional and does not imply automatic pantry consumption."
+  ],
+  "limitations": [
+    "External Google Fonts were blocked. Typography observations apply to fallback rendering; serif fallback in some dialogs is not classified as a brand defect.",
+    "AI-generated covers were intentionally unavailable. Ingredient illustrations and missing-image states were reviewed; generated-photo quality was not.",
+    "The 019-D-recipe-detail capture is visibly clipped and has navigation displaced above the viewport bottom. It was inspected but excluded as support for a product-layout defect pending stable recapture.",
+    "Responsive evidence beyond 390x844 has not arrived at this draft checkpoint; review will be expanded before finalization.",
+    "Contrast claims use recorded rendered axe results and owning CSS. No screen-reader or physical-device testing was performed."
+  ],
+  "findings": [
+    {
+      "id": "VISUAL-001",
+      "title": "Shopping save feedback covers the next primary action",
+      "category": "reproducible-usability",
+      "severity": "Medium",
+      "priority": "P2",
+      "confidence": "High",
+      "affectedScreen": "Shopping planning and subsequent recipe navigation on mobile",
+      "routeOrComponent": "ShoppingMode.feedback / #shopping-action-feedback",
+      "reproductionSteps": [
+        "At 390x844, add shopping items and open the Tej item editor.",
+        "Save 0.5 l so the list shows 500 ml and the save/undo toast appears.",
+        "Try Boltban vagyok before the toast expires, or switch to Recipes while it is still visible."
+      ],
+      "expectedBehavior": "Saving feedback and Undo remain visible without covering the next primary action or intercepting its click.",
+      "actualBehavior": "The fixed save/undo toast overlays the store-mode button and intercepts pointer events. The captured journey timed out after 5 seconds waiting to click it. The same toast continues over recipe contextual controls after navigation; source keeps it for 10 seconds.",
+      "userImpact": "A successful routine edit temporarily prevents users from entering shopping mode and makes unrelated recipe controls difficult to use.",
+      "evidence": [
+        {
+          "path": "evidence/017-C-journey-failure-390x844.png",
+          "description": "Save/undo toast visibly covers the shopping dock",
+          "kind": "screenshot"
+        },
+        {
+          "path": "evidence/018-D-recipes-390x844.png",
+          "description": "Shopping toast persists over the recipe screen",
+          "kind": "screenshot"
+        },
+        {
+          "path": "evidence/results.json",
+          "description": "C-journey records exact toast subtree intercepting pointer events",
+          "kind": "test"
+        }
+      ],
+      "screenshotRefs": [
+        "evidence/017-C-journey-failure-390x844.png",
+        "evidence/018-D-recipes-390x844.png"
+      ],
+      "sourceFiles": [
+        "shopping-mode-ui.js:37",
+        "shopping-mode-ui.js:41",
+        "workspace.css:563",
+        "workspace.css:596"
+      ],
+      "recommendedSolution": "Position save/undo feedback above the actual visible dock with reserved space, or inline with edited list content. Preserve Undo accessibility while preventing overlap; reconcile the toast on destination changes.",
+      "acceptanceCriteria": [
+        "Immediately after editing an item, the store-mode action has an unobstructed hit area at every required mobile viewport.",
+        "Undo stays accessible by touch and keyboard during its available interval.",
+        "Navigating to recipes while feedback is visible does not obscure contextual actions."
+      ],
+      "validationStatus": "verified",
+      "duplicateKey": "shopping-toast-obscures-controls",
+      "regressionTests": [
+        "Save a fractional shopping quantity; assert elementFromPoint at the store-mode action resolves within that button and click without waiting for toast expiry.",
+        "Repeat with a visible toast at 320x640, 375x812 and 390x844; navigate to recipes and verify contextual controls remain unobstructed."
+      ]
+    },
+    {
+      "id": "VISUAL-002",
+      "title": "Small cooking labels fall below the normal-text contrast threshold",
+      "category": "accessibility",
+      "severity": "Medium",
+      "priority": "P2",
+      "confidence": "High",
+      "affectedScreen": "Guided cooking and cooking completion",
+      "routeOrComponent": ".cooking-compact-title p and .cooking-timers small",
+      "reproductionSteps": [
+        "Open guided cooking and inspect the small Vezetett főzés label on cream.",
+        "Start a timer and complete or resume cooking; inspect its small step label on the sage timer card.",
+        "Run contrast checks on rendered elements."
+      ],
+      "expectedBehavior": "Small status and timer labels meet WCAG 2.2 AA normal-text contrast of at least 4.5:1.",
+      "actualBehavior": "Recorded axe output measures #BF4E2C on #F8F3E9 at 4.37:1 for the 12px cooking label and #667260 on #E8EDDE at 4.25:1 for the 11px timer step label. Both are below 4.5:1.",
+      "userImpact": "Low-vision users and users glancing at the screen while cooking have less reliable access to small contextual status text.",
+      "evidence": [
+        {
+          "path": "evidence/024-E-guided-cooking-390x844.png",
+          "description": "Small terracotta cooking-status text on cream",
+          "kind": "screenshot"
+        },
+        {
+          "path": "evidence/027-E-completion-390x844.png",
+          "description": "Small timer-step label on sage",
+          "kind": "screenshot"
+        },
+        {
+          "path": "evidence/024-E-guided-cooking-390x844.axe.json",
+          "description": "Rendered 4.37:1 cooking-label contrast measurement",
+          "kind": "test"
+        },
+        {
+          "path": "evidence/027-E-completion-390x844.axe.json",
+          "description": "Rendered 4.25:1 timer-step contrast measurement",
+          "kind": "test"
+        }
+      ],
+      "screenshotRefs": [
+        "evidence/024-E-guided-cooking-390x844.png",
+        "evidence/027-E-completion-390x844.png"
+      ],
+      "sourceFiles": [
+        "workspace.css:787",
+        "workspace.css:790",
+        "cooking-ui.js:18"
+      ],
+      "recommendedSolution": "Use a darker brand-compatible text token for these small labels while retaining cream/sage surfaces and terracotta accents elsewhere. Verify contrast in both states.",
+      "acceptanceCriteria": [
+        "Both rendered small-label foreground/background combinations measure at least 4.5:1.",
+        "Axe reports no color-contrast violation for the identified cooking and timer labels.",
+        "Visual hierarchy and timer numerals retain their purpose and readability."
+      ],
+      "validationStatus": "verified",
+      "duplicateKey": "cooking-small-text-contrast",
+      "regressionTests": [
+        "Run axe on guided cooking and completion with an active timer.",
+        "Capture both states at mobile widths and check computed foreground/background contrast."
+      ]
+    }
+  ]
+}

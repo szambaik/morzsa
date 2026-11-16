@@ -1,0 +1,81 @@
+- banner:
+  - button "Beszélgetéstörténet": ☰
+  - link "Morzsa":
+    - /url: "#"
+    - text: morzsa
+  - button "Saját konyha · Konyhaváltás és meghívás": Saját konyha
+  - button "Új Morzsa-beszélgetés"
+- main:
+  - paragraph: Konyhánk
+  - heading "Mi van otthon?" [level=1]
+  - group
+  - paragraph: Egy jó emlékeztető. Mennyiséget csak akkor írj, ha segít.
+  - button "Gyors feltöltés Diktálás és alapcsomagok"
+  - button "Van otthon"
+  - button "Kevés"
+  - button "Elfogyott"
+  - button "Mind" [pressed]
+  - text: 13 alapanyag
+  - searchbox "Keresés az alapanyagok között": tej
+  - button "Készlethez adás"
+  - status: Keresés minden alapanyag között.
+  - 'button "Tej: részletek és listára vétel"': Tej Elfogyott
+  - button "Tej · Listára teszem"
+  - button "Tej · Van otthon"
+  - 'button "Tejföl: részletek és listára vétel"': Tejföl Nincs jelölve
+  - button "Tejföl · Listára teszem"
+  - button "Tejföl · Van otthon"
+  - 'button "Tejszín: részletek és listára vétel"': Tejszín Nincs jelölve
+  - button "Tejszín · Listára teszem"
+  - button "Tejszín · Van otthon"
+  - 'button "Laktózmentes tej: részletek és listára vétel"': Laktózmentes tej Nincs jelölve
+  - button "Laktózmentes tej · Listára teszem"
+  - button "Laktózmentes tej · Van otthon"
+  - 'button "Laktózmentes tejföl: részletek és listára vétel"': Laktózmentes tejföl Nincs jelölve
+  - button "Laktózmentes tejföl · Listára teszem"
+  - button "Laktózmentes tejföl · Van otthon"
+  - 'button "Sűrített tej: részletek és listára vétel"': Sűrített tej Nincs jelölve
+  - button "Sűrített tej · Listára teszem"
+  - button "Sűrített tej · Van otthon"
+  - 'button "Habtejszín: részletek és listára vétel"': Habtejszín Nincs jelölve
+  - button "Habtejszín · Listára teszem"
+  - button "Habtejszín · Van otthon"
+  - 'button "Főzőtejszín: részletek és listára vétel"': Főzőtejszín Nincs jelölve
+  - button "Főzőtejszín · Listára teszem"
+  - button "Főzőtejszín · Van otthon"
+  - 'button "Kókusztej: részletek és listára vétel"': Kókusztej Nincs jelölve
+  - button "Kókusztej · Listára teszem"
+  - button "Kókusztej · Van otthon"
+  - 'button "Növényi tejszín: részletek és listára vétel"': Növényi tejszín Nincs jelölve
+  - button "Növényi tejszín · Listára teszem"
+  - button "Növényi tejszín · Van otthon"
+  - 'button "Növényi tejföl: részletek és listára vétel"': Növényi tejföl Nincs jelölve
+  - button "Növényi tejföl · Listára teszem"
+  - button "Növényi tejföl · Van otthon"
+  - 'button "Naptej: részletek és listára vétel"': Naptej Nincs jelölve
+  - button "Naptej · Listára teszem"
+  - button "Naptej · Van otthon"
+  - 'button "Tejcsokoládé: részletek és listára vétel"': Tejcsokoládé Nincs jelölve
+  - button "Tejcsokoládé · Listára teszem"
+  - button "Tejcsokoládé · Van otthon"
+- navigation "Fő navigáció":
+  - button "Áttekintés"
+  - button "Készlet"
+  - button "Morzsa"
+  - button "Lista"
+  - button "Receptek"
+- status: Nem sikerült menteni. Próbáld újra.
+- group "Gyors műveletek":
+  - button "Kérdezz Morzsától"
+- dialog "Tej":
+  - button "Bezárás": ×
+  - heading "Tej" [level=2]
+  - paragraph: Mi a helyzet vele otthon?
+  - button "Van otthon"
+  - button "Kevés"
+  - button "Elfogyott" [pressed]
+  - button "Bevásárlólistára teszem"
+- status:
+  - text: 1 tétel lekerült a készletből
+  - button "Visszavonás"
+  - button "Bezárás": ×

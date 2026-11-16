@@ -8,6 +8,8 @@ test('sheet gestures leave buttons clickable and respect a saving backdrop guard
   const button={closest(selector){return selector.split(',').includes('button')?this:null}};
   handlers.pointerdown[0]({pointerType:'mouse',button:0,target:button,pointerId:1,clientX:20,clientY:20});
   assert.equal(captures,0,'button taps must not be retargeted to the dialog');
+  const summary={closest(selector){return selector.split(',').includes('summary')?this:null}};
+  handlers.pointerdown[0]({pointerType:'mouse',button:0,target:summary,pointerId:2,clientX:20,clientY:20});assert.equal(captures,0,'details summaries retain their native click target');
   saving=true;handlers.click.at(-1)({target:element,clientX:150,clientY:150});assert.equal(closed,0);
   saving=false;handlers.click.at(-1)({target:element,clientX:150,clientY:150});assert.equal(closed,1);
  }finally{global.document=previous}

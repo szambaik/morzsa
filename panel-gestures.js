@@ -13,8 +13,8 @@ const PanelGestures=(()=>{
   const point=e=>e.touches?.[0]||e.changedTouches?.[0]||e;
   function start(e){
    if(e.touches?.length>1||e.button>0||options.disabled?.())return;
-   const target=e.target;if(options.ignoreControls&&target.closest('button,a,input,textarea,select,label')&&!(options.allowInline&&target.closest('.ingredient-mention')))return;
-   if(!options.edge&&!options.allowControls&&target.closest('button,a,input,textarea,select,[data-close],.companion-quick-add,label'))return;
+   const target=e.target;if(options.ignoreControls&&target.closest('button,a,input,textarea,select,label,summary')&&!(options.allowInline&&target.closest('.ingredient-mention')))return;
+   if(!options.edge&&!options.allowControls&&target.closest('button,a,input,textarea,select,[data-close],.companion-quick-add,label,summary'))return;
    const scroll=target.closest('.companion-quick-items');if(scroll?.scrollTop>0)return;
    const p=point(e);drag={x:p.clientX,y:p.clientY,q:options.edge?null:element,locked:false,dx:0,dy:0};
   }

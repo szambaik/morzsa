@@ -1,4 +1,9 @@
 const {test}=require('node:test'),assert=require('node:assert/strict'),M=require('../kitchen-model.js');
+test('unrecognized recipe ingredients stay distinct and unknown rather than collapsing to null',()=>{
+ const recipe={ingredients:[{name:'Furikake',amount:'1 tk'},{name:'Yuzu',amount:'1 db'},{name:'Furikake',amount:'2 tk'}]};
+ const choice=M.recipeChoice(recipe,{},[],()=>null);
+ assert.deepEqual(choice.unknown,['Furikake','Yuzu']);assert.equal(choice.total,2);assert.deepEqual(choice.out,[]);
+});
 test('purchase patterns count distinct recent trips and normalize names without inferring stock',()=>{
  const now=Date.now(),trip=(id,days,names)=>({id,date:new Date(now-days*86400000).toISOString(),items:names.map(name=>({name}))});
  const history=[trip('a',1,['Tej','tej','Mosószer']),trip('a',1,['Tej']),trip('b',4,['TEJ','Mosószer']),trip('old',61,['Tojás']),trip('future',-1,['Tojás']),{...trip('import',1,['Tojás']),kind:'import'}];

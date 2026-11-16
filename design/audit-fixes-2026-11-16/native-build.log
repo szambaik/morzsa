@@ -1,0 +1,11 @@
+
+> sync:frontend
+> npm run build:mobile && node scripts/sync-native-assets.mjs
+
+
+> build:mobile
+> node scripts/build-mobile.mjs
+
+Native bundle created with 61 runtime files and curated assets.
+Updated native web assets: ios/App/App/public
+Updated native web assets: android/app/src/main/assets/public
