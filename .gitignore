@@ -4,6 +4,7 @@ __pycache__/
 *-preview.jpg
 
 node_modules/
+node_modules
 
 # Generated Capacitor web bundle; native projects are versioned.
 dist/
@@ -13,3 +14,10 @@ supabase/.temp/
 web-dist/
 build/
 .mobile-builds/
+
+# Local audit evidence is published explicitly, not by staging the whole tree.
+tmp/
+output/
+design-audit/preflight/
+design-audit/evidence/
+design-audit/runs/

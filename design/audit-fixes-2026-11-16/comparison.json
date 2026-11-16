@@ -1,0 +1,24 @@
+{
+  "oldRun": "2026-11-16T17-35-10-569Z-99f951",
+  "newRun": "2026-11-16T18-20-28-151Z-1863ae",
+  "comparableProfiles": true,
+  "warning": null,
+  "newFindings": [],
+  "notObservedAgain": [
+    "QA-STARTUP-001",
+    "UX-004",
+    "PRODUCT-003",
+    "UX-001",
+    "UX-002",
+    "UX-003",
+    "VISUAL-002"
+  ],
+  "persisting": [],
+  "regressions": [],
+  "improvedChecks": [
+    "C-start-reachable",
+    "PANTRY-SEARCH-SCOPE",
+    "PANTRY-DIALOG-FOCUS",
+    "STARTUP-PYTHON"
+  ]
+}

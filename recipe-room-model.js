@@ -13,6 +13,14 @@ const RecipeRoomModel = (() => {
   const action=(r.steps[index]||'').trim().replace(/^\d+[.)]\s*/, '').split(/[.!?;\n]/)[0];
   return action.length<=80?action:action.slice(0,77).replace(/\s+\S*$/, '')+'…';
  }
+ // Presentation only: historical method strings remain byte-for-byte intact.
+ function stepContent(value){
+  const lines=String(value||'').trim().split(/\r?\n/),body=[],tips=[];let tip=false;
+  for(const line of lines){const match=line.match(/^\s*(?:Fontos|Tipp|Important|Tip):\s*(.*)$/i);if(match){tips.push(match[1]);tip=true}else if(tip){tips[tips.length-1]+=(line.trim()?'\n'+line.trim():'')}else body.push(line)}
+  const numbered=body.filter(l=>l.trim()).map(l=>l.match(/^\s*(\d+)[.)]\s+(.+)$/));
+  const actions=numbered.length>0&&numbered.every((m,i)=>m&&Number(m[1])===i+1)?numbered.map(m=>m[2]):[];
+  return {actions,paragraphs:actions.length?[]:body.join('\n').split(/\n\s*\n/).map(p=>p.trim()).filter(Boolean),tips:tips.map(s=>s.trim()).filter(Boolean)};
+ }
  // Only a couple of visually useful techniques get automatic illustrations.
  // Measuring, ordinary mixing and waiting retain their manual image action.
  function visualSteps(r){
@@ -51,6 +59,6 @@ const RecipeRoomModel = (() => {
   const added=[];for(const i of r.ingredients){const name=resolve(i.name),key=norm(name);if(stock.has(key)||known.has(key))continue;known.add(key);added.push({name,source:r.title,quantity:1,unit:unitFor(name),done:false})}
   return {...source,cart:[...source.cart,...added]};
  }
- return {recipe,stepTitle,visualSteps,ingredientStatus,ingredientSummary,identity,conversationKey,favouritesKey,messages,favourites,toggle,history,addMissing};
+ return {recipe,stepTitle,stepContent,visualSteps,ingredientStatus,ingredientSummary,identity,conversationKey,favouritesKey,messages,favourites,toggle,history,addMissing};
 })();
 if(typeof module!=='undefined')module.exports=RecipeRoomModel;

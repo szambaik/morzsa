@@ -1,12 +1,14 @@
 // Local conversations and suggestions; existing household record formats stay intact.
 const CompanionModel = (() => {
+ const Cooking=typeof CookingSession==='undefined'?require('./cooking-session'):CookingSession;
+ const Week=typeof WeeklyPlanModel==='undefined'?require('./weekly-plan-model'):WeeklyPlanModel;
  const Portions=typeof RecipePortions==='undefined'?require('./recipe-portions'):RecipePortions;
  const thumbnail=v=>typeof v==='string'&&v.length<=16000&&/^data:image\/jpeg;base64,\/9j\/[A-Za-z0-9+/]*={0,2}$/.test(v)?v:null;
  const savedPhoto=m=>thumbnail(m.photo)||(m.photoPath&&typeof window!=='undefined'&&window.MORZSA_CLOUD?.url&&m.photo?.startsWith(window.MORZSA_CLOUD.url+'/storage/v1/object/sign/')?m.photo:null);
  const key=(user,home,lang)=>'morzsa-companion-v1:'+JSON.stringify([user||'guest',home||'local',lang]);
  const fresh=(id,now=Date.now())=>({id,title:'',updated:now,messages:[]});
  function normalize(value,validRecipe=()=>null,maxThreads=20){
-  const threads=(Array.isArray(value?.threads)?value.threads:[]).filter(t=>t&&typeof t.id==='string').slice(0,value?.cloud?10000:maxThreads).map(t=>({id:t.id,...(value?.cloud?{cloud:true,language:t.language||'hu',revision:t.revision||0,readOnly:t.readOnly===true,sharedHousehold:t.sharedHousehold||null,hasOlder:t.hasOlder===true,before:t.before||null,loaded:t.loaded===true}:{}),title:String(t.title||'').slice(0,80),updated:Number(t.updated)||0,...(Number.isFinite(t.archivedAt)&&t.archivedAt>0?{archivedAt:t.archivedAt}:{}),...(['main','chat','recipe','legacy'].includes(t.kind)?{kind:t.kind}:{}),...(t.kind==='recipe'&&validRecipe(t.recipe)?{recipe:validRecipe(t.recipe),...(t.portions&&Portions.selection(t.recipe,t.portions)?{portions:Portions.selection(t.recipe,t.portions)}:{}),status:t.status==='completed'?'completed':'active',...(typeof t.parentId==='string'?{parentId:t.parentId}:{}),completedSteps:[...new Set((Array.isArray(t.completedSteps)?t.completedSteps:[]).filter(i=>Number.isInteger(i)&&i>=0&&i<t.recipe.steps.length))].sort((a,b)=>a-b),cookingStep:Number.isInteger(t.cookingStep)&&t.cookingStep>=0&&t.cookingStep<t.recipe.steps.length?t.cookingStep:0}:{}),messages:(Array.isArray(t.messages)?t.messages:[]).filter(m=>m&&['user','model'].includes(m.role)&&typeof m.text==='string').slice(value?.cloud||['main','chat'].includes(t.kind)?0:-40).map(m=>({...(typeof m.id==='string'?{id:m.id}:{}),...(m.sequence?{sequence:m.sequence}:{}),...(typeof m.photoPath==='string'?{photoPath:m.photoPath}:{}),role:m.role,text:m.text.slice(0,5000),...(Number.isFinite(m.createdAt)&&m.createdAt>0?{createdAt:m.createdAt}:{}),...(m.archived===true?{archived:true}:{}),...(m.role==='user'&&savedPhoto(m)?{photo:savedPhoto(m)}:{}),...(m.provider==='recipes'?{provider:'recipes'}:{}),recipes:(Array.isArray(m.recipes)?m.recipes:[]).map(validRecipe).filter(Boolean).slice(0,3),...(typeof m.result==='string'?{result:m.result.slice(0,500)}:{})}))}));
+  const threads=(Array.isArray(value?.threads)?value.threads:[]).filter(t=>t&&typeof t.id==='string').slice(0,value?.cloud?10000:maxThreads).map(t=>({id:t.id,...(value?.cloud?{cloud:true,language:t.language||'hu',revision:t.revision||0,readOnly:t.readOnly===true,sharedHousehold:t.sharedHousehold||null,hasOlder:t.hasOlder===true,before:t.before||null,loaded:t.loaded===true}:{}),...(t.weeklyPlan?{weeklyPlan:Week.settings(t.weeklyPlan)}:{}),title:String(t.title||'').slice(0,80),updated:Number(t.updated)||0,...(Number.isFinite(t.archivedAt)&&t.archivedAt>0?{archivedAt:t.archivedAt}:{}),...(['main','chat','recipe','legacy'].includes(t.kind)?{kind:t.kind}:{}),...(t.kind==='recipe'&&validRecipe(t.recipe)?{recipe:validRecipe(t.recipe),...(t.portions&&Portions.selection(t.recipe,t.portions)?{portions:Portions.selection(t.recipe,t.portions)}:{}),status:t.status==='completed'?'completed':'active',...(t.cooking?{cooking:Cooking.normalize(t.cooking,t.recipe,t.status)}:{}),...(typeof t.parentId==='string'?{parentId:t.parentId}:{}),completedSteps:[...new Set((Array.isArray(t.completedSteps)?t.completedSteps:[]).filter(i=>Number.isInteger(i)&&i>=0&&i<t.recipe.steps.length))].sort((a,b)=>a-b),cookingStep:Number.isInteger(t.cookingStep)&&t.cookingStep>=0&&t.cookingStep<t.recipe.steps.length?t.cookingStep:0}:{}),messages:(Array.isArray(t.messages)?t.messages:[]).filter(m=>m&&['user','model'].includes(m.role)&&typeof m.text==='string').slice(value?.cloud||['main','chat'].includes(t.kind)?0:-40).map(m=>({...(typeof m.id==='string'?{id:m.id}:{}),...(m.sequence?{sequence:m.sequence}:{}),...(typeof m.photoPath==='string'?{photoPath:m.photoPath}:{}),role:m.role,text:m.text.slice(0,5000),...(Number.isFinite(m.createdAt)&&m.createdAt>0?{createdAt:m.createdAt}:{}),...(m.archived===true?{archived:true}:{}),...(m.role==='user'&&savedPhoto(m)?{photo:savedPhoto(m)}:{}),...(m.provider==='recipes'?{provider:'recipes'}:{}),recipes:(Array.isArray(m.recipes)?m.recipes:[]).map(validRecipe).filter(Boolean).slice(0,3),...(typeof m.result==='string'?{result:m.result.slice(0,500)}:{})}))}));
   let photos=0;for(const t of [...threads].sort((a,b)=>b.updated-a.updated))for(const m of [...t.messages].reverse())if(m.photo&&++photos>30)delete m.photo;
   return {version:1,...(value?.cloud?{cloud:true}:{}),active:threads.some(t=>t.id===value?.active)?value.active:threads[0]?.id,threads};
  }
@@ -43,7 +45,7 @@ const CompanionModel = (() => {
  function startRecipe(book,recipe,id,validRecipe,now=Date.now()){
   const r=validRecipe(recipe);if(!r)throw Error('INVALID_RECIPE');const next=workspace(book,validRecipe,now);
   let t=next.threads.find(t=>t.kind==='recipe'&&t.status==='active'&&(r.recipeId&&t.recipe.recipeId===r.recipeId||recipeKey(t.recipe)===recipeKey(r)));
-  if(!t){if(next.threads.length>=bookLimit(book))throw Error('THREAD_LIMIT');if(next.threads.some(t=>t.id===id))throw Error('DUPLICATE_THREAD');t={...fresh(id,now),kind:'recipe',title:r.title,recipe:r,status:'active',cookingStep:0,parentId:next.active};next.threads.splice(1,0,t)}
+  if(!t){if(next.threads.length>=bookLimit(book))throw Error('THREAD_LIMIT');if(next.threads.some(t=>t.id===id))throw Error('DUPLICATE_THREAD');t={...fresh(id,now),kind:'recipe',title:r.title,recipe:r,status:'active',cookingStep:0,cooking:{phase:'preparation',timers:[],feedback:{notes:'',householdFavourite:false}},parentId:next.active};next.threads.splice(1,0,t)}
   if(r.recipeId&&t.recipe.recipeId===r.recipeId)t.recipe=r;
   next.active=t.id;return next;
  }
@@ -54,19 +56,19 @@ const CompanionModel = (() => {
  }
  function setCookingStep(book,id,index,validRecipe){
   const next=workspace(book,validRecipe),t=next.threads.find(t=>t.id===id);
-  if(!t||t.kind!=='recipe'||!Number.isInteger(index)||index<0||index>=t.recipe.steps.length)throw Error('INVALID_COOKING_STEP');
-  t.cookingStep=index;return next;
+  if(!t||t.readOnly||t.kind!=='recipe'||!Number.isInteger(index)||index<0||index>=t.recipe.steps.length)throw Error('INVALID_COOKING_STEP');
+  t.cookingStep=index;t.updated=Date.now();return next;
  }
  function completeCookingStep(book,id,index,validRecipe){
   const next=workspace(book,validRecipe),t=next.threads.find(t=>t.id===id);
-  if(!t||t.kind!=='recipe'||t.status!=='active'||!Number.isInteger(index)||index<0||index>=t.recipe.steps.length)throw Error('INVALID_COOKING_STEP');
-  t.completedSteps=[...new Set([...(t.completedSteps||[]),index])].sort((a,b)=>a-b);t.cookingStep=Math.min(index+1,t.recipe.steps.length-1);return next;
+  if(!t||t.readOnly||t.kind!=='recipe'||t.status!=='active'||!Number.isInteger(index)||index<0||index>=t.recipe.steps.length)throw Error('INVALID_COOKING_STEP');
+  t.completedSteps=[...new Set([...(t.completedSteps||[]),index])].sort((a,b)=>a-b);t.cookingStep=Math.min(index+1,t.recipe.steps.length-1);t.updated=Date.now();return next;
  }
  function finishRecipe(book,id,validRecipe,label,now=Date.now()){
   const next=workspace(book,validRecipe,now),t=next.threads.find(t=>t.id===id);
   if(!t||t.kind!=='recipe'||t.status==='completed')return next;
-  t.status='completed';t.updated=now;const main=next.threads.find(p=>p.id===t.parentId&&p.kind!=='recipe')||next.threads.find(t=>t.kind==='main');
-  main.messages.push({role:'model',createdAt:now,text:label+t.title,recipes:[t.recipe]});main.updated=now;
+  t.cooking=Cooking.finish(t,now);t.status='completed';t.updated=now;const main=next.threads.find(p=>p.id===t.parentId&&p.kind!=='recipe')||next.threads.find(t=>t.kind==='main');
+  const portions=Portions.selection(t.recipe,t.portions),en=label.startsWith('Cooking');main.messages.push({role:'model',createdAt:now,text:label+t.title,recipes:[t.recipe],...(portions?{result:en?'You cooked '+portions.target+' servings. Base recipe: '+portions.base+' servings.':'Elkészítetted: '+portions.target+' adag. Alaprecept: '+portions.base+' adag.'}:{})});main.updated=now;
   return workspace(next,validRecipe,now);
  }
  // Calendar days follow the device timezone, including daylight-saving changes.

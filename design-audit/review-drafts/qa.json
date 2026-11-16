@@ -1,0 +1,349 @@
+{
+  "agent": "qa",
+  "reviewStatus": "completed",
+  "method": "codex-subagent",
+  "scope": "Independent QA review of canonical run 2026-11-16T17-35-10-569Z-99f951, its actual saved screenshots, test/DOM/network evidence and current relevant product source. Other specialist drafts were not read. This reviewer assessed shared browser execution evidence and did not independently re-execute every journey.",
+  "evidenceReviewed": [
+    "context.json",
+    "project-discovery.md",
+    "baseline.json",
+    "evidence/results.json",
+    "evidence/browser-logs.json",
+    "evidence/fixture-requests.json",
+    "evidence/documented-startup.json",
+    "evidence/documented-startup-390.png",
+    "evidence/017-C-post-edit-start-overlap-390x844.png",
+    "evidence/017-C-post-edit-start-overlap-390x844.dom.json",
+    "evidence/085-G-conflict-recovery-390x844.png",
+    "evidence/085-G-conflict-recovery-390x844.dom.json",
+    "evidence/043-F-save-failure-390x844.png",
+    "evidence/supplemental-observations.json",
+    "evidence/supplement-pantry-search.png",
+    "evidence/supplement-pantry-search.txt",
+    "evidence/supplement-pantry-focus.png",
+    "evidence/supplement-pantry-focus.txt",
+    "evidence/contact-sheets/contact-01.jpg",
+    "evidence/contact-sheets/contact-02.jpg",
+    "evidence/contact-sheets/contact-03.jpg",
+    "evidence/contact-sheets/contact-04.jpg"
+  ],
+  "strengths": [
+    "A/B assertions confirm explicit staged pantry saving, distinct Van otthon/Kevés/Elfogyott values, quantity-free custom items, working Undo and persistence after refresh.",
+    "C rejects zero quantity, normalizes 0.5 l to 500 ml, preserves notes and purchase checkmarks, and finishes purchased items while retaining unchecked ones. The overlay finding remains a real interruption to this otherwise completed path.",
+    "D ingredient screenshots and assertions separate recipe requirements from shopping amounts, preview before mutation, preserve recipe links and avoid invented pantry availability.",
+    "E confirms cooking step and timer restoration after reload, completion through SQL readback and another refresh, and no silent pantry deduction.",
+    "F screenshots and checks distinguish proposals, clarification, receipts and failure. Injected save failure retains the proposal and unchanged cart; 503/retry, empty response and real chunked HTTP rendering are exercised using canned outputs.",
+    "G preserves the partner’s 3 l quantity after a stale 2 l edit, despite the incorrect receipt. No real invitation was submitted.",
+    "The supplemental localStorage quota failure preserves the prior in-memory and stored pantry value and gives truthful failure feedback."
+  ],
+  "limitations": [
+    "The run reports 135 passed and 4 failed assertions with no harness errors. The conflicting success receipt is visible in evidence but is not asserted by G-conflict, which checks only quantity.",
+    "All identities, households and application data are synthetic. PGlite executes repository SQL under synthetic authenticated roles; deployed Supabase, production RLS and real OAuth/email were not validated.",
+    "AI outputs are canned contracts. Real reasoning, voice recognition, providers, latency and generated-image quality remain untested. F failure replaces saveVoiceState; the separate pantry probe throws an actual localStorage quota exception.",
+    "Realtime WebSockets and outbound traffic are blocked. Shared updates are verified through SQL RPC and refresh paths, not production realtime or physical devices.",
+    "Logs contain blocked Google Fonts, an intentional AI 503, aborted image loads, conversation_page 400 responses and the expected household conflict 400. Error response bodies for conversation_page are absent, so those responses cannot independently establish a product defect or a clean conversation-history backend.",
+    "The Python startup defect is confirmed for the documented local path only; deployed static builds were not tested.",
+    "Contact sheets cover A–F and narrow overview/pantry/list/recipe/chat layouts. Detailed responsive/axe assessment belongs to the other specialists. No screen-reader or full accessibility-compliance claim is made.",
+    "No application source, production data, authentication settings, commit, push or deployment was changed by this review."
+  ],
+  "findings": [
+    {
+      "id": "QA-001",
+      "title": "Documented Python startup refuses required entry scripts",
+      "category": "confirmed-bug",
+      "severity": "High",
+      "priority": "P1",
+      "confidence": "High",
+      "affectedScreen": "Initial application load in documented local preview",
+      "routeOrComponent": "server.py Handler.static_allowed / index.html",
+      "reproductionSteps": [
+        "Start python3 server.py from the repository as documented in README.",
+        "Open its loopback URL in a fresh browser without invoking AI or authentication.",
+        "Inspect entry-script responses and main content."
+      ],
+      "expectedBehavior": "All entry scripts load and current onboarding/main content initializes.",
+      "actualBehavior": "The actual Handler probe returns 404 for 12 required scripts including cooking-session.js, quantity-model.js, persistence.js and onboarding-model.js, then records require/CompanionModel/OnboardingModel errors. The screenshot shows the shell and empty main content. The static allowlist omits these assets.",
+      "userImpact": "Local users and developers following documented startup cannot reliably enter the current application or test its journeys.",
+      "evidence": [
+        {
+          "path": "evidence/documented-startup.json",
+          "description": "Actual Handler probe: 12 missing entry scripts and four page errors.",
+          "kind": "network"
+        },
+        {
+          "path": "evidence/documented-startup-390.png",
+          "description": "Initial preview has empty main content.",
+          "kind": "screenshot"
+        },
+        {
+          "path": "evidence/results.json",
+          "description": "STARTUP-PYTHON failed.",
+          "kind": "test"
+        }
+      ],
+      "screenshotRefs": [
+        "evidence/documented-startup-390.png"
+      ],
+      "sourceFiles": [
+        "server.py:118",
+        "index.html:1",
+        "README.md:16",
+        "tests/test_server.py:55"
+      ],
+      "recommendedSolution": "Keep a restricted static-file policy but align its public entry-asset list with index.html and the build manifest. Require the existing entry-script loading test for local-preview changes.",
+      "acceptanceCriteria": [
+        "Every index.html entry script returns 200 and non-empty JavaScript from the Python server.",
+        "Fresh context renders current onboarding/main content without missing-global errors.",
+        "Private files and traversal paths remain inaccessible."
+      ],
+      "validationStatus": "verified",
+      "duplicateKey": "documented-python-missing-scripts",
+      "regressionTests": [
+        "Run test_every_entry_script_can_load_in_the_local_preview and test_private_files_not_served.",
+        "Run a fresh-browser startup check against the actual Python Handler."
+      ],
+      "notes": [
+        "Confirmed local-preview defect; no inference about production/static deployment."
+      ]
+    },
+    {
+      "id": "QA-002",
+      "title": "Rejected shared quantity edit still reports attempted value as saved",
+      "category": "confirmed-bug",
+      "severity": "High",
+      "priority": "P1",
+      "confidence": "High",
+      "affectedScreen": "Shared shopping list after concurrent edits",
+      "routeOrComponent": "shopping-mode-ui.js editItem/feedback and household.js cart outbox",
+      "reproductionSteps": [
+        "Use two synthetic accounts in one test household with Tej on the shopping list.",
+        "Open the Tej editor in both accounts with the old quantity.",
+        "Save 3 l in the second account and wait for its outbox to settle.",
+        "Save 2 l from the first account’s stale editor and wait for conflict recovery."
+      ],
+      "expectedBehavior": "Keep the newer shared value and explicitly report that the attempted edit was not applied. Completed-action feedback describes the persisted result.",
+      "actualBehavior": "The row correctly shows Tej 3 l and a toast says the fresh shared list was retained, while a simultaneous receipt says Mentve: 2 l with Visszavonás. editCart returns true after local outbox persistence and schedules sync; editItem immediately emits success. Later rejected intents refresh the row without retracting the receipt.",
+      "userImpact": "A household member can believe a rejected change succeeded and act on the wrong shopping quantity. The conflicting messages undermine shared-state trust. No lost partner update was observed.",
+      "evidence": [
+        {
+          "path": "evidence/085-G-conflict-recovery-390x844.png",
+          "description": "Row shows 3 l, conflict toast retains fresh data, receipt claims 2 l.",
+          "kind": "screenshot"
+        },
+        {
+          "path": "evidence/085-G-conflict-recovery-390x844.dom.json",
+          "description": "DOM confirms the contradictory messages coexist.",
+          "kind": "dom"
+        },
+        {
+          "path": "evidence/results.json",
+          "description": "G-conflict checks only retained quantity, not receipt truthfulness.",
+          "kind": "test"
+        },
+        {
+          "path": "evidence/browser-logs.json",
+          "description": "G includes apply_household_changes conflict response.",
+          "kind": "network"
+        }
+      ],
+      "screenshotRefs": [
+        "evidence/085-G-conflict-recovery-390x844.png"
+      ],
+      "sourceFiles": [
+        "shopping-mode-ui.js:37",
+        "shopping-mode-ui.js:79",
+        "household.js:14",
+        "household.js:25"
+      ],
+      "recommendedSolution": "Track feedback per cart intent. Distinguish pending local save from confirmed shared save, and resolve receipts from the server/rebase outcome. Replace misleading success text and remove irrelevant Undo after rejection while preserving conflict protection.",
+      "acceptanceCriteria": [
+        "A rejected 2 l edit never leaves Saved: 2 l after sync settles on 3 l.",
+        "Pending/failed shared saves are distinct from confirmed saves.",
+        "Accepted edits show the persisted quantity in their receipt.",
+        "Undo never claims to reverse a rejected edit and preserves partner data."
+      ],
+      "validationStatus": "verified",
+      "duplicateKey": "shared-cart-conflict-false-success",
+      "regressionTests": [
+        "Extend G-conflict to assert settled receipt text and SQL/current state.",
+        "Check receipts for accepted saves, revision rejection, network delay and sync failure."
+      ],
+      "notes": [
+        "Data conflict recovery is correct; this finding concerns false success and receipt lifecycle.",
+        "P1 requires separate orchestrator reproduction."
+      ]
+    },
+    {
+      "id": "QA-003",
+      "title": "Save receipt covers mobile Start shopping action",
+      "category": "confirmed-bug",
+      "severity": "Medium",
+      "priority": "P2",
+      "confidence": "High",
+      "affectedScreen": "Shopping planning at 390 × 844 after quantity save",
+      "routeOrComponent": "shopping-action-toast over workspace shopping-view-switch",
+      "reproductionSteps": [
+        "At 390 × 844 add Tej, Kenyér and Alma to the synthetic list.",
+        "Edit Tej to 0.5 l and save; remove Kenyér while the receipt remains.",
+        "Try Boltban vagyok in the fixed bottom action area."
+      ],
+      "expectedBehavior": "The primary shopping action remains visible and reachable while save/Undo feedback is shown.",
+      "actualBehavior": "The Mentve: 500 ml receipt covers Boltban vagyok; the center-point hit test fails. The run waits for the receipt to disappear before entering shopping mode. Source gives the receipt a 10-second lifetime.",
+      "userImpact": "Users finishing list edits temporarily lose the primary action for starting shopping.",
+      "evidence": [
+        {
+          "path": "evidence/017-C-post-edit-start-overlap-390x844.png",
+          "description": "Receipt covers shopping launch dock.",
+          "kind": "screenshot"
+        },
+        {
+          "path": "evidence/017-C-post-edit-start-overlap-390x844.dom.json",
+          "description": "Launch occupies y=705–761 and receipt Undo y=702–746.",
+          "kind": "dom"
+        },
+        {
+          "path": "evidence/results.json",
+          "description": "C-start-reachable fails; later steps complete after waiting.",
+          "kind": "test"
+        }
+      ],
+      "screenshotRefs": [
+        "evidence/017-C-post-edit-start-overlap-390x844.png"
+      ],
+      "sourceFiles": [
+        "workspace.css:563",
+        "workspace.css:596",
+        "workspace.css:1061",
+        "workspace-ui.js:29",
+        "shopping-mode-ui.js:41"
+      ],
+      "recommendedSolution": "Place transient feedback clear of the contextual action dock or reserve its layout space. Use measured overlay positioning so status messages cannot cover the next task action.",
+      "acceptanceCriteria": [
+        "Boltban vagyok stays visible and pointer-reachable during save feedback at 320, 375 and 390 px.",
+        "Undo does not overlap navigation or primary actions.",
+        "Entering shopping requires no timeout wait."
+      ],
+      "validationStatus": "verified",
+      "duplicateKey": "shopping-save-toast-overlap",
+      "regressionTests": [
+        "Run immediate post-save and post-delete hit tests at mobile widths.",
+        "Use normal clicks; do not force clicks or hide feedback in tests."
+      ]
+    },
+    {
+      "id": "QA-004",
+      "title": "Pantry search silently ignores selected availability filter",
+      "category": "reproducible-usability",
+      "severity": "Medium",
+      "priority": "P2",
+      "confidence": "High",
+      "affectedScreen": "Pantry search with Van otthon selected",
+      "routeOrComponent": "pantry-library.js matching / pantry-library-filters",
+      "reproductionSteps": [
+        "Open a fresh synthetic pantry with empty stock.",
+        "Leave Van otthon selected.",
+        "Search Tej."
+      ],
+      "expectedBehavior": "Results respect selected availability, or visible and accessible state explicitly explains expansion to the whole catalog.",
+      "actualBehavior": "Van otthon remains pressed and the count becomes 13 while all results are Nincs jelölve. matching bypasses availability whenever query() is non-empty without changing selected state.",
+      "userImpact": "Users searching what is at home must reinterpret unmarked catalog matches; filter and count do not reliably describe the shown scope.",
+      "evidence": [
+        {
+          "path": "evidence/supplement-pantry-search.png",
+          "description": "Pressed home filter above unknown catalog matches.",
+          "kind": "screenshot"
+        },
+        {
+          "path": "evidence/supplement-pantry-search.txt",
+          "description": "Accessible snapshot confirms selected home and Nincs jelölve results.",
+          "kind": "dom"
+        },
+        {
+          "path": "evidence/supplemental-observations.json",
+          "description": "Empty stock plus 13 unknown search results.",
+          "kind": "test"
+        }
+      ],
+      "screenshotRefs": [
+        "evidence/supplement-pantry-search.png"
+      ],
+      "sourceFiles": [
+        "pantry-library.js:6",
+        "pantry-library.js:8",
+        "pantry-library.js:12"
+      ],
+      "recommendedSolution": "Search within selected scope with an explicit catalog search/add option, or visibly switch to an All ingredients search state. Preserve easy addition without suggesting unknown items are at home.",
+      "acceptanceCriteria": [
+        "Empty home scope does not label catalog results as belonging to it.",
+        "Catalog expansion is explicit visually and accessibly.",
+        "Clearing search restores consistent filter and count.",
+        "Search does not write availability."
+      ],
+      "validationStatus": "verified",
+      "duplicateKey": "pantry-search-scope",
+      "regressionTests": [
+        "Search absent items under Home/Low/Used up and assert scope consistency.",
+        "Confirm catalog/add remains available without premature mutation."
+      ]
+    },
+    {
+      "id": "QA-005",
+      "title": "Saving pantry availability drops keyboard focus out of dialog",
+      "category": "accessibility",
+      "severity": "Medium",
+      "priority": "P2",
+      "confidence": "High",
+      "affectedScreen": "Pantry details after keyboard status save",
+      "routeOrComponent": "pantry-library.js openPantryDetails / updatePantryAvailability",
+      "reproductionSteps": [
+        "Search Tej and open its details.",
+        "Focus Kevés and activate with Enter.",
+        "After save, inspect activeElement and press Escape."
+      ],
+      "expectedBehavior": "Focus stays on a useful dialog control after update and returns to the current ingredient opener or predictable nearby control on close.",
+      "actualBehavior": "The saved value is 1 and the dialog remains open, but activeElement is BODY. Escape closes the dialog and leaves BODY focused. Both underlying catalog and dialog content are replaced without restoring focused elements.",
+      "userImpact": "Keyboard users lose their position during routine pantry editing. This is observed focus loss, not proof of screen-reader announcement failure.",
+      "evidence": [
+        {
+          "path": "evidence/supplemental-observations.json",
+          "description": "BODY after save with open dialog and BODY after Escape.",
+          "kind": "test"
+        },
+        {
+          "path": "evidence/supplement-pantry-focus.png",
+          "description": "Updated Kevés state with dialog still open.",
+          "kind": "screenshot"
+        },
+        {
+          "path": "evidence/supplement-pantry-focus.txt",
+          "description": "Dialog and pressed Kevés are in accessible snapshot.",
+          "kind": "dom"
+        }
+      ],
+      "screenshotRefs": [
+        "evidence/supplement-pantry-focus.png"
+      ],
+      "sourceFiles": [
+        "pantry-library.js:35",
+        "pantry-library.js:43",
+        "pantry-library.js:47",
+        "pantry-library.js:49"
+      ],
+      "recommendedSolution": "Preserve or restore the active status control across dialog updates. On close resolve the current opener again, with a predictable fallback if filtering removes the item.",
+      "acceptanceCriteria": [
+        "After status save focus stays visible inside the open dialog.",
+        "Escape returns to current opener or a predictable fallback.",
+        "Focus also works after failed save and list rerender."
+      ],
+      "validationStatus": "verified",
+      "duplicateKey": "pantry-status-focus",
+      "regressionTests": [
+        "Use real Enter/Escape after success, failure and rerender.",
+        "Test updated items removed by current filter."
+      ],
+      "notes": [
+        "A passing no-change open/close test does not cover this update path. Native-dialog BODY focus at a Tab-cycle boundary is not used as evidence here."
+      ]
+    }
+  ]
+}

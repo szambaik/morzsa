@@ -1,0 +1,895 @@
+{
+  "schemaVersion": 1,
+  "product": "Morzsa",
+  "inspectedOn": "2026-11-16",
+  "revision": "cf2b7887ffa1777e7dbb7699103c6ec90cb07d5b",
+  "branch": "main",
+  "screenModel": "Five state-driven destinations plus contextual screens and native dialogs; no URL router",
+  "screens": [
+    {
+      "id": "onboarding",
+      "title": "First-time introduction and pantry setup",
+      "route": "chat / .morzsa-introduction",
+      "purpose": "Explain Morzsa and establish a real pantry without quantities",
+      "mainAction": "Select ingredients then Save to pantry",
+      "secondaryActions": [
+        "Tour next/back",
+        " Skip",
+        " starter packs",
+        " search",
+        " dictate draft",
+        " open recipes/pantry/household"
+      ],
+      "importantStates": [
+        "four tour pages",
+        " empty selection",
+        " selected-not-saved",
+        " saving",
+        " failure retaining selection",
+        " success"
+      ],
+      "components": [
+        "onboarding.js",
+        " onboarding-model.js",
+        " workspace-ui.js"
+      ],
+      "responsiveBehavior": "Full-page mobile flow hides bottom nav; compact-height rules; sticky save dock",
+      "dependencies": [
+        "catalog",
+        " local or shared persistence",
+        " optional voice"
+      ],
+      "journeys": [
+        "A",
+        "B"
+      ],
+      "verification": "Source inspected; runtime verification recorded separately in each audit run"
+    },
+    {
+      "id": "chat",
+      "title": "Morzsa conversation",
+      "route": "chat / .companion",
+      "purpose": "Ask kitchen questions and request household actions",
+      "mainAction": "Send message",
+      "secondaryActions": [
+        "Free/Plus",
+        " voice",
+        " new chat",
+        " history",
+        " photos",
+        " crafting",
+        " weekly plan"
+      ],
+      "importantStates": [
+        "empty",
+        " draft",
+        " thinking",
+        " streaming",
+        " answer",
+        " proposal",
+        " clarification",
+        " applied receipt",
+        " failure/retry",
+        " read-only shared"
+      ],
+      "components": [
+        "companion-ui.js",
+        " assistant-ui.js",
+        " chat-stream.js",
+        " chat-format.js",
+        " voice-ui.js",
+        " realtime-voice.js",
+        " persistence.js"
+      ],
+      "responsiveBehavior": "Fixed mobile composer; sidebar from 1000 px; optional context rail from 1340 px",
+      "dependencies": [
+        "AI/auth",
+        " local conversations",
+        " account sync"
+      ],
+      "journeys": [
+        "F"
+      ],
+      "verification": "Source inspected; runtime verification recorded separately in each audit run"
+    },
+    {
+      "id": "overview",
+      "title": "Overview dashboard",
+      "route": "overview / .calm-dashboard",
+      "purpose": "Show what is available, needed and cookable",
+      "mainAction": "Follow next pantry/list/recipe action",
+      "secondaryActions": [
+        "Counts",
+        " shortages to list",
+        " recipe favorite",
+        " weekly plan",
+        " purchase history",
+        " shared activity"
+      ],
+      "importantStates": [
+        "empty",
+        " stocked",
+        " low/out",
+        " pending list",
+        " shared activity/unavailable"
+      ],
+      "components": [
+        "app.js:renderDashboard",
+        " kitchen-ui.js",
+        " weekly-plan-ui.js",
+        " pantry-review-ui.js"
+      ],
+      "responsiveBehavior": "Single column mobile; desktop cards and sidebar; bottom context composer",
+      "dependencies": [
+        "stock/cart/history",
+        " recipes",
+        " optional shared intelligence"
+      ],
+      "journeys": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "verification": "Source inspected; runtime verification recorded separately in each audit run"
+    },
+    {
+      "id": "pantry",
+      "title": "Pantry library",
+      "route": "pantry / .pantry-library",
+      "purpose": "Maintain approximate availability",
+      "mainAction": "Add ingredient or change availability",
+      "secondaryActions": [
+        "Home/Low/Used up/All",
+        " search",
+        " quick setup",
+        " list action",
+        " details",
+        " category/sort",
+        " clear with confirmation"
+      ],
+      "importantStates": [
+        "empty",
+        " home",
+        " low",
+        " out",
+        " unknown",
+        " catalog",
+        " no search match",
+        " sync pending",
+        " undo"
+      ],
+      "components": [
+        "pantry-library.js",
+        " workspace-entry.js",
+        " app.js",
+        " pantry-review-ui.js"
+      ],
+      "responsiveBehavior": "Two columns under 350 px; five on desktop; inline search and filters",
+      "dependencies": [
+        "catalog",
+        " stock 2/1/0",
+        " local/shared persistence"
+      ],
+      "journeys": [
+        "B"
+      ],
+      "verification": "Source inspected; runtime verification recorded separately in each audit run"
+    },
+    {
+      "id": "pantry-detail",
+      "title": "Ingredient details",
+      "route": "#pantry-item-dialog",
+      "purpose": "Explain and change availability",
+      "mainAction": "Choose Van otthon/Kevés/Elfogyott",
+      "secondaryActions": [
+        "Add to list",
+        " edit shopping quantity",
+        " close"
+      ],
+      "importantStates": [
+        "unknown",
+        " home",
+        " low",
+        " out",
+        " already listed",
+        " saving",
+        " save failure"
+      ],
+      "components": [
+        "pantry-library.js:openPantryDetails",
+        " app.js:openQuantity"
+      ],
+      "responsiveBehavior": "Native modal; button wrapping and viewport fit need verification",
+      "dependencies": [
+        "stock",
+        " cart",
+        " saveVoiceState"
+      ],
+      "journeys": [
+        "B"
+      ],
+      "verification": "Source inspected; runtime verification recorded separately in each audit run"
+    },
+    {
+      "id": "quick-entry",
+      "title": "Quick add",
+      "route": "#workspace-entry",
+      "purpose": "Stage multiple products before saving",
+      "mainAction": "Select products then save selected",
+      "secondaryActions": [
+        "Pantry/list target",
+        " autocomplete",
+        " arrows/Enter",
+        " remove staged",
+        " comma entry",
+        " close retaining draft"
+      ],
+      "importantStates": [
+        "empty",
+        " typed",
+        " suggestions",
+        " selected batch",
+        " saving",
+        " failure preserving draft"
+      ],
+      "components": [
+        "workspace-ui.js:openEntry",
+        " workspace-entry.js",
+        " quick-entry.js"
+      ],
+      "responsiveBehavior": "Bottom sheet adjusts to visualViewport/software keyboard",
+      "dependencies": [
+        "catalog matcher",
+        " stock/cart persistence"
+      ],
+      "journeys": [
+        "B",
+        "C"
+      ],
+      "verification": "Source inspected; runtime verification recorded separately in each audit run"
+    },
+    {
+      "id": "pantry-review",
+      "title": "Pantry presence check",
+      "route": "PantryReview surface",
+      "purpose": "Refresh old presence information without inventing expiry dates",
+      "mainAction": "Confirm still present or mark used up",
+      "secondaryActions": [
+        "Skip",
+        " close",
+        " undo"
+      ],
+      "importantStates": [
+        "no review needed",
+        " suggested",
+        " shared save",
+        " error"
+      ],
+      "components": [
+        "pantry-review-ui.js",
+        " pantry-review-model.js"
+      ],
+      "responsiveBehavior": "Compact entry and dialog; keyboard/small viewport inspection needed",
+      "dependencies": [
+        "confirmation timestamps",
+        " optional shared RPC"
+      ],
+      "journeys": [
+        "B"
+      ],
+      "verification": "Source inspected; runtime verification recorded separately in each audit run"
+    },
+    {
+      "id": "shopping",
+      "title": "Shopping list planning",
+      "route": "shopping / normal list",
+      "purpose": "Plan and check purchases",
+      "mainAction": "Add product or check purchased",
+      "secondaryActions": [
+        "Editor",
+        " remove/undo",
+        " purchased groups",
+        " store mode",
+        " finish",
+        " history",
+        " recommendations"
+      ],
+      "importantStates": [
+        "empty",
+        " grouped",
+        " partly/all purchased",
+        " outbox pending",
+        " save failure"
+      ],
+      "components": [
+        "app.js:renderShopping",
+        " app.js:shoppingRow",
+        " shopping-mode-ui.js",
+        " shopping-mode-model.js",
+        " shopping-model.js"
+      ],
+      "responsiveBehavior": "Mobile completion rows with disclosed editor; desktop sidebar",
+      "dependencies": [
+        "cart",
+        " catalog units/categories",
+        " local or shared outbox"
+      ],
+      "journeys": [
+        "C"
+      ],
+      "verification": "Source inspected; runtime verification recorded separately in each audit run"
+    },
+    {
+      "id": "shopping-edit",
+      "title": "Shopping item editor",
+      "route": "#quantity-dialog / shopping edit form",
+      "purpose": "Edit details without crowding rows",
+      "mainAction": "Save quantity/unit",
+      "secondaryActions": [
+        "Category",
+        " note",
+        " purchased state",
+        " remove",
+        " close"
+      ],
+      "importantStates": [
+        "existing",
+        " invalid quantity",
+        " concurrent field conflict",
+        " partner removal",
+        " save failure"
+      ],
+      "components": [
+        "shopping-mode-ui.js:editItem",
+        " quantity-model.js",
+        " app.js:openQuantity"
+      ],
+      "responsiveBehavior": "Modal form; 320 px and focus return need verification",
+      "dependencies": [
+        "cart identity",
+        " quantities",
+        " expected field versions"
+      ],
+      "journeys": [
+        "C"
+      ],
+      "verification": "Source inspected; runtime verification recorded separately in each audit run"
+    },
+    {
+      "id": "shopping-store",
+      "title": "In-store mode",
+      "route": "shopping / .shopping-mode-screen",
+      "purpose": "Check purchases with large targets",
+      "mainAction": "Check next item",
+      "secondaryActions": [
+        "Search",
+        " add",
+        " category",
+        " route order",
+        " edit",
+        " return planning",
+        " finish"
+      ],
+      "importantStates": [
+        "remaining",
+        " purchased groups",
+        " category done",
+        " empty search",
+        " complete",
+        " resumed",
+        " shared"
+      ],
+      "components": [
+        "shopping-mode-ui.js",
+        " shopping-mode-model.js"
+      ],
+      "responsiveBehavior": "Dedicated mobile shopping dock; no ordinary bottom nav; optional wake lock",
+      "dependencies": [
+        "local/shared session",
+        " cart",
+        " Wake Lock API"
+      ],
+      "journeys": [
+        "C"
+      ],
+      "verification": "Source inspected; runtime verification recorded separately in each audit run"
+    },
+    {
+      "id": "shopping-finish",
+      "title": "Finish shopping and archive",
+      "route": "#finish-shopping-dialog / #history-dialog",
+      "purpose": "Confirm purchased versus unchecked items",
+      "mainAction": "Finish checked purchases",
+      "secondaryActions": [
+        "Include all where offered",
+        " cancel",
+        " archive",
+        " reuse prior purchase"
+      ],
+      "importantStates": [
+        "mixed",
+        " none checked",
+        " all checked",
+        " saving",
+        " conflict/error",
+        " empty/populated history"
+      ],
+      "components": [
+        "app.js:showFinishPrompt",
+        " app.js:completeShopping",
+        " shopping-mode-ui.js:finish",
+        " shopping-model.js"
+      ],
+      "responsiveBehavior": "Modal confirmation and scrollable history",
+      "dependencies": [
+        "stock/cart/history transaction",
+        " shared revisions"
+      ],
+      "journeys": [
+        "C"
+      ],
+      "verification": "Source inspected; runtime verification recorded separately in each audit run"
+    },
+    {
+      "id": "recipes",
+      "title": "Recipe discovery/library",
+      "route": "recipes / .recipe-library",
+      "purpose": "Find recipes and revisit discoveries",
+      "mainAction": "Open recipe",
+      "secondaryActions": [
+        "For you/Browse/Saved",
+        " search/tag",
+        " saved filters",
+        " load more",
+        " favorite",
+        " craft",
+        " weekly plan"
+      ],
+      "importantStates": [
+        "loading",
+        " sections",
+        " browse",
+        " empty saved",
+        " error/retry",
+        " missing image",
+        " cooking resume"
+      ],
+      "components": [
+        "recipe-library.js",
+        " recipe-room-ui.js",
+        " persistence-model.js",
+        " recipe-images.js"
+      ],
+      "responsiveBehavior": "Two feed columns from 760 px; three from 1440 px; mobile wrapped tools",
+      "dependencies": [
+        "recipe_feed",
+        " recipe_documents",
+        " account library",
+        " built-in fallback"
+      ],
+      "journeys": [
+        "D"
+      ],
+      "verification": "Source inspected; runtime verification recorded separately in each audit run"
+    },
+    {
+      "id": "recipe-reader",
+      "title": "Recipe reader",
+      "route": "recipes / .recipe-reading",
+      "purpose": "Understand time, servings, ingredients and method",
+      "mainAction": "Start cooking",
+      "secondaryActions": [
+        "Portions",
+        " ingredients",
+        " method",
+        " contextual AI",
+        " favorite",
+        " export/share"
+      ],
+      "importantStates": [
+        "reading",
+        " scaled",
+        " missing/unknown",
+        " image missing/error/cached",
+        " saved"
+      ],
+      "components": [
+        "recipe-room-ui.js:renderReading",
+        " recipe-portions.js",
+        " recipe-photos.js",
+        " recipe-images.js",
+        " recipe-export.js"
+      ],
+      "responsiveBehavior": "Mobile full-page reader; desktop wider method; contextual ingredient shortcut",
+      "dependencies": [
+        "recipe",
+        " portions",
+        " coverage",
+        " optional images"
+      ],
+      "journeys": [
+        "D",
+        "E"
+      ],
+      "verification": "Source inspected; runtime verification recorded separately in each audit run"
+    },
+    {
+      "id": "recipe-ingredients",
+      "title": "Ingredients and shopping preview",
+      "route": "#recipe-ingredients-panel",
+      "purpose": "Compare recipe need to pantry and purchase amount",
+      "mainAction": "Preview then confirm missing-to-list",
+      "secondaryActions": [
+        "Unknown availability choices",
+        " contextual servings",
+        " close/return reading"
+      ],
+      "importantStates": [
+        "available",
+        " low",
+        " out",
+        " unknown",
+        " recipe quantity",
+        " purchase preview",
+        " listed",
+        " saving/error"
+      ],
+      "components": [
+        "recipe-ingredients-panel.js",
+        " recipe-shopping.js",
+        " recipe-portions.js",
+        " kitchen-measures.js"
+      ],
+      "responsiveBehavior": "Phone bottom sheet; centered dialog from 700 px; inner scroll",
+      "dependencies": [
+        "stock",
+        " recipe units",
+        " cart associations"
+      ],
+      "journeys": [
+        "D",
+        "E"
+      ],
+      "verification": "Source inspected; runtime verification recorded separately in each audit run"
+    },
+    {
+      "id": "cooking-preparation",
+      "title": "Cooking preparation",
+      "route": "chat / .cooking-preparation",
+      "purpose": "Review recipe before guided steps",
+      "mainAction": "Begin cooking",
+      "secondaryActions": [
+        "Portions",
+        " ingredients",
+        " method",
+        " back"
+      ],
+      "importantStates": [
+        "preparation",
+        " missing",
+        " scaled",
+        " image unavailable"
+      ],
+      "components": [
+        "cooking-ui.js:preparation",
+        " companion-ui.js",
+        " cooking-session.js"
+      ],
+      "responsiveBehavior": "Task dock; navigation hidden",
+      "dependencies": [
+        "recipe thread",
+        " persistent cooking state"
+      ],
+      "journeys": [
+        "E"
+      ],
+      "verification": "Source inspected; runtime verification recorded separately in each audit run"
+    },
+    {
+      "id": "cooking",
+      "title": "Guided cooking",
+      "route": "chat / .cooking-guide",
+      "purpose": "Keep next step clear and preserve progress",
+      "mainAction": "Complete current step",
+      "secondaryActions": [
+        "Previous/jump",
+        " full method",
+        " ingredients",
+        " timers",
+        " question",
+        " interrupt/resume"
+      ],
+      "importantStates": [
+        "active",
+        " completed step",
+        " active/expired timer",
+        " question",
+        " paused/resumed",
+        " reading"
+      ],
+      "components": [
+        "companion-ui.js:cookingGuide",
+        " cooking-ui.js",
+        " cooking-session.js",
+        " session-model.js"
+      ],
+      "responsiveBehavior": "One active step focus mode; cooking dock; desktop arrangement",
+      "dependencies": [
+        "recipe thread",
+        " timestamps",
+        " optional AI/images"
+      ],
+      "journeys": [
+        "E"
+      ],
+      "verification": "Source inspected; runtime verification recorded separately in each audit run"
+    },
+    {
+      "id": "cooking-completion",
+      "title": "Cooking completion",
+      "route": "chat / .cooking-completion",
+      "purpose": "Acknowledge success without invented stock deductions",
+      "mainAction": "Finish or return to conversation",
+      "secondaryActions": [
+        "Optional rating/notes",
+        " revisit",
+        " new chat"
+      ],
+      "importantStates": [
+        "completed",
+        " optional feedback",
+        " history waiting"
+      ],
+      "components": [
+        "cooking-ui.js:completion",
+        " companion-ui.js:finishCooking",
+        " kitchen-ui.js"
+      ],
+      "responsiveBehavior": "Separate completion screen; optional fields disclosed",
+      "dependencies": [
+        "thread status",
+        " optional shared kitchen event"
+      ],
+      "journeys": [
+        "E"
+      ],
+      "verification": "Source inspected; runtime verification recorded separately in each audit run"
+    },
+    {
+      "id": "recipe-crafting",
+      "title": "Ingredient bowl / Let’s cook",
+      "route": "chat / .companion-crafting",
+      "purpose": "Explore combinations without changing stock",
+      "mainAction": "Choose up to six ingredients then discover",
+      "secondaryActions": [
+        "Home/all",
+        " search/category",
+        " remove",
+        " contextual question",
+        " retry"
+      ],
+      "importantStates": [
+        "empty",
+        " selected",
+        " maximum",
+        " no matches",
+        " loading",
+        " error",
+        " result",
+        " unsuitable/no result"
+      ],
+      "components": [
+        "recipe-crafting.js",
+        " companion-ui.js",
+        " recipe-room-model.js"
+      ],
+      "responsiveBehavior": "Responsive ingredient shelf and constrained small-screen bowl/composer",
+      "dependencies": [
+        "catalog",
+        " stock context",
+        " AI",
+        " recipe persistence"
+      ],
+      "journeys": [
+        "D",
+        "F"
+      ],
+      "verification": "Source inspected; runtime verification recorded separately in each audit run"
+    },
+    {
+      "id": "weekly-plan",
+      "title": "Weekly meal planning",
+      "route": "chat / weekly plan",
+      "purpose": "Plan cooking days and portions",
+      "mainAction": "Create or edit plan",
+      "secondaryActions": [
+        "Skip day",
+        " portions",
+        " generate recipes",
+        " missing-to-list",
+        " resume"
+      ],
+      "importantStates": [
+        "input",
+        " loading/error",
+        " plan",
+        " edits",
+        " saved/reopened"
+      ],
+      "components": [
+        "weekly-plan-ui.js",
+        " weekly-plan-model.js",
+        " companion-ui.js",
+        " persistence.js"
+      ],
+      "responsiveBehavior": "Compact dashboard entry; mobile day rows; dialogs",
+      "dependencies": [
+        "AI",
+        " thread metadata",
+        " recipes/cart"
+      ],
+      "journeys": [
+        "F"
+      ],
+      "verification": "Source inspected; runtime verification recorded separately in each audit run"
+    },
+    {
+      "id": "household",
+      "title": "Kitchen/account management",
+      "route": "#household-dialog",
+      "purpose": "Explain own versus shared kitchen",
+      "mainAction": "Select kitchen or sign in",
+      "secondaryActions": [
+        "Create",
+        " invitation inspection",
+        " explicit pantry copy",
+        " members",
+        " logout",
+        " signup/recovery"
+      ],
+      "importantStates": [
+        "unconfigured",
+        " signed out",
+        " pending/error",
+        " own",
+        " shared",
+        " invites",
+        " sync/conflict"
+      ],
+      "components": [
+        "household.js",
+        " household-model.js",
+        " auth-link.js",
+        " household-live.js"
+      ],
+      "responsiveBehavior": "Header kitchen switch; settings in sidebar or mobile history",
+      "dependencies": [
+        "Supabase auth/RLS/RPC",
+        " email/OAuth external services"
+      ],
+      "journeys": [
+        "G"
+      ],
+      "verification": "Source inspected; runtime verification recorded separately in each audit run"
+    },
+    {
+      "id": "history-settings",
+      "title": "Conversation history/settings",
+      "route": "#companion-history / #workspace-sidebar",
+      "purpose": "Resume conversation and understand visibility",
+      "mainAction": "Open conversation",
+      "secondaryActions": [
+        "New",
+        " archive",
+        " share/unshare confirmation",
+        " preferences",
+        " language",
+        " introduction"
+      ],
+      "importantStates": [
+        "empty",
+        " history",
+        " cooking",
+        " private sync",
+        " shared read-only",
+        " archived",
+        " retry"
+      ],
+      "components": [
+        "companion-ui.js:historyMarkup",
+        " workspace-ui.js",
+        " persistence.js"
+      ],
+      "responsiveBehavior": "Persistent desktop rail from 1000 px; mobile dialog/swipe",
+      "dependencies": [
+        "conversation book",
+        " account persistence",
+        " sharing RPC"
+      ],
+      "journeys": [
+        "A",
+        "E",
+        "F",
+        "G"
+      ],
+      "verification": "Source inspected; runtime verification recorded separately in each audit run"
+    },
+    {
+      "id": "preferences",
+      "title": "Cooking preferences",
+      "route": "#kitchen-preferences",
+      "purpose": "Set useful scoped defaults",
+      "mainAction": "Save preferences",
+      "secondaryActions": [
+        "Personal/shared",
+        " servings/time/diet",
+        " advanced avoids/allergies",
+        " defaults",
+        " close"
+      ],
+      "importantStates": [
+        "personal/local",
+        " household",
+        " saving",
+        " failure"
+      ],
+      "components": [
+        "kitchen-ui.js:openPreferences",
+        " kitchen-model.js"
+      ],
+      "responsiveBehavior": "Native modal with advanced disclosure and scrolling",
+      "dependencies": [
+        "local profile",
+        " household preferences RPC"
+      ],
+      "journeys": [
+        "A",
+        "F",
+        "G"
+      ],
+      "verification": "Source inspected; runtime verification recorded separately in each audit run"
+    },
+    {
+      "id": "voice",
+      "title": "Voice interaction",
+      "route": "#voice-dialog / #realtime-voice",
+      "purpose": "Speak and recover from unavailable voice",
+      "mainAction": "Start/stop or use text fallback",
+      "secondaryActions": [
+        "Review draft",
+        " cancel",
+        " Free/Plus"
+      ],
+      "importantStates": [
+        "permission",
+        " denied",
+        " listening",
+        " transcription",
+        " thinking",
+        " speaking",
+        " unavailable",
+        " error",
+        " text fallback"
+      ],
+      "components": [
+        "voice-ui.js",
+        " realtime-voice.js",
+        " voice-model.js",
+        " realtime-model.js"
+      ],
+      "responsiveBehavior": "Fullscreen realtime stage; short-height and reduced-motion rules",
+      "dependencies": [
+        "microphone",
+        " MediaRecorder/WebRTC",
+        " auth/provider",
+        " speaker"
+      ],
+      "journeys": [
+        "A",
+        "F"
+      ],
+      "verification": "Source inspected; runtime verification recorded separately in each audit run"
+    }
+  ]
+}

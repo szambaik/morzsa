@@ -1,0 +1,62 @@
+name: Protected web release
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  audit:
+    name: Audit regression gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      MORZSA_AUDIT_BROWSER_CHANNEL: chromium
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            design-audit/package-lock.json
+      - run: npm ci
+      - run: npm test
+      - run: python3 -m unittest discover -s tests -p 'test*.py'
+      - run: npm --prefix design-audit ci
+      - run: npm --prefix design-audit test
+      - run: npx --prefix design-audit playwright install --with-deps chromium
+      - run: node design-audit/check-release.mjs
+      - run: npm run build:web
+      - name: Record verified release revision
+        run: node -e "require('fs').writeFileSync('web-dist/version.json', JSON.stringify({commit:process.env.GITHUB_SHA,run:process.env.GITHUB_RUN_ID,audit:'passed'})+'\n')"
+      - uses: actions/upload-pages-artifact@v3
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        with:
+          path: web-dist
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: audit-evidence-${{ github.run_id }}
+          path: design-audit/runs
+          retention-days: 14
+  deploy:
+    name: Deploy verified web app
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: audit
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publish tested artifact
+        id: deployment
+        uses: actions/deploy-pages@v4

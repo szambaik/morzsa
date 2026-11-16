@@ -1,0 +1,16 @@
+{
+  "name": "morzsa-design-audit",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "audit:ux": "node engine.mjs",
+    "test": "node --test test/*.test.mjs",
+    "browser:install": "playwright install chromium"
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "0.3.14",
+    "ajv": "8.20.0",
+    "axe-core": "4.11.1",
+    "playwright": "1.58.2"
+  }
+}

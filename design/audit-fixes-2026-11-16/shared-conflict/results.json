@@ -1,0 +1,520 @@
+{
+  "observed": {
+    "item": {
+      "done": false,
+      "name": "Tej",
+      "unit": "l",
+      "source": "Gyors felvétel",
+      "addedAt": "2026-11-16T18:11:05.936+00:00",
+      "addedBy": "00000000-0000-4000-8000-000000000001",
+      "quantity": 3
+    },
+    "receipt": "Tej közben módosult. Megtartva: 3 l\nMegnézem",
+    "conflictNotice": "A listára került.",
+    "outboxPending": 0,
+    "busy": false
+  },
+  "sql": [
+    {
+      "bucket": "cart",
+      "key": "Tej",
+      "value": {
+        "done": false,
+        "name": "Tej",
+        "unit": "l",
+        "source": "Gyors felvétel",
+        "addedAt": "2026-11-16T18:11:05.936+00:00",
+        "addedBy": "00000000-0000-4000-8000-000000000001",
+        "quantity": 3
+      },
+      "revision": 2
+    }
+  ],
+  "checks": [
+    {
+      "id": "G-CONFLICT-DATA-REPRO",
+      "status": "passed",
+      "title": "Independent conflict reproduction keeps partner 3 l"
+    },
+    {
+      "id": "G-CONFLICT-RECEIPT-REPRO",
+      "status": "passed",
+      "title": "Rejected shared edit never retains a success receipt for 2 l"
+    },
+    {
+      "id": "C-START-REACHABLE-REPRO",
+      "status": "passed",
+      "title": "Start shopping remains hit-test reachable while receipt visible"
+    }
+  ],
+  "requests": [
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/households",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/list_household_email_invites",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "body": {
+        "page_offset": 0
+      }
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_records",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "4ed52c05-acb8-4546-b0b7-f092ac705c4c",
+        "before_seq": null
+      }
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_pantry_reviews",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_preferences",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "body": {
+        "cid": "4ed52c05-acb8-4546-b0b7-f092ac705c4c",
+        "meta": {
+          "kind": "main",
+          "title": "",
+          "language": "hu",
+          "updated": 1794852665620
+        },
+        "expected": 0,
+        "items": [],
+        "recipe_ids": []
+      }
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "body": {
+        "page_offset": 0
+      }
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "4ed52c05-acb8-4546-b0b7-f092ac705c4c",
+        "before_seq": null
+      }
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_sessions",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_routes",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "body": {
+        "page_offset": 0
+      }
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "4ed52c05-acb8-4546-b0b7-f092ac705c4c",
+        "before_seq": null
+      }
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/apply_household_changes",
+      "body": {
+        "hid": "90000000-0000-4000-8000-000000000001",
+        "changes": [
+          {
+            "bucket": "cart",
+            "key": "Tej",
+            "value": {
+              "quantity": 1,
+              "unit": "l",
+              "done": false,
+              "source": "Gyors felvétel",
+              "name": "Tej"
+            },
+            "expected": 0
+          }
+        ]
+      }
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_records",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_sessions",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_routes",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_preferences",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events",
+      "body": {}
+    },
+    {
+      "actor": "b",
+      "method": "GET",
+      "path": "/rest/v1/households",
+      "body": {}
+    },
+    {
+      "actor": "b",
+      "method": "POST",
+      "path": "/rest/v1/rpc/list_household_email_invites",
+      "body": {}
+    },
+    {
+      "actor": "b",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "body": {
+        "page_offset": 0
+      }
+    },
+    {
+      "actor": "b",
+      "method": "GET",
+      "path": "/rest/v1/household_records",
+      "body": {}
+    },
+    {
+      "actor": "b",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "be81fe20-774c-4b7e-bb90-327bb68d9f00",
+        "before_seq": null
+      }
+    },
+    {
+      "actor": "b",
+      "method": "GET",
+      "path": "/rest/v1/household_pantry_reviews",
+      "body": {}
+    },
+    {
+      "actor": "b",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_preferences",
+      "body": {}
+    },
+    {
+      "actor": "b",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events",
+      "body": {}
+    },
+    {
+      "actor": "b",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events",
+      "body": {}
+    },
+    {
+      "actor": "b",
+      "method": "POST",
+      "path": "/rest/v1/rpc/sync_conversation",
+      "body": {
+        "cid": "be81fe20-774c-4b7e-bb90-327bb68d9f00",
+        "meta": {
+          "kind": "main",
+          "title": "",
+          "language": "hu",
+          "updated": 1794852666080
+        },
+        "expected": 0,
+        "items": [],
+        "recipe_ids": []
+      }
+    },
+    {
+      "actor": "b",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "body": {
+        "page_offset": 0
+      }
+    },
+    {
+      "actor": "b",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "be81fe20-774c-4b7e-bb90-327bb68d9f00",
+        "before_seq": null
+      }
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "body": {
+        "page_offset": 0
+      }
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "4ed52c05-acb8-4546-b0b7-f092ac705c4c",
+        "before_seq": null
+      }
+    },
+    {
+      "actor": "b",
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_sessions",
+      "body": {}
+    },
+    {
+      "actor": "b",
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_routes",
+      "body": {}
+    },
+    {
+      "actor": "b",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "body": {
+        "page_offset": 0
+      }
+    },
+    {
+      "actor": "b",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "be81fe20-774c-4b7e-bb90-327bb68d9f00",
+        "before_seq": null
+      }
+    },
+    {
+      "actor": "b",
+      "method": "POST",
+      "path": "/rest/v1/rpc/apply_household_changes",
+      "body": {
+        "hid": "90000000-0000-4000-8000-000000000001",
+        "changes": [
+          {
+            "bucket": "cart",
+            "key": "Tej",
+            "value": {
+              "done": false,
+              "name": "Tej",
+              "unit": "l",
+              "source": "Gyors felvétel",
+              "addedAt": "2026-11-16T18:11:05.936+00:00",
+              "addedBy": "00000000-0000-4000-8000-000000000001",
+              "quantity": 3
+            },
+            "expected": 1
+          }
+        ]
+      }
+    },
+    {
+      "actor": "b",
+      "method": "GET",
+      "path": "/rest/v1/household_records",
+      "body": {}
+    },
+    {
+      "actor": "b",
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_sessions",
+      "body": {}
+    },
+    {
+      "actor": "b",
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_routes",
+      "body": {}
+    },
+    {
+      "actor": "b",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_preferences",
+      "body": {}
+    },
+    {
+      "actor": "b",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events",
+      "body": {}
+    },
+    {
+      "actor": "b",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "POST",
+      "path": "/rest/v1/rpc/apply_household_changes",
+      "body": {
+        "hid": "90000000-0000-4000-8000-000000000001",
+        "changes": [
+          {
+            "bucket": "cart",
+            "key": "Tej",
+            "value": {
+              "done": false,
+              "name": "Tej",
+              "unit": "l",
+              "source": "Gyors felvétel",
+              "addedAt": "2026-11-16T18:11:05.936+00:00",
+              "addedBy": "00000000-0000-4000-8000-000000000001",
+              "quantity": 2
+            },
+            "expected": 1
+          }
+        ]
+      }
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/households",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_records",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_records",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_sessions",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_shopping_routes",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_preferences",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events",
+      "body": {}
+    },
+    {
+      "actor": "a",
+      "method": "GET",
+      "path": "/rest/v1/household_kitchen_events",
+      "body": {}
+    },
+    {
+      "actor": "b",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_index",
+      "body": {
+        "page_offset": 0
+      }
+    },
+    {
+      "actor": "b",
+      "method": "POST",
+      "path": "/rest/v1/rpc/conversation_page",
+      "body": {
+        "cid": "be81fe20-774c-4b7e-bb90-327bb68d9f00",
+        "before_seq": null
+      }
+    }
+  ]
+}

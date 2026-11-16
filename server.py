@@ -3,6 +3,8 @@ import json
 import os
 import time
 import threading
+import re
+from html.parser import HTMLParser
 from collections import deque
 from pathlib import Path
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
@@ -11,6 +13,26 @@ from urllib.request import Request, urlopen
 from urllib.error import HTTPError, URLError
 
 ROOT = Path(__file__).resolve().parent
+
+class EntryAssets(HTMLParser):
+    """Only explicitly shipped, root-level scripts/styles are public."""
+    def __init__(self):
+        super().__init__()
+        self.paths = {'/index.html', '/manifest.webmanifest'}
+
+    def handle_starttag(self, tag, attrs):
+        field = 'src' if tag == 'script' else 'href' if tag == 'link' else None
+        if not field:
+            return
+        value = dict(attrs).get(field, '')
+        if re.fullmatch(r'[a-zA-Z0-9_-]+\.(?:js|css)(?:\?[^#]*)?', value):
+            self.paths.add('/' + value.split('?', 1)[0])
+
+
+def public_entry_assets():
+    manifest = EntryAssets()
+    manifest.feed((ROOT / 'index.html').read_text())
+    return manifest.paths
 
 def config():
     values = {}
@@ -119,7 +141,18 @@ class Handler(SimpleHTTPRequestHandler):
         path = urlparse(self.path).path
         if path == '/':
             return True
-        return path in ('/index.html', '/ai-mode.js', '/realtime-voice.js', '/realtime-model.js', '/onboarding.js', '/pantry-library.js', '/workspace.css', '/workspace-ui.js', '/workspace-entry.js', '/kitchen-model.js', '/kitchen-ui.js', '/styles.css', '/desktop.css', '/app.js', '/catalog.js', '/recipes.js', '/translations.js', '/i18n.js', '/household-config.js', '/household-model.js', '/household.js', '/auth-link.js', '/quick-entry.js', '/recipe-prompt.js', '/shopping-model.js', '/voice-model.js', '/voice-ui.js', '/assistant-ui.js', '/ingredient-mentions.js', '/chat-format.js', '/panel-gestures.js', '/chat-stream.js', '/chat-photo.js', '/recipe-photos.js', '/recipe-images.js', '/session-model.js', '/shopping-mode-model.js', '/shopping-mode-ui.js', '/companion-model.js', '/companion-ui.js', '/household-live.js', '/pantry-review-model.js', '/pantry-review-ui.js', '/recipe-chat.js', '/surprise-recipe.js', '/recipe-room-model.js', '/recipe-shopping.js', '/recipe-room-ui.js', '/recipe-export.js', '/recipe-crafting.js', '/manifest.webmanifest') or (path.startswith('/assets/') and '..' not in path and '%' not in path and Path(path).suffix in ('.svg', '.jpg', '.png', '.webp'))
+        allowed = path in public_entry_assets() or (
+            path.startswith('/assets/') and '..' not in path and '%' not in path
+            and Path(path).suffix in ('.svg', '.jpg', '.png', '.webp'))
+        if not allowed:
+            return False
+        # Public assets cannot alias private files, even inside this repository.
+        candidate = ROOT / path.lstrip('/')
+        if any(part.is_symlink() for part in (candidate, *candidate.parents) if part != ROOT and ROOT in part.parents):
+            return False
+        target = candidate.resolve()
+        return target.is_relative_to(ROOT) and target.is_file()
+
 
     def do_GET(self):
         if self.path == '/api/status':

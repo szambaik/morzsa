@@ -1,0 +1,21 @@
+{
+  "auditRun": "2026-11-16T18-20-28-151Z-1863ae",
+  "frozenAuditChecks": 143,
+  "targetedChecks": 54,
+  "axeScans": 32,
+  "axeViolations": 0,
+  "applicationUnitTests": 279,
+  "sqlSuites": 9,
+  "pythonTests": 9,
+  "harnessTests": 26,
+  "changedSinceSnapshot": [
+    "proactive-ui.js"
+  ],
+  "fixFilesMatchSnapshot": true,
+  "bundleFilesMatchSource": {
+    "web-dist": true,
+    "dist": true,
+    "ios/App/App/public": true,
+    "android/app/src/main/assets/public": true
+  }
+}

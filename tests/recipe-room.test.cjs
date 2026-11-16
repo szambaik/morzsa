@@ -1,5 +1,13 @@
 const test=require('node:test'),assert=require('node:assert/strict'),M=require('../recipe-room-model');
 const r={title:'Tejes rizs',summary:'Egyszerű desszert.',minutes:20,ingredients:[{name:'Tej',amount:'1 l'},{name:'Rizs',amount:'200 g'},{name:'Cukor',amount:'2 ek'}],steps:['Főzd puhára.']};
+test('numbered recipe actions and tips are presentation-only and leave decimal quantities and old prose intact',()=>{
+ const step='1. Hámozd meg az almát.\n2. Párold 8–10 percig.\nFontos: Hűtsd ki teljesen.\nNe maradjon vizes.';
+ assert.deepEqual(M.stepContent(step),{actions:['Hámozd meg az almát.','Párold 8–10 percig.'],paragraphs:[],tips:['Hűtsd ki teljesen.\nNe maradjon vizes.']});
+ const old='Adj hozzá 1.5 evőkanál cukrot. Süsd 180 °C-on.';assert.deepEqual(M.stepContent(old),{actions:[],paragraphs:[old],tips:[]});
+ assert.deepEqual(M.stepContent('1. First\n3. Third').paragraphs,['1. First\n3. Third']);
+ assert.deepEqual(M.stepContent('1) Stir\n2) Cool\nImportant: Do not rush.').tips,['Do not rush.']);
+ const fs=require('node:fs'),vm=require('node:vm'),context={window:{},RecipeRoomModel:M};vm.runInNewContext(fs.readFileSync(require.resolve('../cooking-ui.js'),'utf8'),context);const html=context.window.CookingUI.instructions('1. <script>\n2. Done\nFontos: <b>',{esc:s=>s.replaceAll('<','&lt;'),say:hu=>hu});assert(!html.includes('<script>'));assert(html.includes('class="cooking-actions"'));assert(html.includes('class="cooking-tip"'));assert(!html.includes('<b>'));
+});
 test('ingredient availability distinguishes missing, low, stale and never checked stock',()=>{
  const stock={Tej:2,Rizs:1,Cukor:0};assert.equal(M.ingredientStatus(stock,'Tej'),'home');assert.equal(M.ingredientStatus(stock,'Rizs'),'low');assert.equal(M.ingredientStatus(stock,'Cukor'),'out');
  assert.equal(M.ingredientStatus(stock,'Liszt'),'unknown');assert.equal(M.ingredientStatus(stock,'Tej',['Tej']),'unknown');assert.equal(stock.Tej,2);

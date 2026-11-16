@@ -3,6 +3,7 @@ import io
 import json
 import re
 import threading
+import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
@@ -58,6 +59,21 @@ class Tests(unittest.TestCase):
             with self.subTest(script=script), urlopen(self.base + '/' + script) as response:
                 self.assertEqual(response.status, 200)
                 self.assertGreater(len(response.read()), 0)
+
+    def test_public_looking_symlinks_cannot_serve_private_files(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root / 'index.html').write_text('<script src="app.js?v=test"></script>')
+            (root / 'private.env').write_text('private-fixture')
+            (root / 'assets').mkdir()
+            (root / 'assets' / 'private.png').symlink_to(root / 'private.env')
+            (root / 'app.js').symlink_to(root / 'private.env')
+            (root / 'assets' / 'nested').symlink_to(root, target_is_directory=True)
+            handler = object.__new__(server.Handler)
+            with patch.object(server, 'ROOT', root):
+                for path in ['/app.js?v=test', '/assets/private.png', '/assets/nested/private.png']:
+                    handler.path = path
+                    self.assertFalse(handler.static_allowed(), path)
 
     def test_missing_key_is_honest(self):
         request = Request(self.base + '/api/chat', data=json.dumps(BODY).encode(),

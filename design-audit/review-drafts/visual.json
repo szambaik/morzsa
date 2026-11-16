@@ -1,0 +1,189 @@
+{
+  "agent": "visual",
+  "reviewStatus": "completed",
+  "method": "codex-subagent",
+  "scope": "Independent final visual review of the canonical working-tree capture: all eight contact sheets containing 91 baseline PNG screenshots, seven selected full-size screenshots, responsive/overflow checks, raw contrast nodes from 13 affected axe scans, the preparation scan, current discovery and owning CSS/UI source. Covered onboarding, overview, pantry, shopping planning/store/completion, recipe discovery/ingredients, guided cooking, conversation loading/proposals/receipts/errors, kitchen dialogs, HU/EN examples and all six required viewport sizes. This is an actual image-based specialist review, not the earlier preliminary draft.",
+  "evidenceReviewed": [
+    "context.json",
+    "project-discovery.md",
+    "evidence/results.json",
+    "evidence/contact-sheets/contact-01.jpg",
+    "evidence/contact-sheets/contact-02.jpg",
+    "evidence/contact-sheets/contact-03.jpg",
+    "evidence/contact-sheets/contact-04.jpg",
+    "evidence/contact-sheets/contact-05.jpg",
+    "evidence/contact-sheets/contact-06.jpg",
+    "evidence/contact-sheets/contact-07.jpg",
+    "evidence/contact-sheets/contact-08.jpg",
+    "evidence/017-C-post-edit-start-overlap-390x844.png",
+    "evidence/027-E-guided-cooking-390x844.png",
+    "evidence/034-F-inventory-proposal-390x844.png",
+    "evidence/074-responsive-dialog-320-320x640.png",
+    "evidence/019-C-finish-review-390x844.png",
+    "evidence/024-D-ingredients-panel-390x844.png",
+    "evidence/064-responsive-overview-1280x800.png",
+    "evidence/026-E-preparation-390x844.axe.json",
+    "evidence/027-E-guided-cooking-390x844.axe.json",
+    "evidence/029-E-contextual-question-390x844.axe.json",
+    "evidence/030-E-completion-390x844.axe.json",
+    "evidence/034-F-inventory-proposal-390x844.axe.json",
+    "evidence/044-responsive-overview-320x640.axe.json",
+    "evidence/046-responsive-shopping-320x640.axe.json",
+    "evidence/048-responsive-chat-320x640.axe.json",
+    "evidence/069-responsive-overview-1440x900.axe.json",
+    "evidence/070-responsive-pantry-1440x900.axe.json",
+    "evidence/071-responsive-shopping-1440x900.axe.json",
+    "evidence/072-responsive-recipes-1440x900.axe.json",
+    "evidence/073-responsive-chat-1440x900.axe.json",
+    "evidence/082-G-household-invitations-390x844.axe.json"
+  ],
+  "strengths": [
+    "The cream/sage/forest/terracotta system, food artwork and Morzsa mascot remain coherent across all five destinations and desktop/mobile navigation. The overview at 1280 px organizes stock, shortages and cooking suggestions into a household view (064; contact sheets 05–07).",
+    "Shopping rows keep the checkbox and product name prominent, while quantity, category, note and removal live in the editor. Store mode has a clear bottom completion action; the finish dialog states how many items were purchased and will remain (014–019; 019 inspected full-size).",
+    "The ingredient panel puts recipe need and availability next to each food with one strong missing-to-list action. Its copy allows quantity uncertainty. Preparation/cooking surfaces disclose secondary tools while keeping the current step legible (024–030; 024 and 027 inspected full-size).",
+    "The tested AI proposal is visually distinct from conversation and saved receipts, with an explicit not-yet-saved heading, an emphasized Save button and secondary clarification/cancel controls. Error and loading states retain conversation context (031–043; 034 inspected full-size).",
+    "Five destinations remain stable across six viewport captures. No horizontal overflow was measured in the 30 destination/width checks. The pantry dialog fits 320 × 640 with all status/list actions visible (074 inspected full-size). This is a bounded observation, not proof of every responsive state."
+  ],
+  "limitations": [
+    "External fonts and remote assets were blocked. Sora/Inter font fidelity and native-device typography were not verified; fallback font appearance is not a production design defect.",
+    "Contact sheets establish composition/state coverage at thumbnail scale. Seven screenshots were additionally inspected full-size; remaining microtypography and pixel alignment were not checked individually at native resolution.",
+    "022-D-recipe-detail-390x844.png is unsettled/clipped and excluded from layout findings. Loading/partial-stream screenshots are accepted only as intentional loading states. 023 and 024 provide usable reader/ingredient context.",
+    "The 320 px pantry/recipe/assistant views require vertical scrolling. Below-fold content or static initial overlap alone does not establish an unreachable control; no extra defect is claimed without a failing interaction or geometry check.",
+    "AI responses, identities and household records are synthetic. Live model quality, production synchronization, microphone, physical devices, animation quality and screen-reader conformance were not verified.",
+    "This final reviewer did not read the prior visual draft or other specialist drafts. Recommendations preserve the brand and address observed problems."
+  ],
+  "findings": [
+    {
+      "id": "VISUAL-001",
+      "title": "The shopping save receipt covers the primary store-mode action",
+      "category": "reproducible-usability",
+      "severity": "Medium",
+      "priority": "P2",
+      "confidence": "High",
+      "affectedScreen": "Shopping list planning after editing an item",
+      "routeOrComponent": "shopping / #shopping-action-feedback and #workspace-assistant .shopping-view-switch",
+      "reproductionSteps": [
+        "At 390 × 844, add synthetic milk, apple and bread to the shopping list.",
+        "Edit milk to 0.5 l and save; remove bread while the save receipt remains visible.",
+        "Inspect the bottom action area and attempt to target the center of Boltban vagyok before the receipt expires."
+      ],
+      "expectedBehavior": "The receipt and Undo remain visible without covering the next primary action, so store mode can open immediately after editing.",
+      "actualBehavior": "The fixed dark save receipt occupies the same area as Boltban vagyok. Screenshot 017 shows the primary action obscured; C-start-reachable fails an unforced center hit-test. The feedback timer retains the receipt for 10 seconds.",
+      "userImpact": "A user finishing their list temporarily loses the obvious next action. Similar dark surfaces make the receipt resemble a replacement for the hidden button; simultaneous removal and save messages compete for attention.",
+      "evidence": [
+        {
+          "path": "evidence/017-C-post-edit-start-overlap-390x844.png",
+          "description": "Saved quantity receipt obscures store-mode action at 390 × 844",
+          "kind": "screenshot"
+        },
+        {
+          "path": "evidence/results.json",
+          "description": "C-start-reachable failed by unforced center hit-test",
+          "kind": "test"
+        }
+      ],
+      "screenshotRefs": [
+        "evidence/017-C-post-edit-start-overlap-390x844.png"
+      ],
+      "sourceFiles": [
+        "workspace.css:563",
+        "workspace.css:596",
+        "workspace.css:1061",
+        "shopping-mode-ui.js:37"
+      ],
+      "recommendedSolution": "Reserve feedback space above the measured contextual dock, or place the receipt in the list flow. Keep Undo available and consolidate concurrent feedback where appropriate. Preserve the forest action and warm Morzsa surfaces.",
+      "acceptanceCriteria": [
+        "While the receipt is visible, the full Boltban vagyok label and its center hit target remain unobscured.",
+        "Verify planning/store docks at all six requested viewport sizes with wrapped Hungarian/English receipt text.",
+        "Undo remains operable and focusable; the overlap fix does not shorten recovery time.",
+        "Sequential edit/remove operations show only applicable current feedback."
+      ],
+      "validationStatus": "verified",
+      "duplicateKey": "shopping-save-toast-overlap",
+      "regressionTests": [
+        "Repeat C-start-reachable immediately after quantity save and sequential removal; require an ordinary click to enter store mode while the receipt is visible.",
+        "Compare receipt, navigation and action-dock rectangles across six viewport profiles."
+      ],
+      "notes": [
+        "This is a transient obstruction with a verified failed hit-test, not a claim that shopping cannot ever be completed."
+      ]
+    },
+    {
+      "id": "VISUAL-002",
+      "title": "Small secondary labels lose contrast on tinted Morzsa surfaces",
+      "category": "accessibility",
+      "severity": "Medium",
+      "priority": "P2",
+      "confidence": "High",
+      "affectedScreen": "Guided cooking, assistant proposals, overview, shopping summary and kitchen selection",
+      "routeOrComponent": "Secondary text tokens, .cooking-compact-title p and .companion-proposal",
+      "reproductionSteps": [
+        "Open guided cooking at 390 × 844 and inspect Vezetett főzés.",
+        "Inspect the Készletbe destination inside the AI inventory proposal.",
+        "Check contrast on these states and the tinted overview, purchased-summary, nudge and kitchen-selection surfaces."
+      ],
+      "expectedBehavior": "Normal-size text has at least 4.5:1 contrast against its rendered background while hierarchy remains clear.",
+      "actualBehavior": "Axe reports 4.37:1 for the 12 px cooking label (#BF4E2C on #F8F3E9), 4.44:1 for the 12 px proposal destination, and 4.12–4.48:1 for other affected small labels. The 32-scan set contains 23 node occurrences in 13 scans. These repeated occurrences are a shared contrast issue, not 23 separate defects.",
+      "userImpact": "Secondary context is harder to read for low-vision users and in poor viewing conditions. These labels include action destination, availability and household scope.",
+      "evidence": [
+        {
+          "path": "evidence/027-E-guided-cooking-390x844.png",
+          "description": "Small terracotta guided-cooking label in context",
+          "kind": "screenshot"
+        },
+        {
+          "path": "evidence/027-E-guided-cooking-390x844.axe.json",
+          "description": "Measured 4.37:1 cooking-label contrast",
+          "kind": "test"
+        },
+        {
+          "path": "evidence/034-F-inventory-proposal-390x844.png",
+          "description": "Proposal destination label on tinted card",
+          "kind": "screenshot"
+        },
+        {
+          "path": "evidence/034-F-inventory-proposal-390x844.axe.json",
+          "description": "Measured 4.44:1 proposal destination contrast",
+          "kind": "test"
+        },
+        {
+          "path": "evidence/069-responsive-overview-1440x900.axe.json",
+          "description": "Overview and selected history-date contrast failures",
+          "kind": "test"
+        },
+        {
+          "path": "evidence/082-G-household-invitations-390x844.axe.json",
+          "description": "Shared-kitchen label contrast on sage surface",
+          "kind": "test"
+        }
+      ],
+      "screenshotRefs": [
+        "evidence/027-E-guided-cooking-390x844.png",
+        "evidence/034-F-inventory-proposal-390x844.png"
+      ],
+      "sourceFiles": [
+        "workspace.css:2",
+        "workspace.css:790",
+        "workspace.css:726",
+        "styles.css:566",
+        "companion-ui.js:326"
+      ],
+      "recommendedSolution": "Use darker semantic text variants for small terracotta and muted labels on cream/sage/wheat surfaces. Check actual backgrounds, retain accent fills and hierarchy, and avoid enlarging or bolding all secondary text as a workaround.",
+      "acceptanceCriteria": [
+        "All normal-size labels identified in retained axe nodes achieve at least 4.5:1 contrast against their rendered backgrounds.",
+        "Affected cooking, proposal, dashboard, purchased-summary, nudge, selected history-date and kitchen-selection scans no longer report these contrast violations.",
+        "The Morzsa brand and secondary-text hierarchy remain recognizable.",
+        "Repeat font-loaded and fallback-font states; do not infer whole-product WCAG conformance."
+      ],
+      "validationStatus": "verified",
+      "duplicateKey": "secondary-text-contrast",
+      "regressionTests": [
+        "Rerun the existing axe scans for affected states and inspect exact nodes, not just violation counts.",
+        "Visually compare representative cream, sage and wheat text surfaces after color changes."
+      ],
+      "notes": [
+        "This is measured contrast evidence, not an aesthetic preference or accessibility certification."
+      ]
+    }
+  ]
+}

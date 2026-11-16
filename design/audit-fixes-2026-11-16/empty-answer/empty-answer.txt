@@ -1,0 +1,31 @@
+- banner:
+  - button "Beszélgetéstörténet": ☰
+  - link "Morzsa":
+    - /url: "#"
+    - text: morzsa
+  - button "Saját konyha · Konyhaváltás és meghívás": Saját konyha
+  - button "Új Morzsa-beszélgetés"
+- main:
+  - text: Morzsa · a kuktád Ma
+  - article:
+    - paragraph: Mit jelent a blansírozás?
+  - alert:
+    - paragraph: Morzsa most nem adott választ. Próbáld újra; a kérdésed megmaradt, semmit nem módosítottunk.
+    - button "Újrapróbálom"
+  - button "Fotó csatolása"
+  - textbox "Üzenet Morzsának":
+    - /placeholder: Kérdezz…
+  - button "Hangbeszélgetés Morzsával"
+  - button "Küldés"
+  - text: AI mód
+  - combobox "AI mód":
+    - option "Morzsa Plus" [selected]
+    - option "Ingyenes"
+  - text: A változtatásokat mentés előtt átnézheted.
+- navigation "Fő navigáció":
+  - button "Áttekintés"
+  - button "Készlet"
+  - button "Morzsa"
+  - button "Lista"
+  - button "Receptek"
+- status

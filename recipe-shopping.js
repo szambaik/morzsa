@@ -19,6 +19,11 @@ const RecipeShopping=(()=>{
   }
   return {next,added,linked};
  }
- return {key,needs,amount,plan};
+ function purchase(source,ingredient,resolve,unitFor){
+  const name=resolve(ingredient.name),item=source.cart.find(i=>i.name===name),parsed=Portions.parse(ingredient.amount),supported=parsed&&/^(?:(?:kis|közepes|nagy|small|medium|large)\s+)?(?:kg|g|ml|l|db|darab|pcs?|csomag|doboz|üveg|pohár)$/i.test(parsed.suffix);
+  const value=item?{quantity:item.quantity||1,unit:item.unit||unitFor(name)}:amount(ingredient.amount,unitFor(name));
+  return {name,...value,reason:item?'kept':!supported?'standard':value.unit==='db'&&parsed.quantity!==value.quantity?'rounded':'exact'};
+ }
+ return {key,needs,amount,plan,purchase};
 })();
 if(typeof module!=='undefined')module.exports=RecipeShopping;

@@ -1,0 +1,31 @@
+const {test}=require('node:test'),assert=require('node:assert/strict'),M=require('../weekly-plan-model'),Room=require('../recipe-room-model'),C=require('../companion-model'),P=require('../persistence-model');
+const settings={week:'2026-11-16',people:2,cooks:3,budget:'save'};
+const recipes=[1,2,3].map(i=>({title:'Heti étel '+i,summary:'Két főre.',servings:2,minutes:20,ingredients:[{name:'Tej',amount:'250 ml'},{name:'Rizs',amount:'200 g'}],steps:['Főzd puhára.']}));
+test('weekly batches cover seven main meals without multiplying repeated leftovers into purchases',()=>{assert.deepEqual(M.batches(settings).map(b=>b.servings),[4,4,6]);assert.equal(M.slots(settings,recipes).length,7);assert.equal(M.slots(settings,recipes).filter(s=>s.cook).length,3);assert.equal(M.slots(settings,recipes)[6].frozen,true);assert.deepEqual(M.batches({...settings,cooks:2}).map(b=>b.servings),[8,6]);assert.equal(M.monday(new Date('2026-11-22T12:00:00')),settings.week);assert.equal(M.settings({people:500,cooks:9,budget:'unsafe'}).people,2);assert.notEqual(M.settings({week:'2026-02-31'}).week,'2026-02-31');assert.match(M.prompt(settings),/napi egy főétkezést/)});
+test('weekly shopping sums compatible new quantities, keeps manual totals, is idempotent and never consumes stock',()=>{const source={cart:[],stock:{},custom:[],likes:['old'],history:[{id:'old'}]},before=JSON.stringify(source),resolve=n=>n,unit=n=>n==='Tej'?'l':'kg';const first=M.shopping(source,recipes,settings,['Tej','Rizs'],resolve,unit);assert.equal(first.next.cart.find(i=>i.name==='Tej').quantity,1.75);assert.equal(first.next.cart.find(i=>i.name==='Tej').unit,'l');assert.equal(first.next.cart.find(i=>i.name==='Rizs').quantity,1.4);assert.equal(first.next.cart[0].recipeNeeds.length,3);assert.deepEqual(M.shopping(first.next,recipes,settings,['Tej','Rizs'],resolve,unit).next,first.next);assert.equal(JSON.stringify(source),before);assert.equal(first.next.stock,source.stock);const manual={...source,cart:[{name:'Tej',quantity:9,unit:'l',done:true}]};const kept=M.shopping(manual,recipes,settings,['Tej'],resolve,unit).next.cart[0];assert.equal(kept.quantity,9);assert.equal(kept.done,true)});
+test('uncertain pantry items require a user decision and weekly metadata survives existing conversation sync',()=>{assert.deepEqual(M.missing({stock:{Tej:2,Rizs:0},cart:[]},recipes,['Tej']).map(i=>[i.name,i.unknown]),[['Tej',true],['Rizs',false]]);let book=C.workspace(null,Room.recipe);book=C.startChat(book,'plan',Room.recipe);book.threads[1].weeklyPlan=settings;const loaded=C.workspace(JSON.parse(JSON.stringify(book)),Room.recipe);assert.deepEqual(loaded.threads[1].weeklyPlan,settings);assert.deepEqual(P.metadata(loaded.threads[1]).weeklyPlan,settings);assert.equal(C.workspace(null,Room.recipe).threads[0].weeklyPlan,undefined)});
+test('both AI modes receive bounded weekly planning context and clear batch/storage constraints',async()=>{const {normalizeInput,bodyFor}=await import('../supabase/functions/voice-command/handler.mjs');const input=normalizeInput({assistant:true,companion:true,text:'Tervezd meg a hetet',context:{weeklyPlan:settings}});assert.deepEqual(input.context.weeklyPlan,settings);assert.match(bodyFor(input).systemInstruction.parts[0].text,/4, 4, 6 servings/);assert.match(bodyFor(input).systemInstruction.parts[0].text,/freeze promptly/);assert.throws(()=>normalizeInput({assistant:true,companion:true,text:'x',context:{weeklyPlan:{...settings,people:99}}}),/INVALID_INPUT/);assert.throws(()=>normalizeInput({assistant:true,companion:true,text:'x',context:{weeklyPlan:{...settings,week:'2026-02-31'}}}),/INVALID_INPUT/)});
+
+test('edited weekly schedules preserve skips, exact portions and leftover origins',()=>{
+ const rows=M.schedule([],recipes,settings);rows[0].type='skip';rows[1].portions=3;rows[2].index=0;rows[2].portions=2;
+ const messages=[{role:'model',recipes,text:'A terv'}, {role:'model',text:M.scheduleMessage(rows),recipes:[]}];
+ assert.deepEqual(M.schedule(messages,recipes,settings),rows);
+ const slots=M.scheduledSlots(settings,recipes,messages);
+ assert.equal(slots[0].type,'skip');assert.equal(slots[0].cook,false);assert.equal(slots[1].cook,true);assert.equal(slots[2].source,1);assert.equal(slots[2].cook,false);assert.equal(slots[2].frozen,false);
+ assert.deepEqual(M.scheduledBatches(messages,recipes,settings).map(x=>x.servings),[5,2,6]);
+ const saved=P.message({id:'qa',role:'model',text:M.scheduleMessage(rows),recipes:[]});assert.ok(saved?.text.includes(M.schedulePrefix));
+});
+test('malformed or obsolete schedule records cannot apply to regenerated recipes',()=>{
+ const defaults=M.schedule([],recipes,settings),bad=structuredClone(defaults);bad[0].portions=99;
+ for(const text of [M.schedulePrefix+'{',M.scheduleMessage(bad),M.scheduleMessage(defaults.slice(0,2))])assert.deepEqual(M.schedule([{role:'model',text}],recipes,settings),defaults);
+ const rows=structuredClone(defaults);rows[0].type='skip';
+ assert.deepEqual(M.schedule([{role:'model',text:M.scheduleMessage(rows)},{role:'model',recipes,text:'Unrelated replanning'}],recipes,settings),defaults);
+ const over=defaults.map(s=>({...s,index:0,portions:8}));assert.deepEqual(M.schedule([{role:'model',text:M.scheduleMessage(over)}],recipes,settings),defaults);
+});
+test('weekly shopping follows edited yields, skips unused recipes and keeps stock unchanged',()=>{
+ const rows=M.schedule([],recipes,settings).map(s=>({...s,type:'skip'}));rows[0]={day:0,type:'meal',index:1,portions:3};rows[2]={day:2,type:'meal',index:1,portions:2};
+ const messages=[{role:'model',text:M.scheduleMessage(rows)}],jobs=M.scheduledBatches(messages,recipes,settings),source={cart:[],stock:{Alma:2},custom:[],likes:[],history:[]};
+ const result=M.shopping(source,recipes,settings,['Tej','Rizs'],n=>n,()=> 'g',jobs);
+ assert.deepEqual(result.next.stock,source.stock);assert.equal(result.next.cart[0].quantity,625);assert.equal(result.next.cart[0].unit,'ml');assert.equal(result.next.cart[1].quantity,500);assert.equal(result.next.cart[0].recipeNeeds.length,1);assert.equal(result.next.cart[0].recipeNeeds[0].recipe.title,'Heti étel 2');
+ assert.deepEqual(M.shopping(result.next,recipes,settings,['Tej','Rizs'],n=>n,()=> 'g',jobs).next,result.next);
+});

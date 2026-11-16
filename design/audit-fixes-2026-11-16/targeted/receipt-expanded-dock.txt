@@ -1,0 +1,29 @@
+- main:
+  - heading "Bevásárlás" [level=1]
+  - text: 1 / 2 megvan · 1 hátravan
+  - button "Boltbejárási sorrend"
+  - progressbar "Vásárlási haladás"
+  - searchbox "Keresés a listán"
+  - button "Minden tétel"
+  - button "Tejtermék és tojás · 1 hátravan" [pressed]: Tej és tojás 1
+  - button "Gyümölcsök · 0 hátravan": Gyümölcsök ✓
+  - heading "Tejtermék és tojás 1" [level=2]
+  - button "Tej · Megvettem"
+  - button "Tej · Szerkesztés":
+    - strong: Tej
+    - text: Partner note
+  - text: Te
+  - button "Tej · Mennyiség szerkesztése": 5 l
+  - group:
+    - text: Megvásárolva · 1 −
+    - group: Gyümölcsök · 1 +
+  - textbox "Vásárlás közben hozzáadott termék":
+    - /placeholder: Megvettem még…
+  - button "Hozzáadás megvásároltként"
+  - button "Vissza a listához, a pipák megmaradnak": Lista
+  - button "Megvettem még valamit" [expanded]
+  - button "Befejezés · 1/2"
+- status: A listára került.
+- status:
+  - text: Tej · Még hátravan
+  - button "Visszavonás"
