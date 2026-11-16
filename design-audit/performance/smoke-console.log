@@ -1,0 +1,4 @@
+2026-11-16T18:32:10.798Z startup 390 fast CPU1 cold 310ms
+2026-11-16T18:32:11.757Z startup 390 fast CPU1 warm 246ms
+2026-11-16T18:32:14.894Z navigation-five-destinations: PASS
+2026-11-16T18:32:15.441Z AUDIT_RUN=/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/design-audit/performance/runs/2026-11-16T18-32-08.390Z-smoke

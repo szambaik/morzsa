@@ -1,0 +1,60 @@
+- banner:
+  - button "Saját konyha · Konyhaváltás és meghívás": Saját konyha
+  - button "Új Morzsa-beszélgetés"
+- main:
+  - paragraph: Konyhánk
+  - heading "Mi van otthon?" [level=1]
+  - group
+  - paragraph: Egy jó emlékeztető. Mennyiséget csak akkor írj, ha segít.
+  - button "Gyors feltöltés Diktálás és alapcsomagok"
+  - button "Van otthon" [pressed]
+  - button "Kevés"
+  - button "Elfogyott"
+  - button "Mind"
+  - text: 5 alapanyag
+  - searchbox "Keresés az alapanyagok között"
+  - button "Készlethez adás"
+  - 'button "Tojás: részletek és listára vétel"': Tojás Van otthon
+  - button "Tojás · Listára teszem"
+  - button "Tojás · Elfogyott"
+  - 'button "Tej: részletek és listára vétel"': Tej Kevés
+  - button "Tej · Listára teszem"
+  - button "Tej · Elfogyott"
+  - 'button "Alma: részletek és listára vétel"': Alma Van otthon
+  - button "Alma · Listára teszem"
+  - button "Alma · Elfogyott"
+  - 'button "Vaj: részletek és listára vétel"': Vaj Van otthon
+  - button "Vaj · Listára teszem"
+  - button "Vaj · Elfogyott"
+  - 'button "Rizs: részletek és listára vétel"': Rizs Van otthon
+  - button "Rizs · Listára teszem"
+  - button "Rizs · Elfogyott"
+- status
+- complementary:
+  - link "morzsa":
+    - /url: "#"
+  - navigation "Fő navigáció":
+    - button "Áttekintés"
+    - button "Lista"
+    - button "Morzsa"
+    - button "Készlet"
+    - button "Receptek"
+  - complementary "Beszélgetéstörténet":
+    - heading "Beszélgetések" [level=2]
+    - searchbox "Keresés az előzményekben"
+    - button "Új beszélgetés"
+    - heading "Morzsa" [level=3]
+    - heading "Ma" [level=4]
+    - button "Morzsa · a kuktád nov. 16.":
+      - strong: Morzsa · a kuktád
+      - text: nov. 16.
+    - heading "Receptek" [level=3]
+    - paragraph: Az elkezdett receptek itt jelennek meg.
+    - group: Beszélgetés adatvédelme
+    - button "Beszélgetés archiválása" [disabled]
+    - paragraph: Mentve a fiókodban
+  - group: Beállítások
+  - button "Főzési ízlésem"
+  - button "Morzsa bemutató"
+- group "Gyors műveletek":
+  - button "Kérdezz Morzsától"

@@ -1,0 +1,39 @@
+- banner:
+  - button "Beszélgetéstörténet": ☰
+  - link "Morzsa":
+    - /url: "#"
+    - text: morzsa
+  - button "Audit kitchen · Konyhaváltás és meghívás": Audit kitchen
+  - button "Új Morzsa-beszélgetés"
+- main:
+  - text: Morzsa · a kuktád Ma
+  - article:
+    - paragraph: Kérlek tedd a borsot a listára. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus.
+  - article:
+    - text: Morzsa
+    - paragraph: Borsot javaslok a listára.
+    - text: Javaslat, nincs mentve.
+  - region "Javasolt módosítások":
+    - text: Javaslat · még nincs mentve
+    - strong: Bors
+    - text: Listára · 1 csomag
+    - button "Mentés"
+    - button "Pontosítás"
+    - button "Mégsem"
+  - button "Fotó csatolása" [disabled]
+  - textbox "Üzenet Morzsának":
+    - /placeholder: Kérdezz…
+  - button "Kérdezés hanggal" [disabled]
+  - button "Küldés" [disabled]
+  - text: AI mód
+  - combobox "AI mód" [disabled]:
+    - option "Morzsa Plus"
+    - option "Ingyenes" [selected]
+  - text: A változtatásokat mentés előtt átnézheted.
+- navigation "Fő navigáció":
+  - button "Áttekintés"
+  - button "Lista"
+  - button "Morzsa"
+  - button "Készlet"
+  - button "Receptek"
+- status

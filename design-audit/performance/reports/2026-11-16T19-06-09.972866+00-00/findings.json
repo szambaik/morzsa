@@ -1,0 +1,711 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-11-16T19:06:09.972866+00:00",
+  "revision": "cf2b7887ffa1777e7dbb7699103c6ec90cb07d5b",
+  "snapshotCapturedAt": "20261116T182653Z",
+  "snapshotRoot": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z",
+  "inputs": {
+    "full": "runs/2026-11-16T18-34-31.217Z-full/results.json",
+    "supplement": "runs/2026-11-16T18-41-13.534Z-supplement/results.json",
+    "faults": "runs/2026-11-16T18-44-15.751Z-faults/results.json",
+    "soak": "runs/2026-11-16T18-45-56.672Z-soak/results.json",
+    "database": "database-runs/2026-11-16T18-35-45.869Z/database.json",
+    "providers": "provider-runs/2026-11-16T18-37-26.468Z/providers.json"
+  },
+  "findings": [
+    {
+      "id": "PERF-001",
+      "title": "Ismételt kategóriakeresés blokkolja a bevásárlólista renderelését",
+      "priority": "P1",
+      "severity": "high",
+      "category": "frontend",
+      "affectedJourneys": [
+        "J2",
+        "J4",
+        "J7"
+      ],
+      "confidence": "high",
+      "validationStatus": "confirmed",
+      "reproductionSteps": [
+        "50, 250, majd 667 szintetikus katalógustétel kerüljön a készletbe és a listára.",
+        "Áttekintésből kattintás a Lista fülre.",
+        "A long-task adatok és a shopping-667.cpuprofile ellenőrzése."
+      ],
+      "expectedBehavior": "250 tételnél a meleg Lista-váltás p95 ≤ 200 ms.",
+      "actualBehavior": "667 tételnél 4225 ms főszál-feladat és 4327 ms navigáció; külön profilozott ismétlés: 4186 ms. 2000 tételnél a kattintás 30 s után időtúllépett.",
+      "measuredImpact": {
+        "items667": {
+          "longTaskMs": 4225,
+          "navigationMs": 4327
+        },
+        "items250NavigationMs": 350,
+        "items2000TimeoutMs": 30000
+      },
+      "rootCause": "A shoppingGroupHeader minden csoporthoz újraszűri a teljes listát. A productCategory minden összehasonlításnál új tömböt épít, kisbetűsít és lineárisan keres. A CPU-profil forró pontja app.js:15.",
+      "sourceFiles": [
+        "app.js:15",
+        "app.js:175",
+        "app.js:198"
+      ],
+      "evidence": [
+        "runs/2026-11-16T18-34-31.217Z-full/results.json#scaling",
+        "runs/2026-11-16T18-41-13.534Z-supplement/traces/shopping-667.cpuprofile",
+        "runs/2026-11-16T18-34-31.217Z-full/traces/long-session.zip"
+      ],
+      "recommendedRemediation": "Normalizált név → kategória index; csoportosítás és darabszámok egy menetben. Szükség esetén ezt kövesse DOM-ablakozás.",
+      "acceptanceCriteria": [
+        "250 tételnél a meleg Lista-váltás p95 ≤ 200 ms.",
+        "667 tételnél nincs 200 ms feletti alkalmazáskód-feladat.",
+        "2000 tételnél sem veszhet el a navigáció válaszkészsége.",
+        "Magyar/angol nevek és egyéni tételek helyes kategóriában maradnak."
+      ],
+      "estimatedComplexity": "M",
+      "risks": "A régi mentések, megosztott adatok és RPC-szerződések kompatibilitását meg kell őrizni.",
+      "regressionTests": [
+        "50, 250, majd 667 szintetikus katalógustétel kerüljön a készletbe és a listára.",
+        "Áttekintésből kattintás a Lista fülre.",
+        "A long-task adatok és a shopping-667.cpuprofile ellenőrzése."
+      ],
+      "networkRequests": {
+        "kind": "local-browser",
+        "references": [
+          "runs/2026-11-16T18-34-31.217Z-full/results.json#network"
+        ],
+        "note": "Whole-run request log; not every background request is part of this mechanism."
+      },
+      "consoleErrors": {
+        "references": [
+          "runs/2026-11-16T18-34-31.217Z-full/results.json#errors"
+        ],
+        "note": "Whole-run console log; unrelated and deliberately injected HTTP failures are not evidence of this root cause."
+      }
+    },
+    {
+      "id": "PERF-002",
+      "title": "Pontos recept-alapanyagokhoz is teljes fuzzy keresés fut",
+      "priority": "P1",
+      "severity": "high",
+      "category": "frontend",
+      "affectedJourneys": [
+        "J2",
+        "J5"
+      ],
+      "confidence": "high",
+      "validationStatus": "confirmed",
+      "reproductionSteps": [
+        "31 seed-recept, 50 tételes készlet/lista.",
+        "Receptek / Neked megnyitása.",
+        "recipes-50.cpuprofile megnyitása DevToolsban."
+      ],
+      "expectedBehavior": "A 24 kártyás meleg ajánló renderelése p95 ≤ 200 ms.",
+      "actualBehavior": "Már 50 tételnél 527 ms-os főszál-feladat; a profilozott megnyitás 643 ms-os intervalluma főként QuickEntry keresés.",
+      "measuredImpact": {
+        "longTaskMs": 527,
+        "profileDurationMs": 643
+      },
+      "rootCause": "recipe-library.cards → discoverySections → recipeChoice → resolve → QuickEntry.match. A ranked minden katalógusnévre Levenshtein-távolságot számol akkor is, amikor a név pontosan egyezik.",
+      "sourceFiles": [
+        "quick-entry.js:2",
+        "quick-entry.js:4",
+        "quick-entry.js:5",
+        "quick-entry.js:6",
+        "recipe-library.js:26",
+        "kitchen-model.js:58"
+      ],
+      "evidence": [
+        "runs/2026-11-16T18-34-31.217Z-full/results.json#scaling",
+        "runs/2026-11-16T18-41-13.534Z-supplement/traces/recipes-50.cpuprofile",
+        "runs/2026-11-16T18-41-13.534Z-supplement/traces/recipes-250.cpuprofile"
+      ],
+      "recommendedRemediation": "Pontos és alias-egyezések indexelése; fuzzy keresés csak elírásnál. A recept-alapanyag feloldásokat a katalógusverzióhoz kötötten cache-elni.",
+      "acceptanceCriteria": [
+        "A 24 kártyás meleg ajánló renderelése p95 ≤ 200 ms.",
+        "Pontos neveknél nincs teljes katalógusos távolságszámítás.",
+        "Az elírt és ékezet nélküli gyors bevitel megmarad."
+      ],
+      "estimatedComplexity": "M",
+      "risks": "A régi mentések, megosztott adatok és RPC-szerződések kompatibilitását meg kell őrizni.",
+      "regressionTests": [
+        "31 seed-recept, 50 tételes készlet/lista.",
+        "Receptek / Neked megnyitása.",
+        "recipes-50.cpuprofile megnyitása DevToolsban."
+      ],
+      "networkRequests": {
+        "kind": "local-browser",
+        "references": [
+          "runs/2026-11-16T18-34-31.217Z-full/results.json#network"
+        ],
+        "note": "Whole-run request log; not every background request is part of this mechanism."
+      },
+      "consoleErrors": {
+        "references": [
+          "runs/2026-11-16T18-34-31.217Z-full/results.json#errors"
+        ],
+        "note": "Whole-run console log; unrelated and deliberately injected HTTP failures are not evidence of this root cause."
+      }
+    },
+    {
+      "id": "PERF-003",
+      "title": "Az AI előkészítése látható folyamatjelzés nélkül vár",
+      "priority": "P1",
+      "severity": "high",
+      "category": "ai",
+      "affectedJourneys": [
+        "J6"
+      ],
+      "confidence": "high",
+      "validationStatus": "confirmed",
+      "reproductionSteps": [
+        "Új chat egy szintetikus bejelentkezett fiókkal.",
+        "Minden RPC-válasz 600 ms mesterséges késleltetést kap.",
+        "Küldés után 800 ms-nál képernyő és vezérlőállapot rögzítése."
+      ],
+      "expectedBehavior": "Küldés után ≤ 100 ms-on belül látható állapotváltozás.",
+      "actualBehavior": "800 ms-nál az üzenet még a mezőben áll, a Küldés gomb aktív, nincs thinking és Stop. Az azonnali helyi AI-válasz is csak 3338 ms körül látható.",
+      "measuredImpact": {
+        "rpcDelayMs": 600,
+        "noFeedbackAtMs": 800,
+        "totalMs": 3337.507833999989,
+        "rpcBeforeProviderSpanMs": 2743
+      },
+      "rootCause": "send előbb await-eli a beginTurn műveletet; a busy és renderChat később fut. A beginTurn flush/refresh, zárolás és történetolvasás láncot végez. Globális focusout további frissítést indíthat.",
+      "sourceFiles": [
+        "companion-ui.js:199",
+        "companion-ui.js:201",
+        "companion-ui.js:206",
+        "persistence.js:44",
+        "persistence.js:102",
+        "persistence.js:104"
+      ],
+      "evidence": [
+        "runs/2026-11-16T18-34-31.217Z-full/results.json#aiPreflight",
+        "runs/2026-11-16T18-34-31.217Z-full/screenshots/22-ai-preflight-800ms.png",
+        "runs/2026-11-16T18-34-31.217Z-full/traces/journeys.zip"
+      ],
+      "recommendedRemediation": "Az egész előkészítési szakasz kapjon azonnali, megszakítható sending állapotot. A zárolási/mentési garanciák mellett a fölösleges olvasások összevonása.",
+      "acceptanceCriteria": [
+        "Küldés után ≤ 100 ms-on belül látható állapotváltozás.",
+        "Előkészítés közben működő megszakítás.",
+        "Dupla küldés nem indít két modelligényt.",
+        "Másik eszköz turn-lockja továbbra is érvényes."
+      ],
+      "estimatedComplexity": "M",
+      "risks": "A régi mentések, megosztott adatok és RPC-szerződések kompatibilitását meg kell őrizni.",
+      "regressionTests": [
+        "Új chat egy szintetikus bejelentkezett fiókkal.",
+        "Minden RPC-válasz 600 ms mesterséges késleltetést kap.",
+        "Küldés után 800 ms-nál képernyő és vezérlőállapot rögzítése."
+      ],
+      "networkRequests": {
+        "kind": "local-browser",
+        "references": [
+          "runs/2026-11-16T18-34-31.217Z-full/results.json#network"
+        ],
+        "note": "Whole-run request log; not every background request is part of this mechanism."
+      },
+      "consoleErrors": {
+        "references": [
+          "runs/2026-11-16T18-34-31.217Z-full/results.json#errors"
+        ],
+        "note": "Whole-run console log; unrelated and deliberately injected HTTP failures are not evidence of this root cause."
+      }
+    },
+    {
+      "id": "PERF-004",
+      "title": "A közös készlet teljes hálózati lánca lezárja a párbeszédablakot",
+      "priority": "P1",
+      "severity": "high",
+      "category": "reliability",
+      "affectedJourneys": [
+        "J3"
+      ],
+      "confidence": "high",
+      "validationStatus": "confirmed",
+      "reproductionSteps": [
+        "Közös háztartásban Rizs-részletek megnyitása.",
+        "Minden REST-válasz késleltetése 450 ms-mal.",
+        "Van otthon választása, majd a bezáró- és műveleti gombok ellenőrzése."
+      ],
+      "expectedBehavior": "450 ms-os hálózatnál a vezérlők azonnal visszajeleznek és az ablak bezárható.",
+      "actualBehavior": "Az összes gomb, a bezárás is tiltott; a művelet 2952 ms-ot vett igénybe.",
+      "measuredImpact": {
+        "perRequestDelayMs": 450,
+        "operationMs": 2951.9251670000085
+      },
+      "rootCause": "openPantryDetails minden gombot letilt és a cancel eseményt blokkolja, amíg updatePantryAvailability a saveVoiceState → household.push → fetchRows és PantryReview.confirm láncot végigvárja. Ez műveleti zárolás, nem általános JavaScript-fagyás.",
+      "sourceFiles": [
+        "pantry-library.js:28",
+        "pantry-library.js:44",
+        "pantry-library.js:51",
+        "household.js:144",
+        "household.js:111"
+      ],
+      "evidence": [
+        "runs/2026-11-16T18-34-31.217Z-full/results.json#sharedPantry",
+        "runs/2026-11-16T18-34-31.217Z-full/results.json#sharedPantryPending",
+        "runs/2026-11-16T18-34-31.217Z-full/screenshots/25-shared-pantry-saving.png",
+        "runs/2026-11-16T18-34-31.217Z-full/traces/shared.zip"
+      ],
+      "recommendedRemediation": "Bezárható párbeszédablak, helyi pending állapot és mentési nyugta külön kezelése. A mutációs válasz adhassa vissza a megerősített új állapotot, ahol ez biztonságos.",
+      "acceptanceCriteria": [
+        "450 ms-os hálózatnál a vezérlők azonnal visszajeleznek és az ablak bezárható.",
+        "Sikeres mentés csak szervernyugta után látszik.",
+        "Hibánál a felhasználói szándék és az újrapróbálás megmarad."
+      ],
+      "estimatedComplexity": "M",
+      "risks": "A régi mentések, megosztott adatok és RPC-szerződések kompatibilitását meg kell őrizni.",
+      "regressionTests": [
+        "Közös háztartásban Rizs-részletek megnyitása.",
+        "Minden REST-válasz késleltetése 450 ms-mal.",
+        "Van otthon választása, majd a bezáró- és műveleti gombok ellenőrzése."
+      ],
+      "networkRequests": {
+        "kind": "local-browser",
+        "references": [
+          "runs/2026-11-16T18-34-31.217Z-full/results.json#network"
+        ],
+        "note": "Whole-run request log; not every background request is part of this mechanism."
+      },
+      "consoleErrors": {
+        "references": [
+          "runs/2026-11-16T18-34-31.217Z-full/results.json#errors"
+        ],
+        "note": "Whole-run console log; unrelated and deliberately injected HTTP failures are not evidence of this root cause."
+      }
+    },
+    {
+      "id": "PERF-005",
+      "title": "A web build 60 szinkron scriptet és kb. 1 MB nyers JS/CSS-t tölt",
+      "priority": "P2",
+      "severity": "medium",
+      "category": "startup",
+      "affectedJourneys": [
+        "J1"
+      ],
+      "confidence": "high",
+      "validationStatus": "confirmed",
+      "reproductionSteps": [
+        "build:web a pillanatképen.",
+        "390 px-es hideg indítás 150 ms RTT és 200000 byte/s letöltés mellett.",
+        "Meleg cache és 400 ms RTT megismétlése."
+      ],
+      "expectedBehavior": "LCP ≤ 2.5 s cél a kijelölt mobilprofilon.",
+      "actualBehavior": "703084 byte JS és 305846 byte CSS változatlanul kerül a buildbe. Lassú 4G laborprofil: hideg LCP medián 5768 ms, használhatósági próba 6206 ms.",
+      "measuredImpact": {
+        "scripts": 60,
+        "deferScripts": 0,
+        "jsBytes": 703084,
+        "cssBytes": 305846,
+        "coldSlow4gLcpMs": 5768
+      },
+      "rootCause": "Nincs alkalmazásbundle, minifikálás vagy kódfelosztás a web buildben. A klasszikus globális scriptfüggőségek és a sok erőforrás több hálózati kört igényelnek.",
+      "sourceFiles": [
+        "index.html:1",
+        "scripts/build-mobile.mjs:5",
+        "styles.css:1",
+        "workspace.css:1"
+      ],
+      "evidence": [
+        "resources.json",
+        "runs/2026-11-16T18-34-31.217Z-full/results.json#startup"
+      ],
+      "recommendedRemediation": "Explicit buildfüggőségek; minifikált kezdeti csomag; ritka hang/kép funkciók késleltetett betöltése. Stagingen a tömörítés és cache ellenőrzése.",
+      "acceptanceCriteria": [
+        "LCP ≤ 2.5 s cél a kijelölt mobilprofilon.",
+        "Külön kezdeti JS/CSS transfer budget.",
+        "Az inicializációs sorrend és mind az öt nézet működése megmarad."
+      ],
+      "estimatedComplexity": "M",
+      "risks": "A mérés helyi HTTP/1.1 és tömörítés nélküli. A CDN HTTP/2/3, gzip/Brotli és cache eltérése miatt ez nem éles weboldal-latencia.",
+      "regressionTests": [
+        "build:web a pillanatképen.",
+        "390 px-es hideg indítás 150 ms RTT és 200000 byte/s letöltés mellett.",
+        "Meleg cache és 400 ms RTT megismétlése."
+      ],
+      "networkRequests": {
+        "kind": "local-browser",
+        "references": [
+          "runs/2026-11-16T18-34-31.217Z-full/results.json#network"
+        ],
+        "note": "Whole-run request log; not every background request is part of this mechanism."
+      },
+      "consoleErrors": {
+        "references": [
+          "runs/2026-11-16T18-34-31.217Z-full/results.json#errors"
+        ],
+        "note": "Whole-run console log; unrelated and deliberately injected HTTP failures are not evidence of this root cause."
+      }
+    },
+    {
+      "id": "PERF-006",
+      "title": "Realtime mellett is sok teljes háttérolvasás történik",
+      "priority": "P2",
+      "severity": "medium",
+      "category": "realtime",
+      "affectedJourneys": [
+        "J2",
+        "J3",
+        "J4",
+        "J7"
+      ],
+      "confidence": "high",
+      "validationStatus": "confirmed",
+      "reproductionSteps": [
+        "Két szintetikus közös háztartási kliens.",
+        "20 egyidejű Phoenix postgres_changes jel az egyik kliensnek.",
+        "16.5 s változtatás nélküli időszak megfigyelése."
+      ],
+      "expectedBehavior": "Eseményviharban legfeljebb egy aktív egyeztetési ciklus.",
+      "actualBehavior": "A burst helyesen egy refresh-ciklussá áll össze, de az 8 REST-kérést indít. Két kliens 16.5 s alatt 42 kérést végzett. Kliensenként 2 socket maradt.",
+      "measuredImpact": {
+        "burstEvents": 20,
+        "burstRequests": 8,
+        "idleTwoClientRequests": 42,
+        "idleMs": 16500,
+        "sockets": 2
+      },
+      "rootCause": "A household.refresh minden alkalommal teljes ellenőrzött fetchRows-t, majd pantry/kitchen/shopping frissítéseket indít. A 8 s-os poll egészséges Realtime mellett is marad; a perzisztencia 15 s-os és globális focusout-frissítése hozzáadódik.",
+      "sourceFiles": [
+        "household.js:111",
+        "household.js:120",
+        "household.js:125",
+        "household.js:157",
+        "persistence.js:101",
+        "persistence.js:103"
+      ],
+      "evidence": [
+        "runs/2026-11-16T18-34-31.217Z-full/results.json#realtimeBurst",
+        "runs/2026-11-16T18-34-31.217Z-full/results.json#idlePolling"
+      ],
+      "recommendedRemediation": "Adatkörönkénti invalidálás, megosztott aktív olvasások, egészséges Realtime mellett ritkább egyeztetés. A polling fallback megőrzése.",
+      "acceptanceCriteria": [
+        "Eseményviharban legfeljebb egy aktív egyeztetési ciklus.",
+        "Változatlan adatoknál nincs teljes mellékadatfrissítés.",
+        "Egészséges kapcsolatban cél ≤ 4 háttérkérés/perc/kliens; fallback külön kerettel."
+      ],
+      "estimatedComplexity": "M",
+      "risks": "A régi mentések, megosztott adatok és RPC-szerződések kompatibilitását meg kell őrizni.",
+      "regressionTests": [
+        "Két szintetikus közös háztartási kliens.",
+        "20 egyidejű Phoenix postgres_changes jel az egyik kliensnek.",
+        "16.5 s változtatás nélküli időszak megfigyelése."
+      ],
+      "networkRequests": {
+        "kind": "local-browser",
+        "references": [
+          "runs/2026-11-16T18-34-31.217Z-full/results.json#network"
+        ],
+        "note": "Whole-run request log; not every background request is part of this mechanism."
+      },
+      "consoleErrors": {
+        "references": [
+          "runs/2026-11-16T18-34-31.217Z-full/results.json#errors"
+        ],
+        "note": "Whole-run console log; unrelated and deliberately injected HTTP failures are not evidence of this root cause."
+      }
+    },
+    {
+      "id": "PERF-007",
+      "title": "A beszélgetésindex a teljes táblán értékeli a hozzáférést",
+      "priority": "P2",
+      "severity": "medium",
+      "category": "database",
+      "affectedJourneys": [
+        "J6",
+        "J7"
+      ],
+      "confidence": "high",
+      "validationStatus": "confirmed",
+      "reproductionSteps": [
+        "50 látható beszélgetés mellett 100 → 1000 → 5000 teljes sor.",
+        "conversation_index(0) és belső SELECT: EXPLAIN ANALYZE.",
+        "Diagnosztikus owner_id-szűrés összevetése, a megosztási szemantika eltérésének jelölésével."
+      ],
+      "expectedBehavior": "Idegen beszélgetések növelése ne okozzon lineáris listázási költséget.",
+      "actualBehavior": "A PGlite minimumidő kb. 1.8 → 6.2 → 26.9 ms. Az 5000 sorból 4950-et a can_read_conversation szűrés dobott el, végig 50 látható sor mellett.",
+      "measuredImpact": {
+        "rows": 5000,
+        "visibleRows": 50,
+        "filteredOut": 4950,
+        "minimumMs": [
+          1.8,
+          6.2,
+          26.9
+        ]
+      },
+      "rootCause": "A belső feltétel csak can_read_conversation(id), előzetes owner/shared jelöltszűrés nélkül. A meglévő owner-index ebben a tervben minden kulcsot végigolvas, a jogosultság soronként értékelődik.",
+      "sourceFiles": [
+        "supabase/migrations/20261114_persistent_library.sql:153",
+        "supabase/migrations/20261114_persistent_library.sql:29"
+      ],
+      "evidence": [
+        "database-runs/2026-11-16T18-35-45.869Z/database.json#plans/conversation_inner_5000"
+      ],
+      "recommendedRemediation": "Indexelt saját és megosztott jelöltek egyesítése, majd a szükséges hozzáférési ellenőrzés. Keyset lapozás mérlegelése. Az owner-only diagnosztika nem kész helyettesítő query.",
+      "acceptanceCriteria": [
+        "Idegen beszélgetések növelése ne okozzon lineáris listázási költséget.",
+        "Privát/megosztott olvasás, visszavonás, törlés és archiválás tesztjei átmennek."
+      ],
+      "estimatedComplexity": "M",
+      "risks": "A számok WASM-laborértékek. Éles slow query vagy lock contention nem lett mérve.",
+      "regressionTests": [
+        "50 látható beszélgetés mellett 100 → 1000 → 5000 teljes sor.",
+        "conversation_index(0) és belső SELECT: EXPLAIN ANALYZE.",
+        "Diagnosztikus owner_id-szűrés összevetése, a megosztási szemantika eltérésének jelölésével."
+      ],
+      "networkRequests": {
+        "kind": "local-sql",
+        "references": [
+          "database-runs/2026-11-16T18-35-45.869Z/database.json"
+        ],
+        "note": "Direct PGlite execution; no HTTP database round trip was measured."
+      },
+      "consoleErrors": {
+        "references": [],
+        "note": "See SQL execution output; not a browser scenario."
+      }
+    },
+    {
+      "id": "PERF-008",
+      "title": "Egy lassú kép más képek cache-olvasását is feltartja",
+      "priority": "P2",
+      "severity": "medium",
+      "category": "images",
+      "affectedJourneys": [
+        "J5",
+        "J6"
+      ],
+      "confidence": "high",
+      "validationStatus": "confirmed",
+      "reproductionSteps": [
+        "Az első kép kérésének elindítása és ennek megvárása.",
+        "Csak ezután a második RecipeImages.mount hívás.",
+        "Az első lokális válasz 2000 ms-ot vár, a második azonnali lenne."
+      ],
+      "expectedBehavior": "A második cache-olvasás ≤ 200 ms-on belül elindul a másik generálás mellett.",
+      "actualBehavior": "A második cache-kérés csak 2019.6 ms-nál indul. A korábbi, sorrendet nem garantáló próba önmagában nem volt bizonyító; a rendezett ismétlés igen.",
+      "measuredImpact": {
+        "firstDelayMs": 2000,
+        "secondStartMs": 2019.6
+      },
+      "rootCause": "Egyetlen modul-szintű Promise queue fogja össze az összes load feladatot, a független cache-only olvasásokat is.",
+      "sourceFiles": [
+        "recipe-images.js:3",
+        "recipe-images.js:49",
+        "recipe-images.js:70"
+      ],
+      "evidence": [
+        "runs/2026-11-16T18-41-13.534Z-supplement/results.json#orderedImageQueue"
+      ],
+      "recommendedRemediation": "Külön cache-olvasási út és kis párhuzamossági korlát, képenkénti deduplikációval. A generálás kvótája és idempotenciája maradjon védett.",
+      "acceptanceCriteria": [
+        "A második cache-olvasás ≤ 200 ms-on belül elindul a másik generálás mellett.",
+        "Ugyanazon képhez nincs dupla generálás."
+      ],
+      "estimatedComplexity": "M",
+      "risks": "A régi mentések, megosztott adatok és RPC-szerződések kompatibilitását meg kell őrizni.",
+      "regressionTests": [
+        "Az első kép kérésének elindítása és ennek megvárása.",
+        "Csak ezután a második RecipeImages.mount hívás.",
+        "Az első lokális válasz 2000 ms-ot vár, a második azonnali lenne."
+      ],
+      "networkRequests": {
+        "kind": "local-browser",
+        "references": [
+          "runs/2026-11-16T18-41-13.534Z-supplement/results.json#network"
+        ],
+        "note": "Whole-run request log. Image lifecycle probes additionally inject local function responses."
+      },
+      "consoleErrors": {
+        "references": [
+          "runs/2026-11-16T18-41-13.534Z-supplement/results.json#errors"
+        ],
+        "note": "Whole-run console log; unrelated and deliberately injected HTTP failures are not evidence of this root cause."
+      }
+    },
+    {
+      "id": "PERF-009",
+      "title": "A kész képek cache-e leválasztott DOM-elemeket tart meg",
+      "priority": "P2",
+      "severity": "medium",
+      "category": "memory",
+      "affectedJourneys": [
+        "J5",
+        "J7"
+      ],
+      "confidence": "high",
+      "validationStatus": "confirmed",
+      "reproductionSteps": [
+        "Egy kész helyi receptkép bemelegítése.",
+        "Ugyanazon kép 100 mount/remove ciklusa.",
+        "Kényszerített GC után DOM- és listener-számlálás."
+      ],
+      "expectedBehavior": "100 mount/unmount után a bemelegített DOM/listener-alapérték közelébe tér vissza.",
+      "actualBehavior": "682 → 1082 DOM-csomópont és 162 → 262 listener, 100 ismétlés után. Ez célzott komponensszintű életciklusteszt.",
+      "measuredImpact": {
+        "before": {
+          "documents": 17,
+          "nodes": 682,
+          "jsEventListeners": 162
+        },
+        "after": {
+          "documents": 17,
+          "nodes": 1082,
+          "jsEventListeners": 262
+        },
+        "repeatedMounts": 100
+      },
+      "rootCause": "entry.views erős referenciát tart a hostra és paint closure-re. A leválasztott elemeket csak későbbi refresh/paint takarítja; egy kész, nem frissülő képnél ez elmaradhat.",
+      "sourceFiles": [
+        "recipe-images.js:23",
+        "recipe-images.js:47",
+        "recipe-images.js:48"
+      ],
+      "evidence": [
+        "runs/2026-11-16T18-41-13.534Z-supplement/results.json#imageRetention"
+      ],
+      "recommendedRemediation": "Explicit dispose/unmount, observer-lekapcsolás, leválasztott nézetek törlése és korlátos képcache.",
+      "acceptanceCriteria": [
+        "100 mount/unmount után a bemelegített DOM/listener-alapérték közelébe tér vissza.",
+        "Látható képek és lejáró signed URL-ek frissítése működik."
+      ],
+      "estimatedComplexity": "M",
+      "risks": "A régi mentések, megosztott adatok és RPC-szerződések kompatibilitását meg kell őrizni.",
+      "regressionTests": [
+        "Egy kész helyi receptkép bemelegítése.",
+        "Ugyanazon kép 100 mount/remove ciklusa.",
+        "Kényszerített GC után DOM- és listener-számlálás."
+      ],
+      "networkRequests": {
+        "kind": "local-browser",
+        "references": [
+          "runs/2026-11-16T18-41-13.534Z-supplement/results.json#network"
+        ],
+        "note": "Whole-run request log. Image lifecycle probes additionally inject local function responses."
+      },
+      "consoleErrors": {
+        "references": [
+          "runs/2026-11-16T18-41-13.534Z-supplement/results.json#errors"
+        ],
+        "note": "Whole-run console log; unrelated and deliberately injected HTTP failures are not evidence of this root cause."
+      }
+    },
+    {
+      "id": "PERF-010",
+      "title": "A Gemini handler kliensmegszakítás után is elindíthat providerhívást",
+      "priority": "P2",
+      "severity": "medium",
+      "category": "reliability",
+      "affectedJourneys": [
+        "J6"
+      ],
+      "confidence": "high",
+      "validationStatus": "confirmed",
+      "reproductionSteps": [
+        "Tényleges voice-command handler injektált fetch-csel.",
+        "Request.signal megszakítása 30 ms-nál, auth/quota 120–120 ms.",
+        "Providerhívások és válasz ellenőrzése."
+      ],
+      "expectedBehavior": "Auth közbeni megszakítás után 0 quota- és providerhívás.",
+      "actualBehavior": "A megszakítás után is 1 providerhívás indult, a handler kb. 399 ms-nál teljes tesztválaszt adott.",
+      "measuredImpact": {
+        "abortAtMs": 30,
+        "providerCallsAfterAbort": 1,
+        "completionMs": 399
+      },
+      "rootCause": "A Gemini ág auth/quota/generate hívásai saját határidőjelet kapnak, de nem az ügyfél Request.signal jelét.",
+      "sourceFiles": [
+        "supabase/functions/voice-command/handler.mjs:87",
+        "supabase/functions/voice-command/handler.mjs:90",
+        "supabase/functions/voice-command/handler.mjs:94",
+        "supabase/functions/voice-command/provider.mjs:6"
+      ],
+      "evidence": [
+        "provider-runs/2026-11-16T18-37-26.468Z/providers.json#cases"
+      ],
+      "recommendedRemediation": "Az ügyfél abortjelének összefűzése minden előkészítő/provider határidővel. Megszakítás után ne induljon új kísérlet vagy fallback.",
+      "acceptanceCriteria": [
+        "Auth közbeni megszakítás után 0 quota- és providerhívás.",
+        "Provider-várakozás közbeni megszakítás lezárja az olvasót; nincs fallback.",
+        "UI timeout/retry továbbra is helyreáll."
+      ],
+      "estimatedComplexity": "S",
+      "risks": "Injektált handler-teszt. Éles Deno-disconnect és providerelszámolás nem lett mérve.",
+      "regressionTests": [
+        "Tényleges voice-command handler injektált fetch-csel.",
+        "Request.signal megszakítása 30 ms-nál, auth/quota 120–120 ms.",
+        "Providerhívások és válasz ellenőrzése."
+      ],
+      "networkRequests": {
+        "kind": "injected-fetch",
+        "references": [
+          "provider-runs/2026-11-16T18-37-26.468Z/providers.json#cases"
+        ],
+        "note": "Actual handler modules with injected HTTP responses; no live provider request."
+      },
+      "consoleErrors": {
+        "references": [
+          "provider-runs/2026-11-16T18-37-26.468Z/providers.json#cases"
+        ],
+        "note": "Handler outcomes are in the case log; not a browser scenario."
+      }
+    },
+    {
+      "id": "PERF-011",
+      "title": "Átmeneti conversation_page 400 a chat életciklusában",
+      "priority": "P3",
+      "severity": "low",
+      "category": "unresolved",
+      "affectedJourneys": [
+        "J6"
+      ],
+      "confidence": "low",
+      "validationStatus": "hypothesis",
+      "reproductionSteps": [
+        "A teljes és kiegészítő run conversation_page kéréseinek ellenőrzése.",
+        "Új, üres beszélgetés és az első mentett turn körüli időzítés reprodukálása."
+      ],
+      "expectedBehavior": "Indokolatlanul tiltott olvasás ne induljon üres threadre.",
+      "actualBehavior": "A teljes futásban három 400-as válasz; a részletes naplózásnál egy Conversation access denied. Három egymás utáni üres chat külön próbája nem reprodukálta.",
+      "measuredImpact": {
+        "full400Count": 3,
+        "supplement400Count": 1
+      },
+      "rootCause": "Lehetséges még nem perzisztált thread körüli frissítési verseny; a pontos ok nem bizonyított. A későbbi mentések sikerültek.",
+      "sourceFiles": [
+        "persistence.js:73",
+        "persistence.js:88",
+        "persistence.js:104"
+      ],
+      "evidence": [
+        "runs/2026-11-16T18-34-31.217Z-full/results.json#network",
+        "runs/2026-11-16T18-41-13.534Z-supplement/results.json#fixtureCalls",
+        "runs/2026-11-16T18-41-13.534Z-supplement/results.json#emptyChatRequests"
+      ],
+      "recommendedRemediation": "Korrelált trace az üres → mentett thread átmenetről; a loadThread feltétel csak bizonyított reprodukció után változzon.",
+      "acceptanceCriteria": [
+        "Indokolatlanul tiltott olvasás ne induljon üres threadre.",
+        "Valódi jogosultság-visszavonás továbbra is hibaként kezelendő."
+      ],
+      "estimatedComplexity": "S",
+      "risks": "A régi mentések, megosztott adatok és RPC-szerződések kompatibilitását meg kell őrizni.",
+      "regressionTests": [
+        "A teljes és kiegészítő run conversation_page kéréseinek ellenőrzése.",
+        "Új, üres beszélgetés és az első mentett turn körüli időzítés reprodukálása."
+      ],
+      "networkRequests": {
+        "kind": "local-browser",
+        "references": [
+          "runs/2026-11-16T18-34-31.217Z-full/results.json#network"
+        ],
+        "note": "Whole-run request log; not every background request is part of this mechanism."
+      },
+      "consoleErrors": {
+        "references": [
+          "runs/2026-11-16T18-34-31.217Z-full/results.json#errors"
+        ],
+        "note": "Whole-run console log; unrelated and deliberately injected HTTP failures are not evidence of this root cause."
+      }
+    }
+  ]
+}

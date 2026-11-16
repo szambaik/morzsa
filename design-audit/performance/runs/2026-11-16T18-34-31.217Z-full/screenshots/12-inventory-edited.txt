@@ -1,0 +1,60 @@
+- banner:
+  - button "Beszélgetéstörténet": ☰
+  - link "Morzsa":
+    - /url: "#"
+    - text: morzsa
+  - button "Saját konyha · Konyhaváltás és meghívás": Saját konyha
+  - button "Új Morzsa-beszélgetés"
+- main:
+  - paragraph: Konyhánk
+  - heading "Mi van otthon?" [level=1]
+  - group
+  - paragraph: Egy jó emlékeztető. Mennyiséget csak akkor írj, ha segít.
+  - button "Gyors feltöltés Diktálás és alapcsomagok"
+  - button "Van otthon"
+  - button "Kevés"
+  - button "Elfogyott"
+  - button "Mind" [pressed]
+  - text: 6 alapanyag
+  - searchbox "Keresés az alapanyagok között": Cukor
+  - button "Készlethez adás"
+  - status: Keresés minden alapanyag között.
+  - 'button "Cukor: részletek és listára vétel"': Cukor Kevés
+  - button "Cukor · Listára teszem"
+  - button "Cukor · Elfogyott"
+  - 'button "Barna cukor: részletek és listára vétel"': Barna cukor Nincs jelölve
+  - button "Barna cukor · Listára teszem"
+  - button "Barna cukor · Van otthon"
+  - 'button "Porcukor: részletek és listára vétel"': Porcukor Nincs jelölve
+  - button "Porcukor · Listára teszem"
+  - button "Porcukor · Van otthon"
+  - 'button "Vaníliás cukor: részletek és listára vétel"': Vaníliás cukor Nincs jelölve
+  - button "Vaníliás cukor · Listára teszem"
+  - button "Vaníliás cukor · Van otthon"
+  - 'button "Gumicukor: részletek és listára vétel"': Gumicukor Nincs jelölve
+  - button "Gumicukor · Listára teszem"
+  - button "Gumicukor · Van otthon"
+  - 'button "Cukorka: részletek és listára vétel"': Cukorka Nincs jelölve
+  - button "Cukorka · Listára teszem"
+  - button "Cukorka · Van otthon"
+- navigation "Fő navigáció":
+  - button "Áttekintés"
+  - button "Lista"
+  - button "Morzsa"
+  - button "Készlet"
+  - button "Receptek"
+- status: Cukor · Kevés
+- group "Gyors műveletek":
+  - button "Kérdezz Morzsától"
+- dialog "Cukor":
+  - button "Bezárás": ×
+  - heading "Cukor" [level=2]
+  - paragraph: Mi a helyzet vele otthon?
+  - button "Van otthon"
+  - button "Kevés" [pressed]
+  - button "Elfogyott"
+  - button "Bevásárlólistára teszem"
+- status:
+  - text: Módosítások elmentve
+  - button "Visszavonás"
+  - button "Bezárás": ×

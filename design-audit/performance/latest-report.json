@@ -1,0 +1,12 @@
+{
+  "directory": "reports/2026-11-16T19-06-09.972866+00-00",
+  "generatedAt": "2026-11-16T19:06:09.972866+00:00",
+  "inputs": {
+    "full": "runs/2026-11-16T18-34-31.217Z-full/results.json",
+    "supplement": "runs/2026-11-16T18-41-13.534Z-supplement/results.json",
+    "faults": "runs/2026-11-16T18-44-15.751Z-faults/results.json",
+    "soak": "runs/2026-11-16T18-45-56.672Z-soak/results.json",
+    "database": "database-runs/2026-11-16T18-35-45.869Z/database.json",
+    "providers": "provider-runs/2026-11-16T18-37-26.468Z/providers.json"
+  }
+}

@@ -1,0 +1,51 @@
+- banner:
+  - button "Beszélgetéstörténet": ☰
+  - link "Morzsa":
+    - /url: "#"
+    - text: morzsa
+  - button "Audit kitchen · Konyhaváltás és meghívás": Audit kitchen
+  - button "Új Morzsa-beszélgetés"
+- status: Nincs internet. Az AI és a közös konyha frissítése szünetel.
+- status:
+  - text: Mentésre vár ·
+  - button "Újrapróbálás"
+- main:
+  - heading "Bevásárlólista" [level=1]
+  - text: 4 hátravan
+  - group: ···
+  - combobox "Új bevásárlótétel"
+  - button "Listára vétel": +
+  - group:
+    - text: Tejtermék és tojás 2 ›
+    - button "Tej · Megvettem"
+    - button "Tej · Szerkesztés":
+      - strong: Tej
+    - button "Tej · Mennyiség szerkesztése": 1 l
+    - button "Vaj · Megvettem"
+    - button "Vaj · Szerkesztés":
+      - strong: Vaj
+    - button "Vaj · Mennyiség szerkesztése": 1 csomag
+  - group:
+    - text: Pékáru 1 ›
+    - button "Kenyér · Megvettem"
+    - button "Kenyér · Szerkesztés":
+      - strong: Kenyér
+    - button "Kenyér · Mennyiség szerkesztése": 1 csomag
+  - group:
+    - text: Gyümölcsök 1 ›
+    - button "Alma · Megvettem"
+    - button "Alma · Szerkesztés":
+      - strong: Alma
+    - button "Alma · Mennyiség szerkesztése": 1 kg
+- navigation "Fő navigáció":
+  - button "Áttekintés"
+  - button "Lista 4"
+  - button "Morzsa"
+  - button "Készlet"
+  - button "Receptek"
+- status
+- group "Vásárlási nézet":
+  - button "Boltban vagyok Nagy pipák, könnyű követés":
+    - strong: Boltban vagyok
+    - text: Nagy pipák, könnyű követés
+  - button "Kérdezz Morzsától"

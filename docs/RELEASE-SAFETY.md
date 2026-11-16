@@ -6,11 +6,22 @@ unit/SQL/Python tests, a full isolated browser audit, 32 accessibility scans and
 requires that gate. Main is protected against force pushes and requires the
 Audit regression gate check on an up-to-date branch.
 
-The audit fix release is prepared in the codex/audit-fixes-release worktree.
-It includes the reviewed cooking/onboarding baseline and seven confirmed audit
-fixes. The unfinished proactive feature was removed only from this isolated
-release candidate; the original checkout and its in-progress work remain intact.
-No Supabase deployment is required for the seven audit fixes.
+The audit fix release was merged in PR #1. It includes the reviewed
+cooking/onboarding baseline and seven confirmed audit fixes. The follow-up
+codex/completed-web-proactive branch adds the completed proactive feature, its
+tests, and the finished performance audit reports and harness. Changes are
+applied to the current origin/main with a three-way patch; the original
+checkout and the separate native worktree remain intact.
+
+The in-progress codex/ios-native-performance work is not part of this release.
+That branch must merge the current origin/main before its later release and
+retain the completed web changes and audit regressions.
+
+No Supabase deployment is required for the seven audit fixes. The proactive
+feature uses its per-device fallback until 20261116_proactive_suggestions.sql
+is deployed. Committing that migration does not apply it to production.
+The performance audit is diagnostic evidence from its recorded snapshot;
+including its reports does not mean the reported issues have been fixed.
 
 For the parallel feature sessions:
 

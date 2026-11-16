@@ -1,0 +1,451 @@
+{
+  "entryScripts": 60,
+  "deferScripts": 0,
+  "assets": [
+    {
+      "path": "assets/brands/morzsa.svg",
+      "bytes": 643,
+      "gzipEstimate": 209,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "manifest.webmanifest",
+      "bytes": 430,
+      "gzipEstimate": 211,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "assets/brands/app-icon-192.png",
+      "bytes": 8422,
+      "gzipEstimate": 8015,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "styles.css",
+      "bytes": 144670,
+      "gzipEstimate": 28285,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "desktop.css",
+      "bytes": 8628,
+      "gzipEstimate": 2440,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "workspace.css",
+      "bytes": 147318,
+      "gzipEstimate": 26559,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "proactive.css",
+      "bytes": 5230,
+      "gzipEstimate": 1603,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "assets/brands/morzsa.svg",
+      "bytes": 643,
+      "gzipEstimate": 209,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "assets/ui/layout-grid.svg",
+      "bytes": 499,
+      "gzipEstimate": 250,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "assets/ui/shopping-cart.svg",
+      "bytes": 458,
+      "gzipEstimate": 297,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "assets/brands/morzsa.svg",
+      "bytes": 643,
+      "gzipEstimate": 209,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "assets/ui/house.svg",
+      "bytes": 468,
+      "gzipEstimate": 292,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "assets/ui/chef-hat.svg",
+      "bytes": 487,
+      "gzipEstimate": 314,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "catalog.js",
+      "bytes": 25851,
+      "gzipEstimate": 9015,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "recipes.js",
+      "bytes": 5276,
+      "gzipEstimate": 2166,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "translations.js",
+      "bytes": 8589,
+      "gzipEstimate": 3978,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "i18n.js",
+      "bytes": 16359,
+      "gzipEstimate": 7174,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "quick-entry.js",
+      "bytes": 1444,
+      "gzipEstimate": 757,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "kitchen-model.js",
+      "bytes": 9241,
+      "gzipEstimate": 3414,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "workspace-entry.js",
+      "bytes": 1840,
+      "gzipEstimate": 874,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "surprise-recipe.js",
+      "bytes": 967,
+      "gzipEstimate": 506,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "recipe-chat.js",
+      "bytes": 784,
+      "gzipEstimate": 452,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "recipe-prompt.js",
+      "bytes": 3852,
+      "gzipEstimate": 2036,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "shopping-model.js",
+      "bytes": 1481,
+      "gzipEstimate": 714,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "voice-model.js",
+      "bytes": 4837,
+      "gzipEstimate": 1982,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "pantry-review-model.js",
+      "bytes": 2444,
+      "gzipEstimate": 1316,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "cooking-session.js",
+      "bytes": 6024,
+      "gzipEstimate": 2451,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "recipe-portions.js",
+      "bytes": 5261,
+      "gzipEstimate": 2251,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "recipe-room-model.js",
+      "bytes": 6106,
+      "gzipEstimate": 2577,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "quantity-model.js",
+      "bytes": 1481,
+      "gzipEstimate": 796,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "app.js",
+      "bytes": 79602,
+      "gzipEstimate": 23495,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "pantry-library.js",
+      "bytes": 12745,
+      "gzipEstimate": 4225,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "ai-mode.js",
+      "bytes": 532,
+      "gzipEstimate": 340,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "household-config.js",
+      "bytes": 213,
+      "gzipEstimate": 200,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "persistence-model.js",
+      "bytes": 4475,
+      "gzipEstimate": 1782,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "household-model.js",
+      "bytes": 5149,
+      "gzipEstimate": 1956,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "auth-link.js",
+      "bytes": 1740,
+      "gzipEstimate": 840,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "household-live.js",
+      "bytes": 5723,
+      "gzipEstimate": 1702,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "chat-stream.js",
+      "bytes": 1250,
+      "gzipEstimate": 603,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "household.js",
+      "bytes": 49883,
+      "gzipEstimate": 15227,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "voice-ui.js",
+      "bytes": 26733,
+      "gzipEstimate": 8889,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "realtime-model.js",
+      "bytes": 5197,
+      "gzipEstimate": 2007,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "realtime-voice.js",
+      "bytes": 18108,
+      "gzipEstimate": 6314,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "pantry-review-ui.js",
+      "bytes": 14511,
+      "gzipEstimate": 4786,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "assistant-ui.js",
+      "bytes": 2276,
+      "gzipEstimate": 1057,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "recipe-crafting.js",
+      "bytes": 14505,
+      "gzipEstimate": 5672,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "recipe-shopping.js",
+      "bytes": 3027,
+      "gzipEstimate": 1325,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "weekly-plan-model.js",
+      "bytes": 7291,
+      "gzipEstimate": 3201,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "weekly-plan-ui.js",
+      "bytes": 11569,
+      "gzipEstimate": 4514,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "kitchen-measures.js",
+      "bytes": 4047,
+      "gzipEstimate": 1883,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "recipe-export.js",
+      "bytes": 4490,
+      "gzipEstimate": 2195,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "recipe-library.js",
+      "bytes": 11153,
+      "gzipEstimate": 4154,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "cooking-ui.js",
+      "bytes": 5500,
+      "gzipEstimate": 2369,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "recipe-room-ui.js",
+      "bytes": 38506,
+      "gzipEstimate": 12363,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "recipe-ingredients-panel.js",
+      "bytes": 2779,
+      "gzipEstimate": 1158,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "recipe-photos.js",
+      "bytes": 1837,
+      "gzipEstimate": 751,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "chat-photo.js",
+      "bytes": 1142,
+      "gzipEstimate": 602,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "persistence.js",
+      "bytes": 14185,
+      "gzipEstimate": 4612,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "companion-model.js",
+      "bytes": 12990,
+      "gzipEstimate": 4345,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "panel-gestures.js",
+      "bytes": 4029,
+      "gzipEstimate": 1536,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "chat-format.js",
+      "bytes": 1320,
+      "gzipEstimate": 672,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "ingredient-mentions.js",
+      "bytes": 2821,
+      "gzipEstimate": 1310,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "recipe-images.js",
+      "bytes": 10409,
+      "gzipEstimate": 4240,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "shopping-mode-model.js",
+      "bytes": 4402,
+      "gzipEstimate": 1866,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "shopping-mode-ui.js",
+      "bytes": 32101,
+      "gzipEstimate": 10208,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "session-model.js",
+      "bytes": 1646,
+      "gzipEstimate": 768,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "companion-ui.js",
+      "bytes": 106791,
+      "gzipEstimate": 30904,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "onboarding-model.js",
+      "bytes": 1477,
+      "gzipEstimate": 814,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "onboarding.js",
+      "bytes": 15585,
+      "gzipEstimate": 6079,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "workspace-ui.js",
+      "bytes": 20976,
+      "gzipEstimate": 6477,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "kitchen-ui.js",
+      "bytes": 12581,
+      "gzipEstimate": 4848,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "proactive-model.js",
+      "bytes": 6492,
+      "gzipEstimate": 2673,
+      "copiedUnchangedToWebBuild": true
+    },
+    {
+      "path": "proactive-ui.js",
+      "bytes": 19459,
+      "gzipEstimate": 6721,
+      "copiedUnchangedToWebBuild": true
+    }
+  ],
+  "totals": {
+    ".js": 703084,
+    ".css": 305846
+  },
+  "externalUrls": [
+    "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap'"
+  ]
+}

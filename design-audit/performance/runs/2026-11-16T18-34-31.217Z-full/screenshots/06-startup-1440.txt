@@ -1,0 +1,52 @@
+- banner:
+  - button "Saját konyha · Konyhaváltás és meghívás": Saját konyha
+  - button "Új Morzsa-beszélgetés"
+- main:
+  - heading "Mit szeretnél ma megoldani?" [level=1]
+  - paragraph: Ötleteljünk, főzzünk, vagy mondd el, mi változott otthon.
+  - button "Lepj meg"
+  - button "Kotyvasszunk"
+  - button "Bevált ötlet"
+  - complementary:
+    - text: Morzsa figyel
+    - paragraph:
+      - strong: Liszt
+      - text: · Elfogyottnak jelöltétek.
+    - button "Megnézem a javaslatot →"
+    - button "Zöldséges pirított rizs →"
+  - button "Fotó csatolása"
+  - textbox "Üzenet Morzsának":
+    - /placeholder: Kérdezz…
+  - button "Hangbeszélgetés Morzsával"
+  - button "Küldés"
+  - text: AI mód
+  - combobox "AI mód":
+    - option "Morzsa Plus" [selected]
+    - option "Ingyenes"
+  - button "Belépés az AI-beszélgetéshez"
+- status
+- complementary:
+  - link "morzsa":
+    - /url: "#"
+  - navigation "Fő navigáció":
+    - button "Áttekintés"
+    - button "Lista"
+    - button "Morzsa"
+    - button "Készlet"
+    - button "Receptek"
+  - complementary "Beszélgetéstörténet":
+    - heading "Beszélgetések" [level=2]
+    - searchbox "Keresés az előzményekben"
+    - button "Új beszélgetés"
+    - heading "Morzsa" [level=3]
+    - heading "Ma" [level=4]
+    - button "Morzsa · a kuktád nov. 16.":
+      - strong: Morzsa · a kuktád
+      - text: nov. 16.
+    - heading "Receptek" [level=3]
+    - paragraph: Az elkezdett receptek itt jelennek meg.
+    - button "Beszélgetés archiválása" [disabled]
+    - paragraph: Ezen az eszközön
+  - group: Beállítások
+  - button "Főzési ízlésem"
+  - button "Morzsa bemutató"

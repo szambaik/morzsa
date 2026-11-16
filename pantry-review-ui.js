@@ -81,5 +81,5 @@ window.PantryReview=(()=>{
  const original=renderPantry;renderPantry=function(){original();mount()};
  setInterval(()=>{if(!document.hidden)mount()},60000);
  refresh();document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh()});
- return {refresh,confirm,onStateChanged,mount,remove,openRemoval,open,candidates:()=>context===key()&&available&&!loading?due():[],uncertain:()=>due().map(x=>x.name)};
+ return {confirmedAt:name=>context===key()&&available?Date.parse(checks[name]?.last_confirmed_at||checks[name]||''):NaN,refresh,confirm,onStateChanged,mount,remove,openRemoval,open,candidates:()=>context===key()&&available&&!loading?due():[],uncertain:()=>due().map(x=>x.name)};
 })();

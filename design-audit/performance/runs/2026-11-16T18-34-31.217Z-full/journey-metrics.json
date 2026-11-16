@@ -1,0 +1,2810 @@
+{
+  "navigation": {
+    "name": "http://127.0.0.1:55903/",
+    "entryType": "navigation",
+    "startTime": 0,
+    "duration": 85.90000000596046,
+    "navigationId": 8056,
+    "initiatorType": "navigation",
+    "deliveryType": "cache",
+    "nextHopProtocol": "",
+    "renderBlockingStatus": "non-blocking",
+    "contentType": "text/html",
+    "contentEncoding": "",
+    "workerStart": 0,
+    "workerRouterEvaluationStart": 0,
+    "workerCacheLookupStart": 0,
+    "workerMatchedSourceType": "",
+    "workerFinalSourceType": "",
+    "redirectStart": 0,
+    "redirectEnd": 0,
+    "fetchStart": 0.20000000298023224,
+    "domainLookupStart": 0.20000000298023224,
+    "domainLookupEnd": 0.20000000298023224,
+    "connectStart": 0.20000000298023224,
+    "secureConnectionStart": 0,
+    "connectEnd": 0.20000000298023224,
+    "requestStart": 0.6000000089406967,
+    "responseStart": 1,
+    "firstInterimResponseStart": 0,
+    "finalResponseHeadersStart": 1,
+    "responseEnd": 1.2000000029802322,
+    "transferSize": 300,
+    "encodedBodySize": 5893,
+    "decodedBodySize": 5893,
+    "responseStatus": 200,
+    "serverTiming": [],
+    "unloadEventStart": 2.2000000029802322,
+    "unloadEventEnd": 2.2000000029802322,
+    "domInteractive": 85.70000000298023,
+    "domContentLoadedEventStart": 85.70000000298023,
+    "domContentLoadedEventEnd": 85.70000000298023,
+    "domComplete": 85.90000000596046,
+    "loadEventStart": 85.90000000596046,
+    "loadEventEnd": 85.90000000596046,
+    "type": "reload",
+    "redirectCount": 0,
+    "activationStart": 0,
+    "criticalCHRestart": 0,
+    "notRestoredReasons": null,
+    "confidence": {
+      "randomizedTriggerRate": 0.4994798,
+      "value": "high"
+    }
+  },
+  "paints": [
+    {
+      "name": "first-paint",
+      "entryType": "paint",
+      "startTime": 12,
+      "duration": 0,
+      "navigationId": 8056,
+      "paintTime": 9.600000008940697,
+      "presentationTime": 12
+    },
+    {
+      "name": "first-contentful-paint",
+      "entryType": "paint",
+      "startTime": 12,
+      "duration": 0,
+      "navigationId": 8056,
+      "paintTime": 9.600000008940697,
+      "presentationTime": 12
+    }
+  ],
+  "lcp": 92,
+  "cls": 0.0030519305496282652,
+  "longTasks": [
+    {
+      "start": 19.5,
+      "duration": 61
+    },
+    {
+      "start": 389.80000001192093,
+      "duration": 116
+    },
+    {
+      "start": 623.1000000089407,
+      "duration": 59
+    },
+    {
+      "start": 723.4000000059605,
+      "duration": 194
+    },
+    {
+      "start": 920.9000000059605,
+      "duration": 61
+    },
+    {
+      "start": 982.7000000029802,
+      "duration": 369
+    },
+    {
+      "start": 1359.300000011921,
+      "duration": 339
+    },
+    {
+      "start": 1774.4000000059605,
+      "duration": 284
+    },
+    {
+      "start": 2206.4000000059605,
+      "duration": 307
+    },
+    {
+      "start": 2576.4000000059605,
+      "duration": 154
+    },
+    {
+      "start": 2773.800000011921,
+      "duration": 157
+    },
+    {
+      "start": 3128.4000000059605,
+      "duration": 158
+    },
+    {
+      "start": 9257.20000000298,
+      "duration": 175
+    },
+    {
+      "start": 9688.90000000596,
+      "duration": 66
+    },
+    {
+      "start": 9874.20000000298,
+      "duration": 166
+    },
+    {
+      "start": 10292,
+      "duration": 112
+    },
+    {
+      "start": 10410.800000011921,
+      "duration": 59
+    },
+    {
+      "start": 10506.5,
+      "duration": 109
+    },
+    {
+      "start": 10690,
+      "duration": 57
+    },
+    {
+      "start": 10806.60000000894,
+      "duration": 106
+    },
+    {
+      "start": 13178.70000000298,
+      "duration": 82
+    },
+    {
+      "start": 13267.60000000894,
+      "duration": 55
+    },
+    {
+      "start": 13325.20000000298,
+      "duration": 56
+    },
+    {
+      "start": 13434.300000011921,
+      "duration": 56
+    },
+    {
+      "start": 13494.10000000894,
+      "duration": 57
+    },
+    {
+      "start": 13700.70000000298,
+      "duration": 161
+    },
+    {
+      "start": 14237.5,
+      "duration": 119
+    },
+    {
+      "start": 14359.40000000596,
+      "duration": 106
+    },
+    {
+      "start": 14469.800000011921,
+      "duration": 55
+    },
+    {
+      "start": 14526.10000000894,
+      "duration": 53
+    },
+    {
+      "start": 14586.40000000596,
+      "duration": 55
+    },
+    {
+      "start": 14643.5,
+      "duration": 54
+    },
+    {
+      "start": 14724.10000000894,
+      "duration": 54
+    },
+    {
+      "start": 14781.40000000596,
+      "duration": 54
+    },
+    {
+      "start": 14892,
+      "duration": 55
+    },
+    {
+      "start": 14949.800000011921,
+      "duration": 54
+    },
+    {
+      "start": 15008.90000000596,
+      "duration": 109
+    },
+    {
+      "start": 15120,
+      "duration": 55
+    },
+    {
+      "start": 15180.800000011921,
+      "duration": 54
+    },
+    {
+      "start": 15237.5,
+      "duration": 55
+    },
+    {
+      "start": 15296.60000000894,
+      "duration": 54
+    },
+    {
+      "start": 15353,
+      "duration": 55
+    },
+    {
+      "start": 15412.10000000894,
+      "duration": 55
+    },
+    {
+      "start": 15469.40000000596,
+      "duration": 54
+    },
+    {
+      "start": 15766.5,
+      "duration": 165
+    },
+    {
+      "start": 16287.800000011921,
+      "duration": 116
+    },
+    {
+      "start": 16406.60000000894,
+      "duration": 106
+    },
+    {
+      "start": 16516.90000000596,
+      "duration": 55
+    },
+    {
+      "start": 16605.40000000596,
+      "duration": 56
+    },
+    {
+      "start": 16671.10000000894,
+      "duration": 56
+    },
+    {
+      "start": 16729.5,
+      "duration": 56
+    },
+    {
+      "start": 16789.70000000298,
+      "duration": 57
+    },
+    {
+      "start": 16848.70000000298,
+      "duration": 55
+    },
+    {
+      "start": 16959.90000000596,
+      "duration": 55
+    },
+    {
+      "start": 17017.30000001192,
+      "duration": 54
+    },
+    {
+      "start": 20702.20000000298,
+      "duration": 161
+    },
+    {
+      "start": 21812,
+      "duration": 111
+    },
+    {
+      "start": 22529.60000000894,
+      "duration": 128
+    },
+    {
+      "start": 23265.30000001192,
+      "duration": 117
+    },
+    {
+      "start": 23873.60000000894,
+      "duration": 77
+    },
+    {
+      "start": 23952.30000001192,
+      "duration": 54
+    },
+    {
+      "start": 24721.60000000894,
+      "duration": 57
+    },
+    {
+      "start": 24782,
+      "duration": 56
+    },
+    {
+      "start": 24842.5,
+      "duration": 56
+    },
+    {
+      "start": 24900.5,
+      "duration": 55
+    },
+    {
+      "start": 24959.90000000596,
+      "duration": 56
+    },
+    {
+      "start": 25018.30000001192,
+      "duration": 57
+    }
+  ],
+  "tbt": 3192,
+  "maxInteractionDuration": 288,
+  "events": [
+    {
+      "name": "pointerdown",
+      "start": 323.80000001192093,
+      "duration": 16,
+      "interactionId": 8668
+    },
+    {
+      "name": "pointerup",
+      "start": 323.90000000596046,
+      "duration": 16,
+      "interactionId": 8668
+    },
+    {
+      "name": "click",
+      "start": 323.90000000596046,
+      "duration": 16,
+      "interactionId": 8668
+    },
+    {
+      "name": "pointerdown",
+      "start": 389.6000000089407,
+      "duration": 120,
+      "interactionId": 8675
+    },
+    {
+      "name": "pointerup",
+      "start": 389.70000000298023,
+      "duration": 120,
+      "interactionId": 8675
+    },
+    {
+      "name": "click",
+      "start": 389.70000000298023,
+      "duration": 120,
+      "interactionId": 8675
+    },
+    {
+      "name": "pointerdown",
+      "start": 540.5,
+      "duration": 16,
+      "interactionId": 8682
+    },
+    {
+      "name": "pointerup",
+      "start": 540.5,
+      "duration": 16,
+      "interactionId": 8682
+    },
+    {
+      "name": "click",
+      "start": 540.5,
+      "duration": 16,
+      "interactionId": 8682
+    },
+    {
+      "name": "pointerdown",
+      "start": 623,
+      "duration": 64,
+      "interactionId": 8689
+    },
+    {
+      "name": "pointerup",
+      "start": 623,
+      "duration": 64,
+      "interactionId": 8689
+    },
+    {
+      "name": "click",
+      "start": 623,
+      "duration": 64,
+      "interactionId": 8689
+    },
+    {
+      "name": "pointerdown",
+      "start": 723.3000000119209,
+      "duration": 200,
+      "interactionId": 8696
+    },
+    {
+      "name": "pointerup",
+      "start": 723.3000000119209,
+      "duration": 200,
+      "interactionId": 8696
+    },
+    {
+      "name": "click",
+      "start": 723.3000000119209,
+      "duration": 200,
+      "interactionId": 8696
+    },
+    {
+      "name": "pointerdown",
+      "start": 1774.300000011921,
+      "duration": 288,
+      "interactionId": 8703
+    },
+    {
+      "name": "pointerup",
+      "start": 1774.4000000059605,
+      "duration": 288,
+      "interactionId": 8703
+    },
+    {
+      "name": "click",
+      "start": 1774.4000000059605,
+      "duration": 288,
+      "interactionId": 8703
+    },
+    {
+      "name": "pointerdown",
+      "start": 2189.9000000059605,
+      "duration": 16,
+      "interactionId": 8710
+    },
+    {
+      "name": "pointerup",
+      "start": 2190,
+      "duration": 16,
+      "interactionId": 8710
+    },
+    {
+      "name": "click",
+      "start": 2190,
+      "duration": 16,
+      "interactionId": 8710
+    },
+    {
+      "name": "pointerdown",
+      "start": 2773.7000000029802,
+      "duration": 160,
+      "interactionId": 8717
+    },
+    {
+      "name": "pointerup",
+      "start": 2773.7000000029802,
+      "duration": 160,
+      "interactionId": 8717
+    },
+    {
+      "name": "click",
+      "start": 2773.7000000029802,
+      "duration": 160,
+      "interactionId": 8717
+    },
+    {
+      "name": "pointerdown",
+      "start": 9125.5,
+      "duration": 16,
+      "interactionId": 8724
+    },
+    {
+      "name": "pointerup",
+      "start": 9125.60000000894,
+      "duration": 16,
+      "interactionId": 8724
+    },
+    {
+      "name": "click",
+      "start": 9125.60000000894,
+      "duration": 16,
+      "interactionId": 8724
+    },
+    {
+      "name": "pointerdown",
+      "start": 9223.90000000596,
+      "duration": 16,
+      "interactionId": 8731
+    },
+    {
+      "name": "pointerup",
+      "start": 9223.90000000596,
+      "duration": 16,
+      "interactionId": 8731
+    },
+    {
+      "name": "click",
+      "start": 9223.90000000596,
+      "duration": 16,
+      "interactionId": 8731
+    },
+    {
+      "name": "pointerdown",
+      "start": 9257,
+      "duration": 176,
+      "interactionId": 8738
+    },
+    {
+      "name": "pointerup",
+      "start": 9257,
+      "duration": 176,
+      "interactionId": 8738
+    },
+    {
+      "name": "click",
+      "start": 9257,
+      "duration": 176,
+      "interactionId": 8738
+    },
+    {
+      "name": "pointerdown",
+      "start": 9473.300000011921,
+      "duration": 16,
+      "interactionId": 8745
+    },
+    {
+      "name": "pointerup",
+      "start": 9473.40000000596,
+      "duration": 16,
+      "interactionId": 8745
+    },
+    {
+      "name": "click",
+      "start": 9473.40000000596,
+      "duration": 16,
+      "interactionId": 8745
+    },
+    {
+      "name": "pointerdown",
+      "start": 9688.70000000298,
+      "duration": 72,
+      "interactionId": 8752
+    },
+    {
+      "name": "pointerup",
+      "start": 9688.90000000596,
+      "duration": 72,
+      "interactionId": 8752
+    },
+    {
+      "name": "click",
+      "start": 9688.90000000596,
+      "duration": 72,
+      "interactionId": 8752
+    },
+    {
+      "name": "pointerdown",
+      "start": 10273.300000011921,
+      "duration": 16,
+      "interactionId": 8759
+    },
+    {
+      "name": "pointerup",
+      "start": 10273.300000011921,
+      "duration": 16,
+      "interactionId": 8759
+    },
+    {
+      "name": "click",
+      "start": 10273.300000011921,
+      "duration": 16,
+      "interactionId": 8759
+    },
+    {
+      "name": "pointerdown",
+      "start": 10506.5,
+      "duration": 112,
+      "interactionId": 8766
+    },
+    {
+      "name": "pointerup",
+      "start": 10506.5,
+      "duration": 112,
+      "interactionId": 8766
+    },
+    {
+      "name": "click",
+      "start": 10506.5,
+      "duration": 112,
+      "interactionId": 8766
+    },
+    {
+      "name": "pointerdown",
+      "start": 10689.90000000596,
+      "duration": 56,
+      "interactionId": 8773
+    },
+    {
+      "name": "pointerup",
+      "start": 10689.90000000596,
+      "duration": 56,
+      "interactionId": 8773
+    },
+    {
+      "name": "click",
+      "start": 10689.90000000596,
+      "duration": 56,
+      "interactionId": 8773
+    },
+    {
+      "name": "pointerdown",
+      "start": 10806.60000000894,
+      "duration": 112,
+      "interactionId": 8780
+    },
+    {
+      "name": "pointerup",
+      "start": 10806.60000000894,
+      "duration": 112,
+      "interactionId": 8780
+    },
+    {
+      "name": "click",
+      "start": 10806.60000000894,
+      "duration": 112,
+      "interactionId": 8780
+    },
+    {
+      "name": "pointerdown",
+      "start": 14225,
+      "duration": 16,
+      "interactionId": 8787
+    },
+    {
+      "name": "pointerup",
+      "start": 14225,
+      "duration": 16,
+      "interactionId": 8787
+    },
+    {
+      "name": "click",
+      "start": 14225,
+      "duration": 16,
+      "interactionId": 8787
+    },
+    {
+      "name": "pointerdown",
+      "start": 14871.10000000894,
+      "duration": 16,
+      "interactionId": 8794
+    },
+    {
+      "name": "pointerup",
+      "start": 14871.10000000894,
+      "duration": 16,
+      "interactionId": 8794
+    },
+    {
+      "name": "click",
+      "start": 14871.10000000894,
+      "duration": 16,
+      "interactionId": 8794
+    },
+    {
+      "name": "pointerdown",
+      "start": 16273.60000000894,
+      "duration": 16,
+      "interactionId": 8801
+    },
+    {
+      "name": "pointerup",
+      "start": 16273.70000000298,
+      "duration": 16,
+      "interactionId": 8801
+    },
+    {
+      "name": "click",
+      "start": 16273.70000000298,
+      "duration": 16,
+      "interactionId": 8801
+    },
+    {
+      "name": "pointerdown",
+      "start": 16605.40000000596,
+      "duration": 56,
+      "interactionId": 8808
+    },
+    {
+      "name": "pointerup",
+      "start": 16605.40000000596,
+      "duration": 56,
+      "interactionId": 8808
+    },
+    {
+      "name": "click",
+      "start": 16605.40000000596,
+      "duration": 56,
+      "interactionId": 8808
+    },
+    {
+      "name": "pointerdown",
+      "start": 21205.90000000596,
+      "duration": 16,
+      "interactionId": 8815
+    },
+    {
+      "name": "pointerup",
+      "start": 21205.90000000596,
+      "duration": 16,
+      "interactionId": 8815
+    },
+    {
+      "name": "click",
+      "start": 21205.90000000596,
+      "duration": 16,
+      "interactionId": 8815
+    }
+  ],
+  "mainNodes": 46,
+  "domNodes": 218,
+  "resources": [
+    {
+      "name": "/styles.css",
+      "duration": 1,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "link"
+    },
+    {
+      "name": "/desktop.css",
+      "duration": 1.2000000029802322,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "link"
+    },
+    {
+      "name": "/workspace.css",
+      "duration": 1.300000011920929,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "link"
+    },
+    {
+      "name": "/proactive.css",
+      "duration": 1.6000000089406967,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "link"
+    },
+    {
+      "name": "/catalog.js",
+      "duration": 1.7999999970197678,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/recipes.js",
+      "duration": 1.8999999910593033,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/assets/ui/layout-grid.svg",
+      "duration": 10.899999991059303,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/shopping-cart.svg",
+      "duration": 11.099999994039536,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/brands/morzsa.svg",
+      "duration": 11.200000002980232,
+      "transferSize": 300,
+      "encodedBodySize": 643,
+      "decodedBodySize": 643,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/house.svg",
+      "duration": 13.099999994039536,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/chef-hat.svg",
+      "duration": 13.200000002980232,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/translations.js",
+      "duration": 4.100000008940697,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/i18n.js",
+      "duration": 4.299999997019768,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/quick-entry.js",
+      "duration": 4.4000000059604645,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/kitchen-model.js",
+      "duration": 4.600000008940697,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/workspace-entry.js",
+      "duration": 4.600000008940697,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/recipe-chat.js",
+      "duration": 4.5999999940395355,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/surprise-recipe.js",
+      "duration": 4.799999997019768,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/recipe-prompt.js",
+      "duration": 4.799999997019768,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/shopping-model.js",
+      "duration": 5,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/voice-model.js",
+      "duration": 5.200000002980232,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/pantry-review-model.js",
+      "duration": 5.4000000059604645,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/cooking-session.js",
+      "duration": 5.5,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/recipe-portions.js",
+      "duration": 5.700000002980232,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/recipe-room-model.js",
+      "duration": 5.9000000059604645,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/quantity-model.js",
+      "duration": 5.800000011920929,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/app.js",
+      "duration": 5.9000000059604645,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/pantry-library.js",
+      "duration": 6.100000008940697,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/ai-mode.js",
+      "duration": 6.200000002980232,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/household-config.js",
+      "duration": 6.4000000059604645,
+      "transferSize": 389,
+      "encodedBodySize": 89,
+      "decodedBodySize": 89,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/persistence-model.js",
+      "duration": 6.600000008940697,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/household-model.js",
+      "duration": 6.700000002980232,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/auth-link.js",
+      "duration": 6.399999991059303,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/household.js",
+      "duration": 6.9000000059604645,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/household-live.js",
+      "duration": 7.100000008940697,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/chat-stream.js",
+      "duration": 7.299999997019768,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/pantry-review-ui.js",
+      "duration": 7.4000000059604645,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/voice-ui.js",
+      "duration": 7.600000008940697,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/realtime-model.js",
+      "duration": 7.600000008940697,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/realtime-voice.js",
+      "duration": 7.600000008940697,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/assistant-ui.js",
+      "duration": 8.700000002980232,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/recipe-crafting.js",
+      "duration": 8.799999997019768,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/recipe-shopping.js",
+      "duration": 8.099999994039536,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/kitchen-measures.js",
+      "duration": 8.399999991059303,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/weekly-plan-ui.js",
+      "duration": 8.399999991059303,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/weekly-plan-model.js",
+      "duration": 8.5,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/recipe-export.js",
+      "duration": 9.299999997019768,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/recipe-library.js",
+      "duration": 9.5,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/cooking-ui.js",
+      "duration": 9.299999997019768,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/recipe-ingredients-panel.js",
+      "duration": 9.799999997019768,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/recipe-room-ui.js",
+      "duration": 9.900000005960464,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/recipe-photos.js",
+      "duration": 9.600000008940697,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/chat-photo.js",
+      "duration": 10.600000008940697,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/persistence.js",
+      "duration": 10.600000008940697,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/companion-model.js",
+      "duration": 10.700000002980232,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/panel-gestures.js",
+      "duration": 10.299999997019768,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/chat-format.js",
+      "duration": 10.700000002980232,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/ingredient-mentions.js",
+      "duration": 10.799999997019768,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/recipe-images.js",
+      "duration": 10.799999997019768,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/shopping-mode-model.js",
+      "duration": 11.099999994039536,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/shopping-mode-ui.js",
+      "duration": 11.099999994039536,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/session-model.js",
+      "duration": 11.200000002980232,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/companion-ui.js",
+      "duration": 11.399999991059303,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/onboarding-model.js",
+      "duration": 11.399999991059303,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/onboarding.js",
+      "duration": 11.400000005960464,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/workspace-ui.js",
+      "duration": 11.600000008940697,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/kitchen-ui.js",
+      "duration": 11.700000002980232,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/proactive-model.js",
+      "duration": 11.700000002980232,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/proactive-ui.js",
+      "duration": 11.799999997019768,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "script"
+    },
+    {
+      "name": "/css2",
+      "duration": 0,
+      "transferSize": 0,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "css"
+    },
+    {
+      "name": "/rest/v1/rpc/list_household_email_invites",
+      "duration": 1.3999999910593033,
+      "transferSize": 302,
+      "encodedBodySize": 2,
+      "decodedBodySize": 2,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_index",
+      "duration": 1.9000000059604645,
+      "transferSize": 498,
+      "encodedBodySize": 198,
+      "decodedBodySize": 198,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/assets/ui/menu.svg",
+      "duration": 2.0999999940395355,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "css"
+    },
+    {
+      "name": "/assets/icons/peach.webp",
+      "duration": 1.0999999940395355,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/check.svg",
+      "duration": 1.1000000089406967,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/sugar.webp",
+      "duration": 1.1000000089406967,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/flour.webp",
+      "duration": 1,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/plus.svg",
+      "duration": 1.0999999940395355,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/sliders-horizontal.svg",
+      "duration": 0.699999988079071,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/heart.svg",
+      "duration": 1,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/sparkles.svg",
+      "duration": 1.2000000029802322,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/mic.svg",
+      "duration": 0.7000000029802322,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/arrow-up.svg",
+      "duration": 1,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/square-pen.svg",
+      "duration": 0.7000000029802322,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/rest/v1/rpc/sync_conversation",
+      "duration": 2,
+      "transferSize": 327,
+      "encodedBodySize": 27,
+      "decodedBodySize": 27,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/assets/brands/morzsa.svg",
+      "duration": 0.9000000059604645,
+      "transferSize": 300,
+      "encodedBodySize": 643,
+      "decodedBodySize": 643,
+      "initiatorType": "other"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_index",
+      "duration": 1.7000000029802322,
+      "transferSize": 498,
+      "encodedBodySize": 198,
+      "decodedBodySize": 198,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_page",
+      "duration": 1.300000011920929,
+      "transferSize": 346,
+      "encodedBodySize": 46,
+      "decodedBodySize": 46,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_index",
+      "duration": 2.699999988079071,
+      "transferSize": 498,
+      "encodedBodySize": 198,
+      "decodedBodySize": 198,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_page",
+      "duration": 2,
+      "transferSize": 346,
+      "encodedBodySize": 46,
+      "decodedBodySize": 46,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/assets/ui/arrow-right.svg",
+      "duration": 1.1000000089406967,
+      "transferSize": 644,
+      "encodedBodySize": 344,
+      "decodedBodySize": 344,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/brands/morzsa.svg",
+      "duration": 0.9000000059604645,
+      "transferSize": 300,
+      "encodedBodySize": 643,
+      "decodedBodySize": 643,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/rest/v1/recipe_library_entries",
+      "duration": 2.0999999940395355,
+      "transferSize": 302,
+      "encodedBodySize": 2,
+      "decodedBodySize": 2,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/assets/icons/rice.webp",
+      "duration": 1,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/egg.webp",
+      "duration": 0.8999999910593033,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/milk.webp",
+      "duration": 1.0999999940395355,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/rest/v1/rpc/recipe_feed",
+      "duration": 2.7999999970197678,
+      "transferSize": 10859,
+      "encodedBodySize": 10559,
+      "decodedBodySize": 10559,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/assets/ui/calendar-days.svg",
+      "duration": 2.9000000059604645,
+      "transferSize": 576,
+      "encodedBodySize": 276,
+      "decodedBodySize": 276,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/frozen-vegetables.webp",
+      "duration": 3.5,
+      "transferSize": 7094,
+      "encodedBodySize": 6794,
+      "decodedBodySize": 6794,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/butter.webp",
+      "duration": 0.9000000059604645,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/bread.webp",
+      "duration": 0.8999999910593033,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/apple.webp",
+      "duration": 0.7999999970197678,
+      "transferSize": 300,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/carrot.webp",
+      "duration": 1.0999999940395355,
+      "transferSize": 5082,
+      "encodedBodySize": 4782,
+      "decodedBodySize": 4782,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/cheese.webp",
+      "duration": 1.2999999970197678,
+      "transferSize": 5088,
+      "encodedBodySize": 4788,
+      "decodedBodySize": 4788,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/pasta.webp",
+      "duration": 1.5,
+      "transferSize": 6372,
+      "encodedBodySize": 6072,
+      "decodedBodySize": 6072,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/ham.webp",
+      "duration": 1.5999999940395355,
+      "transferSize": 6082,
+      "encodedBodySize": 5782,
+      "decodedBodySize": 5782,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/banana.webp",
+      "duration": 1.4000000059604645,
+      "transferSize": 4396,
+      "encodedBodySize": 4096,
+      "decodedBodySize": 4096,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/mushroom.webp",
+      "duration": 1.6000000089406967,
+      "transferSize": 6404,
+      "encodedBodySize": 6104,
+      "decodedBodySize": 6104,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/oats.webp",
+      "duration": 1.800000011920929,
+      "transferSize": 5298,
+      "encodedBodySize": 4998,
+      "decodedBodySize": 4998,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_index",
+      "duration": 2.6000000089406967,
+      "transferSize": 498,
+      "encodedBodySize": 198,
+      "decodedBodySize": 198,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_page",
+      "duration": 2.2000000029802322,
+      "transferSize": 346,
+      "encodedBodySize": 46,
+      "decodedBodySize": 46,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/assets/icons/chicken.webp",
+      "duration": 2.2999999970197678,
+      "transferSize": 5190,
+      "encodedBodySize": 4890,
+      "decodedBodySize": 4890,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/mustard.webp",
+      "duration": 3,
+      "transferSize": 3666,
+      "encodedBodySize": 3366,
+      "decodedBodySize": 3366,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/honey.webp",
+      "duration": 3.7000000029802322,
+      "transferSize": 5920,
+      "encodedBodySize": 5620,
+      "decodedBodySize": 5620,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/cream-cheese.webp",
+      "duration": 5.0999999940395355,
+      "transferSize": 4596,
+      "encodedBodySize": 4296,
+      "decodedBodySize": 4296,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/potato.webp",
+      "duration": 6.0999999940395355,
+      "transferSize": 5006,
+      "encodedBodySize": 4706,
+      "decodedBodySize": 4706,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/onion.webp",
+      "duration": 6.699999988079071,
+      "transferSize": 5370,
+      "encodedBodySize": 5070,
+      "decodedBodySize": 5070,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/bacon.webp",
+      "duration": 7.199999988079071,
+      "transferSize": 5916,
+      "encodedBodySize": 5616,
+      "decodedBodySize": 5616,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/peach.webp",
+      "duration": 5.4000000059604645,
+      "transferSize": 300,
+      "encodedBodySize": 5408,
+      "decodedBodySize": 5408,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/muesli.webp",
+      "duration": 8.599999994039536,
+      "transferSize": 5636,
+      "encodedBodySize": 5336,
+      "decodedBodySize": 5336,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/tomato-tin.webp",
+      "duration": 9.200000002980232,
+      "transferSize": 5112,
+      "encodedBodySize": 4812,
+      "decodedBodySize": 4812,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/cucumber.webp",
+      "duration": 9.900000005960464,
+      "transferSize": 5192,
+      "encodedBodySize": 4892,
+      "decodedBodySize": 4892,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/tomato.webp",
+      "duration": 10.299999997019768,
+      "transferSize": 5672,
+      "encodedBodySize": 5372,
+      "decodedBodySize": 5372,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/yogurt.webp",
+      "duration": 11.200000002980232,
+      "transferSize": 5476,
+      "encodedBodySize": 5176,
+      "decodedBodySize": 5176,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/garlic.webp",
+      "duration": 10.600000008940697,
+      "transferSize": 5318,
+      "encodedBodySize": 5018,
+      "decodedBodySize": 5018,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/broccoli.webp",
+      "duration": 12.400000005960464,
+      "transferSize": 7704,
+      "encodedBodySize": 7404,
+      "decodedBodySize": 7404,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/tea.webp",
+      "duration": 12.700000002980232,
+      "transferSize": 4952,
+      "encodedBodySize": 4652,
+      "decodedBodySize": 4652,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/peas.webp",
+      "duration": 13.099999994039536,
+      "transferSize": 6360,
+      "encodedBodySize": 6060,
+      "decodedBodySize": 6060,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/chicken-breast.webp",
+      "duration": 13.599999994039536,
+      "transferSize": 4490,
+      "encodedBodySize": 4190,
+      "decodedBodySize": 4190,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/lemon.webp",
+      "duration": 13.900000005960464,
+      "transferSize": 5740,
+      "encodedBodySize": 5440,
+      "decodedBodySize": 5440,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/pepper.webp",
+      "duration": 14.100000008940697,
+      "transferSize": 5004,
+      "encodedBodySize": 4704,
+      "decodedBodySize": 4704,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/oil.webp",
+      "duration": 15.200000002980232,
+      "transferSize": 4278,
+      "encodedBodySize": 3978,
+      "decodedBodySize": 3978,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/paprika.webp",
+      "duration": 15.700000002980232,
+      "transferSize": 5128,
+      "encodedBodySize": 4828,
+      "decodedBodySize": 4828,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/rest/v1/recipe_documents",
+      "duration": 2.5999999940395355,
+      "transferSize": 1546,
+      "encodedBodySize": 1246,
+      "decodedBodySize": 1246,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/assets/ui/share-2.svg",
+      "duration": 2,
+      "transferSize": 718,
+      "encodedBodySize": 418,
+      "decodedBodySize": 418,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/download.svg",
+      "duration": 3.5999999940395355,
+      "transferSize": 618,
+      "encodedBodySize": 318,
+      "decodedBodySize": 318,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/food/pancake.jpg",
+      "duration": 5.299999997019768,
+      "transferSize": 187296,
+      "encodedBodySize": 186996,
+      "decodedBodySize": 186996,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/x.svg",
+      "duration": 5.700000002980232,
+      "transferSize": 300,
+      "encodedBodySize": 333,
+      "decodedBodySize": 333,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/salt.webp",
+      "duration": 5.700000002980232,
+      "transferSize": 4510,
+      "encodedBodySize": 4210,
+      "decodedBodySize": 4210,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/ui/message-circle.svg",
+      "duration": 5.9000000059604645,
+      "transferSize": 640,
+      "encodedBodySize": 340,
+      "decodedBodySize": 340,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/functions/v1/recipe-image",
+      "duration": 2.7000000029802322,
+      "transferSize": 320,
+      "encodedBodySize": 20,
+      "decodedBodySize": 20,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_index",
+      "duration": 2.5,
+      "transferSize": 498,
+      "encodedBodySize": 198,
+      "decodedBodySize": 198,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_page",
+      "duration": 2.5,
+      "transferSize": 346,
+      "encodedBodySize": 46,
+      "decodedBodySize": 46,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/functions/v1/recipe-image",
+      "duration": 1,
+      "transferSize": 320,
+      "encodedBodySize": 20,
+      "decodedBodySize": 20,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/functions/v1/recipe-image",
+      "duration": 0.9000000059604645,
+      "transferSize": 320,
+      "encodedBodySize": 20,
+      "decodedBodySize": 20,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_index",
+      "duration": 2.3999999910593033,
+      "transferSize": 498,
+      "encodedBodySize": 198,
+      "decodedBodySize": 198,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_page",
+      "duration": 4.700000002980232,
+      "transferSize": 346,
+      "encodedBodySize": 46,
+      "decodedBodySize": 46,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/functions/v1/recipe-image",
+      "duration": 3.0999999940395355,
+      "transferSize": 320,
+      "encodedBodySize": 20,
+      "decodedBodySize": 20,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/assets/food/pancake.jpg",
+      "duration": 1,
+      "transferSize": 300,
+      "encodedBodySize": 186996,
+      "decodedBodySize": 186996,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/functions/v1/recipe-image",
+      "duration": 0.7000000029802322,
+      "transferSize": 320,
+      "encodedBodySize": 20,
+      "decodedBodySize": 20,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/assets/icons/peach.webp",
+      "duration": 1.5,
+      "transferSize": 300,
+      "encodedBodySize": 5408,
+      "decodedBodySize": 5408,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/brands/morzsa.svg",
+      "duration": 1.5999999940395355,
+      "transferSize": 300,
+      "encodedBodySize": 643,
+      "decodedBodySize": 643,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/sugar.webp",
+      "duration": 1.7000000029802322,
+      "transferSize": 300,
+      "encodedBodySize": 4770,
+      "decodedBodySize": 4770,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/illustrations/morzsa-mascot.webp",
+      "duration": 0.9000000059604645,
+      "transferSize": 300,
+      "encodedBodySize": 4226,
+      "decodedBodySize": 4226,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/rest/v1/rpc/sync_conversation",
+      "duration": 2,
+      "transferSize": 327,
+      "encodedBodySize": 27,
+      "decodedBodySize": 27,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_index",
+      "duration": 2.7000000029802322,
+      "transferSize": 498,
+      "encodedBodySize": 198,
+      "decodedBodySize": 198,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_page",
+      "duration": 2.7999999970197678,
+      "transferSize": 346,
+      "encodedBodySize": 46,
+      "decodedBodySize": 46,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/begin_conversation_turn",
+      "duration": 2.0999999940395355,
+      "transferSize": 304,
+      "encodedBodySize": 4,
+      "decodedBodySize": 4,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_page",
+      "duration": 1.4000000059604645,
+      "transferSize": 346,
+      "encodedBodySize": 46,
+      "decodedBodySize": 46,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/functions/v1/voice-command",
+      "duration": 2709.3999999910593,
+      "transferSize": 622,
+      "encodedBodySize": 322,
+      "decodedBodySize": 322,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/assets/ui/search.svg",
+      "duration": 1,
+      "transferSize": 300,
+      "encodedBodySize": 351,
+      "decodedBodySize": 351,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/apple.webp",
+      "duration": 1.0999999940395355,
+      "transferSize": 300,
+      "encodedBodySize": 5574,
+      "decodedBodySize": 5574,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/butter.webp",
+      "duration": 1.5999999940395355,
+      "transferSize": 300,
+      "encodedBodySize": 4532,
+      "decodedBodySize": 4532,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/assets/icons/rice.webp",
+      "duration": 2,
+      "transferSize": 300,
+      "encodedBodySize": 5196,
+      "decodedBodySize": 5196,
+      "initiatorType": "img"
+    },
+    {
+      "name": "/rest/v1/rpc/sync_conversation",
+      "duration": 3.7000000029802322,
+      "transferSize": 327,
+      "encodedBodySize": 27,
+      "decodedBodySize": 27,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/end_conversation_turn",
+      "duration": 2.5,
+      "transferSize": 302,
+      "encodedBodySize": 2,
+      "decodedBodySize": 2,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/sync_conversation",
+      "duration": 3.5,
+      "transferSize": 327,
+      "encodedBodySize": 27,
+      "decodedBodySize": 27,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_index",
+      "duration": 2,
+      "transferSize": 510,
+      "encodedBodySize": 210,
+      "decodedBodySize": 210,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_page",
+      "duration": 2.699999988079071,
+      "transferSize": 668,
+      "encodedBodySize": 368,
+      "decodedBodySize": 368,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_index",
+      "duration": 2.2999999970197678,
+      "transferSize": 510,
+      "encodedBodySize": 210,
+      "decodedBodySize": 210,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_page",
+      "duration": 2.8999999910593033,
+      "transferSize": 668,
+      "encodedBodySize": 368,
+      "decodedBodySize": 368,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/sync_conversation",
+      "duration": 2.6000000089406967,
+      "transferSize": 327,
+      "encodedBodySize": 27,
+      "decodedBodySize": 27,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/sync_conversation",
+      "duration": 2.2000000029802322,
+      "transferSize": 327,
+      "encodedBodySize": 27,
+      "decodedBodySize": 27,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_index",
+      "duration": 5.199999988079071,
+      "transferSize": 707,
+      "encodedBodySize": 407,
+      "decodedBodySize": 407,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_page",
+      "duration": 2.2000000029802322,
+      "transferSize": 346,
+      "encodedBodySize": 46,
+      "decodedBodySize": 46,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/begin_conversation_turn",
+      "duration": 2,
+      "transferSize": 304,
+      "encodedBodySize": 4,
+      "decodedBodySize": 4,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_page",
+      "duration": 1.4000000059604645,
+      "transferSize": 346,
+      "encodedBodySize": 46,
+      "decodedBodySize": 46,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/functions/v1/voice-command",
+      "duration": 0.800000011920929,
+      "transferSize": 333,
+      "encodedBodySize": 33,
+      "decodedBodySize": 33,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/sync_conversation",
+      "duration": 2.2000000029802322,
+      "transferSize": 327,
+      "encodedBodySize": 27,
+      "decodedBodySize": 27,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/end_conversation_turn",
+      "duration": 3.1000000089406967,
+      "transferSize": 302,
+      "encodedBodySize": 2,
+      "decodedBodySize": 2,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/sync_conversation",
+      "duration": 2,
+      "transferSize": 327,
+      "encodedBodySize": 27,
+      "decodedBodySize": 27,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_index",
+      "duration": 1.800000011920929,
+      "transferSize": 732,
+      "encodedBodySize": 432,
+      "decodedBodySize": 432,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_page",
+      "duration": 2,
+      "transferSize": 498,
+      "encodedBodySize": 198,
+      "decodedBodySize": 198,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_index",
+      "duration": 2.5,
+      "transferSize": 732,
+      "encodedBodySize": 432,
+      "decodedBodySize": 432,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_page",
+      "duration": 2.2000000029802322,
+      "transferSize": 498,
+      "encodedBodySize": 198,
+      "decodedBodySize": 198,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/sync_conversation",
+      "duration": 1.7999999970197678,
+      "transferSize": 327,
+      "encodedBodySize": 27,
+      "decodedBodySize": 27,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/sync_conversation",
+      "duration": 2.1000000089406967,
+      "transferSize": 327,
+      "encodedBodySize": 27,
+      "decodedBodySize": 27,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_index",
+      "duration": 1.8999999910593033,
+      "transferSize": 732,
+      "encodedBodySize": 432,
+      "decodedBodySize": 432,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_page",
+      "duration": 2.3999999910593033,
+      "transferSize": 498,
+      "encodedBodySize": 198,
+      "decodedBodySize": 198,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/begin_conversation_turn",
+      "duration": 2,
+      "transferSize": 304,
+      "encodedBodySize": 4,
+      "decodedBodySize": 4,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_page",
+      "duration": 1.5999999940395355,
+      "transferSize": 498,
+      "encodedBodySize": 198,
+      "decodedBodySize": 198,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/functions/v1/voice-command",
+      "duration": 0.9000000059604645,
+      "transferSize": 439,
+      "encodedBodySize": 139,
+      "decodedBodySize": 139,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/sync_conversation",
+      "duration": 1.800000011920929,
+      "transferSize": 327,
+      "encodedBodySize": 27,
+      "decodedBodySize": 27,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/end_conversation_turn",
+      "duration": 2.2000000029802322,
+      "transferSize": 302,
+      "encodedBodySize": 2,
+      "decodedBodySize": 2,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/sync_conversation",
+      "duration": 1.4000000059604645,
+      "transferSize": 327,
+      "encodedBodySize": 27,
+      "decodedBodySize": 27,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_index",
+      "duration": 2,
+      "transferSize": 732,
+      "encodedBodySize": 432,
+      "decodedBodySize": 432,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_page",
+      "duration": 2.2000000029802322,
+      "transferSize": 667,
+      "encodedBodySize": 367,
+      "decodedBodySize": 367,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_index",
+      "duration": 2.2999999970197678,
+      "transferSize": 732,
+      "encodedBodySize": 432,
+      "decodedBodySize": 432,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_page",
+      "duration": 2.0999999940395355,
+      "transferSize": 667,
+      "encodedBodySize": 367,
+      "decodedBodySize": 367,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_index",
+      "duration": 2.4000000059604645,
+      "transferSize": 732,
+      "encodedBodySize": 432,
+      "decodedBodySize": 432,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_page",
+      "duration": 2.2000000029802322,
+      "transferSize": 667,
+      "encodedBodySize": 367,
+      "decodedBodySize": 367,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/sync_conversation",
+      "duration": 2,
+      "transferSize": 327,
+      "encodedBodySize": 27,
+      "decodedBodySize": 27,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/sync_conversation",
+      "duration": 1.800000011920929,
+      "transferSize": 327,
+      "encodedBodySize": 27,
+      "decodedBodySize": 27,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/sync_conversation",
+      "duration": 1.5,
+      "transferSize": 327,
+      "encodedBodySize": 27,
+      "decodedBodySize": 27,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_index",
+      "duration": 4.5999999940395355,
+      "transferSize": 929,
+      "encodedBodySize": 629,
+      "decodedBodySize": 629,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_page",
+      "duration": 2.2999999970197678,
+      "transferSize": 346,
+      "encodedBodySize": 46,
+      "decodedBodySize": 46,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/begin_conversation_turn",
+      "duration": 1.9000000059604645,
+      "transferSize": 304,
+      "encodedBodySize": 4,
+      "decodedBodySize": 4,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_page",
+      "duration": 1.5999999940395355,
+      "transferSize": 346,
+      "encodedBodySize": 46,
+      "decodedBodySize": 46,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/functions/v1/voice-command",
+      "duration": 90.5,
+      "transferSize": 0,
+      "encodedBodySize": 0,
+      "decodedBodySize": 0,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/sync_conversation",
+      "duration": 2.1000000089406967,
+      "transferSize": 327,
+      "encodedBodySize": 27,
+      "decodedBodySize": 27,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/end_conversation_turn",
+      "duration": 3.5,
+      "transferSize": 302,
+      "encodedBodySize": 2,
+      "decodedBodySize": 2,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/sync_conversation",
+      "duration": 2.7999999970197678,
+      "transferSize": 327,
+      "encodedBodySize": 27,
+      "decodedBodySize": 27,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/sync_conversation",
+      "duration": 1.800000011920929,
+      "transferSize": 327,
+      "encodedBodySize": 27,
+      "decodedBodySize": 27,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_index",
+      "duration": 2.2000000029802322,
+      "transferSize": 943,
+      "encodedBodySize": 643,
+      "decodedBodySize": 643,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_page",
+      "duration": 2.0999999940395355,
+      "transferSize": 487,
+      "encodedBodySize": 187,
+      "decodedBodySize": 187,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_index",
+      "duration": 2.4000000059604645,
+      "transferSize": 943,
+      "encodedBodySize": 643,
+      "decodedBodySize": 643,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_page",
+      "duration": 2.0999999940395355,
+      "transferSize": 487,
+      "encodedBodySize": 187,
+      "decodedBodySize": 187,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_index",
+      "duration": 2.2999999970197678,
+      "transferSize": 943,
+      "encodedBodySize": 643,
+      "decodedBodySize": 643,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_page",
+      "duration": 2.199999988079071,
+      "transferSize": 487,
+      "encodedBodySize": 187,
+      "decodedBodySize": 187,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/sync_conversation",
+      "duration": 2.5999999940395355,
+      "transferSize": 327,
+      "encodedBodySize": 27,
+      "decodedBodySize": 27,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/sync_conversation",
+      "duration": 1.699999988079071,
+      "transferSize": 327,
+      "encodedBodySize": 27,
+      "decodedBodySize": 27,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/sync_conversation",
+      "duration": 1.7999999970197678,
+      "transferSize": 327,
+      "encodedBodySize": 27,
+      "decodedBodySize": 27,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/sync_conversation",
+      "duration": 1.6000000089406967,
+      "transferSize": 327,
+      "encodedBodySize": 27,
+      "decodedBodySize": 27,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_index",
+      "duration": 604.5999999940395,
+      "transferSize": 1140,
+      "encodedBodySize": 840,
+      "decodedBodySize": 840,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_page",
+      "duration": 606.5,
+      "transferSize": 346,
+      "encodedBodySize": 46,
+      "decodedBodySize": 46,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/begin_conversation_turn",
+      "duration": 604.5,
+      "transferSize": 304,
+      "encodedBodySize": 4,
+      "decodedBodySize": 4,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_index",
+      "duration": 606.0999999940395,
+      "transferSize": 1140,
+      "encodedBodySize": 840,
+      "decodedBodySize": 840,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_page",
+      "duration": 609.7999999970198,
+      "transferSize": 346,
+      "encodedBodySize": 46,
+      "decodedBodySize": 46,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_page",
+      "duration": 603.8999999910593,
+      "transferSize": 346,
+      "encodedBodySize": 46,
+      "decodedBodySize": 46,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/functions/v1/voice-command",
+      "duration": 0.7999999970197678,
+      "transferSize": 433,
+      "encodedBodySize": 133,
+      "decodedBodySize": 133,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/end_conversation_turn",
+      "duration": 603.7999999970198,
+      "transferSize": 302,
+      "encodedBodySize": 2,
+      "decodedBodySize": 2,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/sync_conversation",
+      "duration": 603.6999999880791,
+      "transferSize": 327,
+      "encodedBodySize": 27,
+      "decodedBodySize": 27,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/sync_conversation",
+      "duration": 2.4000000059604645,
+      "transferSize": 327,
+      "encodedBodySize": 27,
+      "decodedBodySize": 27,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/sync_conversation",
+      "duration": 1.8999999910593033,
+      "transferSize": 327,
+      "encodedBodySize": 27,
+      "decodedBodySize": 27,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/sync_conversation",
+      "duration": 1.5,
+      "transferSize": 327,
+      "encodedBodySize": 27,
+      "decodedBodySize": 27,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_index",
+      "duration": 1.9000000059604645,
+      "transferSize": 1163,
+      "encodedBodySize": 863,
+      "decodedBodySize": 863,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_page",
+      "duration": 3.0999999940395355,
+      "transferSize": 661,
+      "encodedBodySize": 361,
+      "decodedBodySize": 361,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_index",
+      "duration": 2.9000000059604645,
+      "transferSize": 1163,
+      "encodedBodySize": 863,
+      "decodedBodySize": 863,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_page",
+      "duration": 2.300000011920929,
+      "transferSize": 661,
+      "encodedBodySize": 361,
+      "decodedBodySize": 361,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_index",
+      "duration": 2.7000000029802322,
+      "transferSize": 1163,
+      "encodedBodySize": 863,
+      "decodedBodySize": 863,
+      "initiatorType": "fetch"
+    },
+    {
+      "name": "/rest/v1/rpc/conversation_page",
+      "duration": 2.2000000029802322,
+      "transferSize": 661,
+      "encodedBodySize": 361,
+      "decodedBodySize": 361,
+      "initiatorType": "fetch"
+    }
+  ],
+  "heartbeat": [
+    {
+      "start": 4.100000008940697,
+      "delay": 30.799999997019768
+    },
+    {
+      "start": 354.70000000298023,
+      "delay": 103.6000000089407
+    },
+    {
+      "start": 705.2000000029802,
+      "delay": 164.79999999701977
+    },
+    {
+      "start": 920,
+      "delay": 385.5
+    },
+    {
+      "start": 1355.5,
+      "delay": 297
+    },
+    {
+      "start": 1755.300000011921,
+      "delay": 255.09999999403954
+    },
+    {
+      "start": 2206.2000000029802,
+      "delay": 260.40000000596046
+    },
+    {
+      "start": 2554.800000011921,
+      "delay": 127.59999999403954
+    },
+    {
+      "start": 2754.4000000059605,
+      "delay": 128.59999999403954
+    },
+    {
+      "start": 3106.5,
+      "delay": 131.6000000089407
+    },
+    {
+      "start": 9254.90000000596,
+      "delay": 129.59999999403954
+    },
+    {
+      "start": 9656.40000000596,
+      "delay": 50.5
+    },
+    {
+      "start": 9854.90000000596,
+      "delay": 137.29999999701977
+    },
+    {
+      "start": 10254.300000011921,
+      "delay": 100.69999998807907
+    },
+    {
+      "start": 10504.800000011921,
+      "delay": 63.79999999701977
+    },
+    {
+      "start": 10654.70000000298,
+      "delay": 43.6000000089407
+    },
+    {
+      "start": 10804.90000000596,
+      "delay": 59.29999999701977
+    },
+    {
+      "start": 13156.70000000298,
+      "delay": 56.5
+    },
+    {
+      "start": 13407,
+      "delay": 34.400000005960464
+    },
+    {
+      "start": 13654.90000000596,
+      "delay": 158.59999999403954
+    },
+    {
+      "start": 14205.10000000894,
+      "delay": 103.29999999701977
+    },
+    {
+      "start": 14358.40000000596,
+      "delay": 58.20000000298023
+    },
+    {
+      "start": 14855.10000000894,
+      "delay": 43.3999999910593
+    },
+    {
+      "start": 15005.60000000894,
+      "delay": 64.09999999403954
+    },
+    {
+      "start": 15755.20000000298,
+      "delay": 128.1000000089407
+    },
+    {
+      "start": 16254.800000011921,
+      "delay": 100.79999999701977
+    },
+    {
+      "start": 16405.60000000894,
+      "delay": 58.20000000298023
+    },
+    {
+      "start": 20655.10000000894,
+      "delay": 159.09999999403954
+    },
+    {
+      "start": 21807.10000000894,
+      "delay": 66.8999999910593
+    },
+    {
+      "start": 22506.40000000596,
+      "delay": 102.5
+    },
+    {
+      "start": 23256.80000001192,
+      "delay": 76.79999999701977
+    },
+    {
+      "start": 23855.70000000298,
+      "delay": 46.5
+    }
+  ],
+  "unhandled": []
+}

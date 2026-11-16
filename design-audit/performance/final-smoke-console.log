@@ -1,0 +1,8 @@
+
+> audit:performance:smoke
+> node runner.mjs smoke
+
+2026-11-16T19:01:00.297Z startup 390 fast CPU1 cold 338ms
+2026-11-16T19:01:01.257Z startup 390 fast CPU1 warm 250ms
+2026-11-16T19:01:04.423Z navigation-five-destinations: PASS
+2026-11-16T19:01:05.145Z AUDIT_RUN=/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/design-audit/performance/runs/2026-11-16T19-00-57.327Z-smoke

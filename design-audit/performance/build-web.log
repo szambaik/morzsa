@@ -1,0 +1,5 @@
+
+> build:web
+> node scripts/build-mobile.mjs --web
+
+Web bundle created with 64 runtime files and curated assets.

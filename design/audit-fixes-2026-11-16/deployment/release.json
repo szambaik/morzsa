@@ -1,0 +1,15 @@
+{
+  "commit": "bbdf2115ed7c24aeb79b1a78439e99d28d07ed5a",
+  "pullRequest": "https://github.com/szambaik/morzsa/pull/1",
+  "workflow": "https://github.com/szambaik/morzsa/actions/runs/43930673358",
+  "site": "https://szambaik.github.io/morzsa/?v=bbdf211",
+  "status": "deployed-and-verified",
+  "protection": {
+    "requiredCheck": "Audit regression gate",
+    "strict": true,
+    "enforceAdmins": true,
+    "allowForcePushes": false,
+    "allowDeletions": false
+  },
+  "scope": "Reviewed app baseline and seven UX fixes; unfinished proactive work retained only in original checkout; no Supabase changes deployed."
+}

@@ -1,0 +1,50 @@
+- banner:
+  - button "Beszélgetéstörténet": ☰
+  - link "Morzsa":
+    - /url: "#"
+    - text: morzsa
+  - button "Saját konyha · Konyhaváltás és meghívás": Saját konyha
+  - button "Új Morzsa-beszélgetés"
+- main:
+  - heading "Bevásárlólista" [level=1]
+  - text: 2 hátravan
+  - group: ···
+  - combobox "Új bevásárlótétel"
+  - button "Listára vétel": +
+  - heading "Jól jöhet a listádra" [level=2]
+  - text: Te választasz
+  - article:
+    - text: Jelzett készlet
+    - heading "Cukor" [level=3]
+    - checkbox "Cukor kiválasztása"
+    - text: Cukor kiválasztása
+    - paragraph: Elfogyottnak jelöltétek.
+    - button "Már megvan"
+    - group: ···
+  - button "Kijelöltek a listára · 0" [disabled]
+  - paragraph: A visszajelzést ebben a konyhában, ezen az eszközön jegyzem meg.
+  - group:
+    - text: Gyümölcsök 1 ›
+    - button "Alma · Megvettem"
+    - button "Alma · Szerkesztés":
+      - strong: Alma
+    - button "Alma · Mennyiség szerkesztése": 1 kg
+  - group:
+    - text: Sütés és édesség 1 ›
+    - button "Liszt · Megvettem"
+    - button "Liszt · Szerkesztés":
+      - strong: Liszt
+    - 'button "↳ Sonkás-gombás palacsintabatyu A recepthez: 180 g"'
+    - button "Liszt · Mennyiség szerkesztése": 180 g
+- navigation "Fő navigáció":
+  - button "Áttekintés"
+  - button "Lista 2"
+  - button "Morzsa"
+  - button "Készlet"
+  - button "Receptek"
+- status: Hozzávalók és receptkapcsolatok elmentve.
+- group "Vásárlási nézet":
+  - button "Boltban vagyok Nagy pipák, könnyű követés":
+    - strong: Boltban vagyok
+    - text: Nagy pipák, könnyű követés
+  - button "Kérdezz Morzsától"

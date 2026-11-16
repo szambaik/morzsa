@@ -1,0 +1,11 @@
+{
+  "copiedAt": "2026-11-16T19:07:10.087301+00:00",
+  "source": "/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/design-audit/performance",
+  "destination": "/Users/I769428/Documents/ChatGPT/Főzés/konyha-app/design-audit/performance",
+  "filesCopied": 291,
+  "bytesCopied": 42988065,
+  "allCopiedHashesMatch": true,
+  "originalCapturedFilesChangedDuringCopy": [],
+  "applicationFilesWritten": [],
+  "note": "Only the newly created design-audit/performance directory was written in the original checkout. The frozen worktree remains the benchmark source."
+}
