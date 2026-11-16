@@ -21,3 +21,8 @@ output/
 design-audit/preflight/
 design-audit/evidence/
 design-audit/runs/
+
+# New performance runs are retained locally; reviewed evidence is added explicitly.
+design-audit/performance/runs/
+design-audit/performance/database-runs/
+design-audit/performance/provider-runs/

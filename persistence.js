@@ -112,7 +112,7 @@ window.MorzsaPersistence=(()=>{
     // Do not abort an in-flight lock RPC: observe its result and release a granted lock.
     acquired=await rpc('begin_conversation_turn',{cid:id,tid:turn},current);
     if(!acquired)throw Error('Another device is answering');guard(current,generation);signal?.throwIfAborted();
-    await loadThread(id,false,true);guard(current,generation);signal?.throwIfAborted();turnAccounts.set(turn,current);return turn;
+    await loadThread(id,false,true);guard(current,generation);signal?.throwIfAborted();turnAccounts.set(turn,{account:current,generation});return turn;
    }catch(e){if(acquired)await rpc('end_conversation_turn',{cid:id,tid:turn},current).catch(()=>{});throw e}
   })();
   if(!signal)return work;
@@ -122,7 +122,11 @@ window.MorzsaPersistence=(()=>{
   });
  }
 
- function endTurn(id,turn){const account=turnAccounts.get(turn);turnAccounts.delete(turn);return account&&account===user&&valid()?rpc('end_conversation_turn',{cid:id,tid:turn},account).catch(()=>{}):Promise.resolve()}
+ function endTurn(id,turn){const owner=turnAccounts.get(turn);turnAccounts.delete(turn);return owner&&same(owner.account,owner.generation)?rpc('end_conversation_turn',{cid:id,tid:turn},owner.account).catch(()=>{}):Promise.resolve()}
+ async function finishTurn(id,turn){
+  const owner=turnAccounts.get(turn);
+  try{if(owner)await flush(owner.account,owner.generation)}finally{await endTurn(id,turn)}
+ }
  async function archiveShared(id,archived){await rpc('archive_shared_conversation',{cid:id,archived});await refresh()}
- return {archiveShared,beginTurn,endTurn,attach,detach,capture,flush,refresh,loadThread,ensureRecipe,queuePhoto,share,fork,remove,more:()=>more,moreHistory:async()=>{indexPages++;await refresh()},retry:()=>{issue='';refresh().then(()=>flush())},status:()=>issue||(!ready?'loading':Object.keys(queue).length?'pending':'synced')};
+ return {archiveShared,beginTurn,endTurn,finishTurn,attach,detach,capture,flush,refresh,loadThread,ensureRecipe,queuePhoto,share,fork,remove,more:()=>more,moreHistory:async()=>{indexPages++;await refresh()},retry:()=>{issue='';refresh().then(()=>flush())},status:()=>issue||(!ready?'loading':Object.keys(queue).length?'pending':'synced')};
 })();

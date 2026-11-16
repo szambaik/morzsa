@@ -32,7 +32,9 @@ jobs:
       - run: npm --prefix design-audit test
       - run: npx --prefix design-audit playwright install --with-deps chromium
       - run: node design-audit/check-release.mjs
+      - run: node design-audit/performance/runner.mjs regression
       - run: npm run build:web
+      - run: node design-audit/verify-web-build.mjs
       - name: Record verified release revision
         run: node -e "require('fs').writeFileSync('web-dist/version.json', JSON.stringify({commit:process.env.GITHUB_SHA,run:process.env.GITHUB_RUN_ID,audit:'passed'})+'\n')"
       - uses: actions/upload-pages-artifact@v3
@@ -43,7 +45,9 @@ jobs:
         if: always()
         with:
           name: audit-evidence-${{ github.run_id }}
-          path: design-audit/runs
+          path: |
+            design-audit/runs
+            design-audit/performance/runs
           retention-days: 14
   deploy:
     name: Deploy verified web app

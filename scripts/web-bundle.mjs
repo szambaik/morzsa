@@ -4,6 +4,7 @@ import path from 'node:path';
 import {transform} from 'esbuild';
 
 // Classic scripts share globals with inline handlers. Preserve names and order.
+// With no output format, esbuild preserves top-level identifiers used by the app.
 // This web-only step does not change the native bridge or native packaging.
 export async function bundleWebRuntime(root,dest,html){
  const scripts=[...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)],sources=[];
@@ -14,7 +15,7 @@ export async function bundleWebRuntime(root,dest,html){
   else sources.push(inline);
  }
  const source=sources.join('\n;\n');
- const js=await transform(source,{loader:'js',target:['safari15','chrome100'],minifyWhitespace:true,minifySyntax:true,minifyIdentifiers:false,legalComments:'none'});
+ const js=await transform(source,{loader:'js',target:['safari15','chrome100'],minifyWhitespace:true,minifySyntax:true,minifyIdentifiers:true,legalComments:'none'});
  const links=[...html.matchAll(/<link\b[^>]*rel="stylesheet"[^>]*>/g)],styles=[];
  for(const [tag] of links){const file=tag.match(/href="([^"?]+)/)?.[1];if(!file||!/^[\w-]+\.css$/.test(file))throw Error('Unexpected web stylesheet');styles.push(await readFile(path.join(root,file),'utf8'))}
  const css=await transform(styles.join('\n'),{loader:'css',target:['safari15','chrome100'],minify:true,legalComments:'none'});
