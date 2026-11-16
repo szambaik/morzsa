@@ -1,5 +1,6 @@
 window.MorzsaPersistence=(()=>{
  const M=PersistenceModel,read=k=>{try{return JSON.parse(localStorage.getItem(k))}catch{return null}},say=(hu,en)=>language==='en'?en:hu;
+ let refreshDeferred=false,lastIndexRefresh=0;
  let user='',book=null,callbacks={},epoch=0,ready=false,running=false,refreshing=false,queue={},timer,refreshTimer,live,issue='',indexPages=1,more=false;
  const signedPhotos=new Map(),knownMeta=new Map(),knownMessages=new Map(),recipeIds=new Map(),media=new Map(),turnAccounts=new Map();
  const valid=()=>user&&user===household?.userId();
@@ -26,11 +27,11 @@ window.MorzsaPersistence=(()=>{
  function attach(value,handlers){
   callbacks=handlers;const next=household?.userId();if(!M.uuid(next)||!household?.dataRpc)return false;
   if(next===user){book=value;return true}
-  live?.close();clearTimeout(timer);clearTimeout(refreshTimer);user=next;epoch++;ready=false;running=false;refreshing=false;issue='';indexPages=1;knownMeta.clear();knownMessages.clear();recipeIds.clear();media.clear();signedPhotos.clear();book=value;queue=read(outboxKey())||{};
+  live?.close();clearTimeout(timer);clearTimeout(refreshTimer);refreshDeferred=false;lastIndexRefresh=0;user=next;epoch++;ready=false;running=false;refreshing=false;issue='';indexPages=1;knownMeta.clear();knownMessages.clear();recipeIds.clear();media.clear();signedPhotos.clear();book=value;queue=read(outboxKey())||{};
   const current=user,generation=epoch;refresh(true).then(()=>{guard(current,generation);return importOld()}).then(()=>{guard(current,generation);return flush(current,generation)}).catch(()=>{if(same(current,generation)){issue='failed';status()}});
   live=household.subscribeData?.(()=>scheduleRefresh());status();return true;
  }
- function detach(){live?.close();clearTimeout(timer);clearTimeout(refreshTimer);user='';epoch++;book=null;queue={};ready=false;running=false;refreshing=false;status()}
+ function detach(){live?.close();clearTimeout(timer);clearTimeout(refreshTimer);refreshDeferred=false;lastIndexRefresh=0;user='';epoch++;book=null;queue={};ready=false;running=false;refreshing=false;status()}
  function capture(value){
   if(!valid())return;book=value;book.cloud=true;
   for(const t of value.threads){if(t.readOnly||!ready&&!t.revision&&!t.messages.length&&!t.recipe)continue;if(!M.uuid(t.id))t.id=crypto.randomUUID();for(const m of t.messages||[])if(!M.uuid(m.id))m.id=crypto.randomUUID();
@@ -50,7 +51,7 @@ window.MorzsaPersistence=(()=>{
  async function flush(current=user,generation=epoch){
   if(!same(current,generation))return;
   if(running){await new Promise(resolve=>setTimeout(resolve,100));return flush(current,generation)}
-  if(!ready)return;running=true;const run=async(name,args)=>{guard(current,generation);const result=await rpc(name,args,current);guard(current,generation);return result};
+  if(!ready||!Object.keys(queue).length)return;running=true;const run=async(name,args)=>{guard(current,generation);const result=await rpc(name,args,current);guard(current,generation);return result};
   try{
    for(const [id,original] of Object.entries(queue)){
     if(!valid()||current!==user||generation!==epoch)return;const job=structuredClone(original),refs=new Set();
@@ -75,7 +76,7 @@ window.MorzsaPersistence=(()=>{
   finally{if(current===user&&generation===epoch){running=false;if(!issue&&Object.keys(queue).length)timer=setTimeout(flush,500)}}
  }
  async function loadThread(id,older=false,force=false){
-  if(!valid())return;const generation=epoch,current=user,t=book.threads.find(t=>t.id===id);if(!t)return;
+  if(!valid())return;const generation=epoch,current=user,t=book.threads.find(t=>t.id===id);if(!t||!t.revision&&!force)return;
   const result=await rpc('conversation_page',{cid:id,before_seq:older?t.before:null});if(!same(current,generation)||book.threads.find(x=>x.id===id)!==t||!force&&callbacks.safe?.()===false)return;
   const previous=JSON.stringify(t);const msgs=result.messages.map(r=>({...r.body,id:r.id,sequence:r.sequence}));msgs.forEach(m=>knownMessages.set(m.id,JSON.stringify(M.message(m))));
   t.messages=M.mergeMessages(msgs,t.messages||[],queue[id]?.items||[]);t.loaded=true;if(older||!t.before){t.before=result.before;t.hasOlder=result.hasOlder}
@@ -83,25 +84,44 @@ window.MorzsaPersistence=(()=>{
   if(previous!==JSON.stringify(t))changed();
  }
  async function refresh(initial=false){
-  if(!valid()||refreshing||!initial&&!callbacks.safe?.())return;refreshing=true;const generation=epoch,current=user;
+  if(!valid())return;if(refreshing||!initial&&!callbacks.safe?.()){refreshDeferred=true;return}refreshDeferred=false;refreshing=true;const generation=epoch,current=user;
   try{const rows=[];for(let n=0;n<indexPages;n++){const part=await rpc('conversation_index',{page_offset:n*100});rows.push(...part);more=part.length===100;if(!more)break}
    if(!same(current,generation)||!initial&&callbacks.safe?.()===false)return;const prior=JSON.stringify(book),local=new Map(book.threads.map(t=>[t.id,t])),next=[];
    for(const row of rows){const old=local.get(row.id),meta=queue[row.id]?M.mergeMetadata(row.metadata,queue[row.id].meta,queue[row.id].base):row.metadata;knownMeta.set(row.id,JSON.stringify(row.metadata));next.push({...meta,id:row.id,revision:row.revision,readOnly:!row.owner,sharedHousehold:row.sharedHousehold,messages:old?.messages||[],loaded:old?.loaded||false,before:old?.before,hasOlder:old?.hasOlder});local.delete(row.id)}
    for(const t of local.values()){if(t.revision&&!more){delete queue[t.id];knownMeta.delete(t.id);for(const m of t.messages||[])knownMessages.delete(m.id);continue}if(!t.readOnly&&(queue[t.id]||!t.revision&&(t.messages.length||!next.length)||more))next.push(t)}saveQueue();
    book.threads=next;if(!next.some(t=>t.id===book.active))book.active=next.find(t=>!t.readOnly&&(t.title||t.recipe))?.id||next.find(t=>!t.readOnly)?.id||next[0]?.id;
-   ready=true;issue='';if(prior!==JSON.stringify(book))changed();else status();
+   ready=true;issue='';lastIndexRefresh=Date.now();if(prior!==JSON.stringify(book))changed();else status();
    if(book.active&&(!initial||!book.threads.find(t=>t.id===book.active)?.loaded))await loadThread(book.active);
   }catch(e){if(generation===epoch){issue='failed';status()}}finally{if(generation===epoch)refreshing=false}
  }
- function scheduleRefresh(){clearTimeout(refreshTimer);refreshTimer=setTimeout(()=>refresh(),350)}
+ function scheduleRefresh(){refreshDeferred=true;clearTimeout(refreshTimer);refreshTimer=setTimeout(()=>refresh(),350)}
  function queuePhoto(id,image){media.set(id,image)}
  async function share(id,hid){const current=user,generation=epoch;await flush();if(generation!==epoch)throw Error('Account changed');if(queue[id])throw Error('Sync pending');await rpc('share_conversation',{cid:id,hid},current);await refresh()}
  async function fork(t){const current=user,generation=epoch;while(t.hasOlder){await loadThread(t.id,true);guard(current,generation);t=book.threads.find(x=>x.id===t.id);if(!t)throw Error('Conversation access denied')}const copy=structuredClone(t);copy.id=crypto.randomUUID();copy.readOnly=false;copy.sharedHousehold=null;copy.revision=0;delete copy.parentId;copy.kind=t.kind==='recipe'?'recipe':'chat';const cloned=new Map(),clone=async r=>{if(!r.recipeId)return r;if(!cloned.has(r.recipeId))cloned.set(r.recipeId,await rpc('clone_recipe_document',{rid:r.recipeId,new_id:crypto.randomUUID()},current));return {...r,recipeId:cloned.get(r.recipeId)}};copy.messages=await Promise.all(copy.messages.map(async m=>({...m,id:crypto.randomUUID(),sequence:undefined,photo:undefined,photoPath:undefined,recipes:await Promise.all(m.recipes.map(clone))})));if(copy.recipe)copy.recipe=await clone(copy.recipe);if(generation!==epoch)throw Error('Account changed');book.threads.unshift(copy);book.active=copy.id;capture(book);changed();return copy.id}
  async function remove(id){const generation=epoch;await rpc('delete_conversation',{cid:id});if(generation!==epoch)return;delete queue[id];book.threads=book.threads.filter(t=>t.id!==id);book.active=book.threads.find(t=>!t.readOnly)?.id;saveQueue();changed()}
  window.addEventListener('online',()=>{refresh().then(()=>flush())});document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh().then(()=>flush())});
- document.addEventListener('focusout',scheduleRefresh);
- setInterval(()=>{if(!document.hidden&&valid()){if(!running)refresh().then(()=>flush())}},15000);
- async function beginTurn(id){const current=user,generation=epoch;await flush(current,generation);guard(current,generation);if(queue[id]||!ready)throw Error('History sync pending');const turn=crypto.randomUUID();if(!await rpc('begin_conversation_turn',{cid:id,tid:turn},current))throw Error('Another device is answering');guard(current,generation);try{await loadThread(id,false,true);guard(current,generation);turnAccounts.set(turn,current);return turn}catch(e){await rpc('end_conversation_turn',{cid:id,tid:turn},current).catch(()=>{});throw e}}
+ document.addEventListener('focusout',()=>{if(refreshDeferred)scheduleRefresh()});
+ setInterval(()=>{if(!document.hidden&&valid()){if(!running){if(refreshDeferred||!live?.healthy?.()||Date.now()-lastIndexRefresh>=60000)refresh().then(()=>flush());else flush()}}},15000);
+ async function beginTurn(id,{signal}={}){
+  const current=user,generation=epoch;
+  const work=(async()=>{
+   await flush(current,generation);guard(current,generation);signal?.throwIfAborted();
+   if(queue[id]||!ready)throw Error('History sync pending');
+   const turn=crypto.randomUUID();let acquired=false;
+   try{
+    // Do not abort an in-flight lock RPC: observe its result and release a granted lock.
+    acquired=await rpc('begin_conversation_turn',{cid:id,tid:turn},current);
+    if(!acquired)throw Error('Another device is answering');guard(current,generation);signal?.throwIfAborted();
+    await loadThread(id,false,true);guard(current,generation);signal?.throwIfAborted();turnAccounts.set(turn,current);return turn;
+   }catch(e){if(acquired)await rpc('end_conversation_turn',{cid:id,tid:turn},current).catch(()=>{});throw e}
+  })();
+  if(!signal)return work;
+  return new Promise((resolve,reject)=>{
+   const cancel=()=>reject(signal.reason);signal.addEventListener('abort',cancel,{once:true});if(signal.aborted)cancel();
+   work.then(turn=>{signal.removeEventListener('abort',cancel);if(signal.aborted){endTurn(id,turn);reject(signal.reason)}else resolve(turn)},error=>{signal.removeEventListener('abort',cancel);reject(error)});
+  });
+ }
+
  function endTurn(id,turn){const account=turnAccounts.get(turn);turnAccounts.delete(turn);return account&&account===user&&valid()?rpc('end_conversation_turn',{cid:id,tid:turn},account).catch(()=>{}):Promise.resolve()}
  async function archiveShared(id,archived){await rpc('archive_shared_conversation',{cid:id,archived});await refresh()}
  return {archiveShared,beginTurn,endTurn,attach,detach,capture,flush,refresh,loadThread,ensureRecipe,queuePhoto,share,fork,remove,more:()=>more,moreHistory:async()=>{indexPages++;await refresh()},retry:()=>{issue='';refresh().then(()=>flush())},status:()=>issue||(!ready?'loading':Object.keys(queue).length?'pending':'synced')};

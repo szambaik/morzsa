@@ -126,6 +126,6 @@ window.ShoppingMode=(()=>{
  }catch{if(currentScope===current())toast(say('A vásárlás megmaradt. Szinkronizálj, és próbáld újra a befejezést.','Shopping progress is kept. Sync and retry completion.'));return false}finally{busy=false}}
  function viewport(){const v=window.visualViewport;document.documentElement.style.setProperty('--shopping-keyboard',(v?Math.max(0,innerHeight-v.height-v.offsetTop):0)+'px')}window.visualViewport?.addEventListener('resize',viewport);window.visualViewport?.addEventListener('scroll',viewport);
  window.addEventListener('resize',positionFeedback);window.visualViewport?.addEventListener('resize',positionFeedback);window.visualViewport?.addEventListener('scroll',positionFeedback);
- window.addEventListener('morzsa-auth-change',()=>{sync();refresh();updateWake()});document.addEventListener('visibilitychange',updateWake);window.addEventListener('online',refresh);window.addEventListener('morzsa-resume',refresh);setInterval(()=>{if(!document.hidden)refresh()},20000);
+ window.addEventListener('morzsa-auth-change',()=>{sync();refresh();updateWake()});document.addEventListener('visibilitychange',updateWake);window.addEventListener('online',refresh);window.addEventListener('morzsa-resume',refresh);setInterval(()=>{if(!document.hidden&&!household?.realtimeHealthy?.())refresh()},20000);
  return {render:renderMode,normal,positionFeedback,refresh,start,remove,editItem,toggle:setPurchased,summary:()=>M.summary(state,active),finish,active:()=>{sync();return !!active},visible:()=>{sync();return visible}};
 })();

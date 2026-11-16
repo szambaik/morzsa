@@ -1,6 +1,11 @@
 // Recipe images are fetched independently; no image state enters saved chat data.
 window.RecipeImages=(()=>{
- const entries=new Map(),auto=new Set(),autoCreated=new Set();let queue=Promise.resolve();
+ const entries=new Map(),auto=new Set(),autoCreated=new Set(),mounted=new WeakMap();let queue=Promise.resolve(),reads=0;const waitingReads=[];
+ // Cache reads must not queue behind generation. Keep at most four reads in flight.
+ async function read(work){if(reads>=4)await new Promise(resolve=>waitingReads.push(resolve));else reads++;try{return await work()}finally{const next=waitingReads.shift();if(next)next();else reads--}}
+ function prune(){for(const [id,entry] of entries){if(entry.views?.size||entry.status==='loading')continue;if(entry.expiresAt<Date.now()||entries.size>128){entries.delete(id);auto.delete(id);autoCreated.delete(id)}}}
+ // One observer disposes detached mounts, including offscreen IntersectionObservers.
+ if(typeof MutationObserver!=='undefined')new MutationObserver(records=>{for(const record of records)for(const node of record.removedNodes){if(node.isConnected)continue;mounted.get(node)?.();for(const host of node.querySelectorAll?.('.generated-recipe-image')||[])if(!host.isConnected)mounted.get(host)?.()}prune()}).observe(document.documentElement,{childList:true,subtree:true});
  const scope=()=>household?.userId()+'|'+(household?.active||'local')+'|'+(window.AIMode?.get()||'free');
  const key=(r,step)=>scope()+'|'+JSON.stringify({title:r.title,summary:r.summary,minutes:r.minutes,...(r.servings!==undefined?{servings:r.servings}:{}),...(r.equipment?{equipment:r.equipment}:{}),ingredients:r.ingredients.map(i=>({name:i.name,amount:i.amount})),steps:r.steps})+'|'+step;
  const say=(hu,en)=>language==='en'?en:hu;
@@ -23,10 +28,11 @@ window.RecipeImages=(()=>{
  function enqueue(recipes){for(const r of recipes||[])auto.add(key(r,-1))}
  function mount(host,recipe,step=-1,options={}){
   if(!host||(!household?.userId()&&!recipe.recipeId)||!household.recipeImage)return;
+  mounted.get(host)?.();
   const id=key(recipe,step);let entry=entries.get(id);if(!entry||entry.expiresAt&&entry.expiresAt<Date.now()){entry={status:'new'};entries.set(id,entry)}
-  let autoAttempted=false,visible=false;const live=()=>host.isConnected&&key(recipe,step)===id;
+  let autoAttempted=false,visible=false,observer=null,disposed=false;const dispose=()=>{if(disposed)return;disposed=true;observer?.disconnect();entry.views?.delete(host);mounted.delete(host)};mounted.set(host,dispose);const live=()=>!disposed&&host.isConnected&&key(recipe,step)===id;
   const paint=()=>{
-   if(!live()){entry.views?.delete(host);return}host.replaceChildren();host.className=[...new Set((host.className||'').split(/\s+/).filter(Boolean).concat('generated-recipe-image'))].join(' ');host.dataset.imageStatus=entry.status;
+   if(!live()){dispose();return}host.replaceChildren();host.className=[...new Set((host.className||'').split(/\s+/).filter(Boolean).concat('generated-recipe-image'))].join(' ');host.dataset.imageStatus=entry.status;
    // A cache-only lookup may finish after the cooking hero was mounted.
    if(entry.status==='missing'&&visible&&options.autoCreate&&!autoAttempted&&!autoCreated.has(id)){autoAttempted=true;autoCreated.add(id);load(true);return}
    if(entry.status==='ready'){
@@ -63,12 +69,13 @@ window.RecipeImages=(()=>{
     }
     refresh();
    };
-   queue=queue.then(work,work);await queue;
+   if(create){queue=queue.then(work,work);await queue}else await read(work);
   }
   paint();
   if(entry.status!=='ready'&&!options.cacheOnly||entry.status==='new'){
-   const observer=new IntersectionObserver(items=>{if(items.some(i=>i.isIntersecting)){observer.disconnect();if(!live()||entry.views.get(host)!==paint)return;visible=true;const queued=auto.delete(id),create=!options.cacheOnly&&(queued||options.autoCreate===true)&&!autoCreated.has(id);if(entry.status==='new'||entry.status==='missing'){if(create)autoCreated.add(id);load(create)}else paint()}},{rootMargin:'100px'});observer.observe(host);
+   observer=new IntersectionObserver(items=>{if(items.some(i=>i.isIntersecting)){observer.disconnect();if(!live()||entry.views.get(host)!==paint)return;visible=true;const queued=auto.delete(id),create=!options.cacheOnly&&(queued||options.autoCreate===true)&&!autoCreated.has(id);if(entry.status==='new'||entry.status==='missing'){if(create)autoCreated.add(id);load(create)}else paint()}},{rootMargin:'100px'});observer.observe(host);
   }
+  prune();return dispose;
  }
  async function cachedCover(recipe){
   const id=key(recipe,-1),entry=entries.get(id);if(entry?.status!=='ready'||entry.expiresAt<Date.now())return '';
