@@ -1,0 +1,75 @@
+- banner:
+  - button "Beszélgetéstörténet": ☰
+  - link "Morzsa":
+    - /url: "#"
+    - text: morzsa
+  - button "Audit kitchen · Konyhaváltás és meghívás": Audit kitchen
+  - button "Új Morzsa-beszélgetés"
+- status: Mentés…
+- main:
+  - paragraph: Konyhánk
+  - heading "Mi van otthon?" [level=1]
+  - group
+  - paragraph: Egy jó emlékeztető. Mennyiséget csak akkor írj, ha segít.
+  - button "Gyors feltöltés Diktálás és alapcsomagok"
+  - button "Van otthon"
+  - button "Kevés"
+  - button "Elfogyott"
+  - button "Mind" [pressed]
+  - text: 12 alapanyag
+  - searchbox "Keresés az alapanyagok között": Rizs
+  - button "Készlethez adás"
+  - status: Keresés minden alapanyag között.
+  - 'button "Rizs: részletek és listára vétel"': Rizs Nincs jelölve
+  - button "Rizs · Listára teszem"
+  - button "Rizs · Van otthon"
+  - 'button "Jázminrizs: részletek és listára vétel"': Jázminrizs Nincs jelölve
+  - button "Jázminrizs · Listára teszem"
+  - button "Jázminrizs · Van otthon"
+  - 'button "Párizsi: részletek és listára vétel"': Párizsi Nincs jelölve
+  - button "Párizsi · Listára teszem"
+  - button "Párizsi · Van otthon"
+  - 'button "Basmati rizs: részletek és listára vétel"': Basmati rizs Nincs jelölve
+  - button "Basmati rizs · Listára teszem"
+  - button "Basmati rizs · Van otthon"
+  - 'button "Barna rizs: részletek és listára vétel"': Barna rizs Nincs jelölve
+  - button "Barna rizs · Listára teszem"
+  - button "Barna rizs · Van otthon"
+  - 'button "Rizottórizs: részletek és listára vétel"': Rizottórizs Nincs jelölve
+  - button "Rizottórizs · Listára teszem"
+  - button "Rizottórizs · Van otthon"
+  - 'button "Rizstészta: részletek és listára vétel"': Rizstészta Nincs jelölve
+  - button "Rizstészta · Listára teszem"
+  - button "Rizstészta · Van otthon"
+  - 'button "Rizsecet: részletek és listára vétel"': Rizsecet Nincs jelölve
+  - button "Rizsecet · Listára teszem"
+  - button "Rizsecet · Van otthon"
+  - 'button "Rizsszelet: részletek és listára vétel"': Rizsszelet Nincs jelölve
+  - button "Rizsszelet · Listára teszem"
+  - button "Rizsszelet · Van otthon"
+  - 'button "Rizsliszt: részletek és listára vétel"': Rizsliszt Nincs jelölve
+  - button "Rizsliszt · Listára teszem"
+  - button "Rizsliszt · Van otthon"
+  - 'button "Rizsital: részletek és listára vétel"': Rizsital Nincs jelölve
+  - button "Rizsital · Listára teszem"
+  - button "Rizsital · Van otthon"
+  - 'button "Kész rizses étel: részletek és listára vétel"': Kész rizses étel Nincs jelölve
+  - button "Kész rizses étel · Listára teszem"
+  - button "Kész rizses étel · Van otthon"
+- navigation "Fő navigáció":
+  - button "Áttekintés"
+  - button "Lista 4"
+  - button "Morzsa"
+  - button "Készlet"
+  - button "Receptek"
+- status
+- group "Gyors műveletek":
+  - button "Kérdezz Morzsától"
+- dialog "Rizs":
+  - button "Bezárás" [disabled]: ×
+  - heading "Rizs" [level=2]
+  - paragraph: Mi a helyzet vele otthon?
+  - button "Van otthon" [disabled]
+  - button "Kevés" [disabled]
+  - button "Elfogyott" [disabled]
+  - button "Bevásárlólistára teszem" [disabled]

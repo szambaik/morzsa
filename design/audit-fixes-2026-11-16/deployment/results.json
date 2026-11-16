@@ -1,0 +1,98 @@
+{
+  "version": {
+    "commit": "bbdf2115ed7c24aeb79b1a78439e99d28d07ed5a",
+    "run": "43930673358",
+    "audit": "passed"
+  },
+  "hashes": [
+    {
+      "file": "index.html",
+      "sha256": "0f2f12d8e86c8bb13c941d83083c4ff39c58f459b8ba596c6d9931ab03ce91aa"
+    },
+    {
+      "file": "household-model.js",
+      "sha256": "1cdbf3b0e752ca6376d62a4ae7b6a170c3c1a93b63d63f52ade84c13f33de028"
+    },
+    {
+      "file": "household.js",
+      "sha256": "69fbcbbff6b6c3058cc9c01c4fcda9f5a3101d1dcf08587b219f3968880fc4b0"
+    },
+    {
+      "file": "shopping-mode-ui.js",
+      "sha256": "7dd6836d738363fbba71a2513e4a7592fa088e38c1b9223762c9003d57f0d43b"
+    },
+    {
+      "file": "pantry-library.js",
+      "sha256": "cdb03c99becb49ad44d34f10ba39d9d0df6eabd585fbc3d72027c9b450d933c7"
+    },
+    {
+      "file": "companion-ui.js",
+      "sha256": "83d4a0ba72d5b96a5f77a0d23dc2887e5d431da258cc5c34d1ff2f16eb7bf0a4"
+    },
+    {
+      "file": "voice-ui.js",
+      "sha256": "1b16ccabacb3b3b5149bf9e44abcfb0df78b95da8497b70e935b416a280b374a"
+    },
+    {
+      "file": "workspace-ui.js",
+      "sha256": "ef5eb6cdd009c9327077ec54f070af0dd26e42858155404ce95414460a0bf98f"
+    },
+    {
+      "file": "workspace.css",
+      "sha256": "28410df631c97236bcf5f639d6834a31d81df4c951f30ab9794cb0e8f05161d3"
+    }
+  ],
+  "checks": [
+    {
+      "view": "chat",
+      "width": 320,
+      "overflow": false
+    },
+    {
+      "view": "pantry",
+      "width": 320,
+      "overflow": false
+    },
+    {
+      "view": "shopping",
+      "width": 320,
+      "overflow": false
+    },
+    {
+      "view": "chat",
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "view": "pantry",
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "view": "shopping",
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "view": "chat",
+      "width": 1280,
+      "overflow": false
+    },
+    {
+      "view": "pantry",
+      "width": 1280,
+      "overflow": false
+    },
+    {
+      "view": "shopping",
+      "width": 1280,
+      "overflow": false
+    },
+    {
+      "searchScope": "all",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "limits": "Fresh guest browser; production APIs and WebSockets blocked; no live user or household data changed."
+}

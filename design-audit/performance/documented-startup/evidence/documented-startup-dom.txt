@@ -1,0 +1,24 @@
+- banner:
+  - button "Beszélgetéstörténet": ☰
+  - link "Morzsa":
+    - /url: "#"
+    - text: morzsa
+  - button "Saját konyha · Konyhaváltás és meghívás": Saját konyha
+  - button "Új Morzsa-beszélgetés"
+- main:
+  - text: Morzsa bemutató
+  - button "Később"
+  - text: 1 / 4
+  - heading "Szia, én Morzsa vagyok!" [level=1]
+  - paragraph: Kuktád a „mit főzzek?” kérdéstől az utolsó falatig.
+  - group "Language / Nyelv":
+    - button "Magyar" [pressed]
+    - button "English"
+  - text: „Ketten vacsorázunk, 20 percem van. Mit főzzek?”
+  - list:
+    - listitem: Írj úgy, ahogy egy barátnak kérdeznél. Új témához indíts új beszélgetést.
+    - listitem: Plus módban oda-vissza beszélgethetünk is.
+    - listitem: A korábbi beszélgetéseket a bal oldali menüben találod. Mobilon jobbra húzással is előhívhatod.
+  - button "Tovább"
+  - button "Már ismerem, feltöltöm a készletet"
+- status

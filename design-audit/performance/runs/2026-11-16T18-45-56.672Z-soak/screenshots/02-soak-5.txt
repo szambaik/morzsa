@@ -1,0 +1,44 @@
+- banner:
+  - button "Beszélgetéstörténet": ☰
+  - link "Morzsa":
+    - /url: "#"
+    - text: morzsa
+  - button "Audit kitchen · Konyhaváltás és meghívás": Audit kitchen
+  - button "Új Morzsa-beszélgetés"
+- main:
+  - heading "Jó itthon." [level=1]
+  - paragraph: A konyhátok, egy pillantással.
+  - button "3 Otthon van":
+    - strong: "3"
+    - text: Otthon van
+  - button "0 Kevés / elfogyott":
+    - strong: "0"
+    - text: Kevés / elfogyott
+  - button "0 Bevásárlólistán":
+    - strong: "0"
+    - text: Bevásárlólistán
+  - paragraph: Egy lépéssel előrébb
+  - heading "Morzsa figyel" [level=2]
+  - heading "Morzsa ajánlja" [level=2]
+  - article:
+    - text: 30 perc
+    - heading "Zöldséges pirított rizs" [level=3]
+    - paragraph: 1/7 hozzávaló megerősítve
+    - paragraph: "Felhasználhatod: Tojás."
+    - paragraph: "Nincs otthon jelölve: Rizs, Zöldségkeverék, Hagyma…"
+    - button "Megnézem a receptet →"
+    - group: ···
+  - paragraph: A visszajelzést a közös konyha megjegyzi.
+  - button "Tervezd meg a hetet Kevesebb főzés, egy közös bevásárlólista.":
+    - strong: Tervezd meg a hetet
+    - text: Kevesebb főzés, egy közös bevásárlólista.
+  - button "Főzzünk abból, ami otthon van Nézd meg a receptötleteket. →":
+    - strong: Főzzünk abból, ami otthon van
+    - text: Nézd meg a receptötleteket. →
+- navigation "Fő navigáció":
+  - button "Áttekintés"
+  - button "Lista"
+  - button "Morzsa"
+  - button "Készlet"
+  - button "Receptek"
+- status

@@ -1,0 +1,5 @@
+2026-11-16T18:43:28.954Z FATAL locator.click: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for locator('[data-pantry-details="Tojás"]')[22m
+
+2026-11-16T18:43:30.791Z AUDIT_RUN=/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/design-audit/performance/runs/2026-11-16T18-42-53.064Z-soak

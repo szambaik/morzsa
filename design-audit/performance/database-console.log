@@ -1,0 +1,123 @@
+DATABASE_RUN=/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/design-audit/performance/database-runs/2026-11-16T18-35-45.869Z
+[
+  {
+    "label": "conversation_index_100",
+    "min": 1.7999589999999444,
+    "max": 3.8801670000000286,
+    "bytes": 8017
+  },
+  {
+    "label": "conversation_inner_100",
+    "min": 0.884708000000046,
+    "max": 1.4414170000000013,
+    "bytes": 2301
+  },
+  {
+    "label": "owner_index_diagnostic_100",
+    "min": 0.22070799999994506,
+    "max": 0.41804100000001654,
+    "bytes": 2301
+  },
+  {
+    "label": "conversation_index_1000",
+    "min": 6.210332999999991,
+    "max": 7.624374999999986,
+    "bytes": 8017
+  },
+  {
+    "label": "conversation_inner_1000",
+    "min": 5.498291999999992,
+    "max": 5.836125000000038,
+    "bytes": 2301
+  },
+  {
+    "label": "owner_index_diagnostic_1000",
+    "min": 0.17858400000000074,
+    "max": 0.22479099999998198,
+    "bytes": 2301
+  },
+  {
+    "label": "conversation_index_5000",
+    "min": 26.86404099999993,
+    "max": 27.827750000000037,
+    "bytes": 8017
+  },
+  {
+    "label": "conversation_inner_5000",
+    "min": 25.969083999999953,
+    "max": 26.86654199999998,
+    "bytes": 2301
+  },
+  {
+    "label": "owner_index_diagnostic_5000",
+    "min": 0.18208400000003166,
+    "max": 0.4721670000001268,
+    "bytes": 2301
+  },
+  {
+    "label": "conversation_page_10000",
+    "min": 0.4155829999999696,
+    "max": 1.8501249999999345,
+    "bytes": 5920
+  },
+  {
+    "label": "conversation_page_inner_10000",
+    "min": 0.33637500000008913,
+    "max": 0.5497499999999036,
+    "bytes": 10703
+  },
+  {
+    "label": "household_records_rls_100",
+    "min": 0.7299160000000029,
+    "max": 1.1626669999998285,
+    "bytes": 7251
+  },
+  {
+    "label": "household_records_rls_1000",
+    "min": 5.923375000000078,
+    "max": 6.5490839999999935,
+    "bytes": 72501
+  },
+  {
+    "label": "household_records_rls_5000",
+    "min": 5.839334000000008,
+    "max": 6.427124999999933,
+    "bytes": 72501
+  },
+  {
+    "label": "recipe_feed_31",
+    "min": 0.5164170000000468,
+    "max": 1.0420419999998103,
+    "bytes": 10577
+  },
+  {
+    "label": "recipe_search_31",
+    "min": 0.22212500000000546,
+    "max": 0.769207999999935,
+    "bytes": 20
+  },
+  {
+    "label": "recipe_feed_1000",
+    "min": 0.7892919999999322,
+    "max": 1.2114579999999933,
+    "bytes": 10577
+  },
+  {
+    "label": "recipe_search_1000",
+    "min": 0.7885420000000067,
+    "max": 1.1227910000000065,
+    "bytes": 20
+  },
+  {
+    "label": "recipe_feed_5000",
+    "min": 1.6875829999999041,
+    "max": 2.5772920000001704,
+    "bytes": 10577
+  },
+  {
+    "label": "recipe_search_5000",
+    "min": 2.6292920000000777,
+    "max": 2.839375000000018,
+    "bytes": 614
+  }
+]

@@ -1,0 +1,31 @@
+- banner:
+  - button "Beszélgetéstörténet": ☰
+  - link "Morzsa":
+    - /url: "#"
+    - text: morzsa
+  - button "Saját konyha · Konyhaváltás és meghívás": Saját konyha
+  - button "Új Morzsa-beszélgetés"
+- main:
+  - text: Sikertelen audit kérdés
+  - article:
+    - paragraph: Sikertelen audit kérdés
+  - alert:
+    - paragraph: Az AI-szolgáltatás most túlterhelt. Próbáld újra kicsit később.
+    - button "Újrapróbálom"
+  - button "Fotó csatolása"
+  - textbox "Üzenet Morzsának":
+    - /placeholder: Kérdezz…
+  - button "Kérdezés hanggal"
+  - button "Küldés"
+  - text: AI mód
+  - combobox "AI mód":
+    - option "Morzsa Plus"
+    - option "Ingyenes" [selected]
+  - text: A változtatásokat mentés előtt átnézheted.
+- navigation "Fő navigáció":
+  - button "Áttekintés"
+  - button "Lista 2"
+  - button "Morzsa"
+  - button "Készlet"
+  - button "Receptek"
+- status: Hozzávalók és receptkapcsolatok elmentve.

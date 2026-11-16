@@ -1,0 +1,32 @@
+- banner:
+  - button "Beszélgetéstörténet": ☰
+  - link "Morzsa":
+    - /url: "#"
+    - text: morzsa
+  - button "Audit kitchen · Konyhaváltás és meghívás": Audit kitchen
+  - button "Új Morzsa-beszélgetés"
+- main:
+  - text: Morzsa · a kuktád Ma
+  - article:
+    - paragraph: Kérlek tedd a borsot a listára. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus. Ez egy szintetikus, hosszabb kontextus.
+  - article:
+    - text: Morzsa
+    - paragraph: Borsot javaslok a listára.
+    - text: Elmentve. Bors · Listára · 1 csomag
+  - button "Fotó csatolása"
+  - textbox "Üzenet Morzsának":
+    - /placeholder: Kérdezz…
+  - button "Kérdezés hanggal"
+  - button "Küldés"
+  - text: AI mód
+  - combobox "AI mód":
+    - option "Morzsa Plus"
+    - option "Ingyenes" [selected]
+  - text: A változtatásokat mentés előtt átnézheted.
+- navigation "Fő navigáció":
+  - button "Áttekintés"
+  - button "Lista 1"
+  - button "Morzsa"
+  - button "Készlet"
+  - button "Receptek"
+- status

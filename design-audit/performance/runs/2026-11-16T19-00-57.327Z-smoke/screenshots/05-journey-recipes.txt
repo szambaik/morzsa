@@ -1,0 +1,92 @@
+- banner:
+  - button "Beszélgetéstörténet": ☰
+  - link "Morzsa":
+    - /url: "#"
+    - text: morzsa
+  - button "Saját konyha · Konyhaváltás és meghívás": Saját konyha
+  - button "Új Morzsa-beszélgetés"
+- main:
+  - paragraph: Receptek
+  - heading "Mit főznél szívesen?" [level=1]
+  - paragraph: Bevált kedvencek és új ötletek a konyhádhoz.
+  - tablist "Receptnézet":
+    - tab "Neked" [selected]
+    - tab "Böngészés"
+    - tab "Mentettek"
+  - heading "Morzsa ajánlja" [level=2]
+  - paragraph: A készletedből és a főzési ízlésedből indulunk.
+  - article:
+    - text: 10 perc
+    - heading "Krémes almás zabkása" [level=3]
+    - paragraph: 0/4 hozzávaló megerősítve
+    - paragraph: "Még ellenőrizendő: Tej, Alma."
+    - paragraph: "Nincs otthon jelölve: Zabpehely, Fahéj."
+    - button "Megnézem a receptet →"
+    - group: ···
+  - article:
+    - text: 10 perc
+    - heading "Spenótos rántotta" [level=3]
+    - paragraph: 0/4 hozzávaló megerősítve
+    - paragraph: "Még ellenőrizendő: Tojás, Vaj."
+    - paragraph: "Nincs otthon jelölve: Spenót, Só."
+    - button "Megnézem a receptet →"
+    - group: ···
+  - button "Tervezd meg a hetet Kevesebb főzés, egy közös bevásárlólista.":
+    - strong: Tervezd meg a hetet
+    - text: Kevesebb főzés, egy közös bevásárlólista.
+  - heading "Gyors vacsorák" [level=2]
+  - paragraph: Legfeljebb 30 perc alatt elkészülnek.
+  - article:
+    - text: Hozzávaló-illusztráció
+    - 'button "Kedvenc: Sajtos-tojásos melegszendvics"'
+    - paragraph: 15 perc
+    - heading "Sajtos-tojásos melegszendvics" [level=3]
+    - text: 5 hozzávaló kell 5 ellenőrizendő
+    - 'button "Megnézem: Sajtos-tojásos melegszendvics"': Megnézem →
+  - article:
+    - text: Hozzávaló-illusztráció
+    - 'button "Kedvenc: Zöldséges pirított rizs"'
+    - paragraph: 30 perc
+    - heading "Zöldséges pirított rizs" [level=3]
+    - text: 7 hozzávaló kell 7 ellenőrizendő
+    - 'button "Megnézem: Zöldséges pirított rizs"': Megnézem →
+  - article:
+    - text: Hozzávaló-illusztráció
+    - 'button "Kedvenc: Krémes sonkás-gombás tészta"'
+    - paragraph: 25 perc
+    - heading "Krémes sonkás-gombás tészta" [level=3]
+    - text: 7 hozzávaló kell 7 ellenőrizendő
+    - 'button "Megnézem: Krémes sonkás-gombás tészta"': Megnézem →
+  - heading "További ötletek" [level=2]
+  - article:
+    - text: Hozzávaló-illusztráció
+    - 'button "Kedvenc: Fahéjas almás muffin"'
+    - paragraph: 35 perc
+    - heading "Fahéjas almás muffin" [level=3]
+    - text: 8 hozzávaló kell 1 hiányzik 7 ellenőrizendő
+    - 'button "Megnézem: Fahéjas almás muffin"': Megnézem →
+  - article:
+    - text: Hozzávaló-illusztráció
+    - 'button "Kedvenc: Sonkás-gombás palacsintabatyu"'
+    - paragraph: 45 perc
+    - heading "Sonkás-gombás palacsintabatyu" [level=3]
+    - text: 9 hozzávaló kell 1 hiányzik 8 ellenőrizendő
+    - 'button "Megnézem: Sonkás-gombás palacsintabatyu"': Megnézem →
+  - article:
+    - text: Hozzávaló-illusztráció
+    - 'button "Kedvenc: Banános palacsinta"'
+    - paragraph: 20 perc
+    - heading "Banános palacsinta" [level=3]
+    - text: 5 hozzávaló kell 1 hiányzik 4 ellenőrizendő
+    - 'button "Megnézem: Banános palacsinta"': Megnézem →
+  - button "További receptek"
+- navigation "Fő navigáció":
+  - button "Áttekintés"
+  - button "Lista"
+  - button "Morzsa"
+  - button "Készlet"
+  - button "Receptek"
+- status
+- group "Gyors műveletek":
+  - button "Hozzáadás"
+  - button "Kérdezz Morzsától"

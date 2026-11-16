@@ -1,6 +1,18 @@
 # Morzsa – vizuális irány, 2026-10-30
 
-## Aktuális irány, 2026-11-12
+## Aktuális irány, 2026-11-16
+
+A proaktív élmény terve alapján az öt fő célpont sorrendje: **Áttekintés,
+Lista, Morzsa, Készlet, Receptek**, mobilon és asztalon is. A középső Morzsa
+visszafogott kiemelést kap; az induló nézet továbbra is a chat. A menüpontok
+megőrzik a saját nézetüket, szűrőiket, piszkozatukat és görgetési helyüket.
+
+Az Áttekintés „Morzsa figyel” jelzései, a rövid chatnyitó, a „Morzsa ajánlja”
+receptek és a jóváhagyható listajavaslatok közös visszajelzési szabályokat
+követnek. Implementáció, korlátok és migráció:
+[Proaktív élmény](../docs/PROACTIVE-EXPERIENCE-2026-11-16.md).
+
+## Korábbi irány, 2026-11-12
 
 A felhasználó az első Kitchen Companion koncepciót választotta, a harmadik
 Soft Glass meleg gradiensével. Az aktuális döntések és a megvalósítás:

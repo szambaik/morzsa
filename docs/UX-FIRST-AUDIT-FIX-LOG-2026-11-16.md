@@ -145,22 +145,31 @@ None of these is presented as a fully passing stable final run. Earlier targeted
 All test identities and household data are synthetic. SQL behavior is exercised locally with polling; external WebSockets, OAuth/email, fonts and paid AI are blocked. AI replies are explicit HTTP fixtures. Live provider quality, production latency, real speech, physical iOS/Android devices and screen-reader output were not tested. Screenshots use fallback fonts. No new independent specialist-agent review or complete WCAG-compliance claim is made.
 
 
-## Deployment preparation — 16 November 2026
+## Production deployment — verified 16 November 2026
 
-The user subsequently authorized deployment and asked to preserve these fixes
-against concurrent changes. A separate codex/audit-fixes-release checkout was
-created from origin/main; the reviewed baseline and fixes were imported there.
-The unfinished proactive feature and its hooks were omitted only from that
-candidate. The original checkout was not reset or overwritten.
+Following the user's deployment approval, PR #1 was merged as
+bbdf2115ed7c24aeb79b1a78439e99d28d07ed5a and published by the protected Pages
+workflow. The release includes the reviewed baseline and audit fixes; the
+unfinished proactive feature remains in the original working checkout.
+No live Supabase migration or Edge Function deployment was performed.
 
-Release candidate validation passed again: 143 full-audit checks, 32 axe scans
-with no violations, 54 targeted regressions, 279 unit tests, nine SQL suites,
-nine Python tests and the web build. Candidate evidence is retained in audit run
-2026-11-16T18-31-03-848Z-5a8d0e. Production now has a dedicated Pages workflow
-whose deployment depends on the Audit regression gate. Main branch protection
-requires that check and rejects force pushes. See RELEASE-SAFETY.md for the
-merge instructions that parallel work must follow. No Supabase deployment is
-needed for these seven fixes. The GitHub workflow and version.json expose the
-actual published commit; a successful local build alone is not a deployment.
+- Live app: https://szambaik.github.io/morzsa/?v=bbdf211
+- Merged PR: https://github.com/szambaik/morzsa/pull/1
+- Successful deployment: https://github.com/szambaik/morzsa/actions/runs/43930673358
+- Public version.json reports the exact merge commit and a passed audit.
+- All nine served entry/runtime/style files matched the tested source.
+- Ten live guest browser checks passed at 320, 390 and 1280 px, with no
+  JavaScript page errors. Production APIs and WebSockets were blocked for this
+  smoke test; no user or household data was changed.
+
+Main now requires an up-to-date Audit regression gate, including for admins;
+force pushes and branch deletion are disabled. Pages deploys only after the
+gate passes. Concurrent sessions must merge the new origin/main and retain the
+regression cases. Guidance was added to the original checkout's AGENTS.md and
+docs/RELEASE-SAFETY.md. Original app changes were preserved; no reset or bulk
+file replacement was performed there.
+
+[Deployment evidence](../design/audit-fixes-2026-11-16/deployment/results.json)
+and [release/protection record](../design/audit-fixes-2026-11-16/deployment/release.json).
 
 Complete frozen and release-candidate browser evidence is preserved in [the compressed evidence archive](../design/audit-fixes-2026-11-16/evidence-snapshots.tar.gz). Extract it under design-audit/runs to browse individual JSON reports and screenshots. CI uploads each new run as an artifact instead of committing generated run directories.

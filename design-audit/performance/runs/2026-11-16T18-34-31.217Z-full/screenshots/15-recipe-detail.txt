@@ -1,0 +1,53 @@
+- banner:
+  - button "Beszélgetéstörténet": ☰
+  - link "Morzsa":
+    - /url: "#"
+    - text: morzsa
+  - button "Saját konyha · Konyhaváltás és meghívás": Saját konyha
+  - button "Új Morzsa-beszélgetés"
+- main:
+  - button "Receptek"
+  - text: Hozzávaló-illusztráció
+  - button "Képet kérek a recepthez"
+  - paragraph: 45 perc
+  - heading "Sonkás-gombás palacsintabatyu" [level=1]
+  - paragraph: Puha palacsinta, krémes töltelék. Egy kis meglepetés a tányéron.
+  - group: ···
+  - button "Főzés indítása"
+  - group "Recept adagok":
+    - strong: Hány adagot készítsünk?
+    - button "Eggyel kevesebb adag": −
+    - spinbutton "Adagok száma": "2"
+    - text: adag
+    - button "Eggyel több adag": +
+  - button "9 hozzávaló · 1 hiányzik · 7 ellenőrizendő"
+  - button "Mérleg nélkül"
+  - group:
+    - text: Így készül
+    - list:
+      - listitem:
+        - strong: Palacsinták sütése
+        - button "Mutasd képen"
+        - paragraph: A tojást, tejet, lisztet és csipet sót keverd simára. Kevés olajon süss 4–6 vékony palacsintát.
+      - listitem:
+        - strong: Krémes töltelék
+        - button "Mutasd képen"
+        - paragraph: Az aprított hagymát párold meg, add hozzá a sonkát és a lecsepegtetett gombát. Pirítsd 3–4 percig, majd keverd bele a sajtkrémet.
+      - listitem:
+        - strong: Batyuk hajtogatása és sütése
+        - button "Mutasd képen"
+        - paragraph: Töltsd meg a palacsintákat, hajtsd csomagokra. Kiolajozott tálban, 180 °C-on melegítsd át 10–12 percig.
+- navigation "Fő navigáció":
+  - button "Áttekintés"
+  - button "Lista 1"
+  - button "Morzsa"
+  - button "Készlet"
+  - button "Receptek"
+- status: Vásárlás elmentve. 1/2 termék megvolt.
+- group "Gyors műveletek":
+  - button "Hozzávalók"
+  - button "Morzsa"
+- status:
+  - text: Módosítások elmentve
+  - button "Visszavonás"
+  - button "Bezárás": ×

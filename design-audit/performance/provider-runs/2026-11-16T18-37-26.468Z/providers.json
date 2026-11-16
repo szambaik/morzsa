@@ -1,0 +1,184 @@
+{
+  "environment": "Actual Edge Function modules with injected fetch; all endpoints synthetic. Timings describe scripted delay and app overhead, not live providers.",
+  "cases": [
+    {
+      "scenario": "healthy",
+      "calls": [
+        {
+          "url": "<synthetic>/auth/v1/user",
+          "atMs": 10.761792,
+          "bodyBytes": 0
+        },
+        {
+          "url": "<synthetic>/rest/v1/rpc/claim_voice_command",
+          "atMs": 134.106334,
+          "bodyBytes": 50
+        },
+        {
+          "url": "<synthetic>/v1beta/models/gemini-3.1-flash-lite:streamGenerateContent?alt=sse",
+          "atMs": 258.205292,
+          "bodyBytes": 9886
+        }
+      ],
+      "parts": [],
+      "providerCount": 1,
+      "status": 200,
+      "headerMs": 412.25775,
+      "output": {
+        "transcript": "Mit főzzek?",
+        "answer": "Készíts rántottát a tojásból.",
+        "operations": [],
+        "recipes": [],
+        "clarification": ""
+      },
+      "success": true,
+      "totalMs": 414.992834,
+      "clientAborted": false
+    },
+    {
+      "scenario": "overload-fallback",
+      "calls": [
+        {
+          "url": "<synthetic>/auth/v1/user",
+          "atMs": 0.34212500000001,
+          "bodyBytes": 0
+        },
+        {
+          "url": "<synthetic>/rest/v1/rpc/claim_voice_command",
+          "atMs": 122.17220800000001,
+          "bodyBytes": 50
+        },
+        {
+          "url": "<synthetic>/v1beta/models/gemini-3.1-flash-lite:streamGenerateContent?alt=sse",
+          "atMs": 245.57637500000004,
+          "bodyBytes": 9886
+        },
+        {
+          "url": "<synthetic>/v1beta/models/gemini-3.5-flash-lite:generateContent",
+          "atMs": 246.86279199999996,
+          "bodyBytes": 9886
+        }
+      ],
+      "parts": [],
+      "providerCount": 2,
+      "status": 200,
+      "headerMs": 400.25562499999995,
+      "output": {
+        "transcript": "Mit főzzek?",
+        "answer": "Készíts rántottát a tojásból.",
+        "operations": [],
+        "recipes": [],
+        "clarification": ""
+      },
+      "success": true,
+      "totalMs": 400.59774999999996,
+      "clientAborted": false
+    },
+    {
+      "scenario": "header-stall-default",
+      "calls": [
+        {
+          "url": "<synthetic>/auth/v1/user",
+          "atMs": 0.32074999999997544,
+          "bodyBytes": 0
+        },
+        {
+          "url": "<synthetic>/rest/v1/rpc/claim_voice_command",
+          "atMs": 122.78999999999996,
+          "bodyBytes": 50
+        },
+        {
+          "url": "<synthetic>/v1beta/models/gemini-3.1-flash-lite:streamGenerateContent?alt=sse",
+          "atMs": 245.29658300000006,
+          "bodyBytes": 9886
+        },
+        {
+          "url": "<synthetic>/v1beta/models/gemini-3.5-flash-lite:generateContent",
+          "atMs": 8245.940375,
+          "bodyBytes": 9886
+        }
+      ],
+      "parts": [],
+      "providerCount": 2,
+      "status": 200,
+      "headerMs": 8398.481958,
+      "output": {
+        "transcript": "Mit főzzek?",
+        "answer": "Készíts rántottát a tojásból.",
+        "operations": [],
+        "recipes": [],
+        "clarification": ""
+      },
+      "success": true,
+      "totalMs": 8398.598083,
+      "clientAborted": false
+    },
+    {
+      "scenario": "cancelled-client-preflight",
+      "calls": [
+        {
+          "url": "<synthetic>/auth/v1/user",
+          "atMs": 0.15099999999983993,
+          "bodyBytes": 0
+        },
+        {
+          "url": "<synthetic>/rest/v1/rpc/claim_voice_command",
+          "atMs": 122.84283400000095,
+          "bodyBytes": 50
+        },
+        {
+          "url": "<synthetic>/v1beta/models/gemini-3.1-flash-lite:streamGenerateContent?alt=sse",
+          "atMs": 245.94195899999977,
+          "bodyBytes": 9886
+        }
+      ],
+      "parts": [],
+      "providerCount": 1,
+      "status": 200,
+      "headerMs": 398.7908750000006,
+      "output": {
+        "transcript": "Mit főzzek?",
+        "answer": "Készíts rántottát a tojásból.",
+        "operations": [],
+        "recipes": [],
+        "clarification": ""
+      },
+      "success": true,
+      "totalMs": 398.9170840000006,
+      "clientAborted": true
+    },
+    {
+      "scenario": "malformed-stream",
+      "calls": [
+        {
+          "url": "<synthetic>/auth/v1/user",
+          "atMs": 0.2736249999998108,
+          "bodyBytes": 0
+        },
+        {
+          "url": "<synthetic>/rest/v1/rpc/claim_voice_command",
+          "atMs": 122.73579100000097,
+          "bodyBytes": 50
+        },
+        {
+          "url": "<synthetic>/v1beta/models/gemini-3.1-flash-lite:streamGenerateContent?alt=sse",
+          "atMs": 245.42295800000102,
+          "bodyBytes": 9886
+        }
+      ],
+      "parts": [
+        {
+          "atMs": 398.32637500000055,
+          "text": "partial"
+        }
+      ],
+      "providerCount": 1,
+      "status": 200,
+      "headerMs": 398.2223750000012,
+      "error": "VOICE_INVALID_RESPONSE",
+      "success": false,
+      "totalMs": 398.43954099999974,
+      "clientAborted": false
+    }
+  ]
+}

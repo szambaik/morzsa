@@ -1,0 +1,34 @@
+- banner:
+  - button "Beszélgetéstörténet": ☰
+  - link "Morzsa":
+    - /url: "#"
+    - text: morzsa
+  - button "Audit kitchen · Konyhaváltás és meghívás": Audit kitchen
+  - button "Új Morzsa-beszélgetés"
+- main:
+  - text: Szakítsd meg a tesztfolyamot.
+  - article:
+    - paragraph: Szakítsd meg a tesztfolyamot.
+  - article:
+    - paragraph: Félbemaradt válasz.
+    - text: A válasz félbeszakadt. Módosítást nem mentettünk.
+  - alert:
+    - paragraph: Morzsa most nem tud válaszolni. Semmit sem módosítottunk. Próbáld újra.
+    - button "Újrapróbálom"
+  - button "Fotó csatolása"
+  - textbox "Üzenet Morzsának":
+    - /placeholder: Kérdezz…
+  - button "Kérdezés hanggal"
+  - button "Küldés"
+  - text: AI mód
+  - combobox "AI mód":
+    - option "Morzsa Plus"
+    - option "Ingyenes" [selected]
+  - text: A változtatásokat mentés előtt átnézheted.
+- navigation "Fő navigáció":
+  - button "Áttekintés"
+  - button "Lista 1"
+  - button "Morzsa"
+  - button "Készlet"
+  - button "Receptek"
+- status

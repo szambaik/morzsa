@@ -1,0 +1,58 @@
+- banner:
+  - button "Beszélgetéstörténet": ☰
+  - link "Morzsa":
+    - /url: "#"
+    - text: morzsa
+  - button "Saját konyha · Konyhaváltás és meghívás": Saját konyha
+  - button "Új Morzsa-beszélgetés"
+- main:
+  - heading "Jó itthon." [level=1]
+  - paragraph: A konyhátok, egy pillantással.
+  - button "5 Otthon van":
+    - strong: "5"
+    - text: Otthon van
+  - button "2 Kevés / elfogyott":
+    - strong: "2"
+    - text: Kevés / elfogyott
+  - button "0 Bevásárlólistán":
+    - strong: "0"
+    - text: Bevásárlólistán
+  - paragraph: Egy lépéssel előrébb
+  - heading "Morzsa figyel" [level=2]
+  - article:
+    - text: Jelzett készlet
+    - heading "Liszt" [level=3]
+    - paragraph: Elfogyottnak jelöltétek.
+    - button "Listára teszem"
+    - button "Már megvan"
+    - group: ···
+  - article:
+    - text: Jelzett készlet
+    - heading "Tej" [level=3]
+    - paragraph: Kevésnek jelöltétek.
+    - button "Listára teszem"
+    - button "Van még"
+    - group: ···
+  - heading "Morzsa ajánlja" [level=2]
+  - article:
+    - text: 30 perc
+    - heading "Zöldséges pirított rizs" [level=3]
+    - paragraph: 0/7 hozzávaló megerősítve
+    - paragraph: "Még ellenőrizendő: Rizs, Tojás."
+    - paragraph: "Nincs otthon jelölve: Zöldségkeverék, Hagyma, Fokhagyma…"
+    - button "Megnézem a receptet →"
+    - group: ···
+  - paragraph: A visszajelzést ebben a konyhában, ezen az eszközön jegyzem meg.
+  - button "Tervezd meg a hetet Kevesebb főzés, egy közös bevásárlólista.":
+    - strong: Tervezd meg a hetet
+    - text: Kevesebb főzés, egy közös bevásárlólista.
+  - button "Gondoskodjunk az utánpótlásról Liszt, Tej →":
+    - strong: Gondoskodjunk az utánpótlásról
+    - text: Liszt, Tej →
+- navigation "Fő navigáció":
+  - button "Áttekintés"
+  - button "Lista"
+  - button "Morzsa"
+  - button "Készlet"
+  - button "Receptek"
+- status

@@ -1,0 +1,3667 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "callFrame": {
+        "functionName": "(root)",
+        "scriptId": "0",
+        "url": "",
+        "lineNumber": -1,
+        "columnNumber": -1
+      },
+      "hitCount": 0,
+      "children": [
+        2,
+        3,
+        14,
+        36,
+        37,
+        58
+      ]
+    },
+    {
+      "id": 2,
+      "callFrame": {
+        "functionName": "(program)",
+        "scriptId": "0",
+        "url": "",
+        "lineNumber": -1,
+        "columnNumber": -1
+      },
+      "hitCount": 8
+    },
+    {
+      "id": 3,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "9",
+        "url": "",
+        "lineNumber": -1,
+        "columnNumber": -1
+      },
+      "hitCount": 0,
+      "children": [
+        4
+      ]
+    },
+    {
+      "id": 4,
+      "callFrame": {
+        "functionName": "captureSnapshot",
+        "scriptId": "6",
+        "url": "",
+        "lineNumber": 256,
+        "columnNumber": 19
+      },
+      "hitCount": 0,
+      "children": [
+        5
+      ]
+    },
+    {
+      "id": 5,
+      "callFrame": {
+        "functionName": "visitNode",
+        "scriptId": "6",
+        "url": "",
+        "lineNumber": 266,
+        "columnNumber": 24
+      },
+      "hitCount": 0,
+      "children": [
+        6
+      ]
+    },
+    {
+      "id": 6,
+      "callFrame": {
+        "functionName": "visitNode",
+        "scriptId": "6",
+        "url": "",
+        "lineNumber": 266,
+        "columnNumber": 24
+      },
+      "hitCount": 0,
+      "children": [
+        7
+      ]
+    },
+    {
+      "id": 7,
+      "callFrame": {
+        "functionName": "visitNode",
+        "scriptId": "6",
+        "url": "",
+        "lineNumber": 266,
+        "columnNumber": 24
+      },
+      "hitCount": 0,
+      "children": [
+        8
+      ]
+    },
+    {
+      "id": 8,
+      "callFrame": {
+        "functionName": "visitNode",
+        "scriptId": "6",
+        "url": "",
+        "lineNumber": 266,
+        "columnNumber": 24
+      },
+      "hitCount": 0,
+      "children": [
+        9
+      ]
+    },
+    {
+      "id": 9,
+      "callFrame": {
+        "functionName": "visitNode",
+        "scriptId": "6",
+        "url": "",
+        "lineNumber": 266,
+        "columnNumber": 24
+      },
+      "hitCount": 0,
+      "children": [
+        10
+      ]
+    },
+    {
+      "id": 10,
+      "callFrame": {
+        "functionName": "visitNode",
+        "scriptId": "6",
+        "url": "",
+        "lineNumber": 266,
+        "columnNumber": 24
+      },
+      "hitCount": 1,
+      "children": [
+        11
+      ],
+      "positionTicks": [
+        {
+          "line": 267,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "callFrame": {
+        "functionName": "visitNode",
+        "scriptId": "6",
+        "url": "",
+        "lineNumber": 266,
+        "columnNumber": 24
+      },
+      "hitCount": 2,
+      "children": [
+        12
+      ],
+      "positionTicks": [
+        {
+          "line": 267,
+          "ticks": 2
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "callFrame": {
+        "functionName": "visitNode",
+        "scriptId": "6",
+        "url": "",
+        "lineNumber": 266,
+        "columnNumber": 24
+      },
+      "hitCount": 0,
+      "children": [
+        13
+      ]
+    },
+    {
+      "id": 13,
+      "callFrame": {
+        "functionName": "visitNode",
+        "scriptId": "6",
+        "url": "",
+        "lineNumber": 266,
+        "columnNumber": 24
+      },
+      "hitCount": 1,
+      "children": [
+        153
+      ],
+      "positionTicks": [
+        {
+          "line": 267,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "id": 153,
+      "callFrame": {
+        "functionName": "visitNode",
+        "scriptId": "6",
+        "url": "",
+        "lineNumber": 266,
+        "columnNumber": 24
+      },
+      "hitCount": 0,
+      "children": [
+        154
+      ]
+    },
+    {
+      "id": 154,
+      "callFrame": {
+        "functionName": "visitNode",
+        "scriptId": "6",
+        "url": "",
+        "lineNumber": 266,
+        "columnNumber": 24
+      },
+      "hitCount": 1,
+      "positionTicks": [
+        {
+          "line": 267,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "77",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 1
+      },
+      "hitCount": 0,
+      "children": [
+        15
+      ]
+    },
+    {
+      "id": 15,
+      "callFrame": {
+        "functionName": "evaluate",
+        "scriptId": "72",
+        "url": "",
+        "lineNumber": 283,
+        "columnNumber": 10
+      },
+      "hitCount": 0,
+      "children": [
+        16
+      ]
+    },
+    {
+      "id": 16,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "94",
+        "url": "",
+        "lineNumber": 0,
+        "columnNumber": 0
+      },
+      "hitCount": 0,
+      "children": [
+        17
+      ]
+    },
+    {
+      "id": 17,
+      "callFrame": {
+        "functionName": "querySelectorAll",
+        "scriptId": "91",
+        "url": "",
+        "lineNumber": 6797,
+        "columnNumber": 18
+      },
+      "hitCount": 0,
+      "children": [
+        18
+      ]
+    },
+    {
+      "id": 18,
+      "callFrame": {
+        "functionName": "_queryEngineAll",
+        "scriptId": "91",
+        "url": "",
+        "lineNumber": 6845,
+        "columnNumber": 17
+      },
+      "hitCount": 0,
+      "children": [
+        19
+      ]
+    },
+    {
+      "id": 19,
+      "callFrame": {
+        "functionName": "queryAll",
+        "scriptId": "91",
+        "url": "",
+        "lineNumber": 6866,
+        "columnNumber": 16
+      },
+      "hitCount": 0,
+      "children": [
+        20
+      ]
+    },
+    {
+      "id": 20,
+      "callFrame": {
+        "functionName": "query",
+        "scriptId": "91",
+        "url": "",
+        "lineNumber": 5101,
+        "columnNumber": 7
+      },
+      "hitCount": 0,
+      "children": [
+        21
+      ]
+    },
+    {
+      "id": 21,
+      "callFrame": {
+        "functionName": "_cached",
+        "scriptId": "91",
+        "url": "",
+        "lineNumber": 5067,
+        "columnNumber": 9
+      },
+      "hitCount": 0,
+      "children": [
+        22
+      ]
+    },
+    {
+      "id": 22,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "91",
+        "url": "",
+        "lineNumber": 5105,
+        "columnNumber": 116
+      },
+      "hitCount": 0,
+      "children": [
+        23
+      ]
+    },
+    {
+      "id": 23,
+      "callFrame": {
+        "functionName": "_queryEngine",
+        "scriptId": "91",
+        "url": "",
+        "lineNumber": 5263,
+        "columnNumber": 14
+      },
+      "hitCount": 0,
+      "children": [
+        24
+      ]
+    },
+    {
+      "id": 24,
+      "callFrame": {
+        "functionName": "_callQuery",
+        "scriptId": "91",
+        "url": "",
+        "lineNumber": 5275,
+        "columnNumber": 12
+      },
+      "hitCount": 0,
+      "children": [
+        25
+      ]
+    },
+    {
+      "id": 25,
+      "callFrame": {
+        "functionName": "_cached",
+        "scriptId": "91",
+        "url": "",
+        "lineNumber": 5067,
+        "columnNumber": 9
+      },
+      "hitCount": 0,
+      "children": [
+        26
+      ]
+    },
+    {
+      "id": 26,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "91",
+        "url": "",
+        "lineNumber": 5276,
+        "columnNumber": 125
+      },
+      "hitCount": 0,
+      "children": [
+        27
+      ]
+    },
+    {
+      "id": 27,
+      "callFrame": {
+        "functionName": "query",
+        "scriptId": "91",
+        "url": "",
+        "lineNumber": 5314,
+        "columnNumber": 7
+      },
+      "hitCount": 0,
+      "children": [
+        28
+      ]
+    },
+    {
+      "id": 28,
+      "callFrame": {
+        "functionName": "query",
+        "scriptId": "91",
+        "url": "",
+        "lineNumber": 5101,
+        "columnNumber": 7
+      },
+      "hitCount": 0,
+      "children": [
+        29
+      ]
+    },
+    {
+      "id": 29,
+      "callFrame": {
+        "functionName": "_cached",
+        "scriptId": "91",
+        "url": "",
+        "lineNumber": 5067,
+        "columnNumber": 9
+      },
+      "hitCount": 0,
+      "children": [
+        30
+      ]
+    },
+    {
+      "id": 30,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "91",
+        "url": "",
+        "lineNumber": 5105,
+        "columnNumber": 116
+      },
+      "hitCount": 0,
+      "children": [
+        31
+      ]
+    },
+    {
+      "id": 31,
+      "callFrame": {
+        "functionName": "_querySimple",
+        "scriptId": "91",
+        "url": "",
+        "lineNumber": 5162,
+        "columnNumber": 14
+      },
+      "hitCount": 0,
+      "children": [
+        32
+      ]
+    },
+    {
+      "id": 32,
+      "callFrame": {
+        "functionName": "_queryCSS",
+        "scriptId": "91",
+        "url": "",
+        "lineNumber": 5283,
+        "columnNumber": 11
+      },
+      "hitCount": 0,
+      "children": [
+        33
+      ]
+    },
+    {
+      "id": 33,
+      "callFrame": {
+        "functionName": "_cached",
+        "scriptId": "91",
+        "url": "",
+        "lineNumber": 5067,
+        "columnNumber": 9
+      },
+      "hitCount": 0,
+      "children": [
+        34
+      ]
+    },
+    {
+      "id": 34,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "91",
+        "url": "",
+        "lineNumber": 5284,
+        "columnNumber": 112
+      },
+      "hitCount": 0,
+      "children": [
+        35
+      ]
+    },
+    {
+      "id": 35,
+      "callFrame": {
+        "functionName": "querySelectorAll",
+        "scriptId": "0",
+        "url": "",
+        "lineNumber": -1,
+        "columnNumber": -1
+      },
+      "hitCount": 1,
+      "positionTicks": [
+        {
+          "line": 5298,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "callFrame": {
+        "functionName": "(idle)",
+        "scriptId": "0",
+        "url": "",
+        "lineNumber": -1,
+        "columnNumber": -1
+      },
+      "hitCount": 35
+    },
+    {
+      "id": 37,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "70",
+        "url": "http://127.0.0.1:58159/proactive-ui.js?v=proactive1",
+        "lineNumber": 117,
+        "columnNumber": 30
+      },
+      "hitCount": 0,
+      "children": [
+        38
+      ]
+    },
+    {
+      "id": 38,
+      "callFrame": {
+        "functionName": "render",
+        "scriptId": "27",
+        "url": "http://127.0.0.1:58159/app.js?v=customer-audit-20261116",
+        "lineNumber": 52,
+        "columnNumber": 15
+      },
+      "hitCount": 0,
+      "children": [
+        39,
+        116
+      ]
+    },
+    {
+      "id": 39,
+      "callFrame": {
+        "functionName": "renderRecipes",
+        "scriptId": "27",
+        "url": "http://127.0.0.1:58159/app.js?v=customer-audit-20261116",
+        "lineNumber": 144,
+        "columnNumber": 22
+      },
+      "hitCount": 0,
+      "children": [
+        40
+      ]
+    },
+    {
+      "id": 40,
+      "callFrame": {
+        "functionName": "renderRoom",
+        "scriptId": "51",
+        "url": "http://127.0.0.1:58159/recipe-room-ui.js?v=customer-audit-20261116",
+        "lineNumber": 138,
+        "columnNumber": 20
+      },
+      "hitCount": 0,
+      "children": [
+        41,
+        42,
+        74
+      ]
+    },
+    {
+      "id": 41,
+      "callFrame": {
+        "functionName": "controls",
+        "scriptId": "49",
+        "url": "http://127.0.0.1:58159/recipe-library.js?v=ux-audit-20261116",
+        "lineNumber": 19,
+        "columnNumber": 18
+      },
+      "hitCount": 1,
+      "positionTicks": [
+        {
+          "line": 20,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "callFrame": {
+        "functionName": "cards",
+        "scriptId": "49",
+        "url": "http://127.0.0.1:58159/recipe-library.js?v=ux-audit-20261116",
+        "lineNumber": 21,
+        "columnNumber": 15
+      },
+      "hitCount": 0,
+      "children": [
+        43,
+        47,
+        59
+      ]
+    },
+    {
+      "id": 43,
+      "callFrame": {
+        "functionName": "uncertain",
+        "scriptId": "41",
+        "url": "http://127.0.0.1:58159/pantry-review-ui.js?v=proactive1",
+        "lineNumber": 83,
+        "columnNumber": 252
+      },
+      "hitCount": 0,
+      "children": [
+        44
+      ]
+    },
+    {
+      "id": 44,
+      "callFrame": {
+        "functionName": "due",
+        "scriptId": "41",
+        "url": "http://127.0.0.1:58159/pantry-review-ui.js?v=proactive1",
+        "lineNumber": 4,
+        "columnNumber": 11
+      },
+      "hitCount": 0,
+      "children": [
+        45
+      ]
+    },
+    {
+      "id": 45,
+      "callFrame": {
+        "functionName": "due",
+        "scriptId": "23",
+        "url": "http://127.0.0.1:58159/pantry-review-model.js?v=library-intro5",
+        "lineNumber": 6,
+        "columnNumber": 13
+      },
+      "hitCount": 0,
+      "children": [
+        46
+      ]
+    },
+    {
+      "id": 46,
+      "callFrame": {
+        "functionName": "productCategory",
+        "scriptId": "27",
+        "url": "http://127.0.0.1:58159/app.js?v=customer-audit-20261116",
+        "lineNumber": 14,
+        "columnNumber": 24
+      },
+      "hitCount": 10,
+      "positionTicks": [
+        {
+          "line": 15,
+          "ticks": 10
+        }
+      ]
+    },
+    {
+      "id": 47,
+      "callFrame": {
+        "functionName": "discoverySections",
+        "scriptId": "22",
+        "url": "http://127.0.0.1:58159/kitchen-model.js?v=pantry-shopping-20261116",
+        "lineNumber": 57,
+        "columnNumber": 27
+      },
+      "hitCount": 0,
+      "children": [
+        48
+      ]
+    },
+    {
+      "id": 48,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "22",
+        "url": "http://127.0.0.1:58159/kitchen-model.js?v=pantry-shopping-20261116",
+        "lineNumber": 59,
+        "columnNumber": 132
+      },
+      "hitCount": 0,
+      "children": [
+        49
+      ]
+    },
+    {
+      "id": 49,
+      "callFrame": {
+        "functionName": "recipeChoice",
+        "scriptId": "22",
+        "url": "http://127.0.0.1:58159/kitchen-model.js?v=pantry-shopping-20261116",
+        "lineNumber": 32,
+        "columnNumber": 22
+      },
+      "hitCount": 0,
+      "children": [
+        50
+      ]
+    },
+    {
+      "id": 50,
+      "callFrame": {
+        "functionName": "resolve",
+        "scriptId": "49",
+        "url": "http://127.0.0.1:58159/recipe-library.js?v=ux-audit-20261116",
+        "lineNumber": 25,
+        "columnNumber": 211
+      },
+      "hitCount": 0,
+      "children": [
+        51
+      ]
+    },
+    {
+      "id": 51,
+      "callFrame": {
+        "functionName": "match",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 5,
+        "columnNumber": 15
+      },
+      "hitCount": 0,
+      "children": [
+        52
+      ]
+    },
+    {
+      "id": 52,
+      "callFrame": {
+        "functionName": "ranked",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 4,
+        "columnNumber": 16
+      },
+      "hitCount": 9,
+      "children": [
+        53
+      ],
+      "positionTicks": [
+        {
+          "line": 5,
+          "ticks": 9
+        }
+      ]
+    },
+    {
+      "id": 53,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 4,
+        "columnNumber": 92
+      },
+      "hitCount": 1,
+      "children": [
+        54,
+        55,
+        57
+      ],
+      "positionTicks": [
+        {
+          "line": 5,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "id": 54,
+      "callFrame": {
+        "functionName": "norm",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 1,
+        "columnNumber": 12
+      },
+      "hitCount": 43,
+      "positionTicks": [
+        {
+          "line": 2,
+          "ticks": 23
+        },
+        {
+          "line": 2,
+          "ticks": 1
+        },
+        {
+          "line": 2,
+          "ticks": 1
+        },
+        {
+          "line": 2,
+          "ticks": 2
+        },
+        {
+          "line": 2,
+          "ticks": 9
+        },
+        {
+          "line": 2,
+          "ticks": 7
+        }
+      ]
+    },
+    {
+      "id": 55,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 4,
+        "columnNumber": 258
+      },
+      "hitCount": 0,
+      "children": [
+        56
+      ]
+    },
+    {
+      "id": 56,
+      "callFrame": {
+        "functionName": "distance",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 3,
+        "columnNumber": 18
+      },
+      "hitCount": 47,
+      "positionTicks": [
+        {
+          "line": 4,
+          "ticks": 3
+        },
+        {
+          "line": 4,
+          "ticks": 1
+        },
+        {
+          "line": 4,
+          "ticks": 4
+        },
+        {
+          "line": 4,
+          "ticks": 29
+        },
+        {
+          "line": 4,
+          "ticks": 2
+        },
+        {
+          "line": 4,
+          "ticks": 1
+        },
+        {
+          "line": 4,
+          "ticks": 7
+        }
+      ]
+    },
+    {
+      "id": 57,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 4,
+        "columnNumber": 408
+      },
+      "hitCount": 2,
+      "positionTicks": [
+        {
+          "line": 5,
+          "ticks": 2
+        }
+      ]
+    },
+    {
+      "id": 59,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "49",
+        "url": "http://127.0.0.1:58159/recipe-library.js?v=ux-audit-20261116",
+        "lineNumber": 26,
+        "columnNumber": 43
+      },
+      "hitCount": 0,
+      "children": [
+        60
+      ]
+    },
+    {
+      "id": 60,
+      "callFrame": {
+        "functionName": "grid",
+        "scriptId": "49",
+        "url": "http://127.0.0.1:58159/recipe-library.js?v=ux-audit-20261116",
+        "lineNumber": 22,
+        "columnNumber": 58
+      },
+      "hitCount": 0,
+      "children": [
+        61
+      ]
+    },
+    {
+      "id": 61,
+      "callFrame": {
+        "functionName": "card",
+        "scriptId": "49",
+        "url": "http://127.0.0.1:58159/recipe-library.js?v=ux-audit-20261116",
+        "lineNumber": 20,
+        "columnNumber": 14
+      },
+      "hitCount": 0,
+      "children": [
+        62,
+        69
+      ]
+    },
+    {
+      "id": 62,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "49",
+        "url": "http://127.0.0.1:58159/recipe-library.js?v=ux-audit-20261116",
+        "lineNumber": 20,
+        "columnNumber": 267
+      },
+      "hitCount": 0,
+      "children": [
+        63
+      ]
+    },
+    {
+      "id": 63,
+      "callFrame": {
+        "functionName": "match",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 5,
+        "columnNumber": 15
+      },
+      "hitCount": 0,
+      "children": [
+        64
+      ]
+    },
+    {
+      "id": 64,
+      "callFrame": {
+        "functionName": "ranked",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 4,
+        "columnNumber": 16
+      },
+      "hitCount": 1,
+      "children": [
+        65
+      ],
+      "positionTicks": [
+        {
+          "line": 5,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "id": 65,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 4,
+        "columnNumber": 92
+      },
+      "hitCount": 1,
+      "children": [
+        66,
+        67
+      ],
+      "positionTicks": [
+        {
+          "line": 5,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "id": 66,
+      "callFrame": {
+        "functionName": "norm",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 1,
+        "columnNumber": 12
+      },
+      "hitCount": 6,
+      "positionTicks": [
+        {
+          "line": 2,
+          "ticks": 1
+        },
+        {
+          "line": 2,
+          "ticks": 1
+        },
+        {
+          "line": 2,
+          "ticks": 4
+        }
+      ]
+    },
+    {
+      "id": 67,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 4,
+        "columnNumber": 258
+      },
+      "hitCount": 0,
+      "children": [
+        68
+      ]
+    },
+    {
+      "id": 68,
+      "callFrame": {
+        "functionName": "distance",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 3,
+        "columnNumber": 18
+      },
+      "hitCount": 11,
+      "positionTicks": [
+        {
+          "line": 4,
+          "ticks": 2
+        },
+        {
+          "line": 4,
+          "ticks": 1
+        },
+        {
+          "line": 4,
+          "ticks": 1
+        },
+        {
+          "line": 4,
+          "ticks": 7
+        }
+      ]
+    },
+    {
+      "id": 69,
+      "callFrame": {
+        "functionName": "coverageMarkup",
+        "scriptId": "51",
+        "url": "http://127.0.0.1:58159/recipe-room-ui.js?v=customer-audit-20261116",
+        "lineNumber": 35,
+        "columnNumber": 24
+      },
+      "hitCount": 0,
+      "children": [
+        70
+      ]
+    },
+    {
+      "id": 70,
+      "callFrame": {
+        "functionName": "uncertain",
+        "scriptId": "41",
+        "url": "http://127.0.0.1:58159/pantry-review-ui.js?v=proactive1",
+        "lineNumber": 83,
+        "columnNumber": 252
+      },
+      "hitCount": 0,
+      "children": [
+        71
+      ]
+    },
+    {
+      "id": 71,
+      "callFrame": {
+        "functionName": "due",
+        "scriptId": "41",
+        "url": "http://127.0.0.1:58159/pantry-review-ui.js?v=proactive1",
+        "lineNumber": 4,
+        "columnNumber": 11
+      },
+      "hitCount": 0,
+      "children": [
+        72
+      ]
+    },
+    {
+      "id": 72,
+      "callFrame": {
+        "functionName": "due",
+        "scriptId": "23",
+        "url": "http://127.0.0.1:58159/pantry-review-model.js?v=library-intro5",
+        "lineNumber": 6,
+        "columnNumber": 13
+      },
+      "hitCount": 1,
+      "children": [
+        73
+      ],
+      "positionTicks": [
+        {
+          "line": 13,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "id": 73,
+      "callFrame": {
+        "functionName": "productCategory",
+        "scriptId": "27",
+        "url": "http://127.0.0.1:58159/app.js?v=customer-audit-20261116",
+        "lineNumber": 14,
+        "columnNumber": 24
+      },
+      "hitCount": 81,
+      "positionTicks": [
+        {
+          "line": 15,
+          "ticks": 2
+        },
+        {
+          "line": 15,
+          "ticks": 79
+        }
+      ]
+    },
+    {
+      "id": 74,
+      "callFrame": {
+        "functionName": "mount",
+        "scriptId": "68",
+        "url": "http://127.0.0.1:58159/workspace-ui.js?v=proactive1",
+        "lineNumber": 36,
+        "columnNumber": 15
+      },
+      "hitCount": 0,
+      "children": [
+        75,
+        76
+      ]
+    },
+    {
+      "id": 75,
+      "callFrame": {
+        "functionName": "getBoundingClientRect",
+        "scriptId": "0",
+        "url": "",
+        "lineNumber": -1,
+        "columnNumber": -1
+      },
+      "hitCount": 1,
+      "positionTicks": [
+        {
+          "line": 52,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "id": 76,
+      "callFrame": {
+        "functionName": "mount",
+        "scriptId": "70",
+        "url": "http://127.0.0.1:58159/proactive-ui.js?v=proactive1",
+        "lineNumber": 53,
+        "columnNumber": 15
+      },
+      "hitCount": 0,
+      "children": [
+        77,
+        83,
+        99,
+        108
+      ]
+    },
+    {
+      "id": 77,
+      "callFrame": {
+        "functionName": "products",
+        "scriptId": "70",
+        "url": "http://127.0.0.1:58159/proactive-ui.js?v=proactive1",
+        "lineNumber": 20,
+        "columnNumber": 18
+      },
+      "hitCount": 0,
+      "children": [
+        78
+      ]
+    },
+    {
+      "id": 78,
+      "callFrame": {
+        "functionName": "candidates",
+        "scriptId": "41",
+        "url": "http://127.0.0.1:58159/pantry-review-ui.js?v=proactive1",
+        "lineNumber": 83,
+        "columnNumber": 192
+      },
+      "hitCount": 0,
+      "children": [
+        79
+      ]
+    },
+    {
+      "id": 79,
+      "callFrame": {
+        "functionName": "due",
+        "scriptId": "41",
+        "url": "http://127.0.0.1:58159/pantry-review-ui.js?v=proactive1",
+        "lineNumber": 4,
+        "columnNumber": 11
+      },
+      "hitCount": 0,
+      "children": [
+        80
+      ]
+    },
+    {
+      "id": 80,
+      "callFrame": {
+        "functionName": "due",
+        "scriptId": "23",
+        "url": "http://127.0.0.1:58159/pantry-review-model.js?v=library-intro5",
+        "lineNumber": 6,
+        "columnNumber": 13
+      },
+      "hitCount": 0,
+      "children": [
+        81
+      ]
+    },
+    {
+      "id": 81,
+      "callFrame": {
+        "functionName": "productCategory",
+        "scriptId": "27",
+        "url": "http://127.0.0.1:58159/app.js?v=customer-audit-20261116",
+        "lineNumber": 14,
+        "columnNumber": 24
+      },
+      "hitCount": 4,
+      "children": [
+        82
+      ],
+      "positionTicks": [
+        {
+          "line": 15,
+          "ticks": 4
+        }
+      ]
+    },
+    {
+      "id": 82,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "27",
+        "url": "http://127.0.0.1:58159/app.js?v=customer-audit-20261116",
+        "lineNumber": 14,
+        "columnNumber": 72
+      },
+      "hitCount": 7,
+      "positionTicks": [
+        {
+          "line": 15,
+          "ticks": 4
+        },
+        {
+          "line": 15,
+          "ticks": 3
+        }
+      ]
+    },
+    {
+      "id": 83,
+      "callFrame": {
+        "functionName": "recommendations",
+        "scriptId": "70",
+        "url": "http://127.0.0.1:58159/proactive-ui.js?v=proactive1",
+        "lineNumber": 26,
+        "columnNumber": 25
+      },
+      "hitCount": 0,
+      "children": [
+        84,
+        89
+      ]
+    },
+    {
+      "id": 84,
+      "callFrame": {
+        "functionName": "uncertain",
+        "scriptId": "41",
+        "url": "http://127.0.0.1:58159/pantry-review-ui.js?v=proactive1",
+        "lineNumber": 83,
+        "columnNumber": 252
+      },
+      "hitCount": 0,
+      "children": [
+        85
+      ]
+    },
+    {
+      "id": 85,
+      "callFrame": {
+        "functionName": "due",
+        "scriptId": "41",
+        "url": "http://127.0.0.1:58159/pantry-review-ui.js?v=proactive1",
+        "lineNumber": 4,
+        "columnNumber": 11
+      },
+      "hitCount": 0,
+      "children": [
+        86
+      ]
+    },
+    {
+      "id": 86,
+      "callFrame": {
+        "functionName": "due",
+        "scriptId": "23",
+        "url": "http://127.0.0.1:58159/pantry-review-model.js?v=library-intro5",
+        "lineNumber": 6,
+        "columnNumber": 13
+      },
+      "hitCount": 0,
+      "children": [
+        87
+      ]
+    },
+    {
+      "id": 87,
+      "callFrame": {
+        "functionName": "productCategory",
+        "scriptId": "27",
+        "url": "http://127.0.0.1:58159/app.js?v=customer-audit-20261116",
+        "lineNumber": 14,
+        "columnNumber": 24
+      },
+      "hitCount": 0,
+      "children": [
+        88
+      ]
+    },
+    {
+      "id": 88,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "27",
+        "url": "http://127.0.0.1:58159/app.js?v=customer-audit-20261116",
+        "lineNumber": 14,
+        "columnNumber": 72
+      },
+      "hitCount": 11,
+      "positionTicks": [
+        {
+          "line": 15,
+          "ticks": 5
+        },
+        {
+          "line": 15,
+          "ticks": 6
+        }
+      ]
+    },
+    {
+      "id": 89,
+      "callFrame": {
+        "functionName": "rankRecipes",
+        "scriptId": "69",
+        "url": "http://127.0.0.1:58159/proactive-model.js?v=proactive1",
+        "lineNumber": 50,
+        "columnNumber": 21
+      },
+      "hitCount": 0,
+      "children": [
+        90
+      ]
+    },
+    {
+      "id": 90,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "69",
+        "url": "http://127.0.0.1:58159/proactive-model.js?v=proactive1",
+        "lineNumber": 52,
+        "columnNumber": 22
+      },
+      "hitCount": 0,
+      "children": [
+        91
+      ]
+    },
+    {
+      "id": 91,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "69",
+        "url": "http://127.0.0.1:58159/proactive-model.js?v=proactive1",
+        "lineNumber": 54,
+        "columnNumber": 57
+      },
+      "hitCount": 0,
+      "children": [
+        92
+      ]
+    },
+    {
+      "id": 92,
+      "callFrame": {
+        "functionName": "resolve",
+        "scriptId": "70",
+        "url": "http://127.0.0.1:58159/proactive-ui.js?v=proactive1",
+        "lineNumber": 29,
+        "columnNumber": 95
+      },
+      "hitCount": 0,
+      "children": [
+        93
+      ]
+    },
+    {
+      "id": 93,
+      "callFrame": {
+        "functionName": "match",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 5,
+        "columnNumber": 15
+      },
+      "hitCount": 0,
+      "children": [
+        94
+      ]
+    },
+    {
+      "id": 94,
+      "callFrame": {
+        "functionName": "ranked",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 4,
+        "columnNumber": 16
+      },
+      "hitCount": 9,
+      "children": [
+        95
+      ],
+      "positionTicks": [
+        {
+          "line": 5,
+          "ticks": 9
+        }
+      ]
+    },
+    {
+      "id": 95,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 4,
+        "columnNumber": 92
+      },
+      "hitCount": 3,
+      "children": [
+        96,
+        97
+      ],
+      "positionTicks": [
+        {
+          "line": 5,
+          "ticks": 1
+        },
+        {
+          "line": 5,
+          "ticks": 1
+        },
+        {
+          "line": 5,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "id": 96,
+      "callFrame": {
+        "functionName": "norm",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 1,
+        "columnNumber": 12
+      },
+      "hitCount": 41,
+      "positionTicks": [
+        {
+          "line": 2,
+          "ticks": 8
+        },
+        {
+          "line": 2,
+          "ticks": 8
+        },
+        {
+          "line": 2,
+          "ticks": 3
+        },
+        {
+          "line": 2,
+          "ticks": 22
+        }
+      ]
+    },
+    {
+      "id": 97,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 4,
+        "columnNumber": 258
+      },
+      "hitCount": 1,
+      "children": [
+        98
+      ],
+      "positionTicks": [
+        {
+          "line": 5,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "id": 98,
+      "callFrame": {
+        "functionName": "distance",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 3,
+        "columnNumber": 18
+      },
+      "hitCount": 46,
+      "positionTicks": [
+        {
+          "line": 4,
+          "ticks": 2
+        },
+        {
+          "line": 4,
+          "ticks": 1
+        },
+        {
+          "line": 4,
+          "ticks": 2
+        },
+        {
+          "line": 4,
+          "ticks": 3
+        },
+        {
+          "line": 4,
+          "ticks": 3
+        },
+        {
+          "line": 4,
+          "ticks": 3
+        },
+        {
+          "line": 4,
+          "ticks": 1
+        },
+        {
+          "line": 4,
+          "ticks": 1
+        },
+        {
+          "line": 4,
+          "ticks": 1
+        },
+        {
+          "line": 4,
+          "ticks": 29
+        }
+      ]
+    },
+    {
+      "id": 99,
+      "callFrame": {
+        "functionName": "recipeCard",
+        "scriptId": "70",
+        "url": "http://127.0.0.1:58159/proactive-ui.js?v=proactive1",
+        "lineNumber": 44,
+        "columnNumber": 20
+      },
+      "hitCount": 0,
+      "children": [
+        100
+      ]
+    },
+    {
+      "id": 100,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "70",
+        "url": "http://127.0.0.1:58159/proactive-ui.js?v=proactive1",
+        "lineNumber": 46,
+        "columnNumber": 164
+      },
+      "hitCount": 0,
+      "children": [
+        101
+      ]
+    },
+    {
+      "id": 101,
+      "callFrame": {
+        "functionName": "match",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 5,
+        "columnNumber": 15
+      },
+      "hitCount": 0,
+      "children": [
+        102
+      ]
+    },
+    {
+      "id": 102,
+      "callFrame": {
+        "functionName": "ranked",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 4,
+        "columnNumber": 16
+      },
+      "hitCount": 0,
+      "children": [
+        103
+      ]
+    },
+    {
+      "id": 103,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 4,
+        "columnNumber": 92
+      },
+      "hitCount": 0,
+      "children": [
+        104,
+        105,
+        107
+      ]
+    },
+    {
+      "id": 104,
+      "callFrame": {
+        "functionName": "norm",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 1,
+        "columnNumber": 12
+      },
+      "hitCount": 2,
+      "positionTicks": [
+        {
+          "line": 2,
+          "ticks": 1
+        },
+        {
+          "line": 2,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "id": 105,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 4,
+        "columnNumber": 258
+      },
+      "hitCount": 0,
+      "children": [
+        106
+      ]
+    },
+    {
+      "id": 106,
+      "callFrame": {
+        "functionName": "distance",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 3,
+        "columnNumber": 18
+      },
+      "hitCount": 1,
+      "positionTicks": [
+        {
+          "line": 4,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "id": 107,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 4,
+        "columnNumber": 408
+      },
+      "hitCount": 1,
+      "positionTicks": [
+        {
+          "line": 5,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "id": 108,
+      "callFrame": {
+        "functionName": "setHost",
+        "scriptId": "70",
+        "url": "http://127.0.0.1:58159/proactive-ui.js?v=proactive1",
+        "lineNumber": 48,
+        "columnNumber": 17
+      },
+      "hitCount": 0,
+      "children": [
+        109
+      ]
+    },
+    {
+      "id": 109,
+      "callFrame": {
+        "functionName": "bind",
+        "scriptId": "70",
+        "url": "http://127.0.0.1:58159/proactive-ui.js?v=proactive1",
+        "lineNumber": 105,
+        "columnNumber": 14
+      },
+      "hitCount": 0,
+      "children": [
+        110
+      ]
+    },
+    {
+      "id": 110,
+      "callFrame": {
+        "functionName": "products",
+        "scriptId": "70",
+        "url": "http://127.0.0.1:58159/proactive-ui.js?v=proactive1",
+        "lineNumber": 20,
+        "columnNumber": 18
+      },
+      "hitCount": 0,
+      "children": [
+        111
+      ]
+    },
+    {
+      "id": 111,
+      "callFrame": {
+        "functionName": "candidates",
+        "scriptId": "41",
+        "url": "http://127.0.0.1:58159/pantry-review-ui.js?v=proactive1",
+        "lineNumber": 83,
+        "columnNumber": 192
+      },
+      "hitCount": 0,
+      "children": [
+        112
+      ]
+    },
+    {
+      "id": 112,
+      "callFrame": {
+        "functionName": "due",
+        "scriptId": "41",
+        "url": "http://127.0.0.1:58159/pantry-review-ui.js?v=proactive1",
+        "lineNumber": 4,
+        "columnNumber": 11
+      },
+      "hitCount": 0,
+      "children": [
+        113
+      ]
+    },
+    {
+      "id": 113,
+      "callFrame": {
+        "functionName": "due",
+        "scriptId": "23",
+        "url": "http://127.0.0.1:58159/pantry-review-model.js?v=library-intro5",
+        "lineNumber": 6,
+        "columnNumber": 13
+      },
+      "hitCount": 0,
+      "children": [
+        114
+      ]
+    },
+    {
+      "id": 114,
+      "callFrame": {
+        "functionName": "productCategory",
+        "scriptId": "27",
+        "url": "http://127.0.0.1:58159/app.js?v=customer-audit-20261116",
+        "lineNumber": 14,
+        "columnNumber": 24
+      },
+      "hitCount": 0,
+      "children": [
+        115
+      ]
+    },
+    {
+      "id": 115,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "27",
+        "url": "http://127.0.0.1:58159/app.js?v=customer-audit-20261116",
+        "lineNumber": 14,
+        "columnNumber": 72
+      },
+      "hitCount": 10,
+      "positionTicks": [
+        {
+          "line": 15,
+          "ticks": 5
+        },
+        {
+          "line": 15,
+          "ticks": 5
+        }
+      ]
+    },
+    {
+      "id": 116,
+      "callFrame": {
+        "functionName": "mount",
+        "scriptId": "68",
+        "url": "http://127.0.0.1:58159/workspace-ui.js?v=proactive1",
+        "lineNumber": 36,
+        "columnNumber": 15
+      },
+      "hitCount": 0,
+      "children": [
+        117,
+        118
+      ]
+    },
+    {
+      "id": 117,
+      "callFrame": {
+        "functionName": "getBoundingClientRect",
+        "scriptId": "0",
+        "url": "",
+        "lineNumber": -1,
+        "columnNumber": -1
+      },
+      "hitCount": 1,
+      "positionTicks": [
+        {
+          "line": 52,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "id": 118,
+      "callFrame": {
+        "functionName": "mount",
+        "scriptId": "70",
+        "url": "http://127.0.0.1:58159/proactive-ui.js?v=proactive1",
+        "lineNumber": 53,
+        "columnNumber": 15
+      },
+      "hitCount": 0,
+      "children": [
+        119,
+        125,
+        145
+      ]
+    },
+    {
+      "id": 119,
+      "callFrame": {
+        "functionName": "products",
+        "scriptId": "70",
+        "url": "http://127.0.0.1:58159/proactive-ui.js?v=proactive1",
+        "lineNumber": 20,
+        "columnNumber": 18
+      },
+      "hitCount": 0,
+      "children": [
+        120
+      ]
+    },
+    {
+      "id": 120,
+      "callFrame": {
+        "functionName": "candidates",
+        "scriptId": "41",
+        "url": "http://127.0.0.1:58159/pantry-review-ui.js?v=proactive1",
+        "lineNumber": 83,
+        "columnNumber": 192
+      },
+      "hitCount": 0,
+      "children": [
+        121
+      ]
+    },
+    {
+      "id": 121,
+      "callFrame": {
+        "functionName": "due",
+        "scriptId": "41",
+        "url": "http://127.0.0.1:58159/pantry-review-ui.js?v=proactive1",
+        "lineNumber": 4,
+        "columnNumber": 11
+      },
+      "hitCount": 0,
+      "children": [
+        122
+      ]
+    },
+    {
+      "id": 122,
+      "callFrame": {
+        "functionName": "due",
+        "scriptId": "23",
+        "url": "http://127.0.0.1:58159/pantry-review-model.js?v=library-intro5",
+        "lineNumber": 6,
+        "columnNumber": 13
+      },
+      "hitCount": 0,
+      "children": [
+        123
+      ]
+    },
+    {
+      "id": 123,
+      "callFrame": {
+        "functionName": "productCategory",
+        "scriptId": "27",
+        "url": "http://127.0.0.1:58159/app.js?v=customer-audit-20261116",
+        "lineNumber": 14,
+        "columnNumber": 24
+      },
+      "hitCount": 0,
+      "children": [
+        124
+      ]
+    },
+    {
+      "id": 124,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "27",
+        "url": "http://127.0.0.1:58159/app.js?v=customer-audit-20261116",
+        "lineNumber": 14,
+        "columnNumber": 72
+      },
+      "hitCount": 10,
+      "positionTicks": [
+        {
+          "line": 15,
+          "ticks": 4
+        },
+        {
+          "line": 15,
+          "ticks": 6
+        }
+      ]
+    },
+    {
+      "id": 125,
+      "callFrame": {
+        "functionName": "recommendations",
+        "scriptId": "70",
+        "url": "http://127.0.0.1:58159/proactive-ui.js?v=proactive1",
+        "lineNumber": 26,
+        "columnNumber": 25
+      },
+      "hitCount": 0,
+      "children": [
+        126,
+        131
+      ]
+    },
+    {
+      "id": 126,
+      "callFrame": {
+        "functionName": "uncertain",
+        "scriptId": "41",
+        "url": "http://127.0.0.1:58159/pantry-review-ui.js?v=proactive1",
+        "lineNumber": 83,
+        "columnNumber": 252
+      },
+      "hitCount": 0,
+      "children": [
+        127
+      ]
+    },
+    {
+      "id": 127,
+      "callFrame": {
+        "functionName": "due",
+        "scriptId": "41",
+        "url": "http://127.0.0.1:58159/pantry-review-ui.js?v=proactive1",
+        "lineNumber": 4,
+        "columnNumber": 11
+      },
+      "hitCount": 0,
+      "children": [
+        128
+      ]
+    },
+    {
+      "id": 128,
+      "callFrame": {
+        "functionName": "due",
+        "scriptId": "23",
+        "url": "http://127.0.0.1:58159/pantry-review-model.js?v=library-intro5",
+        "lineNumber": 6,
+        "columnNumber": 13
+      },
+      "hitCount": 0,
+      "children": [
+        129
+      ]
+    },
+    {
+      "id": 129,
+      "callFrame": {
+        "functionName": "productCategory",
+        "scriptId": "27",
+        "url": "http://127.0.0.1:58159/app.js?v=customer-audit-20261116",
+        "lineNumber": 14,
+        "columnNumber": 24
+      },
+      "hitCount": 1,
+      "children": [
+        130
+      ],
+      "positionTicks": [
+        {
+          "line": 15,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "id": 130,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "27",
+        "url": "http://127.0.0.1:58159/app.js?v=customer-audit-20261116",
+        "lineNumber": 14,
+        "columnNumber": 72
+      },
+      "hitCount": 10,
+      "positionTicks": [
+        {
+          "line": 15,
+          "ticks": 4
+        },
+        {
+          "line": 15,
+          "ticks": 6
+        }
+      ]
+    },
+    {
+      "id": 131,
+      "callFrame": {
+        "functionName": "rankRecipes",
+        "scriptId": "69",
+        "url": "http://127.0.0.1:58159/proactive-model.js?v=proactive1",
+        "lineNumber": 50,
+        "columnNumber": 21
+      },
+      "hitCount": 1,
+      "children": [
+        132
+      ],
+      "positionTicks": [
+        {
+          "line": 53,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "id": 132,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "69",
+        "url": "http://127.0.0.1:58159/proactive-model.js?v=proactive1",
+        "lineNumber": 52,
+        "columnNumber": 22
+      },
+      "hitCount": 0,
+      "children": [
+        133,
+        142
+      ]
+    },
+    {
+      "id": 133,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "69",
+        "url": "http://127.0.0.1:58159/proactive-model.js?v=proactive1",
+        "lineNumber": 54,
+        "columnNumber": 57
+      },
+      "hitCount": 0,
+      "children": [
+        134
+      ]
+    },
+    {
+      "id": 134,
+      "callFrame": {
+        "functionName": "resolve",
+        "scriptId": "70",
+        "url": "http://127.0.0.1:58159/proactive-ui.js?v=proactive1",
+        "lineNumber": 29,
+        "columnNumber": 95
+      },
+      "hitCount": 1,
+      "children": [
+        135
+      ],
+      "positionTicks": [
+        {
+          "line": 30,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "id": 135,
+      "callFrame": {
+        "functionName": "match",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 5,
+        "columnNumber": 15
+      },
+      "hitCount": 0,
+      "children": [
+        136
+      ]
+    },
+    {
+      "id": 136,
+      "callFrame": {
+        "functionName": "ranked",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 4,
+        "columnNumber": 16
+      },
+      "hitCount": 6,
+      "children": [
+        137
+      ],
+      "positionTicks": [
+        {
+          "line": 5,
+          "ticks": 6
+        }
+      ]
+    },
+    {
+      "id": 137,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 4,
+        "columnNumber": 92
+      },
+      "hitCount": 3,
+      "children": [
+        138,
+        140,
+        141,
+        144
+      ],
+      "positionTicks": [
+        {
+          "line": 5,
+          "ticks": 2
+        },
+        {
+          "line": 5,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "id": 138,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 4,
+        "columnNumber": 258
+      },
+      "hitCount": 0,
+      "children": [
+        139
+      ]
+    },
+    {
+      "id": 139,
+      "callFrame": {
+        "functionName": "distance",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 3,
+        "columnNumber": 18
+      },
+      "hitCount": 57,
+      "positionTicks": [
+        {
+          "line": 4,
+          "ticks": 2
+        },
+        {
+          "line": 4,
+          "ticks": 1
+        },
+        {
+          "line": 4,
+          "ticks": 7
+        },
+        {
+          "line": 4,
+          "ticks": 34
+        },
+        {
+          "line": 4,
+          "ticks": 1
+        },
+        {
+          "line": 4,
+          "ticks": 1
+        },
+        {
+          "line": 4,
+          "ticks": 1
+        },
+        {
+          "line": 4,
+          "ticks": 4
+        },
+        {
+          "line": 4,
+          "ticks": 3
+        },
+        {
+          "line": 4,
+          "ticks": 3
+        }
+      ]
+    },
+    {
+      "id": 140,
+      "callFrame": {
+        "functionName": "norm",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 1,
+        "columnNumber": 12
+      },
+      "hitCount": 31,
+      "positionTicks": [
+        {
+          "line": 2,
+          "ticks": 6
+        },
+        {
+          "line": 2,
+          "ticks": 7
+        },
+        {
+          "line": 2,
+          "ticks": 1
+        },
+        {
+          "line": 2,
+          "ticks": 17
+        }
+      ]
+    },
+    {
+      "id": 141,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 4,
+        "columnNumber": 408
+      },
+      "hitCount": 3,
+      "positionTicks": [
+        {
+          "line": 5,
+          "ticks": 3
+        }
+      ]
+    },
+    {
+      "id": 144,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 4,
+        "columnNumber": 375
+      },
+      "hitCount": 2,
+      "positionTicks": [
+        {
+          "line": 5,
+          "ticks": 2
+        }
+      ]
+    },
+    {
+      "id": 142,
+      "callFrame": {
+        "functionName": "accepts",
+        "scriptId": "70",
+        "url": "http://127.0.0.1:58159/proactive-ui.js?v=proactive1",
+        "lineNumber": 31,
+        "columnNumber": 58
+      },
+      "hitCount": 0,
+      "children": [
+        143
+      ]
+    },
+    {
+      "id": 143,
+      "callFrame": {
+        "functionName": "accepts",
+        "scriptId": "22",
+        "url": "http://127.0.0.1:58159/kitchen-model.js?v=pantry-shopping-20261116",
+        "lineNumber": 73,
+        "columnNumber": 17
+      },
+      "hitCount": 1,
+      "positionTicks": [
+        {
+          "line": 76,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "id": 145,
+      "callFrame": {
+        "functionName": "recipeCard",
+        "scriptId": "70",
+        "url": "http://127.0.0.1:58159/proactive-ui.js?v=proactive1",
+        "lineNumber": 44,
+        "columnNumber": 20
+      },
+      "hitCount": 0,
+      "children": [
+        146
+      ]
+    },
+    {
+      "id": 146,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "70",
+        "url": "http://127.0.0.1:58159/proactive-ui.js?v=proactive1",
+        "lineNumber": 46,
+        "columnNumber": 164
+      },
+      "hitCount": 0,
+      "children": [
+        147
+      ]
+    },
+    {
+      "id": 147,
+      "callFrame": {
+        "functionName": "match",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 5,
+        "columnNumber": 15
+      },
+      "hitCount": 0,
+      "children": [
+        148
+      ]
+    },
+    {
+      "id": 148,
+      "callFrame": {
+        "functionName": "ranked",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 4,
+        "columnNumber": 16
+      },
+      "hitCount": 1,
+      "children": [
+        149
+      ],
+      "positionTicks": [
+        {
+          "line": 5,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "id": 149,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 4,
+        "columnNumber": 92
+      },
+      "hitCount": 0,
+      "children": [
+        150,
+        152
+      ]
+    },
+    {
+      "id": 150,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 4,
+        "columnNumber": 258
+      },
+      "hitCount": 0,
+      "children": [
+        151
+      ]
+    },
+    {
+      "id": 151,
+      "callFrame": {
+        "functionName": "distance",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 3,
+        "columnNumber": 18
+      },
+      "hitCount": 3,
+      "positionTicks": [
+        {
+          "line": 4,
+          "ticks": 1
+        },
+        {
+          "line": 4,
+          "ticks": 1
+        },
+        {
+          "line": 4,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "id": 152,
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "15",
+        "url": "http://127.0.0.1:58159/quick-entry.js?v=1",
+        "lineNumber": 4,
+        "columnNumber": 375
+      },
+      "hitCount": 1,
+      "positionTicks": [
+        {
+          "line": 5,
+          "ticks": 1
+        }
+      ]
+    },
+    {
+      "id": 58,
+      "callFrame": {
+        "functionName": "(garbage collector)",
+        "scriptId": "0",
+        "url": "",
+        "lineNumber": -1,
+        "columnNumber": -1
+      },
+      "hitCount": 5
+    }
+  ],
+  "startTime": 86819807662,
+  "endTime": 86820619032,
+  "samples": [
+    2,
+    11,
+    11,
+    2,
+    13,
+    35,
+    36,
+    36,
+    36,
+    36,
+    36,
+    36,
+    36,
+    36,
+    36,
+    36,
+    36,
+    36,
+    36,
+    36,
+    36,
+    36,
+    36,
+    36,
+    10,
+    36,
+    41,
+    46,
+    46,
+    46,
+    46,
+    46,
+    46,
+    46,
+    46,
+    46,
+    46,
+    54,
+    54,
+    56,
+    56,
+    56,
+    54,
+    54,
+    54,
+    57,
+    52,
+    54,
+    56,
+    52,
+    54,
+    54,
+    54,
+    52,
+    56,
+    54,
+    56,
+    54,
+    56,
+    54,
+    56,
+    56,
+    54,
+    54,
+    56,
+    56,
+    56,
+    54,
+    56,
+    56,
+    56,
+    56,
+    54,
+    58,
+    54,
+    54,
+    56,
+    56,
+    54,
+    54,
+    52,
+    54,
+    56,
+    56,
+    56,
+    56,
+    56,
+    56,
+    54,
+    56,
+    56,
+    56,
+    54,
+    56,
+    56,
+    56,
+    54,
+    54,
+    56,
+    56,
+    56,
+    54,
+    54,
+    53,
+    54,
+    54,
+    56,
+    56,
+    54,
+    56,
+    56,
+    56,
+    54,
+    52,
+    56,
+    54,
+    56,
+    54,
+    54,
+    56,
+    56,
+    54,
+    56,
+    54,
+    52,
+    52,
+    54,
+    54,
+    54,
+    54,
+    54,
+    57,
+    56,
+    56,
+    56,
+    56,
+    52,
+    52,
+    54,
+    54,
+    66,
+    68,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    68,
+    68,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    68,
+    68,
+    68,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    58,
+    68,
+    68,
+    66,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    65,
+    66,
+    66,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    66,
+    64,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    2,
+    66,
+    68,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    68,
+    68,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    73,
+    72,
+    75,
+    81,
+    81,
+    81,
+    81,
+    82,
+    82,
+    82,
+    82,
+    82,
+    82,
+    82,
+    88,
+    88,
+    88,
+    88,
+    88,
+    88,
+    88,
+    88,
+    88,
+    88,
+    88,
+    96,
+    96,
+    94,
+    95,
+    98,
+    98,
+    98,
+    2,
+    96,
+    96,
+    98,
+    96,
+    98,
+    96,
+    98,
+    96,
+    96,
+    98,
+    96,
+    96,
+    96,
+    98,
+    98,
+    96,
+    98,
+    95,
+    96,
+    98,
+    98,
+    96,
+    96,
+    94,
+    98,
+    98,
+    98,
+    98,
+    96,
+    96,
+    96,
+    98,
+    94,
+    98,
+    98,
+    98,
+    94,
+    96,
+    98,
+    98,
+    96,
+    96,
+    98,
+    98,
+    96,
+    96,
+    98,
+    98,
+    96,
+    96,
+    98,
+    98,
+    96,
+    96,
+    96,
+    96,
+    98,
+    96,
+    98,
+    94,
+    96,
+    98,
+    98,
+    98,
+    96,
+    98,
+    98,
+    94,
+    96,
+    95,
+    94,
+    98,
+    98,
+    98,
+    58,
+    96,
+    98,
+    96,
+    98,
+    96,
+    98,
+    96,
+    98,
+    96,
+    98,
+    98,
+    96,
+    58,
+    97,
+    96,
+    98,
+    96,
+    94,
+    98,
+    94,
+    104,
+    104,
+    106,
+    58,
+    107,
+    115,
+    115,
+    115,
+    115,
+    115,
+    2,
+    115,
+    115,
+    115,
+    115,
+    115,
+    117,
+    124,
+    124,
+    124,
+    124,
+    124,
+    124,
+    124,
+    124,
+    124,
+    124,
+    129,
+    130,
+    130,
+    130,
+    130,
+    130,
+    130,
+    130,
+    130,
+    130,
+    130,
+    139,
+    140,
+    139,
+    140,
+    140,
+    139,
+    139,
+    140,
+    139,
+    139,
+    139,
+    139,
+    131,
+    136,
+    140,
+    139,
+    139,
+    139,
+    139,
+    140,
+    139,
+    139,
+    139,
+    139,
+    140,
+    139,
+    139,
+    140,
+    140,
+    139,
+    139,
+    139,
+    139,
+    140,
+    137,
+    139,
+    140,
+    140,
+    139,
+    140,
+    140,
+    139,
+    140,
+    139,
+    139,
+    139,
+    136,
+    139,
+    139,
+    140,
+    136,
+    139,
+    137,
+    139,
+    139,
+    140,
+    136,
+    140,
+    139,
+    140,
+    140,
+    139,
+    139,
+    140,
+    140,
+    141,
+    139,
+    139,
+    139,
+    143,
+    139,
+    140,
+    139,
+    139,
+    139,
+    141,
+    139,
+    144,
+    134,
+    139,
+    139,
+    140,
+    136,
+    140,
+    139,
+    140,
+    139,
+    140,
+    139,
+    139,
+    144,
+    139,
+    137,
+    139,
+    139,
+    136,
+    139,
+    140,
+    139,
+    140,
+    139,
+    141,
+    140,
+    139,
+    140,
+    151,
+    151,
+    151,
+    148,
+    152,
+    2,
+    2,
+    154,
+    36,
+    36,
+    36,
+    36,
+    36,
+    36,
+    36,
+    36,
+    36,
+    36,
+    36,
+    36,
+    36,
+    36,
+    36,
+    36,
+    2,
+    2
+  ],
+  "timeDeltas": [
+    9511,
+    1560,
+    1525,
+    1498,
+    1145,
+    1512,
+    1494,
+    1506,
+    1511,
+    1506,
+    1504,
+    1515,
+    1504,
+    1517,
+    1512,
+    1521,
+    1512,
+    1512,
+    1515,
+    1513,
+    1515,
+    1522,
+    1521,
+    1507,
+    1510,
+    1512,
+    1504,
+    1505,
+    1494,
+    1506,
+    1501,
+    1508,
+    1509,
+    1512,
+    1503,
+    1509,
+    1502,
+    1513,
+    1504,
+    1508,
+    1506,
+    1498,
+    1514,
+    1293,
+    1511,
+    1507,
+    1510,
+    1505,
+    1535,
+    1512,
+    1509,
+    1506,
+    1505,
+    1509,
+    1517,
+    1507,
+    1504,
+    1509,
+    1509,
+    1515,
+    1504,
+    1508,
+    1507,
+    1508,
+    1510,
+    1512,
+    1506,
+    1511,
+    1500,
+    1511,
+    1521,
+    1537,
+    1502,
+    1220,
+    1512,
+    1501,
+    1514,
+    1517,
+    1508,
+    1500,
+    1513,
+    1508,
+    1516,
+    1508,
+    1512,
+    1507,
+    1508,
+    1524,
+    1507,
+    1508,
+    1505,
+    1508,
+    1515,
+    1529,
+    1518,
+    1536,
+    1511,
+    1507,
+    1507,
+    1516,
+    1509,
+    1518,
+    1515,
+    1503,
+    1525,
+    1511,
+    1506,
+    1507,
+    1511,
+    1506,
+    1508,
+    1507,
+    1510,
+    1505,
+    1520,
+    1504,
+    1509,
+    1503,
+    1507,
+    1502,
+    1518,
+    1510,
+    1381,
+    1501,
+    1508,
+    1528,
+    1510,
+    1522,
+    1510,
+    1509,
+    1511,
+    1507,
+    1512,
+    1503,
+    1509,
+    1504,
+    1514,
+    1519,
+    1518,
+    1039,
+    1502,
+    1509,
+    1509,
+    1504,
+    1505,
+    1326,
+    1512,
+    1415,
+    1508,
+    1507,
+    1502,
+    1506,
+    1507,
+    1522,
+    1496,
+    1502,
+    1506,
+    1501,
+    1507,
+    1520,
+    1511,
+    1505,
+    1508,
+    1504,
+    1506,
+    1512,
+    1508,
+    1501,
+    1510,
+    1506,
+    1513,
+    1201,
+    1507,
+    1505,
+    1507,
+    1505,
+    1520,
+    1505,
+    1506,
+    1509,
+    1504,
+    1512,
+    1513,
+    1508,
+    1503,
+    1507,
+    1506,
+    1513,
+    1506,
+    1504,
+    1507,
+    1507,
+    1513,
+    1509,
+    1506,
+    1503,
+    1507,
+    1503,
+    1510,
+    1510,
+    1506,
+    1506,
+    1508,
+    1509,
+    1512,
+    1506,
+    1508,
+    1507,
+    1507,
+    1511,
+    1508,
+    1506,
+    1507,
+    1505,
+    1507,
+    1510,
+    1505,
+    1507,
+    1506,
+    1504,
+    1510,
+    1505,
+    1507,
+    1504,
+    1506,
+    1506,
+    1508,
+    1507,
+    1506,
+    1511,
+    1508,
+    1514,
+    1515,
+    1506,
+    1066,
+    1507,
+    1511,
+    1511,
+    1331,
+    1438,
+    1513,
+    1505,
+    1512,
+    1510,
+    1506,
+    1501,
+    1510,
+    1506,
+    1519,
+    1509,
+    1508,
+    1505,
+    1506,
+    1506,
+    1518,
+    1512,
+    1506,
+    1500,
+    1512,
+    1506,
+    1305,
+    1508,
+    1506,
+    1505,
+    1507,
+    1515,
+    1508,
+    1509,
+    1502,
+    1507,
+    1084,
+    1513,
+    1501,
+    1509,
+    1504,
+    1534,
+    1161,
+    1509,
+    1506,
+    1507,
+    1515,
+    1504,
+    1506,
+    1509,
+    1506,
+    1506,
+    1504,
+    1512,
+    1506,
+    1508,
+    1506,
+    1505,
+    1506,
+    1517,
+    1504,
+    1507,
+    1506,
+    1509,
+    1504,
+    1510,
+    1507,
+    1505,
+    1507,
+    1510,
+    1514,
+    1013,
+    1507,
+    1505,
+    1513,
+    1508,
+    1507,
+    1508,
+    1505,
+    1507,
+    1508,
+    1511,
+    1489,
+    1510,
+    1510,
+    1514,
+    1498,
+    1518,
+    1489,
+    1508,
+    1508,
+    1508,
+    1504,
+    1508,
+    1507,
+    1509,
+    1505,
+    1507,
+    1520,
+    1505,
+    1507,
+    1507,
+    1505,
+    1507,
+    1508,
+    1508,
+    1507,
+    1511,
+    1509,
+    1524,
+    1502,
+    1512,
+    1367,
+    1503,
+    1513,
+    1530,
+    1521,
+    1505,
+    1507,
+    1511,
+    1509,
+    1210,
+    1517,
+    1523,
+    1517,
+    1504,
+    1512,
+    1494,
+    1533,
+    1510,
+    1499,
+    1370,
+    1523,
+    1520,
+    1502,
+    1512,
+    1507,
+    1511,
+    1491,
+    1511,
+    1508,
+    1494,
+    1508,
+    1508,
+    1141,
+    1496,
+    1511,
+    1505,
+    1262,
+    1503,
+    1508,
+    1508,
+    1511,
+    1504,
+    1505,
+    1534,
+    1510,
+    1505,
+    1504,
+    1505,
+    1513,
+    1510,
+    1508,
+    1504,
+    1503,
+    1508,
+    1502,
+    1517,
+    1506,
+    1504,
+    1507,
+    1505,
+    1511,
+    1512,
+    1504,
+    1497,
+    1538,
+    1512,
+    1511,
+    1505,
+    1510,
+    1507,
+    1514,
+    1505,
+    1509,
+    1504,
+    1514,
+    1503,
+    1081,
+    1524,
+    1507,
+    1511,
+    1508,
+    1505,
+    1131,
+    1511,
+    1507,
+    1504,
+    1508,
+    1508,
+    1039,
+    1508,
+    1510,
+    1373,
+    1508,
+    1507,
+    1512,
+    1513,
+    1504,
+    1513,
+    1512,
+    1535,
+    1504,
+    1512,
+    1506,
+    1507,
+    1508,
+    1507,
+    1509,
+    1510,
+    1507,
+    1516,
+    1523,
+    1503,
+    1511,
+    1509,
+    1506,
+    1512,
+    1507,
+    1124,
+    1509,
+    1506,
+    1506,
+    1508,
+    1507,
+    1508,
+    1512,
+    1517,
+    1505,
+    1508,
+    1413,
+    1510,
+    1512,
+    1502,
+    1508,
+    1512,
+    1504,
+    1509,
+    1517,
+    1511,
+    1508,
+    1511,
+    1504,
+    1506,
+    1507,
+    1506,
+    1504,
+    1510,
+    1506,
+    1507,
+    1509,
+    1506,
+    1508,
+    1507,
+    1505,
+    1509,
+    1506,
+    1510,
+    1506,
+    1513,
+    1513,
+    1511,
+    1507,
+    1505,
+    1509,
+    1501,
+    1508,
+    1506,
+    1511,
+    1500,
+    1508,
+    1508,
+    1507,
+    1521,
+    1521,
+    1528,
+    1509,
+    1502,
+    1441,
+    1547,
+    1495,
+    1524,
+    1536,
+    1493,
+    1538,
+    1497,
+    1175,
+    1099,
+    1541,
+    1519,
+    1496,
+    1508,
+    1507,
+    967
+  ]
+}

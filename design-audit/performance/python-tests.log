@@ -1,0 +1,87 @@
+test_cross_origin_rejected (test_server.Tests) ... 127.0.0.1 - - [16/Nov/2026 19:32:16] "POST /api/chat HTTP/1.1" 403 -
+ok
+test_empty_output_is_error (test_server.Tests) ... ok
+test_every_entry_script_can_load_in_the_local_preview (test_server.Tests) ... 127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /catalog.js?v=morzsa-companion1 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /recipes.js?v=shopping-resume1 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /translations.js?v=1 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /i18n.js?v=sidebar-settings1 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /quick-entry.js?v=1 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /kitchen-model.js?v=pantry-shopping-20261116 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /workspace-entry.js?v=vision1 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /surprise-recipe.js?v=1 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /recipe-chat.js?v=1 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /recipe-prompt.js?v=3 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /shopping-model.js?v=shopping-refine1 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /voice-model.js?v=vision1 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /pantry-review-model.js?v=library-intro5 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /cooking-session.js?v=cooking3 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /recipe-portions.js?v=1 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /recipe-room-model.js?v=cooking3 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /quantity-model.js?v=customer-audit-20261116 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /app.js?v=customer-audit-20261116 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /pantry-library.js?v=first-audit-20261116 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /ai-mode.js?v=plus1 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /household-config.js?v=project1 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /persistence-model.js?v=library4 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /household-model.js?v=first-audit-20261116 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /auth-link.js?v=3 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /household-live.js?v=persist1 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /chat-stream.js?v=1 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /household.js?v=first-audit-20261116 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /voice-ui.js?v=first-audit-20261116 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /realtime-model.js?v=voice-state3 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /realtime-voice.js?v=ux-audit-20261116 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /pantry-review-ui.js?v=proactive1 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /assistant-ui.js?v=shopping-resume1 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /recipe-crafting.js?v=chat-crafting-20261116 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /recipe-shopping.js?v=customer-audit-20261116 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /weekly-plan-model.js?v=ux-audit-20261116 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /weekly-plan-ui.js?v=chat-crafting-20261116 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /kitchen-measures.js?v=1 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /recipe-export.js?v=portions1 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /recipe-library.js?v=ux-audit-20261116 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /cooking-ui.js?v=ux-audit-20261116 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /recipe-room-ui.js?v=customer-audit-20261116 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /recipe-ingredients-panel.js?v=library4 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /recipe-photos.js?v=groq-images1 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /chat-photo.js?v=1 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /persistence.js?v=persist1 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /companion-model.js?v=customer-audit-20261116 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /panel-gestures.js?v=cooking3 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /chat-format.js?v=1 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /ingredient-mentions.js?v=1 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /recipe-images.js?v=ux-audit-20261116 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /shopping-mode-model.js?v=shopping-refine1 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /shopping-mode-ui.js?v=proactive1 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /session-model.js?v=portions1 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /companion-ui.js?v=proactive1 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /onboarding-model.js?v=pantry-start1 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /onboarding.js?v=customer-audit-20261116 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /workspace-ui.js?v=proactive1 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /kitchen-ui.js?v=customer-audit-20261116 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /proactive-model.js?v=proactive1 HTTP/1.1" 200 -
+127.0.0.1 - - [16/Nov/2026 19:32:17] "GET /proactive-ui.js?v=proactive1 HTTP/1.1" 200 -
+ok
+test_missing_key_is_honest (test_server.Tests) ... 127.0.0.1 - - [16/Nov/2026 19:32:18] "POST /api/chat HTTP/1.1" 503 -
+ok
+test_output_aggregates_message_items (test_server.Tests) ... ok
+test_private_files_not_served (test_server.Tests) ... 127.0.0.1 - - [16/Nov/2026 19:32:19] code 404, message Not Found
+127.0.0.1 - - [16/Nov/2026 19:32:19] "GET /.env HTTP/1.1" 404 -
+127.0.0.1 - - [16/Nov/2026 19:32:19] code 404, message Not Found
+127.0.0.1 - - [16/Nov/2026 19:32:19] "GET /.env.example HTTP/1.1" 404 -
+127.0.0.1 - - [16/Nov/2026 19:32:19] code 404, message Not Found
+127.0.0.1 - - [16/Nov/2026 19:32:19] "GET /server.py HTTP/1.1" 404 -
+127.0.0.1 - - [16/Nov/2026 19:32:19] code 404, message Not Found
+127.0.0.1 - - [16/Nov/2026 19:32:19] "GET /%2eenv HTTP/1.1" 404 -
+127.0.0.1 - - [16/Nov/2026 19:32:19] code 404, message Not Found
+127.0.0.1 - - [16/Nov/2026 19:32:19] "GET /assets/../.env HTTP/1.1" 404 -
+ok
+test_public_looking_symlinks_cannot_serve_private_files (test_server.Tests) ... ok
+test_status_never_returns_key (test_server.Tests) ... 127.0.0.1 - - [16/Nov/2026 19:32:20] "GET /api/status HTTP/1.1" 200 -
+ok
+test_system_role_rejected (test_server.Tests) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 4.658s
+
+OK

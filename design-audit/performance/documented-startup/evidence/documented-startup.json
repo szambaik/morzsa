@@ -1,0 +1,11 @@
+{
+  "environment": "actual server.py Handler; no API traffic; fresh browser",
+  "errors": [],
+  "failures": [],
+  "blocked": [
+    {
+      "url": "https://fonts.googleapis.com/css2",
+      "method": "GET"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "checks": [
+    {
+      "id": "STARTUP-PYTHON",
+      "title": "Documented Python server loads every entry script",
+      "status": "passed",
+      "details": "{\"missingScripts\":[],\"pageErrors\":[]}",
+      "evidence": [
+        "evidence/documented-startup.json",
+        "evidence/documented-startup-390.png",
+        "evidence/documented-startup-dom.txt"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "path": "evidence/documented-startup.json",
+      "kind": "network",
+      "description": "Actual Python server missing scripts and page errors"
+    },
+    {
+      "path": "evidence/documented-startup-390.png",
+      "kind": "screenshot",
+      "description": "Fresh 390px browser through documented Python server"
+    },
+    {
+      "path": "evidence/documented-startup-dom.txt",
+      "kind": "dom",
+      "description": "Rendered accessibility tree through documented Python server"
+    }
+  ],
+  "limitations": [
+    "Google Fonts are blocked in the documented-startup safety probe; screenshots use fallback fonts. No AI API was called."
+  ],
+  "candidates": []
+}

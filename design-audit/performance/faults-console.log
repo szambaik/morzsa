@@ -1,0 +1,5 @@
+2026-11-16T18:44:20.195Z AI-long-message-action-confirmation-persistence: PASS
+2026-11-16T18:44:21.834Z AI-truncated-stream-recovers: PASS
+2026-11-16T18:44:21.834Z Testing actual 60 second client deadline against local delayed endpoint.
+2026-11-16T18:45:22.876Z AI-real-client-60-second-timeout-recovers: PASS
+2026-11-16T18:45:23.490Z AUDIT_RUN=/Users/I769428/Documents/ChatGPT/Főzés/morzsa-performance-audit-20261116T182653Z/design-audit/performance/runs/2026-11-16T18-44-15.751Z-faults

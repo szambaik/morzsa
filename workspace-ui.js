@@ -52,7 +52,7 @@ window.MorzsaWorkspace=(()=>{
   document.documentElement.style.setProperty('--workspace-nav-height',desktop?'0px':nav.getBoundingClientRect().height+'px');
   if(quick?.open&&entryContext!==voiceContext())quick.close();
   window.MorzsaOnboarding?.mount();document.body.classList.toggle('introduction-active',!!main.querySelector('.morzsa-introduction'));
-   window.MorzsaCompanion?.mountResume();window.KitchenIntelligence?.mount();window.WeeklyPlanUI?.mountEntry();mountActivity();mountKitchen();mountContext();window.ShoppingMode?.positionFeedback();
+   window.MorzsaCompanion?.mountResume();window.KitchenIntelligence?.mount();window.WeeklyPlanUI?.mountEntry();mountActivity();mountKitchen();mountContext();window.MorzsaProactive?.mount();window.ShoppingMode?.positionFeedback();
  }
  function mountContext(){let panel=document.getElementById('workspace-context');const cart=state.cart.filter(i=>!i.done);if(!panel){panel=document.createElement('aside');panel.id='workspace-context';panel.setAttribute('data-no-translate','');document.body.append(panel)}panel.hidden=innerWidth<1340||page!=='chat'||!!main.querySelector('.cooking-guide,.cooking-preparation,.cooking-completion')||!cart.length;document.body.classList.toggle('workspace-has-context',!panel.hidden);if(panel.hidden)return;panel.innerHTML='<h2>'+say('A listád','Your list')+'</h2>'+cart.slice(0,5).map(i=>'<p><strong>'+esc(displayName(i.name))+'</strong><small>'+esc(cartAmount(i))+'</small></p>').join('')+'<button>'+say('Lista megnyitása','Open list')+' · '+cart.length+'</button>';panel.querySelector('button').onclick=()=>dashboardGo('shopping')}
  function mountKitchen(){

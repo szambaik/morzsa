@@ -1,0 +1,55 @@
+/* Proactive surfaces use the existing cream, sage, forest and terracotta palette. */
+.proactive-enabled .dashboard-replenish,.proactive-enabled .dashboard-meals,.proactive-enabled #dashboard-review-slot{display:none}
+.proactive-overview,.proactive-shopping,.proactive-recommendations{margin:24px 0;min-width:0}
+.proactive-shopping:empty,.proactive-recommendations:empty{display:none}
+.proactive-enabled .recipe-discovery-section[hidden],.proactive-enabled .room-card[hidden]{display:none}
+.proactive-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.proactive-heading h2,.proactive-recommendations>h2,.proactive-subheading{font-family:var(--font-heading,Sora,sans-serif);font-size:18px;line-height:1.35;margin:0;color:var(--green,#344638)}
+.proactive-heading .workspace-eyebrow{font-size:10px;letter-spacing:.1em;margin:0 0 5px}
+.proactive-heading>span{font-size:11px;white-space:nowrap;color:var(--muted)}
+.proactive-grid{display:grid;gap:10px}
+.proactive-card{padding:15px;border:1px solid #dce2d2;border-radius:20px;background:#f3f5eb;min-width:0}
+.proactive-product{display:flex;align-items:center;gap:12px}
+.proactive-product>div{flex:1;min-width:0}
+.proactive-card h3,.proactive-recipe h3{font-size:16px;line-height:1.35;margin:2px 0 0;color:var(--green,#344638);overflow-wrap:anywhere}
+.proactive-evidence{font-size:10px;font-weight:600;color:#596550;line-height:1.5}
+.proactive-card>p,.proactive-recipe p,.proactive-chat p{font-size:12px;line-height:1.6;margin:10px 0;color:#586151;overflow-wrap:anywhere}
+.proactive-actions{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:10px}
+.proactive-actions>button,.proactive-actions summary,.proactive-feedback button,.proactive-approve{min-height:44px;border-radius:12px;border:1px solid #d8ddce;background:#fffdf7;color:#344638;padding:9px 12px;font:600 11px/1.4 Inter,sans-serif;cursor:pointer}
+.proactive-actions>button{display:flex;align-items:center;justify-content:center;gap:5px;max-width:100%;overflow-wrap:anywhere}
+button.proactive-primary{background:#344638;border-color:#344638;color:#fffdf7}
+.proactive-primary img{filter:brightness(0) invert(1);width:16px;height:16px}
+.proactive-feedback{position:relative;margin-left:auto}
+.proactive-feedback summary{display:grid;place-items:center;min-width:44px;list-style:none;font-size:18px;line-height:1}
+.proactive-feedback summary::-webkit-details-marker{display:none}
+.proactive-feedback[open]>div{position:absolute;right:0;top:48px;width:max-content;max-width:230px;display:grid;gap:4px;padding:6px;border:1px solid #d8ddce;border-radius:16px;background:#fffdf7;box-shadow:0 6px 24px #34463822;z-index:6}
+.proactive-feedback button{border:0;text-align:left}
+.proactive-select{display:grid;place-items:center;width:44px;height:44px;flex-shrink:0;cursor:pointer}
+.proactive-select input{width:22px;height:22px;accent-color:#344638}
+.proactive-subheading{margin:24px 0 12px}
+.proactive-recipe{display:grid;grid-template-columns:88px minmax(0,1fr);gap:14px;padding:16px;border-radius:20px;background:#fffaf0;border:1px solid #e5dfd0;margin:12px 0;min-width:0}
+.proactive-recipe-art{display:flex;flex-wrap:wrap;align-content:center;align-self:start;justify-content:center;gap:2px;background:#eeeedd;border-radius:16px;padding:12px 4px;min-height:108px}
+.proactive-recipe-art img{width:38px;height:38px;object-fit:contain}
+.proactive-recipe p{margin:5px 0;font-size:11px}
+.proactive-recipe p.proactive-match{color:#344638;font-weight:600}
+.proactive-caption{font-size:10px;line-height:1.6;color:#66715e;margin:10px 0 0}
+.proactive-empty{font-size:13px;line-height:1.6;padding:20px;background:#eff2e6;border-radius:18px}
+.proactive-approve{width:100%;margin-top:12px;font-size:12px}
+.proactive-approve:disabled{opacity:.5;cursor:default}
+.proactive-shopping-fold>summary{display:flex;align-items:center;gap:10px;min-height:48px;list-style:none;cursor:pointer;color:#344638;font-size:14px;font-weight:600}
+.proactive-shopping-fold>summary::-webkit-details-marker{display:none}
+.proactive-shopping-fold>summary small{margin-left:auto;font-size:11px;font-weight:400;white-space:nowrap}
+.proactive-shopping-fold>summary::after{content:'⌄';font-size:18px}
+.proactive-shopping-fold[open]>summary{margin-bottom:12px}
+.proactive-shopping-fold[open]>summary::after{transform:rotate(180deg)}
+.proactive-shopping-fold>summary:focus-visible{outline:3px solid #bf4e2c;outline-offset:2px;border-radius:10px}
+.proactive-chat{background:#eff2e6;border:1px solid #dce2d2;border-radius:18px;padding:13px 16px;margin:10px 0}
+.proactive-chat p{margin:5px 0}
+.proactive-chat .proactive-actions>button{min-height:44px;background:#fffdf7;font-size:11px;text-align:left}
+.proactive-enabled .app nav button[data-page=chat]>span{width:32px;height:32px;background:#e3eacb;border-radius:50%;box-shadow:0 0 0 3px #edf0e1}
+.proactive-enabled .app nav button[data-page=chat].active{background:#e8eedb;color:#344638}
+.proactive-enabled #workspace-sidebar nav button[data-page=chat]>span{background:#e3eacb;border-radius:50%;width:30px;height:30px}
+.proactive-enabled #workspace-sidebar nav button[data-page=chat].active{background:#e8eedb;color:#344638}
+.proactive-actions button:focus-visible,.proactive-actions summary:focus-visible,.proactive-select:focus-within,.proactive-approve:focus-visible{outline:3px solid #bf4e2c;outline-offset:3px}
+@media(min-width:600px){.proactive-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.proactive-recipe{grid-template-columns:110px minmax(0,1fr)}.proactive-recipe-art img{width:44px;height:44px}}
+@media(max-width:360px){.proactive-recipe{grid-template-columns:60px minmax(0,1fr);gap:10px;padding:12px}.proactive-recipe-art{padding:8px 2px}.proactive-recipe-art img{width:34px;height:34px}.proactive-card{padding:12px}.proactive-actions>button{padding-inline:9px}.proactive-heading h2{font-size:17px}}
