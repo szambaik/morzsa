@@ -6,6 +6,14 @@ The reviewed audit concerns the frozen working-tree snapshot captured at 2026-11
 
 ## Read the result
 
+The original reports below remain the historical diagnostic baseline. Implemented
+fixes and subsequent validation are tracked in
+[`docs/PERFORMANCE-FIXES-2026-11-16.md`](../../docs/PERFORMANCE-FIXES-2026-11-16.md).
+`npm --prefix design-audit/performance run audit:performance:regression` runs the
+new AI preparation, pantry save and Realtime regressions against the current
+checkout. Unlike diagnostic modes, it exits nonzero on a failed check and runs
+in the protected release gate. CI retains its screenshots and traces.
+
 latest-report.json points to the complete reviewed report directory. The numbered Markdown files at this level are append-only indexes. Actual reports, findings.json and validation.json live in reports/<timestamp>/. Raw evidence is never overwritten.
 
 - runs/<timestamp>-full: 60 startup measurements, primary journeys, 125 navigation cycles, large-data stress.

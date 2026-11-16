@@ -12,7 +12,12 @@ const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'
 function save(){try{localStorage.setItem(window.household?.storageKey()||'morzsa-v2',JSON.stringify(state))}catch{toast('A böngésző nem engedte a mentést.')}updateCount();window.PantryReview?.onStateChanged();window.household?.notify()}
 function toast(text){const el=document.getElementById('toast');el.textContent=text;el.classList.add('visible');clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.remove('visible'),2300)}
 function updateCount(){document.getElementById('cart-count').textContent=state.cart.filter(x=>!x.done).length||''}
-function productCategory(name){return [...catalog,...state.custom].find(i=>i.name.toLocaleLowerCase('hu')===name.toLocaleLowerCase('hu'))?.category||'Saját tételek'}
+const categoryNames=new Map(catalog.map(i=>[i.name.toLocaleLowerCase('hu'),i.category]));
+let customCategorySource=null,customCategoryLength=-1,customCategories=new Map();
+function productCategory(name){
+ if(customCategorySource!==state.custom||customCategoryLength!==state.custom.length){customCategorySource=state.custom;customCategoryLength=state.custom.length;customCategories=new Map();for(const i of state.custom){const key=i.name.toLocaleLowerCase('hu');if(!customCategories.has(key))customCategories.set(key,i.category)}}
+ const key=name.toLocaleLowerCase('hu');return categoryNames.get(key)||customCategories.get(key)||'Saját tételek';
+}
 function productUnit(name){
  const overrides={'Krumpli':'kg','Édesburgonya':'kg','Hagyma':'kg','Sárgarépa':'kg','Alma':'kg','Barack':'kg','Banán':'kg','Fokhagyma':'db','Paprika':'db','Paradicsom':'db','Uborka':'db','Cukkini':'db','Padlizsán':'db','Citrom':'db','Lime':'db','Avokádó':'db','Tojás':'db','Tej':'l','Olaj':'l','Olívaolaj':'üveg','Vaj':'csomag','Tejszín':'doboz','Joghurt':'pohár','Sajtkrém':'doboz','Tejföl':'pohár','Rizs':'kg','Jázminrizs':'kg','Liszt':'kg','Cukor':'kg','Csirkecomb':'kg','Csirkemell':'kg','Szalonna':'csomag','Fogkrém':'db','Fogkefe':'db','Szájvíz':'üveg','Cumisüveg':'db','Cumi':'db','Száraz kutyaeledel':'kg','Száraz macskaeledel':'kg','Nedves kutyaeledel':'doboz','Nedves macskaeledel':'doboz','Szemetesvödör':'db','Ételtároló doboz':'db'};
  if(overrides[name])return overrides[name];
@@ -173,8 +178,8 @@ async function sendChat(id){
 }
 
 function shoppingCategory(item){return ShoppingModeModel.category(item,productCategory)}
-function shoppingGroupHeader(category){
- const items=state.cart.filter(item=>shoppingCategory(item)===category),pending=items.filter(item=>!item.done).length,complete=pending===0;
+function shoppingGroupHeader(category,items=state.cart.filter(item=>shoppingCategory(item)===category)){
+ const pending=items.filter(item=>!item.done).length,complete=pending===0;
  const label=language==='en'?'Everything in this category is checked':'Ebben a kategóriában minden megvan';
  return '<details class="shopping-group '+(complete?'complete':'')+'" data-category="'+esc(category)+'" data-pending="'+pending+'" '+(complete?'':'open')+'><summary><span aria-hidden="true">'+categoryIcon(category)+'</span><span>'+esc(category)+'</span>'+(complete?'<span class="shopping-complete" role="img" data-no-translate aria-label="'+label+'" title="'+label+'"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4 10-10"/></svg></span>':'<small>'+pending+'</small>')+'</summary>';
 }
@@ -198,9 +203,10 @@ function refreshShoppingRows(){
 function renderShopping(){
  if(window.ShoppingMode?.render())return;
  const say=(hu,en)=>language==='en'?en:hu,pending=state.cart.filter(x=>!x.done).length,order=categoryPriorityOrder,indexed=state.cart.map((x,i)=>({x,i})),bought=indexed.filter(({x})=>x.done);
- const groups=[...new Set(state.cart.map(shoppingCategory))].sort((a,b)=>order.indexOf(a)-order.indexOf(b));
- const sections=groups.filter(c=>indexed.some(({x})=>!x.done&&shoppingCategory(x)===c)).map(c=>shoppingGroupHeader(c)+indexed.filter(({x})=>!x.done&&shoppingCategory(x)===c).sort((a,b)=>compareProducts(a.x,b.x)).map(({x,i})=>shoppingRow(x,i,{normal:true})).join('')+'</details>').join('');
- const purchased=bought.length?'<details class="shopping-purchased shopping-normal-purchased" data-no-translate><summary>'+say('Megvásárolva','Purchased')+' · '+bought.length+'</summary>'+groups.map(c=>{const items=bought.filter(({x})=>shoppingCategory(x)===c);return items.length?'<section data-category="'+esc(c)+'"><h3>'+esc(language==='en'?englishText(c):c)+'</h3>'+items.map(({x,i})=>shoppingRow(x,i,{normal:true})).join('')+'</section>':''}).join('')+'</details>':'';
+ const grouped=new Map();for(const row of indexed){const c=shoppingCategory(row.x);if(!grouped.has(c))grouped.set(c,{pending:[],bought:[]});grouped.get(c)[row.x.done?'bought':'pending'].push(row)}
+ const groups=[...grouped.keys()].sort((a,b)=>order.indexOf(a)-order.indexOf(b));
+ const sections=groups.filter(c=>grouped.get(c).pending.length).map(c=>{const items=grouped.get(c).pending;return shoppingGroupHeader(c,items.map(r=>r.x))+items.sort((a,b)=>compareProducts(a.x,b.x)).map(({x,i})=>shoppingRow(x,i,{normal:true})).join('')+'</details>'}).join('');
+ const purchased=bought.length?'<details class="shopping-purchased shopping-normal-purchased" data-no-translate><summary>'+say('Megvásárolva','Purchased')+' · '+bought.length+'</summary>'+groups.map(c=>{const items=grouped.get(c).bought;return items.length?'<section data-category="'+esc(c)+'"><h3>'+esc(language==='en'?englishText(c):c)+'</h3>'+items.map(({x,i})=>shoppingRow(x,i,{normal:true})).join('')+'</section>':''}).join('')+'</details>':'';
  main.innerHTML='<div class="pantry-heading"><h1>'+say('Bevásárlólista','Shopping list')+'</h1><span id="shopping-pending" data-no-translate>'+pending+say(' hátravan',' remaining')+'</span></div>'+(state.cart.length?sections+purchased:'<div class="empty" data-no-translate><img src="assets/ui/shopping-cart.svg" alt="" width="40" height="40"><strong>'+say('Mire lesz szükségetek?','What do you need?')+'</strong><p>'+say('A fenti mezőben gyorsan felveheted. Vesszővel több tételt is megadhatsz.','Add items in the field above. Use commas to add several at once.')+'</p></div>')+'<form class="add-form" id="add-cart"><input aria-label="Új bevásárlótétel" placeholder="Még valami a listára…" maxlength="60" required><button aria-label="Listára vétel">+</button></form>';
  main.querySelectorAll('[data-cart]').forEach(b=>b.onclick=()=>{const item=state.cart[Number(b.dataset.cart)];if(window.ShoppingMode)ShoppingMode.toggle(item.name,!item.done);else if(saveShoppingState(ShoppingModeModel.check(state,item.name,!item.done,household?.userId()||null,new Date().toISOString())))refreshShoppingRows()});
  main.querySelectorAll('[data-edit-item]').forEach(b=>b.onclick=()=>window.ShoppingMode?.editItem(state.cart[Number(b.dataset.editItem)].name));

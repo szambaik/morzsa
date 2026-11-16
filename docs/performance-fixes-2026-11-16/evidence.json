@@ -1,0 +1,1650 @@
+{
+  "schemaVersion": 1,
+  "environment": "Local synthetic Chromium/Chrome and PGlite tests; not production or physical device measurements.",
+  "baseRevision": "4e9e6a801587f4d029a44885f234abd7cc708bf4",
+  "sourceNote": "Journeys, supplement and faults preceded the final turn-lock completion-order correction. Final source passed the full release gate, regression mode, unit/SQL suites and built web smoke.",
+  "runs": {
+    "journeys": {
+      "rawEvidence": "design-audit/performance/runs/2026-11-16T19-35-37.484Z-journeys",
+      "startedAt": "2026-11-16T19:35:37.485Z",
+      "finishedAt": "2026-11-16T19:36:46.126Z",
+      "environment": {
+        "node": "v26.5.0",
+        "platform": "darwin",
+        "arch": "arm64",
+        "labOnly": true,
+        "browserFallback": "browserType.launch: Target page, context or browser has been closed",
+        "browser": "157.0.8103.51"
+      },
+      "checks": [
+        {
+          "id": "navigation-five-destinations",
+          "status": "passed",
+          "details": {}
+        },
+        {
+          "id": "J3-inventory-add-edit-remove-persist",
+          "status": "passed",
+          "details": {}
+        },
+        {
+          "id": "J4-shopping-batch-edit-rapid-persist-finish",
+          "status": "passed",
+          "details": {}
+        },
+        {
+          "id": "J5-recipe-feed-detail-servings-shopping",
+          "status": "passed",
+          "details": {}
+        },
+        {
+          "id": "J6-ai-stream-and-independent-navigation",
+          "status": "passed",
+          "details": {}
+        },
+        {
+          "id": "J6-ai-failure-retry",
+          "status": "passed",
+          "details": {}
+        },
+        {
+          "id": "J6-ai-cancellation",
+          "status": "passed",
+          "details": {}
+        },
+        {
+          "id": "J6-ai-preflight-delay",
+          "status": "passed",
+          "details": {}
+        },
+        {
+          "id": "J4-shared-rapid-add-realtime-readback",
+          "status": "passed",
+          "details": {}
+        },
+        {
+          "id": "J4-shared-offline-outbox-reconnect",
+          "status": "passed",
+          "details": {}
+        },
+        {
+          "id": "realtime-one-household-plus-one-chat-socket",
+          "status": "passed",
+          "details": {
+            "sockets": 2
+          }
+        },
+        {
+          "id": "realtime-burst-fanout-and-idle-polling",
+          "status": "passed",
+          "details": {}
+        },
+        {
+          "id": "J3-shared-slow-pantry-action-blocking",
+          "status": "passed",
+          "details": {}
+        },
+        {
+          "id": "J7-long-session-125-navigation-dialog-cycles",
+          "status": "passed",
+          "details": {}
+        },
+        {
+          "id": "large-pantry-and-list-stress",
+          "status": "passed",
+          "details": {}
+        },
+        {
+          "id": "image-cache-read-is-independent",
+          "status": "passed",
+          "details": {
+            "events": [
+              {
+                "event": "start",
+                "id": "11111111-1111-4111-8111-111111111111",
+                "t": 26.100000008940697
+              },
+              {
+                "event": "start",
+                "id": "22222222-2222-4222-8222-222222222222",
+                "t": 59.1000000089407
+              },
+              {
+                "event": "end",
+                "id": "22222222-2222-4222-8222-222222222222",
+                "t": 59.20000000298023
+              },
+              {
+                "event": "end",
+                "id": "11111111-1111-4111-8111-111111111111",
+                "t": 2027.7000000029802
+              }
+            ]
+          }
+        },
+        {
+          "id": "image-serial-queue-blocks-unrelated-cache-read",
+          "status": "passed",
+          "details": {}
+        }
+      ],
+      "sourceChangedDuringRun": [],
+      "errors": [
+        {
+          "type": "console",
+          "message": "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+        },
+        {
+          "type": "console",
+          "message": "Failed to load resource: net::ERR_INTERNET_DISCONNECTED"
+        }
+      ],
+      "aiPreflight": {
+        "after800ms": {
+          "text": "Előkészítési próba",
+          "submitDisabled": false,
+          "thinking": true,
+          "stop": true
+        },
+        "totalMs": 1675.6219579999997,
+        "calls": [
+          {
+            "method": "POST",
+            "path": "/rest/v1/rpc/begin_conversation_turn",
+            "start": 23599.070958,
+            "status": 200,
+            "actor": "c",
+            "duration": 604.9763329999987
+          },
+          {
+            "method": "POST",
+            "path": "/rest/v1/rpc/conversation_page",
+            "start": 24207.104333,
+            "status": 200,
+            "actor": "c",
+            "duration": 605.0687079999989
+          },
+          {
+            "method": "POST",
+            "path": "/functions/v1/voice-command",
+            "start": 24818.929708,
+            "status": 200,
+            "actor": "c",
+            "duration": 0.41625000000203727
+          },
+          {
+            "method": "POST",
+            "path": "/rest/v1/rpc/end_conversation_turn",
+            "start": 24820.530541,
+            "status": 200,
+            "actor": "c",
+            "duration": 605.8247090000004
+          },
+          {
+            "method": "POST",
+            "path": "/rest/v1/rpc/sync_conversation",
+            "start": 24823.297875,
+            "status": 200,
+            "actor": "c",
+            "duration": 606.5900409999995
+          }
+        ]
+      },
+      "sharedPantryPending": {
+        "cloudBusy": true,
+        "buttons": [
+          {
+            "text": "×",
+            "disabled": false
+          },
+          {
+            "text": "Van otthon",
+            "disabled": true
+          },
+          {
+            "text": "Kevés",
+            "disabled": true
+          },
+          {
+            "text": "Elfogyott",
+            "disabled": true
+          },
+          {
+            "text": "Bevásárlólistára teszem",
+            "disabled": true
+          }
+        ]
+      }
+    },
+    "supplement": {
+      "rawEvidence": "design-audit/performance/runs/2026-11-16T19-36-47.115Z-supplement",
+      "startedAt": "2026-11-16T19:36:47.116Z",
+      "finishedAt": "2026-11-16T19:37:04.268Z",
+      "environment": {
+        "node": "v26.5.0",
+        "platform": "darwin",
+        "arch": "arm64",
+        "labOnly": true,
+        "browserFallback": "browserType.launch: Target page, context or browser has been closed",
+        "browser": "157.0.8103.51"
+      },
+      "checks": [
+        {
+          "id": "overflow-overview-320",
+          "status": "passed",
+          "details": {
+            "width": 320,
+            "scrollWidth": 320
+          }
+        },
+        {
+          "id": "overflow-pantry-320",
+          "status": "passed",
+          "details": {
+            "width": 320,
+            "scrollWidth": 320
+          }
+        },
+        {
+          "id": "overflow-shopping-320",
+          "status": "passed",
+          "details": {
+            "width": 320,
+            "scrollWidth": 320
+          }
+        },
+        {
+          "id": "overflow-recipes-320",
+          "status": "passed",
+          "details": {
+            "width": 320,
+            "scrollWidth": 320
+          }
+        },
+        {
+          "id": "overflow-chat-320",
+          "status": "passed",
+          "details": {
+            "width": 320,
+            "scrollWidth": 320
+          }
+        },
+        {
+          "id": "overflow-overview-375",
+          "status": "passed",
+          "details": {
+            "width": 375,
+            "scrollWidth": 375
+          }
+        },
+        {
+          "id": "overflow-pantry-375",
+          "status": "passed",
+          "details": {
+            "width": 375,
+            "scrollWidth": 375
+          }
+        },
+        {
+          "id": "overflow-shopping-375",
+          "status": "passed",
+          "details": {
+            "width": 375,
+            "scrollWidth": 375
+          }
+        },
+        {
+          "id": "overflow-recipes-375",
+          "status": "passed",
+          "details": {
+            "width": 375,
+            "scrollWidth": 375
+          }
+        },
+        {
+          "id": "overflow-chat-375",
+          "status": "passed",
+          "details": {
+            "width": 375,
+            "scrollWidth": 375
+          }
+        },
+        {
+          "id": "overflow-overview-390",
+          "status": "passed",
+          "details": {
+            "width": 390,
+            "scrollWidth": 390
+          }
+        },
+        {
+          "id": "overflow-pantry-390",
+          "status": "passed",
+          "details": {
+            "width": 390,
+            "scrollWidth": 390
+          }
+        },
+        {
+          "id": "overflow-shopping-390",
+          "status": "passed",
+          "details": {
+            "width": 390,
+            "scrollWidth": 390
+          }
+        },
+        {
+          "id": "overflow-recipes-390",
+          "status": "passed",
+          "details": {
+            "width": 390,
+            "scrollWidth": 390
+          }
+        },
+        {
+          "id": "overflow-chat-390",
+          "status": "passed",
+          "details": {
+            "width": 390,
+            "scrollWidth": 390
+          }
+        },
+        {
+          "id": "overflow-overview-768",
+          "status": "passed",
+          "details": {
+            "width": 768,
+            "scrollWidth": 768
+          }
+        },
+        {
+          "id": "overflow-pantry-768",
+          "status": "passed",
+          "details": {
+            "width": 768,
+            "scrollWidth": 768
+          }
+        },
+        {
+          "id": "overflow-shopping-768",
+          "status": "passed",
+          "details": {
+            "width": 768,
+            "scrollWidth": 768
+          }
+        },
+        {
+          "id": "overflow-recipes-768",
+          "status": "passed",
+          "details": {
+            "width": 768,
+            "scrollWidth": 768
+          }
+        },
+        {
+          "id": "overflow-chat-768",
+          "status": "passed",
+          "details": {
+            "width": 768,
+            "scrollWidth": 768
+          }
+        },
+        {
+          "id": "overflow-overview-1280",
+          "status": "passed",
+          "details": {
+            "width": 1280,
+            "scrollWidth": 1280
+          }
+        },
+        {
+          "id": "overflow-pantry-1280",
+          "status": "passed",
+          "details": {
+            "width": 1280,
+            "scrollWidth": 1280
+          }
+        },
+        {
+          "id": "overflow-shopping-1280",
+          "status": "passed",
+          "details": {
+            "width": 1280,
+            "scrollWidth": 1280
+          }
+        },
+        {
+          "id": "overflow-recipes-1280",
+          "status": "passed",
+          "details": {
+            "width": 1280,
+            "scrollWidth": 1280
+          }
+        },
+        {
+          "id": "overflow-chat-1280",
+          "status": "passed",
+          "details": {
+            "width": 1280,
+            "scrollWidth": 1280
+          }
+        },
+        {
+          "id": "overflow-overview-1440",
+          "status": "passed",
+          "details": {
+            "width": 1440,
+            "scrollWidth": 1440
+          }
+        },
+        {
+          "id": "overflow-pantry-1440",
+          "status": "passed",
+          "details": {
+            "width": 1440,
+            "scrollWidth": 1440
+          }
+        },
+        {
+          "id": "overflow-shopping-1440",
+          "status": "passed",
+          "details": {
+            "width": 1440,
+            "scrollWidth": 1440
+          }
+        },
+        {
+          "id": "overflow-recipes-1440",
+          "status": "passed",
+          "details": {
+            "width": 1440,
+            "scrollWidth": 1440
+          }
+        },
+        {
+          "id": "overflow-chat-1440",
+          "status": "passed",
+          "details": {
+            "width": 1440,
+            "scrollWidth": 1440
+          }
+        },
+        {
+          "id": "responsive-all-five-views-six-viewports",
+          "status": "passed",
+          "details": {}
+        },
+        {
+          "id": "empty-chat-read-errors-reproduction",
+          "status": "passed",
+          "details": {}
+        },
+        {
+          "id": "large-list-cpu-profile-reproduction",
+          "status": "passed",
+          "details": {}
+        },
+        {
+          "id": "cache-read-not-blocked-by-prior-image",
+          "status": "passed",
+          "details": [
+            {
+              "event": "start",
+              "id": "31111111-1111-4111-8111-111111111111",
+              "t": 32.599999994039536
+            },
+            {
+              "event": "start",
+              "id": "32222222-2222-4222-8222-222222222222",
+              "t": 65.19999998807907
+            },
+            {
+              "event": "end",
+              "id": "32222222-2222-4222-8222-222222222222",
+              "t": 65.19999998807907
+            },
+            {
+              "event": "end",
+              "id": "31111111-1111-4111-8111-111111111111",
+              "t": 2033.5999999940395
+            }
+          ]
+        },
+        {
+          "id": "ordered-image-queue-reproduction",
+          "status": "passed",
+          "details": {}
+        },
+        {
+          "id": "cached-image-releases-detached-dom",
+          "status": "passed",
+          "details": {
+            "before": {
+              "documents": 17,
+              "nodes": 676,
+              "jsEventListeners": 161
+            },
+            "after": {
+              "documents": 17,
+              "nodes": 676,
+              "jsEventListeners": 161
+            },
+            "repeatedMounts": 100
+          }
+        },
+        {
+          "id": "cached-image-detached-dom-retention",
+          "status": "passed",
+          "details": {}
+        }
+      ],
+      "sourceChangedDuringRun": [],
+      "errors": [],
+      "profileRuns": [
+        {
+          "size": 50,
+          "screen": "shopping",
+          "longTasks": [],
+          "mainNodes": 386
+        },
+        {
+          "size": 50,
+          "screen": "recipes",
+          "longTasks": [],
+          "mainNodes": 239
+        },
+        {
+          "size": 250,
+          "screen": "shopping",
+          "longTasks": [],
+          "mainNodes": 1822
+        },
+        {
+          "size": 250,
+          "screen": "recipes",
+          "longTasks": [],
+          "mainNodes": 239
+        },
+        {
+          "size": 667,
+          "screen": "shopping",
+          "longTasks": [],
+          "mainNodes": 4855
+        },
+        {
+          "size": 667,
+          "screen": "recipes",
+          "longTasks": [
+            {
+              "start": 1562.7000000029802,
+              "duration": 51
+            }
+          ],
+          "mainNodes": 237
+        }
+      ],
+      "orderedImageQueue": [
+        {
+          "event": "start",
+          "id": "31111111-1111-4111-8111-111111111111",
+          "t": 32.599999994039536
+        },
+        {
+          "event": "start",
+          "id": "32222222-2222-4222-8222-222222222222",
+          "t": 65.19999998807907
+        },
+        {
+          "event": "end",
+          "id": "32222222-2222-4222-8222-222222222222",
+          "t": 65.19999998807907
+        },
+        {
+          "event": "end",
+          "id": "31111111-1111-4111-8111-111111111111",
+          "t": 2033.5999999940395
+        }
+      ],
+      "imageRetention": {
+        "before": {
+          "documents": 17,
+          "nodes": 676,
+          "jsEventListeners": 161
+        },
+        "after": {
+          "documents": 17,
+          "nodes": 676,
+          "jsEventListeners": 161
+        },
+        "repeatedMounts": 100
+      }
+    },
+    "regression": {
+      "rawEvidence": "design-audit/performance/runs/2026-11-16T19-41-32.772Z-regression",
+      "startedAt": "2026-11-16T19:41:32.773Z",
+      "finishedAt": "2026-11-16T19:42:01.708Z",
+      "environment": {
+        "node": "v26.5.0",
+        "platform": "darwin",
+        "arch": "arm64",
+        "labOnly": true,
+        "browserFallback": "browserType.launch: Target page, context or browser has been closed",
+        "browser": "157.0.8103.51"
+      },
+      "checks": [
+        {
+          "id": "preflight-immediate-stop-retains-draft-and-retries",
+          "status": "passed",
+          "details": {}
+        },
+        {
+          "id": "pending-pantry-save-closes-without-touching-a-new-dialog",
+          "status": "passed",
+          "details": {}
+        },
+        {
+          "id": "realtime-burst-refreshes-only-the-invalidated-data",
+          "status": "passed",
+          "details": {}
+        },
+        {
+          "id": "unchanged-household-does-not-poll-every-eight-seconds",
+          "status": "passed",
+          "details": {}
+        },
+        {
+          "id": "all-performance-regressions-passed",
+          "status": "passed",
+          "details": {}
+        }
+      ],
+      "sourceChangedDuringRun": [],
+      "errors": [],
+      "targetedRealtime": [
+        {
+          "method": "GET",
+          "path": "/rest/v1/households?id=eq.90000000-0000-4000-8000-000000000001&select=id,name",
+          "start": 11143.100291,
+          "status": 200,
+          "actor": "a",
+          "duration": 4.298291999999492
+        },
+        {
+          "method": "GET",
+          "path": "/rest/v1/household_records?household_id=eq.90000000-0000-4000-8000-000000000001&select=bucket,key,value,revision&order=bucket,key&limit=1000&offset=0",
+          "start": 11150.575625,
+          "status": 200,
+          "actor": "a",
+          "duration": 2.579583000000639
+        }
+      ],
+      "idleRealtime": []
+    },
+    "faults": {
+      "rawEvidence": "design-audit/performance/runs/2026-11-16T19-37-43.134Z-faults",
+      "startedAt": "2026-11-16T19:37:43.135Z",
+      "finishedAt": "2026-11-16T19:38:48.032Z",
+      "environment": {
+        "node": "v26.5.0",
+        "platform": "darwin",
+        "arch": "arm64",
+        "labOnly": true,
+        "browserFallback": "browserType.launch: Target page, context or browser has been closed",
+        "browser": "157.0.8103.51"
+      },
+      "checks": [
+        {
+          "id": "AI-long-message-action-confirmation-persistence",
+          "status": "passed",
+          "details": {}
+        },
+        {
+          "id": "AI-truncated-stream-recovers",
+          "status": "passed",
+          "details": {}
+        },
+        {
+          "id": "AI-real-client-60-second-timeout-recovers",
+          "status": "passed",
+          "details": {}
+        }
+      ],
+      "sourceChangedDuringRun": [],
+      "errors": [
+        {
+          "type": "console",
+          "message": "Failed to load resource: net::ERR_INCOMPLETE_CHUNKED_ENCODING"
+        }
+      ],
+      "actualClientTimeoutMs": 60657.92525
+    }
+  },
+  "profileIntervalsMs": {
+    "recipes-250": 124.878,
+    "shopping-250": 101.245,
+    "recipes-50": 105.662,
+    "shopping-667": 171.704,
+    "recipes-667": 138.75,
+    "shopping-50": 133.271
+  },
+  "finalRuntimeSourceHashes": {
+    ".gitattributes": "2c054213777c94ad3c7a947017a0198ce70c2a2050a2d5b4ca4afdb1ad9e5548",
+    ".github/workflows/mobile-build.yml": "755cc5595b99f3d9a7a013c5675a2ef1d5864e999843f7a5db8c2a18b7bf6bc0",
+    ".gitignore": "b0ec25e8b213417e8ea45d96b02b7eda01b77ea98f46a894590f0caf6c8936d9",
+    ".nojekyll": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "AGENTS.md": "c2c0b11fc565436a631a9f7da6cdb7879abea66eb437a5d6986015d5ef53f3c4",
+    "ASSET-LICENSE.md": "badf4e7efb8ebf9e428f9365d1486902dfd7f76f6fc48276feec2020a9e2fa61",
+    "BRAND.md": "bdf99e4e2497492615ae08394e941242be350880dd50f133c2f5bf2fc6c69e43",
+    "COMPANION.md": "a92d6428c03e8949e52beec18ca18f8fa04de0da378767d4f53accd4e96544f9",
+    "CONVERSATIONS.md": "1db82085e81f8809cb30e9784f2fde97b6b0e4500c5a8822e8e243346dfe2483",
+    "HOUSEHOLD-PLAN.md": "076dcd22c5f560dca5a279f5d59e10e45d97758dcfd81f7983b78cb093448492",
+    "ICON-AUDIT.md": "6c72c252870ec3d4fb040e433727ea060ba01b039e048adea0f9c519446b22f6",
+    "ICON-PROMPTS.md": "ae66999b516c6da2d98ad5ebdd8b5b5a3c18ab2240bcb8c47f6063dae9d677e5",
+    "LICENSE": "45cf9d810776ea5593bf7c0daa169f4dd49e6474d379b7930c7c5ab8e94ea733",
+    "PRODUCT-DESIGN-PRINCIPLES.md": "003db6b731f3d1959371550474baa0b326cdd50615120c957ac8d0fcafeb17e6",
+    "PRODUCT-PLAN.md": "2725966d6a61b0a411f9922c2b1da92fc562118e6f8b0c8a2b44d8d06f0b253f",
+    "README.md": "2785708b291e16d605d5d8f58b42e46125adb3de8550216fb5777f5d8d1e9ecf",
+    "ai-mode.js": "be06a4ae027a08ed88f826e41fabd598fd4f6829f877246f95afb7385a9c81fa",
+    "app.js": "a84e2f68d5b74a521e2e44bcfa5246fc063d7de24c93f42c20cfda64c3cc0439",
+    "assets/brands/app-icon-192.png": "39d7171be99f895dca3fe0eb8dce7061ca1476bc5e4a463517e281a38ea53d4d",
+    "assets/brands/app-icon-512.png": "c12859131099ea9200309ec9f0a17be29b829f9ef52e188df518b38b5c88bf1d",
+    "assets/brands/google.svg": "cbe9772630b9b72daf7c14eab28c6c86f88e07da9cb08487544e022e385ede1f",
+    "assets/brands/morzsa.svg": "0180edbdfd4e9344eafe29416013ad2941530c6c136bb0659258a3a7ebb45d44",
+    "assets/food/README.md": "0f840fab6f19ae8072122f8726ae61071d6f10846dba67b47d41a1bf53aa31ed",
+    "assets/food/credits.json": "44e48e657e56621ddd803efcfd3b3f4cd448dd83834c13581dfecf4ee0a31eaa",
+    "assets/food/fried-rice.jpg": "68c697f01ed4b30e14d77d7c748cb0f39dfba762cf2927bba127c2e0b5dbf8a0",
+    "assets/food/pancake.jpg": "22a26a6cc99be728db856b643a1ae5e959efda01c15128053a4370958fcc1a1c",
+    "assets/food/pasta.jpg": "6a3ce1ae4505d719d86c7b703e67473562e340be3b2e28a087d5f175ef505dd8",
+    "assets/food/roast-chicken.jpg": "0a792dda5f0d8fc2202b851756a603047a48d659e78055dd6120c5d2bd266b89",
+    "assets/food/soup.jpg": "ae78841321c2d6fa281081f89097bdaffebc8269361b6fb570c13c382199ce89",
+    "assets/icons/apple.webp": "c0e20b43a18c4fc15c0dc5bd7b3ee0edc4ed315121dffeede39af5ad5b3a12a7",
+    "assets/icons/apricot-jam.webp": "7f2d3240a68ab0d5d40f07fab7bbb63c45a69b5a2e0ffd2abe95330812e39602",
+    "assets/icons/bacon.webp": "eb003f3d383b83fdc8ceb75f5dc216a382ba9a83435a45733efb08eab226987a",
+    "assets/icons/baking-powder.webp": "a187509facc5d1058de251cfc919efc91a66ab1e0c94893f06edb9c52ab037dd",
+    "assets/icons/banana.webp": "6deb758ea8bd7186859c8257ea5d36885c771fdcf4b34d4948c5090fcbccc539",
+    "assets/icons/beans.webp": "e527a2c43b0644eb53c1bf3aab44a2d33c8a5d5b31cb54de2cbdb2f91f61f0f7",
+    "assets/icons/black-pepper.webp": "711a02630a54460183fe660f03410188c8e82f9032b69164b9169f89a447b9b5",
+    "assets/icons/bread-roll.webp": "76ddc464b7855950e0f151cf659080195bad705afb6e68674dbfbc547b806812",
+    "assets/icons/bread.webp": "9438a4d5ab119d0ac968b05a7ce727b0ead2df3e2e3c75d4d592f390c7793b12",
+    "assets/icons/broccoli.webp": "04aee08465b8dc82ba22279e4e2f0ec946bc37157738a0ceaa54879b8869cac3",
+    "assets/icons/butter.webp": "ec7cb42443c01e8dbe9fe53bccdfccdd0a2c5b0684ec78ae7e33294544a910e6",
+    "assets/icons/cabbage.webp": "0a08f6d893af182df8c4d32ddd9c94c2cbfddd447b95c33982f6cf91e21928f7",
+    "assets/icons/carrot.webp": "2cbe901e3030df8b273aee0e240451fcdc3e647e7465bb9d33d2a1f2ab07a987",
+    "assets/icons/cat-food.webp": "513faa959cc14368563f7f9c9fa0fa477ea0525226932062fb65321a142701e5",
+    "assets/icons/cat-litter.webp": "58cb11d9cbbf95c2050cd49561196ee5249ba821089d86eeeed80025bf77f8cf",
+    "assets/icons/cheese.webp": "fc8945d2479bce02a25bdbabdb9b8572f69bfe436b319d79d20d37cc50f42862",
+    "assets/icons/chicken-breast.webp": "087d673d41972a559a10950065e38fc46d02d687bf670116fd720b0453f83d3b",
+    "assets/icons/chicken.webp": "eee59437d310aa3f9034320b2faebcc1a8dcbc5e1763a3d6634020b4ab27b6b7",
+    "assets/icons/cleaner.webp": "4920211165d883725436b1b944b656d8f976ee0238b6a9356e9560a8f76d7a43",
+    "assets/icons/cocoa.webp": "60b2f565bf75e1fb24d01ca5fdce8aca02e111c26c4a1bce261ac5475aec73c1",
+    "assets/icons/coffee.webp": "75cb8344154ff5e5fc92daa271d3b8328bfe4cfc4a2fe7c5510d5459e578b889",
+    "assets/icons/corn-tin.webp": "378a14f1987be19bd3e9a10759d0dc7cd4c761067c8f2bfb3cbecb381a59af65",
+    "assets/icons/cottage-cheese.webp": "e9605065a9f779e72f30e18df0be1832912b0864bf2e218c09e3b3f497915967",
+    "assets/icons/cream-cheese.webp": "f66b0c7b5a8a34e0bf0dddf42194faeba0498c5c04e02ff34911ca12364e96ad",
+    "assets/icons/cream.webp": "cd90aff25ac893ff87cbf877916bbb0ae2f705a0fa5cfc65bd1f42b2444ffb62",
+    "assets/icons/crescent-roll.webp": "86853b19dd1d9a20126302e66cbe368c30e14bcf4a74399e4ac7b84877966ca8",
+    "assets/icons/cucumber.webp": "66bc78feec5e7081fa7f535cc2747bc791a3659221fb854a80ced0ae73f28965",
+    "assets/icons/detergent.webp": "5510959e344bf751a87ad340409f30239ec2ee75d0fd0d09b2afc1592104b69b",
+    "assets/icons/diaper.webp": "7a30a1d039e3ca4baa368c70ad7db34db8d0b0cb41a58d97ef0334dcb3a3ffdd",
+    "assets/icons/dish-soap.webp": "db3e8b85b10cbcbb3da07e7ff85bc565ae7327788921fa450310349dcc35ac20",
+    "assets/icons/dishwasher-tablet.webp": "3761517f47030fe98a6be56b1283bb8568aae985ba5cea2e7638bf6151bb089c",
+    "assets/icons/dog-food.webp": "53af81daf10764148ed94e6da0b0840682bf309da553c34cfbbd10e1df2f5f13",
+    "assets/icons/egg.webp": "588e2fdc36956d1d699551a6c0769b9e87eb30beccc99a8341fc28f1b5cb1a34",
+    "assets/icons/flour.webp": "e45c949542dbd4bbcbb26b43a0aaa9d6fd6c2bf68ed48479426d91308cec304f",
+    "assets/icons/frankfurter.webp": "58b504791da77adc27160e8a5b9d231014b8c447e8865daa93845f73c2c5babb",
+    "assets/icons/frozen-vegetables.webp": "2ffcc5662d62f7608f271b0a5f7ee60ae85ee7826a65105ce0d732b75b077db8",
+    "assets/icons/garlic.webp": "491548977ff963880d8ddfffd610f84c21d117953d911692391d34bb1b0ace13",
+    "assets/icons/grapes.webp": "60dc999c60b1a3dcbd151c10d29b2847e567829c53c9cf988f34ac86660d9794",
+    "assets/icons/ham.webp": "49681410a5d5d4a945afb3963e5136c13c66de84d6989fdfa55e09ac550006fb",
+    "assets/icons/honey.webp": "f607c550cc36e95cb3825cddcfe90f183fd8c4ee4cbe8c3603499f4197fde6ef",
+    "assets/icons/jam.webp": "8d6ad6b2cf6e60d1e0eae4fe73964a3e3918c3c641f21d875d1d691e220b6fd4",
+    "assets/icons/ketchup.webp": "c52469d5ef6025239cf8df20a8cd4b70c1e1ebc915c691d979c4e7dd245caa0a",
+    "assets/icons/lemon.webp": "6e864000bdc027ef80472177ffccb3dbd4d0fbfb7d9e3561569ca316b733bc85",
+    "assets/icons/lentils.webp": "7dc533a8366ebb64f32bc7d00e59d61f10ca1ad77452311463a6b00ede01fca1",
+    "assets/icons/lettuce.webp": "0f648b18def9475ea030e9977d1f0a90040b71839605315cb42134e4ea0c3720",
+    "assets/icons/mayonnaise.webp": "85650a133d7ad3915d708ae328ea0b02f31a720e565e0b30c524d2957a7c957f",
+    "assets/icons/milk.webp": "56f128e87f8f48f06d803fb8d46dc7095d73fd3d875d0797f4d0965e0ed33f4f",
+    "assets/icons/minced-meat.webp": "40b0a9b1f25e9fd91acbe3f92764b0251bbbbcf97e8c75243d5d45e29517f045",
+    "assets/icons/muesli.webp": "310ac91790dc84084c9a3d2f64ec5ea335be544f753b5949cabc8b1e49ead2bd",
+    "assets/icons/mushroom.webp": "c87326ef99730f63e161b8217cff78b55b5a275686f8b58cfad70a9047cd1731",
+    "assets/icons/mustard.webp": "bce411f0a195fe0dd81cad5dc5d589d539bb41675ab14a09c651a74e86407e62",
+    "assets/icons/oats.webp": "a2f73319109be8e8cda391655c6691ebb4f0d43c04d5171570ff9e5fcc7fffe7",
+    "assets/icons/oil.webp": "ff5ad70f5416d12b626b6c8687cd3f5f4d8403194a7f1473aaa569750655eff1",
+    "assets/icons/onion.webp": "d0a5e509ad21a0b7637bdf38d321de60748e016a69c27d786dde09a51608559e",
+    "assets/icons/orange.webp": "ff9417c4a02d5727af9928ff78c1160d6dfe2d8cfa92bef19c82261f28f97d20",
+    "assets/icons/paper-towels.webp": "235fa5ea4611f2f90563e5675e20ce2c9f01559167c5199b3c145f324ba92eb8",
+    "assets/icons/paprika.webp": "521cab5da6d739796786790befb6c94133ba73aa4d7f27ba874d9be6f0fb7071",
+    "assets/icons/pasta.webp": "e2cbbb1e29427688c751eafd3d936d17a599f78a76941896a9ac682cad0c6fa0",
+    "assets/icons/pea-pod.webp": "d302b8da0ecd867ccb9776df4919e97bc9e7f4b1c0364dd981c749ec3d95d425",
+    "assets/icons/peach.webp": "9b3d14a8eb4c8e04a0bacdb866e4e9a9d54abbfddac1c1933831276d6f5b4e87",
+    "assets/icons/pear.webp": "b57d49b37021a72a3458de0d29ea778d0ceaf0b1d49a9ccd49c933687dec1fee",
+    "assets/icons/peas.webp": "d540f195734dd8e1fb9f9e6e394f5240e4efd8e2c89de51bd4e5b2e409a23236",
+    "assets/icons/pepper.webp": "e68569805b3561ba9f1c356e1b95c8867147004a3017d37c4969ded5d4e94a5f",
+    "assets/icons/potato.webp": "0f1757e340f51ff9c5fb3e32d115e6408e56db495ac15efa5189d90eaac39027",
+    "assets/icons/rice.webp": "4bf8dba7426eadea11d3a8d98ea13a015d6befca422bcbaeb2a79164eec430f0",
+    "assets/icons/rubbish-bags.webp": "232872052373d3f834e239f2bdfdaf417138361d74e4cd8a7461771a418c8649",
+    "assets/icons/salt.webp": "d6b806b43c5d717cd9830d9cb657ee08a28afbab1fa4f336866d7b0f754e1f44",
+    "assets/icons/sausage.webp": "45fc42c0d1690cfd491fce0d25f0b102baed1ef78f4ee04dd01007adcfed424e",
+    "assets/icons/shampoo.webp": "bb5b44d888eba96eede9a806e052259b89c519e7966a02e02c68a1948384020d",
+    "assets/icons/shower-gel.webp": "8fbfb2bc034b71f7a6c744086156cae500dd2bee355908ec65f9ec5099d5e453",
+    "assets/icons/soap.webp": "e6a755a6b320a3b78128706b136df4b8dc0cf167af29d53ab0a39566d9f91bc9",
+    "assets/icons/spaghetti.webp": "10f9ec936122898e6e8b420d2a5b2aff7482221f384fdccfcc5a549b9760291a",
+    "assets/icons/sponge.webp": "88e7028b7dc591fe9793da92a8f2ab53ce7b0a15f9bf147711c5f464ada6c5f5",
+    "assets/icons/strawberry.webp": "2d8e77ec522af0ba95c856d8095c4855ad6cc37ff93b158e3f560b9c5c173083",
+    "assets/icons/sugar.webp": "d4474f1d712d554e4a3e1d0246017453ef1e008e58e214151d8beed4f1286300",
+    "assets/icons/tea.webp": "3f97153337ea2279a980cbf82183468691e0feec95fc932a8ba4236b5ece5412",
+    "assets/icons/tissues.webp": "19efe4a180c587d4c0c3d6e5dfb947ebec6cf0c913564f1b3d3b275297a01012",
+    "assets/icons/toilet-paper.webp": "9e8134d313ca0f5fdf2c8486fa54b277c58fe2bcdaa35803dd10cac0248c538f",
+    "assets/icons/tomato-paste.webp": "ec585594ca2a2bfb6913220e014c9eff27ab1a855116257018e9882210d24bc8",
+    "assets/icons/tomato-tin.webp": "878203ce06445ba83c4592527280ff0c437f1e84a5defa3f75a85ce67e51db2f",
+    "assets/icons/tomato.webp": "6e0137c4a6305b5599e301b30cfc55947ec9568d0af86f688bdcd2e271b8c338",
+    "assets/icons/toothbrush.webp": "d9a8493e29044ebf654edb072d716fbe6343829a825b0cbdfc8e54e91ac42379",
+    "assets/icons/toothpaste.webp": "99c2ebba4f86dc7df8084290c1e2f7ccd716b65cbb2ff987c9291b32355a88a6",
+    "assets/icons/yogurt.webp": "9ea6268bd466ba3303bc1f69b91af6108de81f4ea463886f0631012dc7133517",
+    "assets/icons/zucchini.webp": "03e6ad9de30216107d614982302bf1eb08b17ea3cc16b00460150aa5242ca6bf",
+    "assets/illustrations/morzsa-mascot.webp": "edeb22131fca33e3f36c86b9f3699e735e5815f328a215f1cdf7a3a060493f94",
+    "assets/ui/LICENSE": "1e7290b35280a048667bbf0ebabac1c7fd52a75300e8b2946ac165715997f2bc",
+    "assets/ui/archive.svg": "1a6e1c540c9a1a9b489893cc14ab9f597496c69aab5ba222fdd5b456de9e2fac",
+    "assets/ui/arrow-right.svg": "12b97a4d2821da556ce7df95f89df46deb94aa711d46b36a848be0de0ac2a7f0",
+    "assets/ui/arrow-up.svg": "df0ff279d41bba93ae6797ef519ba442b895cd5d546fb36f22b7a656c3b05fd1",
+    "assets/ui/calendar-days.svg": "81ddf4891ad1cbdd8841c04b04774dbb8a15d9f13a8e3219b2bf7aeb173c91ac",
+    "assets/ui/check.svg": "538432eec072ceeccf5a7aacf347a2ad2bff9937d203dbd0b4f4245d7accd93c",
+    "assets/ui/chef-hat.svg": "637f9b37999f919ca36e83595ec93d48c2ecb7acb9ea26918001a756ef178ddb",
+    "assets/ui/chevron-right.svg": "fea488a3b60fd7738bbbf8ca98826ef5c0381347c5fd1048d45ee70a75a51cfe",
+    "assets/ui/clock.svg": "7752394550283b321c2d9e616f872571c895a7f95a0ed049e851a91f728c4af2",
+    "assets/ui/download.svg": "3daeee13ded5a3afa2198b1bb4e2262d163922f97d96ac6ff9953e8ed4fe039d",
+    "assets/ui/heart.svg": "3e0ea938f896725eb5d9f1440bec881671761a6864f8d0eb1948065f3de99aae",
+    "assets/ui/house.svg": "2c13f570d9b9727c9b6c23400c95acfa9737e91884ed926332edb18fd47a2a76",
+    "assets/ui/layout-grid.svg": "f5dfe49a6c944a86a6d75f9f18a9a51903272ba2b9397333cd24f62cf2620969",
+    "assets/ui/menu.svg": "a8da12c1e9b80d9f70001e957ab7e8464d9ad676975702f07d86da8fb47ecdf3",
+    "assets/ui/message-circle.svg": "f62830d9fbbbf697e53555398d31a342ddec8dd008d707f21cd90bb19befcc87",
+    "assets/ui/mic.svg": "6b7893c14bc1d1a9f839571ee2119dd8c5b96d7301c87cb6735e43278788f934",
+    "assets/ui/plus.svg": "b29207ee8f5cc0e829c0bab2e5b223fc88687599c6bd40b94ba35f52327615d6",
+    "assets/ui/search.svg": "e11a04d51c122a8a759211424920efc65fa36b7ab06237c34ef90317d920ddf9",
+    "assets/ui/share-2.svg": "de283acf45610a564ade56bc55bb94e7cf4040bc942efe9163fd98cdfe07672c",
+    "assets/ui/shopping-cart.svg": "d15001ee243eeba5af63709a5f3cd2c7f0973170c86527a45b20e4eb1c45823b",
+    "assets/ui/sliders-horizontal.svg": "995507595c7c24deffef382bacc452a24b40a2efc4aa54908563a0f09b6a75aa",
+    "assets/ui/sparkles.svg": "40a7c96d3ad44a83803c7dc2f449653b972602763cda2adfea7f72f3925c375e",
+    "assets/ui/square-pen.svg": "b7ae93477490f11b81bd8fd0589b492394c0be54e871cf3c026311c7c49528ea",
+    "assets/ui/x.svg": "0f38855d9d5775c10960ae53e46b745f77914b43f78c43bf8abc39f4d5e06de1",
+    "assistant-ui.js": "2f2505af01a6002741c6fb140721b22a57b1646c248a7d982699bc8b0ee2f2ab",
+    "auth-link.js": "abefaadc29b89919280b735ebe125b7cfbbc289832713301e5eccf737065ee19",
+    "capacitor.config.json": "e1cb5d13b7d1df941e0cf2f99d98a883f1feaa6c9f7504e39b7e47673ca9acdc",
+    "catalog.js": "8a1c34e433c74191a05a065ca3864dab7fb0575846b533f0098db25ce4fa544b",
+    "chat-format.js": "503841a02357d7f9af7aa40a2dc3903b4d1f6ffb12f35538ae1f578edba22f53",
+    "chat-photo.js": "0df3204a5db01b9a520c098da6326ce03bd9cba53c4c9b3659fb73a11f7a04c1",
+    "chat-stream.js": "908dc1aeb9c95dcc6c29fdd870c0babbccc36dfdbf334ea4faa7d6e7ea8bad44",
+    "companion-model.js": "2e361aa17e393522ab7f1eb88e859a438a77e88f6ab3680579420b3f5b51df9b",
+    "companion-ui.js": "f59d6dd1b7d1ae82aa6204cca514fa4e624e588471d3caf2d962d21d5df5c93a",
+    "cooking-session.js": "376e96981f2ae96902be8848fb4c041e5aa31d1ba9b06bc83df1cfb26c18a94e",
+    "cooking-ui.js": "b0e1bb69f73259634e47b4bb0a1668212e98a212ef1fdceb7de28cf363fbc6b2",
+    "design-qa.md": "2b113615ccc0138077b56a2b5d7804eb06248ce44c218d81d3294bbe42780f3f",
+    "desktop.css": "96163de77ed07998ee9e0c07bb4bb6c9419176269cca919d6b24e0388c5590c1",
+    "docs/CONVERSATION-PERSISTENCE-PLAN.md": "6f32c66df5973d34cec7a00f1b7ac5e8ef01ec512b31b6ec1160f649b72384a1",
+    "docs/COOKING-EXPERIENCE.md": "3a6c24d4542ff1b3a0b4d3581eee1c15fabd2e5b920d890a693d6652c0623318",
+    "docs/CUSTOMER-AUDIT-FIXES-2026-11-16.md": "df71342f599793a5ad5b952a6f55d0282574a011980b07cc241bc630f3997298",
+    "docs/CUSTOMER-EXPERIENCE-AUDIT-PROMPT.md": "658ec6cf6f013b6c596c09f7850a5a5eda8b4d7655a49a066ece8b4640adc147",
+    "docs/MOBILE-E2E-2026-11-16.md": "df8172822b2de927d2af41221dca179eb1106fedb01a20861da5f6a7017875b2",
+    "docs/PAID-MODE-PLAN.md": "ec56ebc7b40268a6e54cb60e7e24ced0826cef70e85abafdca93044854be6197",
+    "docs/PANTRY-ONBOARDING-2026-11-16.md": "b75aeb1f4625e5d8ec23d1f5d44d1875ce24ca6fa5b1a633fa91abe28e161e69",
+    "docs/PERSISTENCE-IMPLEMENTATION.md": "fe7c95b9b3e3cd9de46fe29764a0dac4c5fb66746880660c35272640f36b3f3c",
+    "docs/PRODUCT-EVOLUTION-2026-11.md": "e4000b3604e218c93f347196574d330c0e2b7f2b76e991536d2797b47518b359",
+    "docs/RECIPE-PERSISTENCE-PLAN.md": "77d421bfce449f6b16f7d0975677a6a4e0ea8db675b9cdeda790e85707093e69",
+    "docs/SCREEN-REVIEW-2026-11-15.md": "89263bf6c34d33385783d144ad42978d40d52e20269aac20f745ee46e3a775be",
+    "docs/SHOPPING-MODE-QA.md": "71a57b81733bf9fc6ad283447d69051dd3cf2610ddac8ddef5013c993d2b972e",
+    "docs/SHOPPING-MODE-REFINEMENT-QA.md": "f2d28a930d98222c1c4f11efb2f711a3943b21eacebee403930b1b83004697b6",
+    "docs/UX-AUDIT-2026-11-16.md": "44c420bc7fd364e50c92d77ad961a6e00412834e6cafc453f7580050c01fca97",
+    "docs/UX-FIRST-AUDIT-FIX-LOG-2026-11-16.md": "1ab16c318763ef54732f63358b411a68675ba7618465a2ea1c55aea66343c642",
+    "household-config.js": "1816689c4b7a9e686d05f25dbb45145f97996599f5b395cafc6d1701a3376817",
+    "household-live.js": "640f8945392656af5b9506efc69ed47804bc151efede408d591eea3d600a11da",
+    "household-model.js": "1cdbf3b0e752ca6376d62a4ae7b6a170c3c1a93b63d63f52ade84c13f33de028",
+    "household.js": "7f2047f6de080a921c3d35609f3bfaea92a6510511281ba0d5640f73dfab94cf",
+    "i18n.js": "22c699f50c4f4f6a635adab6fb68ca992f905e0bd2719089577d4dcbd856e2a7",
+    "index.html": "36f44e3b8c3550987fb80aad041886b5a1f80a3e231bb0c54c4447485bc3e14c",
+    "ingredient-mentions.js": "7211e95c4cd3f1b1ccc8a301e64d482830aee6237b88cce95c6df942454a4076",
+    "kitchen-measures.js": "09a56512a75b07c6edb71e37996251019bda1a5d235fd35bdac37c5e0ea73bac",
+    "kitchen-model.js": "168908c5d387d5dba4a175fb7043c08abef54f02b01f2a7c9c009682f2a0016d",
+    "kitchen-ui.js": "ffeb8934000b4aa7c92759ab2fe066ba1e423eda930dec888130d16ce888468b",
+    "manifest.webmanifest": "50726112bf288f3f959a18345f15da2ac348092e035e29a9571109008b9bc4d0",
+    "mobile/IPHONE-TEST.md": "a3a130e866380f6744a5d488716742916d1da4df1ebbffe2eaa074954822cc03",
+    "mobile/SETUP.md": "0a8c273b58297c4efa8b4686116b97a9cc961d60f8795b136edbeae60c1972ce",
+    "mobile/bridge.js": "e15b3524c84b7348ecc064d65bbd6793472e8aefd6dcb9c522cb4a26d30eee0e",
+    "mobile/vault.mjs": "f254c5ffa6bea943d9a4265d5e4ddefab3c695a3d77a3e025f66d908c65a5145",
+    "onboarding-model.js": "15700da4e8dba7dbbdcd45b0d21497da12e893311dc543767603a270237fb6ae",
+    "onboarding.js": "24055900996175d32363b974633f4435b5e086a5146bce8891acc6f07911be90",
+    "package-lock.json": "24f3a8fb386be16ab5ac507be053b53c68794660722514dfde879d69f2bfa067",
+    "package.json": "fbe8f8b46c5113d4a371edb91333ab81f591f0faf3c52f77038123dc517b4306",
+    "panel-gestures.js": "46cac3ed5fe0a2e3e408e45fb88495d2452866c6f974357f763ddc413e7b5ea0",
+    "pantry-library.js": "dc3ec2af13695d20a761266857d2b4d0a60fb8c2c8013e78e99ae6c10ce501e5",
+    "pantry-review-model.js": "9865fa4550d8529b28baec0e3104f58fe863e0ca72c947a39b4e730952f4f1b1",
+    "pantry-review-ui.js": "6f4c7ca410f2299a8dc5807f0203e45d8d42d9093974a4ca3404040cda138b48",
+    "persistence-model.js": "397a93441814c0847c88adefa05a3e527a82631633ab81f9118524d66a05c46f",
+    "persistence.js": "d50398050e75b65df5ed6de0b83550d6111545867aeaae874f8fa878acf9212c",
+    "proactive-model.js": "1a57b70eeb215c178889ee57ec72de17308e8cc543fd69a5014504265cbb0618",
+    "proactive-ui.js": "c0ae31020ad49e90622fd62649167517780b96b52cd6011be06628db761d5382",
+    "proactive.css": "19a4f5a129ddbcc3de026485aa838e0c84a25dac3e741746c84f9799efff616b",
+    "quantity-model.js": "ae4fcf87fc3565a7b4558bfd75594109a6364032705843a00c82f2903ff7484a",
+    "quick-entry.js": "e67f8fb9e1e4adc5e81a9bf836861d1374337bc7bc3a092242e31f798ab187d6",
+    "realtime-model.js": "583ecefaa45dff6eef4aa09ec7a90a7057af70d07c99f0fc419667f17dafe04a",
+    "realtime-voice.js": "3a5ca1097a2177337935fdef8bc7d2ff29fddd688d5a652cfd19d0f02701945b",
+    "recipe-chat.js": "58b301e1759c81e84a721fedff6d4b0dfcc191c75d19ede62f6f7013e6207020",
+    "recipe-crafting.js": "fcfaeb2f0c49f53c6a14b81f79cd39316d6b9ede173bf55f902e17a1e88de00f",
+    "recipe-export.js": "ae6f010e4964b73e6f874fcd8813b770f97da4faf6c8d445981d2707c4fec727",
+    "recipe-images.js": "2cf7dd16d6809cf39ce491c09e0ce1f16b5561100647b449e807c30b754b37ef",
+    "recipe-ingredients-panel.js": "3e949ddec01ffd71b9a32d889621359f7b6162905027a7b84118c7173a85738b",
+    "recipe-library.js": "1d3a5e079e41b0e2be920ca69eb0170e479475f791f6f26e232f6ba63bf9252a",
+    "recipe-photos.js": "a685f2ba3242758de7b330b909f4346cbf514fe1bd4321f1a3bde8defba03551",
+    "recipe-portions.js": "21afecfab9a59bd87362438b71466793e994f5160dd7594cc54151acd6b3202d",
+    "recipe-prompt.js": "ccedba6ab4bdbcb60376e9a1209c3783bd9f7caa5488d41f8a799978ef612076",
+    "recipe-room-model.js": "621f80180e1c1dc7774a029c8869b8dec6b6779a35755bff20e3287cc2a1b5ca",
+    "recipe-room-ui.js": "7ee00f7a7b1729af2c6d32a89390dca9f4dab864b600235e0129ca3308d514ff",
+    "recipe-shopping.js": "af6d8f09642e0782cdd174764f6ba37cb64f90f1797e4f06e9a03df016901fd3",
+    "recipes.js": "837fae336bbd55a93e27872bb0494b2ad7d580b3c354fd3e8615c5dee1c8672f",
+    "scripts/build-mobile.mjs": "16b88650dcbc3afcea8ff8a82d45b2bc3c52d35536433beb742d7ca9e697efe4",
+    "scripts/seed-recipe-catalog.mjs": "07405bbc5104786db05af903ba5d34d8c62b21ca90469683131f6112ba891538",
+    "scripts/smoke-ios.py": "0d4976ab9d8d402a099900e07deb772632ca113d397f8e144eb38871462416ce",
+    "scripts/sync-native-assets.mjs": "b826a063498b0d0d032c42b123d969287bde3e8e22391c1efbbbde1416100f7d",
+    "server.py": "ad5e0544fb3469f512ba79cea48dc51e096b123dc22fd568cfdc94fc5a99d9cd",
+    "session-model.js": "e1a390c4304ac0861d79520337697dacf425bff82a10a3aab98851ad8f361e9a",
+    "shopping-mode-model.js": "db3afc1e0a8936fbf7cfdffee0ccbeabc51bda7e2d4fc9a050ce8c7d423a3454",
+    "shopping-mode-ui.js": "cc58c766c343b560932220b94aa431d25975b09a68258abb7656274c06996216",
+    "shopping-model.js": "efe01f7e16c5c8aa680e21c864a7d00cc917fb04b83ac8fefee234688bb97908",
+    "styles.css": "330d94684754b7c77d6a93b279dcb13ae8d3374ba0e6cc5507f3fc6b1415847e",
+    "supabase/AI-PROVIDER-PLAN.md": "818b68589f82421c12e7e9a9c405d1dde4ff6bc81cd3310a050e0b5f3bf1c18f",
+    "supabase/CHAT-PHOTOS.md": "ea166c096ccf287493bb5b9e2038e9dddc443105da3aa75a9e835e1c58e6a2cc",
+    "supabase/EMAIL-GOOGLE-SETUP.md": "231a0ada1347c42086b361f2561cd6ecde732c42be83f3c224f8ba988d892bee",
+    "supabase/GROQ-CLOUDFLARE-SETUP.md": "1d18c0618f55dbd28ec483fb59f4d3bebd34fd23ce03ba410571f37db7fe258c",
+    "supabase/PLUS-SETUP.md": "40f1a2b9336d8e83f33a88db56831c1a6218222a15dc259027f6c1e248776d20",
+    "supabase/REALTIME.md": "a86c0e58ed422faa57045b4e4a9f2319eb4032b0f7c82e311b36d89d5b0dfe1a",
+    "supabase/RECIPE-AI-PLAN.md": "b31be0f234adb52a199b855c7b23ddd88524bac89bba40ff9045b628dae46b2e",
+    "supabase/RECIPE-AI-SETUP.md": "629807fb10984c96b3ba7a912e2c2bfbf2f9de5091c6fd6cefde33f02c69c7d8",
+    "supabase/SETUP.md": "01722b3339ac5e4e0c8a333d3ace25c2e227d63ba726f07c7b4b0f60c036e3ea",
+    "supabase/SHOPPING-SYNC.md": "c55572650d8184b0c8829d4b49692ce75e6bce5a7399220118e2850b932d78ea",
+    "supabase/VOICE-SETUP.md": "bf432e0e07248a9a64e8b502595c7539b76d6433f4dbbf424a6a1a85efdba8de",
+    "supabase/config.toml": "c5089b5ca4a6cf004ae678acc517123ffe1b6c19f17f48462a010a291550fc2d",
+    "supabase/functions/plus-assistant/handler.mjs": "4de3b624fb37d7f2526a5b3d384299281f148a286cbb308254a0f63b2595175b",
+    "supabase/functions/plus-assistant/index.ts": "415fef2274cd1c7d9573f79da8772f1660c02a019e6092b5791ab4a39ba913e9",
+    "supabase/functions/plus-assistant/openai.mjs": "4db4b56000ac1f942680893f8f91bf170b559307c79645df6da40ed885594a7b",
+    "supabase/functions/plus-assistant/realtime.mjs": "a3cab0021c476fbfe34c814c4ee4d43117ed79bb46265d9dd3822124a84b793b",
+    "supabase/functions/recipe-ideas/handler.mjs": "30f7c06969f10f33f631aee8ac97fbf5fa649db31c02309926262ee90b4af50c",
+    "supabase/functions/recipe-ideas/index.ts": "60fa2d14706d9120537e0e47da64c8b9f68cd9577be7b581ff8f60b63d270d88",
+    "supabase/functions/recipe-image/fal.mjs": "278d0a79af9629a619851188b481d4aa2538485e90ed9714408e0f8e3e8a9e18",
+    "supabase/functions/recipe-image/handler.mjs": "16fba7e1b550122bc4163382229851674ad7dc71c5a15c4a0d779c6cbc0abd56",
+    "supabase/functions/recipe-image/index.ts": "973f305786e6488394c86095e4c02639fcf68d9a598e658b959dd82cde807ca2",
+    "supabase/functions/recipe-image/persistent.mjs": "6a2d65262ee40835fb885f7f0f99a4238769418698e458a07ecf0b796970f31f",
+    "supabase/functions/voice-command/groq.mjs": "bfcc58c758a95f8c339ce17b57e1e6802a5866fd40b715f13ce19fb951f4f8d3",
+    "supabase/functions/voice-command/handler.mjs": "9b4eca2750d9272d24d1244cae4da1101f394b6d3f1f2c1c3563eac25ef824f0",
+    "supabase/functions/voice-command/index.ts": "f272ed4882a8051bd0898f021644ac7535fd41bf2a0372417efc1f55e6551fa6",
+    "supabase/functions/voice-command/provider.mjs": "15b762f41ee5f0faeb01e939e77c6c2a5ece452c7e86e37b4b23b6db377f6645",
+    "supabase/functions/voice-command/stream.mjs": "2cbe795fb6dceebc5c28482f4750ddd752a9446f5d20eee2bc0f1114bf367467",
+    "supabase/kitchen-coordination-metrics.sql": "0c4b94b3d4e45967c2623282e271f981af1742e4829b7e76bc5854cc529f3f54",
+    "supabase/migrations/20261029_email_invitations.sql": "ed335df5d3d7ac2a4db07e036232cc23e3ae24b125ca9bb0a0f5e5ab14d2f961",
+    "supabase/migrations/20261029_recipe_ideas.sql": "53a77f45158b9a4bc5392222405cd5e9b6c0c3d79cdb84c5d73b3411e6b2e650",
+    "supabase/migrations/20261030_household_realtime.sql": "2327d709f0048edfa90361835651dde917a4804c0ee4c5ce8d161edaadc4c834",
+    "supabase/migrations/20261030_voice_commands.sql": "c21e17f11780a4085ce0ee02569dd89904e23d7bf23331aa6676b4bbc952794a",
+    "supabase/migrations/20261109_pantry_reviews.sql": "0713a78e6f267169329fa51d69693f05cb954e049302e8ba25fe0e1711bdaf53",
+    "supabase/migrations/20261112_recipe_images.sql": "498c87bce672e76c5fefe061d88dcef8237c74d7018ff2d8eecbaff0dcdd21e5",
+    "supabase/migrations/20261113_kitchen_intelligence.sql": "690b800538af2bd9537d9f451cba40731ab117ee15fcc72f72800bb4a045c419",
+    "supabase/migrations/20261114_persistent_library.sql": "c24f7d9267cb1f216394d6b9005495948a9c378707b4d14d6b60da35657055e2",
+    "supabase/migrations/20261114_plus_assistant.sql": "26fc0167eefcd33dc38663256237cba74e0a1c7ffb9ec7a305f065c6e710da2f",
+    "supabase/migrations/20261114_shopping_mode.sql": "39824d8fbc50d597c3db728723f808604247e7ee1f0e466e9d44704f02515b79",
+    "supabase/migrations/20261115_cooking_image_jobs.sql": "dbb293538699969ed276d4f8eaec7d3d4389ae1db161817ac7563417dc3d5b18",
+    "supabase/migrations/20261115_detailed_recipe_steps.sql": "21bd90ca6598143346a275145a82fd4af81cbbe839d58cafb139ccd0bf42ea83",
+    "supabase/migrations/20261115_recipe_portions.sql": "c7fd6da278ed1639f60cf53db93ad93a556122153772b3d374e453d9d5b7c261",
+    "supabase/migrations/20261116_proactive_suggestions.sql": "38c9f9c03b85635a2b1c9558f6651685b9bb2edba3085e7526c183e740e2b8ad",
+    "supabase/schema.sql": "acecd8c237f4a86066622435d5e90ab64ffe88b8ad6c2975e5b839cb481ae432",
+    "supabase/seeds/recipe-catalog.json": "9eca0f0d1deb739a4fba66e546924f71962f66f557172da6f7f2e0909552a1b0",
+    "supabase/seeds/recipe-catalog.sql": "0a0724f360cae50bae39e505ab2a4343254801b474ec313e79e38b7845e536b0",
+    "surprise-recipe.js": "eb49735ca5a14397ea8ccc5a4e9186b5f9121561e976c29d53942b445a1751c2",
+    "tests/activities.browser.js": "459055288bf7e8a5848665c4d5931b4e8c5ed9f3ae84d341aeed30196e6ad5fc",
+    "tests/answer-presentation.test.cjs": "a13ed3d4a3743cdf70450d9806008bbe299dca6798ac5ed87702625f1a3eaa97",
+    "tests/assistant-fixture.py": "92049176b00bdbf3ccd01bc309dc90a9467308e5f8fdd333db2b788050076b8b",
+    "tests/assistant.browser.js": "1071fdb45303615ff96e16933e70cdf32a99dd7bc23d451ce4b7881ff7d2d290",
+    "tests/audit-actions.browser.js": "45eaf7943a8d9e8de4c8c20746fec436f39a6f50e3bfddcb4d1c56ed74dc0426",
+    "tests/auth-link.test.cjs": "d6c91c4fa08468664794d67cd80c06db1c79a8c4dd4f453c1c0cf6e11aed8013",
+    "tests/auth-session.browser.js": "8e52f5ff223e2b9c15260ce99a939b0f3295f5662dc7c163b1bce87a22c525d3",
+    "tests/catalog.test.cjs": "8a07648f1eec26320f766bd47009a8819e11935bb182af5f0df58198eeabe715",
+    "tests/chat-crafting.browser.js": "4a1074bf9c6662d2bc051226d25018a287271d3e4e39ea1defd7f6f6e834bd7e",
+    "tests/chat-days.test.cjs": "d589baebb14f17521f3192f48cc408de5e99d2718e15ede1cf94dd303c0468d9",
+    "tests/chat-failover.test.cjs": "74962147ddecd4fc206c2a01b9576fbaa496cc3d94d7de490fa984d99d943d78",
+    "tests/chat-followup.test.cjs": "d8b11e11a1dc8cf7044a666fe8d0be970d367e0ba848355febe7960f1084910d",
+    "tests/chat-format.test.cjs": "77aa65e45bc38e0b7fd9fecc297d6ef34e16dc4c5ce5f1d090bd14686a980ace",
+    "tests/chat-history.test.cjs": "143fb06be508c2e4460bd0f3e467ea7456079d700c8d921178d7ea908e55c36c",
+    "tests/chat-photos.test.cjs": "d917208a0ded1a8b73e73283c6d9906724a3f60ed171d238dbaab19e5d8a3936",
+    "tests/chat-stream.test.cjs": "b7621d9edb83d36de6376da4d6dff3bf25466a5418b1b4279abffc0e689a1030",
+    "tests/companion-fixture.py": "09d9f59de469adeeb12fcab98f52e5bd7f5a7934c0f68a9775b07dd93bbe1f3a",
+    "tests/companion.test.cjs": "3f2617dd8c254b5b07e80538f3fec48cc54bb2f0b930a4860c73cc42e463a42d",
+    "tests/cooking-session.test.cjs": "cb5c20f57f8ba4a7bbad7f04c83da4d01f052837f6529901656112d0b21acc10",
+    "tests/cooking-threads.test.cjs": "0c7f055f383a37eea7643aecc4b12533d861ca6cb55445d270fe28db33c0f190",
+    "tests/customer-audit-controls.browser.js": "bf71238154241e235ad573927d96c8b8166324522e171c98d289533f329fc8a5",
+    "tests/customer-audit-cooking.browser.js": "c418c881c32ba080d7056aebd3c41781ed8cbdd6946f5b2dab81dd3a226ceb77",
+    "tests/customer-audit-layout.browser.js": "98e587d436df3a3528a0bd00859100a2faf7cdf7fc6cb5c33231675ba03318aa",
+    "tests/customer-audit-provenance.browser.js": "4b9d8afda2996d5237625426d598f3ae94eb659189f6454e6e8e5b438671ec96",
+    "tests/customer-audit-sharing.browser.js": "2f4083b4126ed07f4dc7d74e05892912991ea94202af26dd6944c553946aea8c",
+    "tests/detailed-cooking.browser.js": "6b4a41f6fda16baf1f0431c75c59a868c5725bf49265129875792e0c69007307",
+    "tests/discovery-polish.browser.js": "ded2a3dde2042b1e1eaadbd286cd3f22bf471e7bbdfb98ff00d1361bb6523277",
+    "tests/discovery-sections.test.cjs": "873aef2ee806d529255fec5c3ed2c880e53d383f4978d8379fbe2e34a20b2f94",
+    "tests/email-invites.test.mjs": "5966dfc5a0b6167877d208d45bd1a02e2754b9dea18ed453ba5df8e0e04b8e34",
+    "tests/fal-image.test.cjs": "a239f57f83d4a03d06437b2580fce52f20a2ea0d3131a7dcea69f3c78634e4b2",
+    "tests/groq-provider.test.cjs": "f8884cb185db36d8a324a07eb0edfa5fc93885a07585dedb14d99e1df302df7a",
+    "tests/guided-cooking.browser.js": "b7741f3c4d75ff97bb6825b51a260b8b01bde30ab561eaf5dfa6195cf1ca03a8",
+    "tests/household-live.browser.js": "406066d2356bb217d320eb99068dd4a2a622d1c3cd3d1e7907bd681dc48764f9",
+    "tests/household-live.test.cjs": "ca675a11211ea827c0d7348f31337428224c52284a4169d029c454aaac1691ca",
+    "tests/household-model.test.cjs": "1a651d0792f3004a503949f16fdaef857439da70847d6221898d7a609f3acd4d",
+    "tests/household-sql.test.mjs": "7906593bd2a6f75a801c87a1c2bed173aa10e7ae92ce3df092da96d7c96b4483",
+    "tests/household-switch.browser.js": "d1c40f66ed2f683e61082626b212fa65cb4fafddaae833ae40d6f71c5b6a40e5",
+    "tests/ingredient-mentions.test.cjs": "7eadb5cbdef0a01a94eb8a5c504143fae4084bb8c95843b0e6668abed9a42fc2",
+    "tests/kitchen-measures.test.cjs": "9c681cf30bf7f55aacd649ac3883d7bcb84551cd3733ec2d0fdd4b390c182a26",
+    "tests/kitchen-model.test.cjs": "9c1188c28510422093c81c026f724b606dc6d67b63e75be7a25073cf2b569d4b",
+    "tests/kitchen-sql.test.mjs": "15ecdfed0aa46e029037c83cfa4b76d85d31d8105645a86bb66e867a1c459f8c",
+    "tests/kitchen-ui.test.cjs": "dd98084fd4cafd95edaac9471c6ce0b9ce9e48b6c04d86d9efcdc156562ca63f",
+    "tests/mention-gestures.test.cjs": "023145058926c5ef55de47d6c27194bec9550c56581d1eec496d342ed1bf3a96",
+    "tests/mobile-e2e.browser.js": "cffb3e5306f02c1c0bc684b5cd6f93116416ecf66b5dc22f5223b0826771ccdb",
+    "tests/native-auth.test.cjs": "bb7ec2abc981fa6ff45b711c80c556e0d5e827597c0ed6d7069445ab8075d635",
+    "tests/native-vault.test.cjs": "3a99f3f1311ae9d3f30a04f0f5db76c2b825aa98862cc7eaffdc9935550ec841",
+    "tests/pantry-details.test.cjs": "66b1400360ef88848c42aed093a20ce347f59b1577e7e477473b41dd7ba6975c",
+    "tests/pantry-import.test.cjs": "d4c16b9e4e65d0c96f78650c0271297bc4f44110a8ac0f309e9b5038678299d0",
+    "tests/pantry-review-shared.browser.js": "96dc3869740069bb6a8028450caff366d3b87baa24194ba12373c1d683abf1ba",
+    "tests/pantry-review-sql.test.mjs": "c9ea15eac28161853abda1f06728e1d9b19d9c5230a6c459277637b4b33c5fa8",
+    "tests/pantry-review.browser.js": "dce673d93edf42f27aa9c09109d791c15481cbdd0dcfc3265fb162cb78fb0841",
+    "tests/pantry-review.test.cjs": "714acd97c8e5d15732a6123a136b023834a7607815a97a23ead9b114453020ba",
+    "tests/pantry-start.browser.js": "56bb39263d93fb705bbf864ffb7c91aed8fa1cf0823bd1ef56abe251fc7e2b21",
+    "tests/pantry-start.test.cjs": "bb2b4cf5d88dcd23f841ba89255887dd8da1d84b814010ce3a490237338b8c59",
+    "tests/persistence-fixture.mjs": "e87c258f9e741a87ee3a3ad7046f140d833a71c627d88f04b5c5dd175f650ce1",
+    "tests/persistence-runtime.test.cjs": "30b8700c4b01c1f5cdd76d21bbc49b068bc110e3bc394b9d1d2aa737077cf292",
+    "tests/persistence-sql.test.mjs": "16921b29e17928a19170ba1cbbbb536741b4cfa8ac42a5c742b808da77721a3a",
+    "tests/persistence.browser.js": "315af5313322fa765a88929e619695050e826f5a33ab80ae7e5544a822d8c111",
+    "tests/persistence.test.cjs": "e2c6d0de04dfd0f3be02319228b38c3f8b76ee1961f7f2611a9bca2138f27ec5",
+    "tests/persistent-image.test.cjs": "f49f8a10b0f820e5b8fa95d7e2168c3b81e657940e11f8a281dda6f34bb173b0",
+    "tests/plus-assistant.test.cjs": "a374512c79ab4213a57a93ae3de35c915aa40aaeeb59b3fe6cde3aeb9b547f6c",
+    "tests/port.browser.js": "029af5689670fed974ae94c11ae2c0cb4c65372b49f895af19fc4606e060c11c",
+    "tests/proactive-model.test.cjs": "7ed2ddf4db06af54ce35f3f32ddc67d889291a99b2f138bc031be18e7183d6a1",
+    "tests/proactive-sql.test.mjs": "9d2b13494e6ddc71a1165136bf39cd1888914a16041014d8118f7927891e1c23",
+    "tests/proactive.browser.js": "8a34acc5e8fa2e83d52c3fe4b10debad4926197ed1870b5450d76207c1c67962",
+    "tests/quantity-model.test.cjs": "2001f67ab0eb1b6d24a2fa798688d14fb5943b5da5581ef9bf5176b6e6a98936",
+    "tests/quick-entry.test.cjs": "af70055911a65faf745aa6fe9cb23e420dd9ab767aa011a9cd2f3be0199f653c",
+    "tests/realtime-sql.test.mjs": "ee8c4dc7ca678e95baf16c403b2fd4cdbfd50060bfb3ca2e681ce0999231734d",
+    "tests/realtime.test.cjs": "0bd2ac0677ce652cd9f9829cb4fea9d934c7728f6e798e336bbd9a01b32709c6",
+    "tests/recipe-ai-sql.test.mjs": "7a8dc7272892bc75d7b821f4d14d6146ebeb9db124189e2c7790354197138de0",
+    "tests/recipe-ai.browser.js": "0b410599ccd6fb5172f757ff89175a555826b4669b7f2ae71f38f317d9e2a1cf",
+    "tests/recipe-ai.test.cjs": "07c34849f6af33dd6a6a4d34d7ffd6504a041a7c62bef1590c96e4157478ec8a",
+    "tests/recipe-chat.test.cjs": "fa2b88c4b4feb4c2490925b216c6536f2d022756d3b47703098a5e1c31b1e82c",
+    "tests/recipe-crafting.test.cjs": "fac6876d0006314d7cf96a1b6b45b28ce23ff8a1d53bd9e5348f3713ca70fddc",
+    "tests/recipe-export.test.cjs": "1c092200e8bd8d9de45b105ec4cffd93afa2f1c6fe8c76253b9074ae2d727b3f",
+    "tests/recipe-image.test.cjs": "5e7fbd97a54c8ec00998866fe6a5c8dd81f4e5bd1de35f2476e247bc8489aa00",
+    "tests/recipe-library.browser.js": "4933f41c51986159f9a8262618040c2d677f5010bf5e7cba1723dd72d9832e06",
+    "tests/recipe-portions.browser.js": "2519c6ee0a56e31bca113248e6e8bac5e12fb5126d7ae908b8c84d00f99d7f8f",
+    "tests/recipe-portions.test.cjs": "47cfe585870f267e58ae7a2ad619af833645194ae1f80af2e2fc831d2893fb8a",
+    "tests/recipe-prompt.test.cjs": "2ab0f2ffa73a5d1b0aaeeb9b7ff697d24ab4848114d80dc3b79b9e21f6d3daee",
+    "tests/recipe-room.test.cjs": "09af4c9beba0a5d8dd89727223c6257fff987626f8b94be0e4dfbd630b74d5ba",
+    "tests/recipe-shopping.test.cjs": "2e4d5e726c62c253996b3f75439807cfe71e51044196573e338e3cc7980743a1",
+    "tests/screen-review.browser.js": "86908411e33577d75f9b6187e8c44c1baa8aa392436651c7d2771cb595d6f236",
+    "tests/session-model.test.cjs": "13550e56e6f6177004746157900a28703246addea16a5d56b45c0c1d6c4633eb",
+    "tests/shopping-mode-sql.test.mjs": "916b711badb2f0fea7e89c5a2788a9a9a94ab1eabad5f9cc18934e1d1a1d3940",
+    "tests/shopping-mode.test.cjs": "458030bfa386a22c20bd2e77c130529281e0ad52b45864091f3264c713c131a4",
+    "tests/shopping-model.test.cjs": "2176abbe39f667760512f518988a89e76d9e3b4348d0fe55ba7c52e667bbbcd2",
+    "tests/shopping-shared.browser.js": "cf6fa942e6437d9348d7397a91a76a4b6b54351c1d966580a6144abd148e73b1",
+    "tests/shopping-speed.browser.js": "ee77866385b01191fe36f11f973db297baca7801a2f926fde7028fde17a520cc",
+    "tests/shopping-sync.test.cjs": "f84641366c06ef583331909c12252f8688c2f77475b6fc8714696e59427e3744",
+    "tests/shopping.browser.js": "9f5f1d3bf5bd71962499567ea75d44418cd589a158111ae40f589373da494794",
+    "tests/stream-handler.test.cjs": "14cfc4f1ceae83d8292bc5f6b8bb8ef02c9b93376890075daddcf1ac14731b9e",
+    "tests/surprise-recipe.test.cjs": "beae4f8cead50ef03ee10ac2dbe6277c26fce61b9ea917370ad346ee2fc874f4",
+    "tests/test_server.py": "0a1ff8922d2efd4d2b20d109e1b63ac9d0b62437866635da59e65e69cca1b65a",
+    "tests/ux-audit-2026-11-16.browser.js": "806acd62f7d967e2a4bee9157ffa6f0d3b22cf8d204c6d112f235ca7d3580f34",
+    "tests/voice-api.test.cjs": "03426627f2c521e7415154d0c3248e4130903818f7296f5e625b4304eccf554a",
+    "tests/voice-model.test.cjs": "29261ab47da73edfe2166b17df2d5d452d6ac837ce42b9f70910edac2747e7fb",
+    "tests/voice-sql.test.mjs": "b6da05a22e77eae19012e50ab5eb070d892d708749265520d445752202b2bd08",
+    "tests/voice.browser.js": "7809b5846b6516e849408bb00d76d18b3987ec32632e5f132a3c9cb690c6f024",
+    "tests/weekly-plan.test.cjs": "ad58c3c52b0a6c60d98e49577e8ab43bd48939af201a1be0bb7e271bab7e8beb",
+    "tests/workspace-entry.test.cjs": "4e1a4991e2584c48c0b4961eeb8022638e810dff75357fb8411724300ebee388",
+    "translations.js": "c5353f93e479cef96083dba2c6ff70d09aace99f3f9b0aee92fe994262da0f36",
+    "voice-model.js": "398ec911c1095ede9c5be29d3848b7295c4fa5eb9866452518bc73d741c28d44",
+    "voice-ui.js": "1b16ccabacb3b3b5149bf9e44abcfb0df78b95da8497b70e935b416a280b374a",
+    "weekly-plan-model.js": "a2ba53c0d3933af0ef677d05b63eb9420c40d78951cca6dfe55214a951853780",
+    "weekly-plan-ui.js": "1d1aaef8f67d68f46d5290202bb537c99c5f0982771d95ab5d6816ebd81c7b7d",
+    "workspace-entry.js": "85583d39bb36b2fa09ceeed76858157b29dbeb045c779fae024e0caa0f0df543",
+    "workspace-ui.js": "73806f58c5b10cbc2a52d524e66868f4ebc2dc2bdbebca3a9cd78bb59aedb9fe",
+    "workspace.css": "28410df631c97236bcf5f639d6834a31d81df4c951f30ab9794cb0e8f05161d3"
+  },
+  "builtWeb": {
+    "rawEvidence": "design-audit/runs/web-build-2026-11-16T19-42-10.144Z",
+    "results": [
+      {
+        "rep": 0,
+        "usableMs": 5423.939333,
+        "lcp": 4988,
+        "scripts": [
+          "http://127.0.0.1:54508/morzsa-web-8d322835e499.js"
+        ],
+        "styles": [
+          "http://127.0.0.1:54508/morzsa-web-2d51610ef5e0.css"
+        ],
+        "pageErrors": []
+      },
+      {
+        "rep": 1,
+        "usableMs": 5421.625625,
+        "lcp": 4984,
+        "scripts": [
+          "http://127.0.0.1:54508/morzsa-web-8d322835e499.js"
+        ],
+        "styles": [
+          "http://127.0.0.1:54508/morzsa-web-2d51610ef5e0.css"
+        ],
+        "pageErrors": []
+      },
+      {
+        "rep": 2,
+        "usableMs": 5411.376333,
+        "lcp": 4968,
+        "scripts": [
+          "http://127.0.0.1:54508/morzsa-web-8d322835e499.js"
+        ],
+        "styles": [
+          "http://127.0.0.1:54508/morzsa-web-2d51610ef5e0.css"
+        ],
+        "pageErrors": []
+      }
+    ],
+    "bundle": {
+      "scriptsBefore": 61,
+      "scriptsAfter": 1,
+      "stylesheetsBefore": 4,
+      "stylesheetsAfter": 1,
+      "sourceJSBytes": 710498,
+      "jsBytes": 614586,
+      "sourceCSSBytes": 306507,
+      "cssBytes": 297888,
+      "script": "morzsa-web-8d322835e499.js",
+      "style": "morzsa-web-2d51610ef5e0.css"
+    }
+  },
+  "database-runs": {
+    "rawEvidence": "design-audit/performance/database-runs/2026-11-16T19-42-45.198Z",
+    "environment": "PGlite WASM PostgreSQL in memory. Synthetic fixtures. No production measurements.",
+    "samples": [
+      {
+        "label": "conversation_index_100",
+        "sql": "select public.conversation_index(0)",
+        "samplesMs": [
+          2.7635830000000396,
+          1.125709000000029,
+          1.0526670000000422,
+          0.9808340000000726,
+          0.9885839999999462,
+          1.0271249999999554,
+          1.2196670000000722
+        ],
+        "returnedRows": 1,
+        "jsonBytes": 8017
+      },
+      {
+        "label": "conversation_inner_100",
+        "sql": "select id from public.conversations where public.can_read_conversation(id) order by updated_at desc,id limit 100",
+        "samplesMs": [
+          1.3269579999999905,
+          1.0999160000000074,
+          1.0877909999999247,
+          1.1857499999999845,
+          1.205459000000019,
+          1.1052080000000615,
+          1.0516250000000582
+        ],
+        "returnedRows": 50,
+        "jsonBytes": 2301
+      },
+      {
+        "label": "owner_index_diagnostic_100",
+        "sql": "select id from public.conversations where owner_id=$1 and deleted_at is null order by updated_at desc,id limit 100",
+        "samplesMs": [
+          0.24774999999999636,
+          0.22041600000000017,
+          0.23329200000000583,
+          0.21891699999991943,
+          0.22708299999999326,
+          0.21954199999993307,
+          0.22862499999996544
+        ],
+        "returnedRows": 50,
+        "jsonBytes": 2301
+      },
+      {
+        "label": "conversation_index_1000",
+        "sql": "select public.conversation_index(0)",
+        "samplesMs": [
+          1.5290830000000142,
+          0.923334000000068,
+          0.8835830000000442,
+          0.8678330000000187,
+          0.8589170000000195,
+          1.10024999999996,
+          0.9630409999999756
+        ],
+        "returnedRows": 1,
+        "jsonBytes": 8017
+      },
+      {
+        "label": "conversation_inner_1000",
+        "sql": "select id from public.conversations where public.can_read_conversation(id) order by updated_at desc,id limit 100",
+        "samplesMs": [
+          7.102375000000052,
+          6.223082999999974,
+          6.0699169999999185,
+          6.133916999999997,
+          6.137457999999924,
+          5.971208000000047,
+          5.986666000000014
+        ],
+        "returnedRows": 50,
+        "jsonBytes": 2301
+      },
+      {
+        "label": "owner_index_diagnostic_1000",
+        "sql": "select id from public.conversations where owner_id=$1 and deleted_at is null order by updated_at desc,id limit 100",
+        "samplesMs": [
+          0.2568750000000364,
+          0.21620800000005147,
+          0.2166669999999158,
+          0.2103749999999991,
+          0.21100000000001273,
+          0.2012089999999489,
+          0.19449999999994816
+        ],
+        "returnedRows": 50,
+        "jsonBytes": 2301
+      },
+      {
+        "label": "conversation_index_5000",
+        "sql": "select public.conversation_index(0)",
+        "samplesMs": [
+          1.645667000000003,
+          1.1779999999999973,
+          0.8986250000000382,
+          0.9676249999999982,
+          0.98762499999998,
+          0.8232090000000198,
+          0.7590420000000222
+        ],
+        "returnedRows": 1,
+        "jsonBytes": 8017
+      },
+      {
+        "label": "conversation_inner_5000",
+        "sql": "select id from public.conversations where public.can_read_conversation(id) order by updated_at desc,id limit 100",
+        "samplesMs": [
+          27.66304200000002,
+          27.459082999999964,
+          27.647207999999978,
+          27.438916999999947,
+          27.285834000000023,
+          26.57650000000001,
+          26.52545800000007
+        ],
+        "returnedRows": 50,
+        "jsonBytes": 2301
+      },
+      {
+        "label": "owner_index_diagnostic_5000",
+        "sql": "select id from public.conversations where owner_id=$1 and deleted_at is null order by updated_at desc,id limit 100",
+        "samplesMs": [
+          0.39020800000002964,
+          0.23620800000003328,
+          0.22829200000001038,
+          0.2059999999999036,
+          0.19783300000005966,
+          0.19804200000010042,
+          0.19333300000005238
+        ],
+        "returnedRows": 50,
+        "jsonBytes": 2301
+      },
+      {
+        "label": "conversation_page_10000",
+        "sql": "select public.conversation_page($1)",
+        "samplesMs": [
+          1.7275829999999814,
+          0.5505000000000564,
+          0.4659159999999929,
+          0.6441250000000309,
+          0.5133749999999964,
+          0.5132499999999709,
+          0.4064170000000331
+        ],
+        "returnedRows": 1,
+        "jsonBytes": 5920
+      },
+      {
+        "label": "conversation_page_inner_10000",
+        "sql": "select * from public.conversation_messages where conversation_id=$1 order by sequence desc limit 50",
+        "samplesMs": [
+          0.5375420000000304,
+          0.333458999999948,
+          0.37216699999999037,
+          0.337291999999934,
+          0.34333300000002964,
+          0.34237499999994725,
+          0.3495830000000524
+        ],
+        "returnedRows": 50,
+        "jsonBytes": 10703
+      },
+      {
+        "label": "household_records_rls_100",
+        "sql": "select bucket,key,value,revision from public.household_records where household_id=$1 order by bucket,key limit 1000 offset 0",
+        "samplesMs": [
+          1.08887500000003,
+          0.8595839999999271,
+          0.7964580000000296,
+          0.7930000000000064,
+          0.9645419999999376,
+          0.9732499999998936,
+          0.8479170000000522
+        ],
+        "returnedRows": 100,
+        "jsonBytes": 7251
+      },
+      {
+        "label": "household_records_rls_1000",
+        "sql": "select bucket,key,value,revision from public.household_records where household_id=$1 order by bucket,key limit 1000 offset 0",
+        "samplesMs": [
+          6.828291000000036,
+          6.654416000000083,
+          6.841542000000118,
+          6.213334000000032,
+          6.340791999999965,
+          6.464166000000205,
+          6.717041000000108
+        ],
+        "returnedRows": 1000,
+        "jsonBytes": 72501
+      },
+      {
+        "label": "household_records_rls_5000",
+        "sql": "select bucket,key,value,revision from public.household_records where household_id=$1 order by bucket,key limit 1000 offset 0",
+        "samplesMs": [
+          7.052083000000039,
+          6.141250000000127,
+          6.1496669999999085,
+          6.282291000000214,
+          6.004374999999982,
+          6.083250000000135,
+          5.707208000000037
+        ],
+        "returnedRows": 1000,
+        "jsonBytes": 72501
+      },
+      {
+        "label": "recipe_feed_31",
+        "sql": "select public.recipe_feed(0,24,'','')",
+        "samplesMs": [
+          1.2853749999999309,
+          0.6794159999999465,
+          0.5441670000000158,
+          0.5048749999998563,
+          0.5202919999999267,
+          0.48537499999997635,
+          0.5213749999998072
+        ],
+        "returnedRows": 1,
+        "jsonBytes": 10577
+      },
+      {
+        "label": "recipe_search_31",
+        "sql": "select public.recipe_feed(0,24,'999','')",
+        "samplesMs": [
+          0.46175000000016553,
+          0.24858400000016445,
+          0.234958000000006,
+          0.23937500000010914,
+          0.22916699999996126,
+          0.24729200000001583,
+          0.22420900000020083
+        ],
+        "returnedRows": 1,
+        "jsonBytes": 20
+      },
+      {
+        "label": "recipe_feed_1000",
+        "sql": "select public.recipe_feed(0,24,'','')",
+        "samplesMs": [
+          1.1272080000001097,
+          0.8874160000000302,
+          0.8564579999999751,
+          0.8159169999998994,
+          0.7998330000000351,
+          0.7922090000001845,
+          0.7961669999999685
+        ],
+        "returnedRows": 1,
+        "jsonBytes": 10577
+      },
+      {
+        "label": "recipe_search_1000",
+        "sql": "select public.recipe_feed(0,24,'999','')",
+        "samplesMs": [
+          1.1757090000000971,
+          1.154166000000032,
+          0.8948749999999563,
+          0.8807500000000346,
+          0.7737500000000637,
+          0.8181250000000091,
+          0.9313340000001062
+        ],
+        "returnedRows": 1,
+        "jsonBytes": 20
+      },
+      {
+        "label": "recipe_feed_5000",
+        "sql": "select public.recipe_feed(0,24,'','')",
+        "samplesMs": [
+          2.2885420000000067,
+          1.7275409999999738,
+          1.6693749999999454,
+          1.654459000000088,
+          1.6434999999999036,
+          1.7484160000001339,
+          1.799541999999974
+        ],
+        "returnedRows": 1,
+        "jsonBytes": 10577
+      },
+      {
+        "label": "recipe_search_5000",
+        "sql": "select public.recipe_feed(0,24,'999','')",
+        "samplesMs": [
+          2.8539160000000265,
+          2.9341660000000047,
+          2.802249999999958,
+          2.6605839999999716,
+          2.6796659999999974,
+          2.7917909999998756,
+          2.604957999999897
+        ],
+        "returnedRows": 1,
+        "jsonBytes": 614
+      }
+    ],
+    "evidenceSHA256": "b9fd64c98a4624bd840379155b18763abd8b88d5818a1bb507b467754b003ffc"
+  },
+  "provider-runs": {
+    "rawEvidence": "design-audit/performance/provider-runs/2026-11-16T19-42-46.719Z",
+    "environment": "Actual Edge Function modules with injected fetch; all endpoints synthetic. Timings describe scripted delay and app overhead, not live providers.",
+    "cases": [
+      {
+        "scenario": "healthy",
+        "calls": [
+          {
+            "url": "<synthetic>/auth/v1/user",
+            "atMs": 9.912583999999999,
+            "bodyBytes": 0
+          },
+          {
+            "url": "<synthetic>/rest/v1/rpc/claim_voice_command",
+            "atMs": 132.21275,
+            "bodyBytes": 50
+          },
+          {
+            "url": "<synthetic>/v1beta/models/gemini-3.1-flash-lite:streamGenerateContent?alt=sse",
+            "atMs": 254.02862499999998,
+            "bodyBytes": 9886
+          }
+        ],
+        "parts": [],
+        "providerCount": 1,
+        "status": 200,
+        "headerMs": 408.176084,
+        "output": {
+          "transcript": "Mit főzzek?",
+          "answer": "Készíts rántottát a tojásból.",
+          "operations": [],
+          "recipes": [],
+          "clarification": ""
+        },
+        "success": true,
+        "totalMs": 411.210334,
+        "clientAborted": false
+      },
+      {
+        "scenario": "overload-fallback",
+        "calls": [
+          {
+            "url": "<synthetic>/auth/v1/user",
+            "atMs": 0.3823749999999677,
+            "bodyBytes": 0
+          },
+          {
+            "url": "<synthetic>/rest/v1/rpc/claim_voice_command",
+            "atMs": 122.78458399999994,
+            "bodyBytes": 50
+          },
+          {
+            "url": "<synthetic>/v1beta/models/gemini-3.1-flash-lite:streamGenerateContent?alt=sse",
+            "atMs": 245.19708399999996,
+            "bodyBytes": 9886
+          },
+          {
+            "url": "<synthetic>/v1beta/models/gemini-3.5-flash-lite:generateContent",
+            "atMs": 246.063375,
+            "bodyBytes": 9886
+          }
+        ],
+        "parts": [],
+        "providerCount": 2,
+        "status": 200,
+        "headerMs": 397.89349999999996,
+        "output": {
+          "transcript": "Mit főzzek?",
+          "answer": "Készíts rántottát a tojásból.",
+          "operations": [],
+          "recipes": [],
+          "clarification": ""
+        },
+        "success": true,
+        "totalMs": 398.10933399999993,
+        "clientAborted": false
+      },
+      {
+        "scenario": "header-stall-default",
+        "calls": [
+          {
+            "url": "<synthetic>/auth/v1/user",
+            "atMs": 0.16045800000006238,
+            "bodyBytes": 0
+          },
+          {
+            "url": "<synthetic>/rest/v1/rpc/claim_voice_command",
+            "atMs": 122.00162499999999,
+            "bodyBytes": 50
+          },
+          {
+            "url": "<synthetic>/v1beta/models/gemini-3.1-flash-lite:streamGenerateContent?alt=sse",
+            "atMs": 244.77462500000013,
+            "bodyBytes": 9886
+          },
+          {
+            "url": "<synthetic>/v1beta/models/gemini-3.5-flash-lite:generateContent",
+            "atMs": 8248.148333000001,
+            "bodyBytes": 9886
+          }
+        ],
+        "parts": [],
+        "providerCount": 2,
+        "status": 200,
+        "headerMs": 8401.6285,
+        "output": {
+          "transcript": "Mit főzzek?",
+          "answer": "Készíts rántottát a tojásból.",
+          "operations": [],
+          "recipes": [],
+          "clarification": ""
+        },
+        "success": true,
+        "totalMs": 8402.259791,
+        "clientAborted": false
+      },
+      {
+        "scenario": "cancelled-client-preflight",
+        "calls": [
+          {
+            "url": "<synthetic>/auth/v1/user",
+            "atMs": 0.6421250000003056,
+            "bodyBytes": 0
+          }
+        ],
+        "parts": [],
+        "providerCount": 0,
+        "status": 502,
+        "headerMs": 32.21779200000128,
+        "error": "VOICE_INVALID_RESPONSE",
+        "success": false,
+        "totalMs": 32.4481250000008,
+        "clientAborted": true
+      },
+      {
+        "scenario": "malformed-stream",
+        "calls": [
+          {
+            "url": "<synthetic>/auth/v1/user",
+            "atMs": 1.087374999999156,
+            "bodyBytes": 0
+          },
+          {
+            "url": "<synthetic>/rest/v1/rpc/claim_voice_command",
+            "atMs": 123.2359579999993,
+            "bodyBytes": 50
+          },
+          {
+            "url": "<synthetic>/v1beta/models/gemini-3.1-flash-lite:streamGenerateContent?alt=sse",
+            "atMs": 246.00766599999952,
+            "bodyBytes": 9886
+          }
+        ],
+        "parts": [
+          {
+            "atMs": 397.55283299999974,
+            "text": "partial"
+          }
+        ],
+        "providerCount": 1,
+        "status": 200,
+        "headerMs": 397.4743330000001,
+        "error": "VOICE_INVALID_RESPONSE",
+        "success": false,
+        "totalMs": 397.6397909999996,
+        "clientAborted": false
+      }
+    ],
+    "evidenceSHA256": "9d778e611ed9b1cd8892c3f41f23d7fe038d058670711c11e3f38a539a6068e5"
+  },
+  "validation": {
+    "javascriptTests": 302,
+    "sqlSuites": 10,
+    "pythonTests": 9,
+    "auditInfrastructureTests": 26,
+    "releaseAxeScans": 32,
+    "releaseTargetedChecks": 54,
+    "productionDataUsed": false,
+    "supabaseDeploymentPerformed": false,
+    "physicalNativeDeviceTested": false
+  }
+}

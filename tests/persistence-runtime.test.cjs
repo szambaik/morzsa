@@ -50,3 +50,33 @@ test('a new AI turn reads the latest messages from another device even while the
 test('deleted server conversations cannot keep a pending offline copy visible',async()=>{
  const h=harness();h.attach();await drain();const old=h.visible;old.threads[0].title='Offline edit';h.api.capture(old);h.rows.delete(cid);await h.api.refresh();assert.equal(h.visible.threads.some(t=>t.id===cid),false);assert.equal(h.storage[Model.accountKey(a)+':outbox'],'{}');
 });
+test('cancelled preflight responds immediately and releases a lock granted later',async()=>{
+ const h=harness();h.attach();await drain();h.calls.length=0;const held=pause(),started=pause();
+ h.hook(async name=>{if(name==='begin_conversation_turn'){started.resolve();await held.promise;return true}});
+ const controller=new AbortController(),work=h.api.beginTurn(cid,{signal:controller.signal});await started.promise;controller.abort();await assert.rejects(work,{name:'AbortError'});
+ held.resolve();await drain();const begin=h.calls.find(c=>c.name==='begin_conversation_turn'),end=h.calls.find(c=>c.name==='end_conversation_turn');assert.equal(end.args.tid,begin.args.tid);
+ assert.equal(h.calls.some(c=>c.name==='conversation_page'),false,'Cancelled turn must not fetch more history');
+});
+test('cancel before preflight avoids a turn request and an empty flush avoids redundant reads',async()=>{
+ const h=harness();h.attach();await drain();h.calls.length=0;await h.api.flush();assert.equal(h.calls.length,0);
+ const controller=new AbortController();controller.abort();await assert.rejects(h.api.beginTurn(cid,{signal:controller.signal}),{name:'AbortError'});assert.equal(h.calls.length,0);
+});
+test('unsaved conversation drafts never request an inaccessible server page',async()=>{
+ const h=harness();h.attach();await drain();const draft=structuredClone(h.visible);draft.active=crypto.randomUUID();draft.threads.push({id:draft.active,kind:'chat',title:'Draft',updated:9,messages:[],revision:0});h.api.capture(draft);h.calls.length=0;await h.api.loadThread(draft.active);assert.equal(h.calls.length,0);
+});
+test('finishing an AI turn persists its response before releasing the conversation lock',async()=>{
+ const h=harness();h.attach();await drain();const turn=await h.api.beginTurn(cid),held=pause(),started=pause();
+ h.visible.threads[0].messages.push({id:mid,role:'model',text:'Saved response',createdAt:5,recipes:[]});h.api.capture(h.visible);
+ h.hook(async name=>{if(name==='sync_conversation'){started.resolve();await held.promise}});
+ const work=h.api.finishTurn(cid,turn);await started.promise;
+ assert.equal(h.calls.some(c=>c.name==='end_conversation_turn'),false);
+ held.resolve();await work;assert.equal(h.msgs.get(cid)[0].text,'Saved response');
+ assert.equal(h.calls.filter(c=>c.name==='end_conversation_turn').length,1);
+ assert.equal(h.calls.at(-1).name,'end_conversation_turn');
+});
+test('an old AI turn cannot flush or release a lock in a reattached account session',async()=>{
+ const h=harness();h.attach();await drain();const turn=await h.api.beginTurn(cid);
+ h.api.detach();h.attach();await drain();h.calls.length=0;
+ h.visible.threads[0].messages.push({id:mid,role:'model',text:'New session',createdAt:6,recipes:[]});h.api.capture(h.visible);
+ await h.api.finishTurn(cid,turn);assert.equal(h.calls.length,0);assert.equal(h.api.status(),'pending');
+});

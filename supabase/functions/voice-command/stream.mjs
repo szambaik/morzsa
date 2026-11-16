@@ -24,26 +24,26 @@ export async function readGeminiStream(response,onAnswer,signal){
   const answer=partialAnswer(raw);if(answer!==last){last=answer;onAnswer(answer)}
  };
  try{
-  while(true){const {value,done}=await reader.read();if(done)break;total+=value.length;if(total>1000000)throw Error('VOICE_INVALID_RESPONSE');buffer+=decoder.decode(value,{stream:true});buffer=buffer.replace(/\r\n/g,'\n');let end;while((end=buffer.indexOf('\n\n'))>=0){consume(buffer.slice(0,end));buffer=buffer.slice(end+2)}}
-  buffer+=decoder.decode();if(buffer.trim())consume(buffer);if(finish!=='STOP')throw Error('VOICE_INVALID_RESPONSE');const result=JSON.parse(raw);completed=true;return result;
+  signal?.throwIfAborted();while(true){signal?.throwIfAborted();const {value,done}=await reader.read();if(done)break;total+=value.length;if(total>1000000)throw Error('VOICE_INVALID_RESPONSE');buffer+=decoder.decode(value,{stream:true});buffer=buffer.replace(/\r\n/g,'\n');let end;while((end=buffer.indexOf('\n\n'))>=0){consume(buffer.slice(0,end));buffer=buffer.slice(end+2)}}
+  signal?.throwIfAborted();buffer+=decoder.decode();if(buffer.trim())consume(buffer);if(finish!=='STOP')throw Error('VOICE_INVALID_RESPONSE');const result=JSON.parse(raw);completed=true;return result;
  }finally{signal?.removeEventListener('abort',cancel);if(!completed)await reader.cancel().catch(()=>{});reader.releaseLock()}
 }
-export function streamedResponse(response,headers,validate){
+export function streamedResponse(response,headers,validate,clientSignal){
  const encoder=new TextEncoder(),abort=new AbortController(),started=Date.now();let cancelled=false,first=null;
  const body=new ReadableStream({async start(controller){
   const send=event=>{if(!cancelled)controller.enqueue(encoder.encode(JSON.stringify(event)+'\n'))};
-  try{const output=await readGeminiStream(response,text=>{first??=Date.now()-started;send({type:'answer',text})},abort.signal);send({type:'done',output:validate(output)});console.info(JSON.stringify({event:'morzsa_stream_done',firstAnswerMs:first,totalMs:Date.now()-started}))}
+  try{const output=await readGeminiStream(response,text=>{first??=Date.now()-started;send({type:'answer',text})},AbortSignal.any([abort.signal,...(clientSignal?[clientSignal]:[])]));send({type:'done',output:validate(output)});console.info(JSON.stringify({event:'morzsa_stream_done',firstAnswerMs:first,totalMs:Date.now()-started}))}
   catch(e){const error=['TimeoutError','AbortError'].includes(e.name)?'VOICE_TIMEOUT':['VOICE_INVALID_RESPONSE','VOICE_PROVIDER_ERROR','VOICE_PROVIDER_LIMIT','VOICE_PROVIDER_BUSY'].includes(e.message)?e.message:'VOICE_UNAVAILABLE';console.warn(JSON.stringify({event:'morzsa_stream_error',error,firstAnswerMs:first,totalMs:Date.now()-started}));send({type:'error',error})}
   finally{if(!cancelled)controller.close()}
  },cancel(){cancelled=true;abort.abort();}});
  return new Response(body,{headers:{...headers,'Content-Type':'application/x-ndjson','X-Accel-Buffering':'no'}});
 }
 
-export function outputResponse(produce,headers){
- const encoder=new TextEncoder(),abort=new AbortController();let cancelled=false;
+export function outputResponse(produce,headers,clientSignal){
+ const encoder=new TextEncoder(),abort=new AbortController(),signal=AbortSignal.any([abort.signal,...(clientSignal?[clientSignal]:[])]);let cancelled=false;
  const body=new ReadableStream({async start(c){
   const send=v=>{if(!cancelled)c.enqueue(encoder.encode(JSON.stringify(v)+'\n'))};
-  try{const output=await produce(text=>send({type:'answer',text}),abort.signal);if(!abort.signal.aborted)send({type:'done',output})}
+  try{const output=await produce(text=>send({type:'answer',text}),signal);if(!signal.aborted)send({type:'done',output})}
   catch(e){const error=['PLUS_API_QUOTA','VOICE_PROVIDER_LIMIT','VOICE_PROVIDER_BUSY','VOICE_SETUP_REQUIRED','VOICE_PROVIDER_ERROR','VOICE_INVALID_RESPONSE','VOICE_TIMEOUT'].includes(e.message)?e.message:['TimeoutError','AbortError'].includes(e.name)?'VOICE_TIMEOUT':'VOICE_UNAVAILABLE';send({type:'error',error})}
   finally{if(!cancelled)c.close()}
  },cancel(){cancelled=true;abort.abort()}});

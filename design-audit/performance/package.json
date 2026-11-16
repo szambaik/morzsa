@@ -6,6 +6,7 @@
     "audit:performance": "node audit.mjs",
     "audit:performance:smoke": "node runner.mjs smoke",
     "audit:performance:journeys": "node runner.mjs journeys",
+    "audit:performance:regression": "node runner.mjs regression",
     "audit:performance:report": "node report.mjs",
     "audit:performance:soak": "node runner.mjs soak",
     "audit:performance:database": "node database.mjs",
