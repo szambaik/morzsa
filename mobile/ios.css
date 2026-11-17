@@ -10,3 +10,6 @@
 
 /* Geometry stays in the DOM; only acknowledged UIKit controls are hidden. */
 .native-app button.ios-native-control{opacity:0!important;pointer-events:none!important}
+
+/* The drawer reaches the screen edge; its header must clear the status bar. */
+.native-app #companion-history{padding-top:calc(20px + env(safe-area-inset-top,0px))}
