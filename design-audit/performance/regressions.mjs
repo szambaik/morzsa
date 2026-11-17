@@ -16,11 +16,20 @@ export async function runRegressions(h){
  await fixture.db.exec('reset role');await fixture.db.query("insert into public.household_records(household_id,bucket,key,value) values ('90000000-0000-4000-8000-000000000001','stock','Rizs','2'),('90000000-0000-4000-8000-000000000001','stock','Tej','2') on conflict(household_id,bucket,key) do update set value=excluded.value");
  const a=await context({actor:'a',shared:true,trace:true}),q=a.p;await q.goto(fixture.origin);await settled(q);await nav(q,'pantry');
  await attempt('pending-pantry-save-closes-without-touching-a-new-dialog',async()=>{
-  await q.locator('[data-pantry-details="Rizs"]').click();fixture.rules.push({match:'/rest/',delay:450,remaining:-1});await q.locator('#pantry-item-dialog [data-value="1"]').click();
-  assert.equal(await q.locator('#pantry-item-dialog .close').isEnabled(),true);assert.match(await q.locator('#pantry-item-dialog [role=status]').textContent(),/Mentés/);await capture(q,'closable-pending-pantry');
-  await q.locator('#pantry-item-dialog .close').click();await q.locator('[data-pantry-details="Tej"]').click();await q.waitForTimeout(3500);
-  assert.equal(await q.locator('#pantry-item-dialog').isVisible(),true,'New pantry dialog must remain open');assert.equal(await q.locator('#pantry-detail-title').textContent(),'Tej');await q.locator('#pantry-item-dialog .close').click();fixture.rules.length=0;
-  await q.reload();await settled(q);assert.equal(await q.evaluate(()=>state.stock.Rizs),1);
+  await q.locator('[data-pantry-details="Rizs"]').click();await settled(q);
+  // The initial realtime refresh can start after navigation. Wait for it, then
+  // hold the actual write until the second dialog is open, independently of CPU speed.
+  const endpoint='**/rest/v1/rpc/apply_household_changes';let release;
+  const held=new Promise(resolve=>release=resolve),hold=async route=>{await held;await route.continue()};
+  await q.route(endpoint,hold);
+  try{
+   await Promise.all([q.waitForRequest(endpoint),q.locator('#pantry-item-dialog [data-value="1"]').click()]);
+   assert.equal(await q.locator('#pantry-item-dialog .close').isEnabled(),true);assert.match(await q.locator('#pantry-item-dialog [role=status]').textContent(),/Mentés/);await capture(q,'closable-pending-pantry');
+   await q.locator('#pantry-item-dialog .close').click();await q.locator('[data-pantry-details="Tej"]').click();release();
+   await q.waitForFunction(()=>document.querySelector('#toast')?.textContent.startsWith('Rizs · '));
+   assert.equal(await q.locator('#pantry-item-dialog').isVisible(),true,'New pantry dialog must remain open');assert.equal(await q.locator('#pantry-detail-title').textContent(),'Tej');await q.locator('#pantry-item-dialog .close').click();
+   await q.reload();await settled(q);assert.equal(await q.evaluate(()=>state.stock.Rizs),1);
+  }finally{release();await q.unroute(endpoint,hold);await q.evaluate(()=>document.getElementById('pantry-item-dialog')?.close())}
  });
  fixture.rules.length=0;
  await attempt('realtime-burst-refreshes-only-the-invalidated-data',async()=>{
