@@ -1,0 +1,12 @@
+/* Only active after the native plugin acknowledges its first navigation state. */
+.native-app.native-tabbar .app>nav,.native-app.native-tabbar #workspace-sidebar nav{display:none!important}
+.native-app.native-tabbar{--workspace-nav-height:var(--native-tabbar-height,0px)}
+.native-app.native-tabbar .app{padding-bottom:calc(var(--native-tabbar-height,0px) + 120px)}
+.native-app.native-tabbar .companion-compose-wrap,.native-app.native-tabbar .room-compose-wrap,.native-app.native-tabbar #workspace-assistant{bottom:calc(var(--native-tabbar-height,0px) + 12px)}
+.native-app.native-tabbar #cooking-resume{bottom:calc(var(--native-tabbar-height,0px) + 8px)}
+.native-app.native-tabbar.keyboard-open .app{padding-bottom:100px}
+/* Native selection and scrolling stay responsive; form fields still allow text selection. */
+.native-app button,.native-app summary{-webkit-touch-callout:none;touch-action:manipulation}
+
+/* Geometry stays in the DOM; only acknowledged UIKit controls are hidden. */
+.native-app button.ios-native-control{opacity:0!important;pointer-events:none!important}

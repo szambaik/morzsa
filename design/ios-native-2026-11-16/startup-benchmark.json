@@ -1,0 +1,341 @@
+{
+  "environment": "Desktop Chromium, localhost, 390×844, 12 fresh contexts per variant, alternating order; external traffic blocked; identical synthetic pantry; no CPU throttling",
+  "browser": "157.0.8103.51",
+  "baseline": "/Users/I769428/.codex/worktrees/morzsa-ios-native/konyha-app/tmp/ios-before-dist",
+  "inputs": {
+    "baselineIndex": "36f44e3b8c3550987fb80aad041886b5a1f80a3e231bb0c54c4447485bc3e14c",
+    "baselineProactive": "c0ae31020ad49e90622fd62649167517780b96b52cd6011be06628db761d5382",
+    "nativeApp": "cf154995c070a965f0a263af14b816702ef54b7fa322766ce0b66c9288292af0",
+    "nativeSuggestions": "373468453ad1c72936fc6e3662cc69b7c64f58f1b5bd13ba9759c8fc5628d8b2"
+  },
+  "summary": {
+    "separate": {
+      "medianDOMContentLoadedMs": 202.7,
+      "medianLoadMs": 203.2,
+      "scriptAndStyleRequests": 66
+    },
+    "bundled": {
+      "medianDOMContentLoadedMs": 116.5,
+      "medianLoadMs": 117.3,
+      "scriptAndStyleRequests": 4
+    }
+  },
+  "samples": {
+    "separate": [
+      {
+        "domContentLoadedMs": 407.8999999910593,
+        "loadMs": 408.29999999701977,
+        "scriptAndStyleRequests": 66,
+        "metrics": {
+          "LayoutCount": 9,
+          "RecalcStyleCount": 13,
+          "LayoutDuration": 0.035772,
+          "RecalcStyleDuration": 0.005235,
+          "ScriptDuration": 0.131306,
+          "TaskDuration": 0.202373
+        }
+      },
+      {
+        "domContentLoadedMs": 202.5,
+        "loadMs": 203,
+        "scriptAndStyleRequests": 66,
+        "metrics": {
+          "LayoutCount": 5,
+          "RecalcStyleCount": 8,
+          "LayoutDuration": 0.026092,
+          "RecalcStyleDuration": 0.004531,
+          "ScriptDuration": 0.128962,
+          "TaskDuration": 0.184734
+        }
+      },
+      {
+        "domContentLoadedMs": 194.59999999403954,
+        "loadMs": 195.09999999403954,
+        "scriptAndStyleRequests": 66,
+        "metrics": {
+          "LayoutCount": 5,
+          "RecalcStyleCount": 8,
+          "LayoutDuration": 0.026076,
+          "RecalcStyleDuration": 0.004673,
+          "ScriptDuration": 0.127317,
+          "TaskDuration": 0.183239
+        }
+      },
+      {
+        "domContentLoadedMs": 199.29999999701977,
+        "loadMs": 199.79999999701977,
+        "scriptAndStyleRequests": 66,
+        "metrics": {
+          "LayoutCount": 5,
+          "RecalcStyleCount": 7,
+          "LayoutDuration": 0.026743,
+          "RecalcStyleDuration": 0.004477,
+          "ScriptDuration": 0.127959,
+          "TaskDuration": 0.18449
+        }
+      },
+      {
+        "domContentLoadedMs": 205,
+        "loadMs": 205.5,
+        "scriptAndStyleRequests": 66,
+        "metrics": {
+          "LayoutCount": 6,
+          "RecalcStyleCount": 8,
+          "LayoutDuration": 0.028041,
+          "RecalcStyleDuration": 0.004775,
+          "ScriptDuration": 0.129178,
+          "TaskDuration": 0.186495
+        }
+      },
+      {
+        "domContentLoadedMs": 205.59999999403954,
+        "loadMs": 206.5,
+        "scriptAndStyleRequests": 66,
+        "metrics": {
+          "LayoutCount": 7,
+          "RecalcStyleCount": 9,
+          "LayoutDuration": 0.027499,
+          "RecalcStyleDuration": 0.004773,
+          "ScriptDuration": 0.126315,
+          "TaskDuration": 0.183259
+        }
+      },
+      {
+        "domContentLoadedMs": 195.8999999910593,
+        "loadMs": 196.3999999910593,
+        "scriptAndStyleRequests": 66,
+        "metrics": {
+          "LayoutCount": 5,
+          "RecalcStyleCount": 8,
+          "LayoutDuration": 0.026608,
+          "RecalcStyleDuration": 0.00431,
+          "ScriptDuration": 0.126952,
+          "TaskDuration": 0.182832
+        }
+      },
+      {
+        "domContentLoadedMs": 202.70000000298023,
+        "loadMs": 203.20000000298023,
+        "scriptAndStyleRequests": 66,
+        "metrics": {
+          "LayoutCount": 5,
+          "RecalcStyleCount": 6,
+          "LayoutDuration": 0.025675,
+          "RecalcStyleDuration": 0.004481,
+          "ScriptDuration": 0.127081,
+          "TaskDuration": 0.181244
+        }
+      },
+      {
+        "domContentLoadedMs": 203.59999999403954,
+        "loadMs": 204.09999999403954,
+        "scriptAndStyleRequests": 66,
+        "metrics": {
+          "LayoutCount": 5,
+          "RecalcStyleCount": 8,
+          "LayoutDuration": 0.026739,
+          "RecalcStyleDuration": 0.004632,
+          "ScriptDuration": 0.128412,
+          "TaskDuration": 0.184448
+        }
+      },
+      {
+        "domContentLoadedMs": 204.5,
+        "loadMs": 205,
+        "scriptAndStyleRequests": 66,
+        "metrics": {
+          "LayoutCount": 5,
+          "RecalcStyleCount": 8,
+          "LayoutDuration": 0.025992,
+          "RecalcStyleDuration": 0.004424,
+          "ScriptDuration": 0.129189,
+          "TaskDuration": 0.184708
+        }
+      },
+      {
+        "domContentLoadedMs": 196.90000000596046,
+        "loadMs": 197.70000000298023,
+        "scriptAndStyleRequests": 66,
+        "metrics": {
+          "LayoutCount": 6,
+          "RecalcStyleCount": 8,
+          "LayoutDuration": 0.026492,
+          "RecalcStyleDuration": 0.004329,
+          "ScriptDuration": 0.129175,
+          "TaskDuration": 0.183567
+        }
+      },
+      {
+        "domContentLoadedMs": 202.70000000298023,
+        "loadMs": 203.20000000298023,
+        "scriptAndStyleRequests": 66,
+        "metrics": {
+          "LayoutCount": 5,
+          "RecalcStyleCount": 6,
+          "LayoutDuration": 0.025876,
+          "RecalcStyleDuration": 0.004159,
+          "ScriptDuration": 0.127325,
+          "TaskDuration": 0.181939
+        }
+      }
+    ],
+    "bundled": [
+      {
+        "domContentLoadedMs": 126.3999999910593,
+        "loadMs": 127.19999998807907,
+        "scriptAndStyleRequests": 4,
+        "metrics": {
+          "LayoutCount": 7,
+          "RecalcStyleCount": 9,
+          "LayoutDuration": 0.025256,
+          "RecalcStyleDuration": 0.009219,
+          "ScriptDuration": 0.049831,
+          "TaskDuration": 0.104505
+        }
+      },
+      {
+        "domContentLoadedMs": 113.3999999910593,
+        "loadMs": 114.29999999701977,
+        "scriptAndStyleRequests": 4,
+        "metrics": {
+          "LayoutCount": 8,
+          "RecalcStyleCount": 10,
+          "LayoutDuration": 0.026929,
+          "RecalcStyleDuration": 0.009396,
+          "ScriptDuration": 0.04964,
+          "TaskDuration": 0.10635
+        }
+      },
+      {
+        "domContentLoadedMs": 113.6000000089407,
+        "loadMs": 114.40000000596046,
+        "scriptAndStyleRequests": 4,
+        "metrics": {
+          "LayoutCount": 8,
+          "RecalcStyleCount": 10,
+          "LayoutDuration": 0.026626,
+          "RecalcStyleDuration": 0.009349,
+          "ScriptDuration": 0.049067,
+          "TaskDuration": 0.106535
+        }
+      },
+      {
+        "domContentLoadedMs": 116.90000000596046,
+        "loadMs": 117.6000000089407,
+        "scriptAndStyleRequests": 4,
+        "metrics": {
+          "LayoutCount": 7,
+          "RecalcStyleCount": 9,
+          "LayoutDuration": 0.025214,
+          "RecalcStyleDuration": 0.009389,
+          "ScriptDuration": 0.049084,
+          "TaskDuration": 0.103301
+        }
+      },
+      {
+        "domContentLoadedMs": 113.40000000596046,
+        "loadMs": 114.29999999701977,
+        "scriptAndStyleRequests": 4,
+        "metrics": {
+          "LayoutCount": 8,
+          "RecalcStyleCount": 10,
+          "LayoutDuration": 0.027202,
+          "RecalcStyleDuration": 0.00974,
+          "ScriptDuration": 0.050527,
+          "TaskDuration": 0.108235
+        }
+      },
+      {
+        "domContentLoadedMs": 116.09999999403954,
+        "loadMs": 116.8999999910593,
+        "scriptAndStyleRequests": 4,
+        "metrics": {
+          "LayoutCount": 7,
+          "RecalcStyleCount": 9,
+          "LayoutDuration": 0.02443,
+          "RecalcStyleDuration": 0.009073,
+          "ScriptDuration": 0.049726,
+          "TaskDuration": 0.102574
+        }
+      },
+      {
+        "domContentLoadedMs": 117,
+        "loadMs": 117.79999999701977,
+        "scriptAndStyleRequests": 4,
+        "metrics": {
+          "LayoutCount": 7,
+          "RecalcStyleCount": 9,
+          "LayoutDuration": 0.025723,
+          "RecalcStyleDuration": 0.008578,
+          "ScriptDuration": 0.048257,
+          "TaskDuration": 0.101443
+        }
+      },
+      {
+        "domContentLoadedMs": 127.59999999403954,
+        "loadMs": 128.3999999910593,
+        "scriptAndStyleRequests": 4,
+        "metrics": {
+          "LayoutCount": 7,
+          "RecalcStyleCount": 9,
+          "LayoutDuration": 0.024601,
+          "RecalcStyleDuration": 0.008812,
+          "ScriptDuration": 0.048662,
+          "TaskDuration": 0.102312
+        }
+      },
+      {
+        "domContentLoadedMs": 117.40000000596046,
+        "loadMs": 118.30000001192093,
+        "scriptAndStyleRequests": 4,
+        "metrics": {
+          "LayoutCount": 7,
+          "RecalcStyleCount": 9,
+          "LayoutDuration": 0.025618,
+          "RecalcStyleDuration": 0.009162,
+          "ScriptDuration": 0.048775,
+          "TaskDuration": 0.103013
+        }
+      },
+      {
+        "domContentLoadedMs": 112.1000000089407,
+        "loadMs": 112.79999999701977,
+        "scriptAndStyleRequests": 4,
+        "metrics": {
+          "LayoutCount": 9,
+          "RecalcStyleCount": 10,
+          "LayoutDuration": 0.026788,
+          "RecalcStyleDuration": 0.00958,
+          "ScriptDuration": 0.047708,
+          "TaskDuration": 0.104113
+        }
+      },
+      {
+        "domContentLoadedMs": 112.59999999403954,
+        "loadMs": 113.5,
+        "scriptAndStyleRequests": 4,
+        "metrics": {
+          "LayoutCount": 7,
+          "RecalcStyleCount": 9,
+          "LayoutDuration": 0.024304,
+          "RecalcStyleDuration": 0.008863,
+          "ScriptDuration": 0.048662,
+          "TaskDuration": 0.101124
+        }
+      },
+      {
+        "domContentLoadedMs": 120.70000000298023,
+        "loadMs": 121.59999999403954,
+        "scriptAndStyleRequests": 4,
+        "metrics": {
+          "LayoutCount": 8,
+          "RecalcStyleCount": 10,
+          "LayoutDuration": 0.026717,
+          "RecalcStyleDuration": 0.009646,
+          "ScriptDuration": 0.04872,
+          "TaskDuration": 0.104991
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "scriptTagsBefore": 61,
+  "scriptTagsAfter": 3,
+  "stylesheetsBefore": 4,
+  "stylesheetsAfter": 1,
+  "sourceJavaScriptBytes": 704643,
+  "bundledJavaScriptBytes": 673598,
+  "sourceCSSBytes": 307417,
+  "bundledCSSBytes": 299193,
+  "remoteFonts": false
+}
