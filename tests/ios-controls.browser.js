@@ -6,6 +6,8 @@ async page=>{
  // real signed-in state before holding a DOM reference or exercising controls.
  await page.waitForFunction(()=>household?.userId()&&MorzsaPersistence.status()==='synced');
  await page.addStyleTag({url:base+'/mobile/ios.css'});
+ // Initial history sync can replace the form between locator resolution and evaluation.
+ // Resolve and measure the current element in one browser task.
  check(await page.evaluate(()=>getComputedStyle(document.getElementById('companion-form')).display==='flex'),'web composer keeps its original layout');
  check(await page.locator('.companion-voice-glass').isHidden(),'reference voice icon is iOS-only');
  await page.evaluate(async()=>{

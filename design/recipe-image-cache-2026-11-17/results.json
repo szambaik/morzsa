@@ -1,0 +1,30 @@
+{
+  "oldChatAutoCover": true,
+  "freeModeAllSteps": true,
+  "cachedRecipeAssets": [
+    {
+      "step": -1,
+      "generations": 1,
+      "url": "http://127.0.0.1:8942/storage/v1/object/sign/recipe-images/fc4653b9-59a3-4f21-85ca-0130e7b34a42/-1.jpg"
+    },
+    {
+      "step": 0,
+      "generations": 1,
+      "url": "http://127.0.0.1:8942/storage/v1/object/sign/recipe-images/fc4653b9-59a3-4f21-85ca-0130e7b34a42/0.jpg"
+    },
+    {
+      "step": 1,
+      "generations": 1,
+      "url": "http://127.0.0.1:8942/storage/v1/object/sign/recipe-images/fc4653b9-59a3-4f21-85ca-0130e7b34a42/1.jpg"
+    },
+    {
+      "step": 2,
+      "generations": 1,
+      "url": "http://127.0.0.1:8942/storage/v1/object/sign/recipe-images/fc4653b9-59a3-4f21-85ca-0130e7b34a42/2.jpg"
+    }
+  ],
+  "reloadReusesCache": true,
+  "libraryAutoCover": true,
+  "manualImageButtons": 0,
+  "errors": []
+}

@@ -34,14 +34,14 @@ final class NativeComposerTests: XCTestCase {
         app.buttons["morzsa-tab-chat"].tap()
         XCTAssertTrue(editor.waitForExistence(timeout: 5))
         XCTAssertEqual(editor.value as? String, "Next draft")
-        app.buttons["Új beszélgetés"].tap()
-        XCTAssertTrue(editor.waitForExistence(timeout: 5))
-        XCTAssertEqual(editor.value as? String, "")
-        XCTAssertTrue(app.keyboards.firstMatch.exists, "Web focus requests must open the native keyboard")
         app.buttons["Beszélgetéstörténet"].tap()
         XCTAssertFalse(editor.isHittable, "An open dialog must hide the native editor")
         app.buttons["Bezárás"].firstMatch.tap()
         XCTAssertTrue(editor.waitForExistence(timeout: 5))
         XCTAssertEqual(editor.value as? String, "Next draft")
+        app.buttons["Új beszélgetés"].tap()
+        XCTAssertTrue(editor.waitForExistence(timeout: 5))
+        XCTAssertEqual(editor.value as? String, "")
+        XCTAssertTrue(app.keyboards.firstMatch.exists, "Web focus requests must open the native keyboard")
     }
 }
