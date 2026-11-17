@@ -790,7 +790,7 @@ body.voice-active{overflow:hidden}
 @media(min-width:1000px){.recipe-method .generated-recipe-image,[data-cooking-image].generated-recipe-image{width:300px}.recipe-method .generated-recipe-image>img,[data-cooking-image].generated-recipe-image>img{height:195px;max-height:195px}.recipe-reading-detail .recipe-method p,.cooking-step p{max-width:68ch}}
 @media(max-width:359px){.recipe-portions{gap:10px}.recipe-portions-heading{flex-basis:100%}.recipe-portions-stepper{margin-left:auto}}
 /* Calm, explicit preparation / guided cooking / completion. */
-.cooking-phase-label{color:#BF4E2C;font:650 12px/1.5 Inter,system-ui;text-transform:uppercase;letter-spacing:.08em}
+.cooking-phase-label{color:var(--orange-ink);font:650 12px/1.5 Inter,system-ui;text-transform:uppercase;letter-spacing:.08em}
 .cooking-preparation,.cooking-completion{max-width:680px;margin:0 auto;padding:12px 0 28px}.cooking-preparation h2,.cooking-completion h2{font:650 26px/1.3 Sora,system-ui;color:#344638;margin:8px 0 12px}.cooking-prep-note{color:#677362;font-size:14px;line-height:1.65}.cooking-equipment{padding:12px 16px;background:#E8EDDE;border-radius:16px;margin:20px 0}.cooking-equipment h3{font-size:14px;margin:0 0 6px}.cooking-equipment p{font-size:14px;margin:0}.cooking-begin{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;min-height:54px;margin-top:24px}.cooking-prep-method{margin:24px 0}.cooking-prep-method summary{cursor:pointer;min-height:44px;font-weight:600}.cooking-prep-method li{padding:12px 0;line-height:1.8}.cooking-prep-method h3{font-size:17px}
 .cooking-progress{display:block;width:100%;height:7px;accent-color:#BF4E2C;margin:18px 0;border:0;border-radius:6px;overflow:hidden}.cooking-progress::-webkit-progress-bar{background:#E8EDDE}.cooking-progress::-webkit-progress-value{background:#BF4E2C}
 .cooking-timers{display:grid;gap:8px;margin:16px 0}.cooking-timers>div{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:14px;background:#E8EDDE}.cooking-timers span{min-width:0;flex:1}.cooking-timers strong{display:block;font-size:13px;overflow-wrap:anywhere}.cooking-timers small{font-size:11px;color:#667260}.cooking-timers output{font:650 19px/1.4 Inter,system-ui;font-variant-numeric:tabular-nums;white-space:nowrap}.cooking-timers button{border:0;background:transparent;min-width:44px;min-height:44px}.cooking-timers .is-due{background:#f5dfcf}.cooking-timer-start{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:8px 12px;border:1px solid #d4dcc8;background:transparent;border-radius:12px;color:#344638;font-size:13px;margin:12px 8px 10px 0}
@@ -1217,3 +1217,59 @@ body.voice-active{overflow:hidden}
 @keyframes image-shimmer{to{transform:translateX(100%)}}
 @keyframes image-dot{50%{opacity:.85;transform:translateY(-2px)}}
 @media(prefers-reduced-motion:reduce){.image-placeholder::before,.image-placeholder-progress i{animation:none}.image-placeholder::before{transform:none}.image-placeholder-progress i{opacity:.6}}
+
+/* A quieter conversation surface: one editor row and compact contextual actions. */
+body.workspace-chat{background:var(--bg)}
+.app>header #workspace-new-chat,.app>header #workspace-quick-add{position:static;flex:none;display:grid;place-items:center;width:44px;height:44px;min-width:44px;min-height:44px;padding:10px;margin:0;border:0;background:transparent;box-shadow:none;border-radius:50%}
+.app>header #workspace-new-chat{order:3;margin-left:auto}
+.app>header #workspace-quick-add{order:2;margin-left:auto}
+.app>header:has(#workspace-quick-add:not([hidden])) #workspace-new-chat{margin-left:0}
+.app>header #workspace-new-chat[hidden],.app>header #workspace-quick-add[hidden]{display:none}
+.app>header #workspace-new-chat img,.app>header #workspace-quick-add img{width:22px;height:22px}
+.app>header .header-controls:empty{display:none}
+.workspace-chat .app>header{position:sticky;top:0;z-index:18;background:var(--bg);min-height:52px}
+.native-ios .workspace-chat .app>header{top:env(safe-area-inset-top,0px)}
+#companion-form{gap:2px;padding:5px;box-shadow:0 3px 16px #3446380b}
+#companion-form [data-photo],#companion-form [data-mic],#companion-form [type=submit]{width:44px;height:44px;min-width:44px;min-height:44px;margin:0}
+#companion-form textarea{min-height:44px;padding:9px 5px;box-sizing:border-box}
+.workspace-chat:not(.workspace-cooking) .companion-welcome{display:flex;flex-direction:column;align-items:center;text-align:center;padding:32px 0 20px;gap:0}
+.workspace-chat:not(.workspace-cooking) .companion-welcome>img{width:48px;height:48px;margin:0 0 14px}
+.workspace-chat:not(.workspace-cooking) .companion-welcome h1{font-size:27px;font-weight:600;letter-spacing:-.7px;line-height:1.3;margin:0 0 8px}
+.workspace-chat:not(.workspace-cooking) .workspace-welcome-copy p{font-size:13px!important;max-width:290px!important;margin:0 auto;color:var(--muted)}
+.workspace-chat .companion .companion-starters{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin-top:22px;width:100%}
+.workspace-chat .companion .companion-starters button{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:6px;width:auto;flex:0 1 auto;min-height:44px;padding:8px 11px;border-radius:24px;background:transparent;box-shadow:none;font-size:12px;line-height:1.3}
+.workspace-chat .companion-starters button img{width:18px;height:18px}
+.workspace-chat:not(.workspace-cooking) .cooking-resume-card{margin:8px 0;padding:0;border:0;border-radius:0;background:transparent}
+.workspace-chat:not(.workspace-cooking) .cooking-resume-card>[data-resume-thread]{min-height:64px;padding:10px 4px;gap:10px}
+.workspace-chat .cooking-resume-card strong{font-size:13px;font-weight:550;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}
+.workspace-chat .cooking-resume-card small{font-size:12px;margin-top:2px}
+.workspace-chat .cooking-resume-card>[data-resume-thread]>img{width:19px;height:19px}
+
+/* One chronological list. Management controls open only when needed. */
+#companion-history{width:min(340px,88vw)}
+#companion-history .companion-panel-head,#workspace-sidebar .companion-panel-head{gap:4px;padding:0 0 10px;flex:none}
+#companion-history .companion-panel-head h2{font-family:Inter,system-ui,sans-serif;font-size:22px;font-weight:650;margin-right:auto}
+.companion-panel-head [data-history-toggle-search]{display:grid;place-items:center;flex:none;width:44px;height:44px;padding:11px;border:0;background:transparent;border-radius:50%}
+.companion-panel-head [data-history-toggle-search] img,.companion-panel-head [data-close] img{width:21px;height:21px}
+.history-search[hidden]{display:none}
+#companion-history .history-search{order:0;flex:none;margin:0 0 12px}
+#companion-history .history-thread,#workspace-sidebar .history-thread{display:flex;align-items:center;gap:10px;min-height:46px;padding:10px 9px;border:0;background:transparent;border-radius:11px;text-align:left}
+#companion-history .history-thread strong,#workspace-sidebar .history-thread strong{flex:1;min-width:0;font-size:14px;font-weight:450;line-height:1.5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#companion-history .history-thread>img,#workspace-sidebar .history-thread>img{flex:none;width:17px;height:17px;margin:0;opacity:.8}
+#companion-history .history-thread[aria-current=true],#workspace-sidebar .history-thread[aria-current=true]{background:#e8ebdf}
+.companion-history-items .history-date-group h4{margin:12px 9px 8px;font-size:12px;line-height:1.5;font-weight:500;color:var(--muted);letter-spacing:0;text-transform:none}
+.history-options{order:2;flex:none;margin:8px 0 0;border:0;font-size:13px}
+.history-options>summary{display:flex;align-items:center;gap:10px;min-height:44px;padding:9px 10px;cursor:pointer;list-style:none;color:var(--muted);font-size:13px}
+.history-options>summary::-webkit-details-marker{display:none}
+.history-options>summary>img{width:18px;height:18px}
+.history-options>div{padding:0 10px 8px;max-height:220px;overflow:auto}
+#companion-history .history-options .history-archive-current,#workspace-sidebar .history-options .history-archive-current{display:flex;align-items:center;gap:8px;width:100%;border:0;margin:0;font-size:12px;text-align:left}
+.history-options [data-archive]>img{width:17px;height:17px}
+.history-options .history-privacy{margin:4px 0;padding:0;font-size:11px}
+.history-sync-error{order:3;flex:none;min-height:44px;border:0;border-radius:10px;padding:8px;color:var(--orange-ink);background:#f5e7de;font:inherit;font-size:12px;text-align:left}
+.workspace-settings-area{border:0;padding:0}
+.workspace-settings[open]{max-height:min(420px,50dvh);overflow:auto}
+#companion-history .companion-new,#workspace-sidebar .companion-new{display:flex;align-items:center;justify-content:flex-start;gap:10px;min-height:46px;margin:8px 0 0;padding:10px 12px;border:1px solid var(--line);border-radius:24px;background:transparent;color:var(--ink);font-size:13px}
+#companion-history .companion-new img,#workspace-sidebar .companion-new img{width:19px;height:19px}
+@media(min-width:1000px){#workspace-sidebar{background:#f1eee5;border-right:0;padding:20px 16px 12px}#workspace-sidebar .workspace-brand{font-size:25px;padding-bottom:18px}#workspace-sidebar nav{padding-bottom:10px}#workspace-sidebar nav button{min-height:44px;padding:8px 10px}#workspace-sidebar .companion-new{order:5}#workspace-sidebar .companion-panel-head h2{font-size:12px;letter-spacing:0;text-transform:none}#workspace-sidebar .history-date-group>h4{display:none}.workspace-chat .app>header{height:52px}}
+@media(max-width:360px){.workspace-chat .companion .companion-starters{gap:5px}.workspace-chat .companion .companion-starters button{padding-inline:8px;font-size:11px;gap:4px}.workspace-chat:not(.workspace-cooking) .companion-welcome{padding-top:22px}.workspace-chat:not(.workspace-cooking) .companion-welcome h1{font-size:25px}}

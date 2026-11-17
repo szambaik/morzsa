@@ -33,14 +33,14 @@ async page=>{
  for(const width of [320,360,390,1366]){
   await page.setViewportSize({width,height:844});await tick();
   check(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'no overflow at '+width);
-  check(await page.evaluate(()=>{const box=el=>el.getBoundingClientRect(),form=document.getElementById('companion-form'),text=box(document.getElementById('companion-input')),buttons=[...form.querySelectorAll('button')].map(box),frame=box(form);return getComputedStyle(form).display==='grid'&&buttons.every(b=>b.width>=44&&b.height>=44&&b.top>=text.bottom&&b.left>=frame.left&&b.right<=frame.right)&&text.width>frame.width-40}),'full-width text and reachable toolbar fit at '+width);
-  check(await page.evaluate(()=>glassCalls.at(-1).buttons.filter(b=>b.title==='Kotyvasszunk').every(b=>b.stacked===(innerWidth<1000))),'native starter label uses the available width at '+width);
+  check(await page.evaluate(()=>{const box=el=>el.getBoundingClientRect(),form=document.getElementById('companion-form'),text=box(document.getElementById('companion-input')),buttons=[...form.querySelectorAll('button')].map(box),frame=box(form);return getComputedStyle(form).display==='grid'&&buttons.every(b=>b.width>=44&&b.height>=44&&Math.abs(b.top-text.top)<3&&b.left>=frame.left&&b.right<=frame.right)&&text.width>60&&frame.height<65}),'single-row editor and reachable controls fit at '+width);
+  check(await page.evaluate(()=>glassCalls.at(-1).buttons.filter(b=>b.title==='Kotyvasszunk').every(b=>b.stacked===false)),'native starter label uses the available width at '+width);
   check(await page.locator('#workspace-kitchen').count()===0,'no duplicate header household at '+width);
-  check(await page.evaluate(()=>{const a=document.getElementById('workspace-new-chat').getBoundingClientRect(),b=document.querySelector('#companion-form button[type=submit]').getBoundingClientRect();return Math.abs(a.x+a.width/2-b.x-b.width/2)<2&&a.bottom<b.top}),'new chat floats above Send at '+width);
+  check(await page.evaluate(()=>{const a=document.getElementById('workspace-new-chat').getBoundingClientRect(),b=document.querySelector('#companion-form button[type=submit]').getBoundingClientRect();return !!document.querySelector('.app>header #workspace-new-chat')&&a.top<80&&a.right>innerWidth-100&&a.bottom<b.top}),'new chat stays in the top-right header at '+width);
  }
  await page.setViewportSize({width:390,height:844});await tick();
  await page.locator('#companion-input').fill('Hosszabb kérdés\nTöbb sorban\nA receptről\nÉs a készletről');
- check(await page.locator('#companion-input').evaluate(el=>el.getBoundingClientRect().height>44&&el.getBoundingClientRect().bottom<=el.closest('form').querySelector('[data-mic]').getBoundingClientRect().top),'multiline draft expands above the toolbar');
+ check(await page.locator('#companion-input').evaluate(el=>el.getBoundingClientRect().height>44&&Math.abs(el.getBoundingClientRect().bottom-el.closest('form').querySelector('[data-mic]').getBoundingClientRect().bottom)<3),'multiline draft grows while controls stay aligned at the bottom');
  await page.locator('#companion-input').fill('');await page.locator('#companion-input').blur();
  await page.evaluate(()=>{document.documentElement.classList.add('native-tabbar','keyboard-open');document.documentElement.style.setProperty('--native-tabbar-height','83px')});await tick();
  check(await page.locator('.companion-compose-wrap').evaluate(el=>Math.abs(innerHeight-el.getBoundingClientRect().bottom-8)<1),'keyboard leaves no hidden-tabbar gap under the composer');
@@ -52,7 +52,7 @@ async page=>{
   if(destination==='pantry')check(await page.locator('[data-pantry-list]').first().evaluate(el=>getComputedStyle(el).opacity==='1'&&getComputedStyle(el).pointerEvents!=='none'),'pantry quick-add remains visible and interactive');
   if(['pantry','shopping','recipes'].includes(destination)){
    check(await page.locator('#workspace-assistant [data-workspace-assistant]').count()===0,'no duplicate Ask Morzsa button on '+destination);
-   check(await page.locator('#workspace-new-chat').evaluate(el=>!el.hidden&&el.getBoundingClientRect().width>=44&&el.getBoundingClientRect().bottom<innerHeight),'floating new chat stays reachable on '+destination);
+   check(await page.locator('#workspace-new-chat').evaluate(el=>!el.hidden&&el.getBoundingClientRect().width>=44&&el.getBoundingClientRect().bottom<innerHeight),'header new chat stays reachable on '+destination);
   }
   if(['pantry','recipes'].includes(destination))check(await page.locator('#workspace-assistant .workspace-fast-actions').count()===0,destination+' has no empty quick-action row');
   if(destination==='recipes'){

@@ -57,6 +57,11 @@ button.proactive-primary{background:#344638;border-color:#344638;color:#fffdf7}
 .proactive-chat{background:#eff2e6;border:1px solid #dce2d2;border-radius:18px;padding:13px 16px;margin:10px 0}
 .proactive-chat p{margin:5px 0}
 .proactive-chat .proactive-actions>button{min-height:44px;background:#fffdf7;font-size:11px;text-align:left}
+.workspace-chat .proactive-chat{display:flex;align-items:center;gap:12px;margin:10px 0;padding:12px 14px;border:0;border-radius:16px;background:#eef0e6}
+.workspace-chat .proactive-chat>p{flex:1;min-width:0;margin:0;font-size:12px;line-height:1.6}
+.workspace-chat .proactive-chat .proactive-actions{flex:none;margin:0}
+.workspace-chat .proactive-chat .proactive-actions>button{display:flex;align-items:center;gap:5px;min-height:44px;padding:8px;border:0;background:transparent;box-shadow:none;font-size:12px}
+.workspace-chat .proactive-chat .proactive-actions>button img{width:17px;height:17px}
 .proactive-enabled .app nav button[data-page=chat]>span{width:32px;height:32px;background:#e3eacb;border-radius:50%;box-shadow:0 0 0 3px #edf0e1}
 .proactive-enabled .app nav button[data-page=chat].active{background:#e8eedb;color:#344638}
 .proactive-enabled #workspace-sidebar nav button[data-page=chat]>span{background:#e3eacb;border-radius:50%;width:30px;height:30px}

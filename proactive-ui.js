@@ -86,7 +86,7 @@ window.MorzsaProactive=(()=>{
   const items=products(),picks=recommendations(),s=items[0];
   // Keep the compact existing review when checking pantry is the only next step.
   if(s?.kind==='review'&&!picks.length)return false;
-  const html=s||picks.length?'<aside class="proactive-chat"><span class="proactive-evidence">'+say('Érdemes ránézni','Worth a look')+'</span><p>'+(s?'<strong>'+esc(displayName(s.name))+'</strong> · '+esc(reason(s)):say('Találtam a készletedhez illő receptötletet.','I found a recipe idea that fits your pantry.'))+'</p><div class="proactive-actions">'+(s?'<button data-proactive-overview>'+say('Megnézem a javaslatot','View suggestion')+' →</button>':'')+(picks.length?'<button data-proactive-recipe="'+esc(picks[0].recipeId)+'">'+esc(picks[0].recipe.title)+' →</button>':'')+'</div></aside>':'';
+  const html=s||picks.length?'<aside class="proactive-chat"><p>'+(s?'<strong>'+esc(displayName(s.name))+'</strong> · '+esc(reason(s)):'<strong>'+esc(picks[0].recipe.title)+'</strong><br>'+say('Ötlet a készletedből.','An idea from your pantry.'))+'</p><div class="proactive-actions">'+(s?'<button data-proactive-overview>'+say('Megnézem','View suggestion')+icon('arrow-right')+'</button>':'<button data-proactive-recipe="'+esc(picks[0].recipeId)+'">'+say('Megnézem','View recipe')+icon('arrow-right')+'</button>')+'</div></aside>':'';
   if(host._proactiveHTML!==html||html&&!host.querySelector('.proactive-chat')){host.innerHTML=html;host._proactiveHTML=html;bind(host)}return true;
  }
  async function respond(selected,action){

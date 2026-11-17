@@ -189,3 +189,39 @@ Morzsa, Shopping, Recipes. Existing stores and RPC contracts are preserved.
   understanding, beyond the verified control behavior.
 
 final result: passed
+
+
+## 2026-11-17 — Calm chat and compact conversation history
+
+Scope: adapt the user's ChatGPT screenshots for information density and composer placement while preserving Morzsa branding, navigation, stored conversations and the native UITextView adapter. This is an intentional adaptation, not a pixel copy of ChatGPT.
+
+### Reference and comparison
+
+- References: the four user screenshots ending df6da576, 67ea7c02, d403b2a1 and 37544e37. Normalize 1290×2796 source captures to 430×932, then crop OS chrome to compare at 430×844. Compare composer crops separately; native OS keyboard/chrome are outside the comparison.
+- Paired comparison files: ~/.codex/artifacts/morzsa-calm-chat/qa/comparison-full.png, comparison-sidebar.png and comparison-composer.png.
+- Source screenshots and paired comparisons stay local because they contain personal conversation titles. No user screenshots are published in the repository.
+- Final app captures cover Chrome and WebKit at 320, 360, 390, 430 and 1366px, plus the open sidebar and a sent conversation.
+
+### Required fidelity surfaces
+
+- Typography and colors: existing Sora/Inter, forest text, terracotta Send, cream chat canvas; lighter sidebar. The flat chat background deliberately reduces the competing gradient around message cards.
+- Spacing and geometry: 44px minimum photo/microphone/Send/New chat targets; photo, growing text input, microphone and Send share a row. The keyboard and long drafts retain native editing behavior.
+- Assets and icons: existing Morzsa branding and source icons. No new raster artwork, dependencies or replacement audio infrastructure.
+- Content and interactions: one recent-message-ordered conversation list with distinct recipe/chat icons. Search, archive, privacy, language, preferences and tutorial remain available through compact disclosures. One contextual suggestion action and one unobtrusive cooking-resume row; startup suggestions disappear once messages begin.
+
+### Findings resolved
+
+- P2: the first sticky header had a rectangular seam against the gradient. A matching cream chat background removes it; compare the final paired capture.
+- P2: the preparation label fell below AA contrast on cream (4.37:1). It now uses the existing darker --orange-ink text token.
+- P2: history redraws could close disclosure controls or lose search context. Preserve the search query, open states, focus and list position for the same active conversation.
+- Shared read-only conversations still allow archiving the recipient's own view; sharing and content edits remain restricted by existing ownership logic.
+
+### Verification and limits
+
+- 344 JavaScript tests and all SQL suites passed before integration with current main.
+- Release gate: full synthetic audit, 32 axe scans with no violations, 54 targeted regressions, 75 iOS-control checks and 22 native UITextView adapter checks.
+- Browser journeys verify single-row geometry, no horizontal overflow, top-right New chat, suggestion count, multiline growth, search preservation, settings, sending, archive/Undo, private-by-default sharing and revocation.
+- The latest main's compact suggestions, shopping autocomplete and weekly planning changes are merged. The overlapping chat suggestion retains the single-CTA version.
+- Tests use isolated local accounts and SQL-backed fixtures; no production data or paid AI calls. WebKit is a browser-level check, not a physical iPhone test. Native materials and microphone hardware still require device confirmation.
+
+final result: passed
