@@ -30,18 +30,19 @@ window.RecipeImages=(()=>{
   if(!host||(!household?.userId()&&!recipe.recipeId)||!household.recipeImage)return;
   mounted.get(host)?.();
   const id=key(recipe,step);let entry=entries.get(id);if(!entry||entry.expiresAt&&entry.expiresAt<Date.now()){entry={status:'new'};entries.set(id,entry)}
+  const canCreate=()=>!!household?.userId()&&!options.cacheOnly;
   let autoAttempted=false,visible=false,observer=null,disposed=false;const dispose=()=>{if(disposed)return;disposed=true;observer?.disconnect();entry.views?.delete(host);mounted.delete(host)};mounted.set(host,dispose);const live=()=>!disposed&&host.isConnected&&key(recipe,step)===id;
   const paint=()=>{
    if(!live()){dispose();return}host.replaceChildren();host.className=[...new Set((host.className||'').split(/\s+/).filter(Boolean).concat('generated-recipe-image'))].join(' ');host.dataset.imageStatus=entry.status;
    // A cache-only lookup may finish after the cooking hero was mounted.
-   if(entry.status==='missing'&&visible&&options.autoCreate&&!autoAttempted&&!autoCreated.has(id)){autoAttempted=true;autoCreated.add(id);load(true);return}
+   if(entry.status==='missing'&&visible&&canCreate()&&options.autoCreate&&!autoAttempted&&!autoCreated.has(id)){autoAttempted=true;autoCreated.add(id);load(true);return}
    if(entry.status==='ready'){
     const img=document.createElement('img');img.src=entry.url;img.alt=recipe.title+' · '+say(step<0?'AI-illusztráció a recepthez':'AI-illusztráció a főzési lépéshez',step<0?'AI recipe illustration':'AI cooking step illustration');img.loading=options.hero?'eager':'lazy';if(options.hero)img.fetchPriority='high';img.width=768;img.height=512;
     img.onerror=()=>{if(entry.status!=='ready'||entry.url!==img.src)return;entry.status='failed';entry.error='IMAGE_LOAD_FAILED';refresh()};const caption=document.createElement('small');caption.textContent=say('AI-illusztráció · Morzsa','AI illustration · Morzsa');const cover=entries.get(key(recipe,-1));const duplicate=step>=0&&cover?.url&&new URL(cover.url).pathname===new URL(entry.url).pathname;if(!duplicate)host.append(img,caption);else{host.dataset.duplicateCover='true';const note=document.createElement('small');note.textContent=say('Ehhez a lépéshez nincs külön illusztráció.','No separate illustration for this step.');host.append(note)}
     if(step>=0&&!options.cacheOnly&&entry.canReplace){const replace=document.createElement('button');replace.type='button';replace.className='image-replace';replace.textContent=say('Másik képet kérek','Create a different image');replace.onclick=()=>{
       replace.disabled=true;const confirm=document.createElement('div');confirm.className='image-replace-confirm';const note=document.createElement('span');note.textContent=say('Új képet generálunk és mentünk. Ez a képkeretből fogyaszt.','Generate and cache a replacement. This uses your image allowance.');const yes=document.createElement('button'),no=document.createElement('button');yes.type=no.type='button';yes.textContent=say('Új kép készítése','Generate replacement');no.textContent=say('Mégsem','Cancel');yes.onclick=()=>load(true,true);no.onclick=()=>{confirm.remove();replace.disabled=false};confirm.append(note,yes,no);host.append(confirm)};host.append(replace)}return;
    }
-   if(options.cacheOnly)return;
+   if(options.cacheOnly||options.quiet)return;
    const b=document.createElement('button');b.type='button';b.className='small-button';b.disabled=entry.status==='loading';
    b.textContent=entry.status==='loading'?say('Kép készül…','Creating image…'):entry.status==='limit'?say('A mai képkeret elfogyott','Daily image allowance used'):entry.status==='failed'?say('Kép újrapróbálása','Retry image'):entry.status==='pending'?say('Kép állapotának frissítése','Refresh image status'):say(step<0?'Képet kérek a recepthez':'Mutasd képen',step<0?'Create recipe image':'Show this step');
    const waiting=entry.retryAt>Date.now();
@@ -73,7 +74,7 @@ window.RecipeImages=(()=>{
   }
   paint();
   if(entry.status!=='ready'&&!options.cacheOnly||entry.status==='new'){
-   observer=new IntersectionObserver(items=>{if(items.some(i=>i.isIntersecting)){observer.disconnect();if(!live()||entry.views.get(host)!==paint)return;visible=true;const queued=auto.delete(id),create=!options.cacheOnly&&(queued||options.autoCreate===true)&&!autoCreated.has(id);if(entry.status==='new'||entry.status==='missing'){if(create)autoCreated.add(id);load(create)}else paint()}},{rootMargin:'100px'});observer.observe(host);
+   observer=new IntersectionObserver(items=>{if(items.some(i=>i.isIntersecting)){observer.disconnect();if(!live()||entry.views.get(host)!==paint)return;visible=true;const queued=auto.delete(id),create=canCreate()&&(queued||options.autoCreate===true)&&!autoCreated.has(id);if(entry.status==='new'||entry.status==='missing'){if(create)autoCreated.add(id);load(create)}else paint()}},{rootMargin:'100px'});observer.observe(host);
   }
   prune();return dispose;
  }

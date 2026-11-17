@@ -7,7 +7,7 @@ function harness({model='fal-ai/flux-2/klein/4b',legacy=false,content=recipe,pub
   if(url.endsWith('/auth/v1/user'))return Response.json({id:uid});
   if(url.includes('/recipe_image_jobs?'))return Response.json([]);
   if(url.includes('/recipe_asset_jobs?')){if(options.method==='PATCH'){job={...job,...body};return Response.json([job])}return Response.json(job?[job]:[])}
-  if(url.includes('/rpc/claim_recipe_asset')){if(job)return Response.json({status:job.state});job={state:'pending',lease:'lease',model:body.image_model};return Response.json({status:'claimed',lease:'lease'})}
+  if(url.includes('/rpc/claim_recipe_asset')){if(job)return Response.json({status:job.state});job={recipe_id:rid,step:body.image_step,state:'pending',lease:'lease',model:body.image_model};return Response.json({status:'claimed',lease:'lease'})}
   if(url.includes('/rpc/reserve_morzsa_plus'))return Response.json({status:'reserved'});
   if(url.includes('/morzsa_plus_requests?'))return Response.json({});
   if(url.includes('groq.com'))return Response.json({choices:[{message:{content:JSON.stringify({dish:'Apple cake',scene:'A clean round buttered baking tin next to an oven, no batter or mixing bowl. Warm daylight in a tidy kitchen.'})}}]});
@@ -57,4 +57,20 @@ test('a prepared cover never replaces the active cooking-step prompt',async()=>{
  const {imagePrompt}=await import('../supabase/functions/recipe-image/handler.mjs');let sent;
  await imagePrompt({recipe:{...recipe,imagePrompt:'Finished apple cake, already baked and sliced on a plate.'},step:0},{groqKey:'key'},async(_,o)=>{sent=JSON.parse(JSON.parse(o.body).messages[1].content);return Response.json({choices:[{message:{content:JSON.stringify({dish:'Apple cake',scene:'A clean greased baking tin beside the preheating oven, no batter or finished cake.'})}}]})});
  assert.equal(sent.activeInstruction,recipe.steps[0]);assert.equal(sent.recipe,undefined);assert.doesNotMatch(JSON.stringify(sent),/already baked|Keverd össze/);
+});
+
+test('the backend finishes a submitted image after the browser has left and later reads reuse Storage',async()=>{
+ const {createHandler}=await import('../supabase/functions/recipe-image/handler.mjs');
+ for(const step of [-1,0]){
+  const h=harness(),background=[];h.config.defer=work=>background.push(work);const fn=createHandler(h.config,h.fetcher);
+  assert.equal((await fn(request(true,true,step))).status,202);assert.equal(background.length,1);
+  h.finish();await Promise.all(background);assert.equal(h.job.state,'ready');assert.equal(h.job.asset_path.split('/')[1],String(step));assert.equal(h.submissions,1);assert.equal(h.uploads,1);
+  const cached=await fn(request(false,false,step));assert.equal(cached.status,200);assert.equal((await cached.json()).status,'ready');assert.equal(h.submissions,1);assert.equal(h.uploads,1);
+ }
+});
+test('new fal requests register the backend callback and keep its address out of the stored queue URLs',async()=>{
+ const {submitFal}=await import('../supabase/functions/recipe-image/fal.mjs');let sent;
+ const webhookUrl='https://project.supabase.co/functions/v1/recipe-image-webhook';
+ const job=await submitFal({recipe:{...recipe,imagePrompt:'A golden homemade apple cake on a simple ceramic plate in warm natural daylight.'},step:-1},{falKey:'fal',webhookUrl},async(url)=>{sent=new URL(url);return Response.json({request_id:'request-123',status_url:'https://queue.fal.run/fal-ai/flux-2/requests/request-123/status',response_url:'https://queue.fal.run/fal-ai/flux-2/requests/request-123'})});
+ assert.equal(sent.searchParams.get('fal_webhook'),webhookUrl);assert.equal(job.webhook,true);assert.equal(new URL(job.statusUrl).search,'');
 });

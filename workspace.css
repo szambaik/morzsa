@@ -1167,3 +1167,7 @@ body.voice-active{overflow:hidden}
 #workspace-new-chat:focus-visible{outline:2px solid #344638;outline-offset:3px}
 .companion-pending-send small{display:block;margin-top:7px;font-size:12px;opacity:.8}
 .companion-pending-send p{white-space:pre-wrap}
+
+/* Generated catalogue covers keep the same frame as cached feed photos. */
+.feed-card-art:has(.room-image-cache){position:relative}
+.feed-card-art:has(.room-image-cache img)>.feed-art-placeholder{visibility:hidden}

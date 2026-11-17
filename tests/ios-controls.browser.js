@@ -3,7 +3,9 @@ async page=>{
  const base=process.env.MORZSA_QA_BASE||'http://127.0.0.1:8899';
  await page.goto(base+'/?actor=c');await page.waitForFunction(()=>!!window.MorzsaCompanion&&!!window.MorzsaWorkspace);
  await page.addStyleTag({url:base+'/mobile/ios.css'});
- check(await page.locator('#companion-form').evaluate(el=>getComputedStyle(el).display==='flex'),'web composer keeps its original layout');
+ // Initial history sync can replace the form between locator resolution and evaluation.
+ // Resolve and measure the current element in one browser task.
+ check(await page.evaluate(()=>getComputedStyle(document.getElementById('companion-form')).display==='flex'),'web composer keeps its original layout');
  check(await page.locator('.companion-voice-glass').isHidden(),'reference voice icon is iOS-only');
  await page.evaluate(async()=>{
   // Synthetic personal pantry; no production household or provider is used.
