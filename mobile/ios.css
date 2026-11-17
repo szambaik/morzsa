@@ -17,17 +17,17 @@
 
 /* Keep the existing text, photo and voice handlers inside one iOS glass surface.
    Low specificity on display preserves cooking/crafting modes that hide the form. */
-:where(.native-ios) #companion-form{display:grid;grid-template-columns:44px 44px minmax(0,1fr) 44px;gap:4px;padding:7px;border-radius:28px;border:1px solid #ffffffd9;background:linear-gradient(145deg,#fffdf7d9,#f8f3e9b8);box-shadow:0 6px 24px #34463814,inset 0 1px 0 #fff,inset 0 -1px 0 #34463812;-webkit-backdrop-filter:blur(20px) saturate(140%);backdrop-filter:blur(20px) saturate(140%)}
+:where(.native-ios) #companion-form{display:grid;grid-template-columns:44px minmax(0,1fr) 44px 44px;align-items:end;gap:2px;padding:5px;border-radius:28px;border:1px solid #ffffffd9;background:linear-gradient(145deg,#fffdf7d9,#f8f3e9b8);box-shadow:0 3px 16px #3446380c,inset 0 1px 0 #fff;-webkit-backdrop-filter:blur(20px) saturate(140%);backdrop-filter:blur(20px) saturate(140%)}
 .native-ios #companion-form:focus-within{border-color:#ffffffd9;box-shadow:0 6px 24px #34463814,inset 0 1px 0 #fff,inset 0 -1px 0 #34463812}
-.native-ios #companion-input{grid-column:1/-1;grid-row:1;width:100%;min-height:44px;max-height:110px;padding:9px 10px 7px;color:#344638;caret-color:#BF4E2C}
+.native-ios #companion-input{grid-column:2;grid-row:1;width:100%;min-height:44px;max-height:110px;padding:10px 2px;color:#344638;caret-color:#BF4E2C}
 .native-ios #companion-input::placeholder{color:#5e695a;opacity:1}
-.native-ios #companion-form [data-mic]{grid-column:1;grid-row:2;background:linear-gradient(145deg,#ffffffa6,#e8edde99);box-shadow:inset 0 1px 0 #ffffffbf;color:#344638}
+.native-ios #companion-form [data-mic]{grid-column:3;grid-row:1;background:transparent;box-shadow:none;color:#344638}
 .native-ios #companion-form [data-mic]>svg{display:block;width:24px;height:24px}
 
-.native-ios #companion-form [data-photo]{grid-column:2;grid-row:2;color:#344638}
-.native-ios #companion-form button[type=submit]{grid-column:4;grid-row:2;background:linear-gradient(145deg,#c75b36,#ac3f24);box-shadow:inset 0 1px 0 #ffffff66,0 2px 6px #bf4e2c26;color:#fffdf8}
-.native-ios .companion{padding-bottom:calc(var(--workspace-nav-height) + 240px)}
-.native-ios #companion-end{scroll-margin-bottom:calc(var(--workspace-nav-height) + 240px)}
+.native-ios #companion-form [data-photo]{grid-column:1;grid-row:1;color:#344638}
+.native-ios #companion-form button[type=submit]{grid-column:4;grid-row:1;background:linear-gradient(145deg,#c75b36,#ac3f24);box-shadow:inset 0 1px 0 #ffffff66,0 2px 6px #bf4e2c26;color:#fffdf8}
+.native-ios .companion{padding-bottom:calc(var(--workspace-nav-height) + 150px)}
+.native-ios #companion-end{scroll-margin-bottom:calc(var(--workspace-nav-height) + 150px)}
 .native-ios .cooking-guided #companion-form,.native-ios .cooking-question-open #companion-form{display:grid!important}
 .native-ios.native-tabbar.keyboard-open .companion-compose-wrap{bottom:8px}
 @media(prefers-reduced-transparency:reduce){

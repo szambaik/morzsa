@@ -15,8 +15,8 @@ async page=>{
    if(lang==='hu'&&[390,1440].includes(width)){await p.evaluate(()=>window.scrollTo(0,0));await p.screenshot({path:out+'/crafting-'+width+'.png',fullPage:true})}
    await p.locator('[data-close-craft]').click();await p.evaluate(()=>dashboardGo('recipes'));await p.locator('button[data-feed-tab=browse]').click();await p.locator('.recipe-feed-grid .room-card').first().waitFor();
    check(await p.locator('.recipe-library-tools,#room-surprise,#room-craft,.recipe-library [data-kitchen-preferences]').count()===0,'no recipe toolbar '+lang+' '+width);check(await p.locator('[data-weekly-open]').isVisible(),'weekly planning retained');
-   if(width<1000)await p.evaluate(()=>MorzsaCompanion.openHistory());check(await p.locator('.workspace-preferences').isVisible(),'preferences accessible '+lang+' '+width);
-   check(await p.locator('.workspace-settings-area').evaluate(e=>e.querySelector('details').nextElementSibling.matches('.workspace-preferences')),'preferences below settings');
+   if(width<1000)await p.evaluate(()=>MorzsaCompanion.openHistory());await p.locator('.workspace-settings>summary').click();check(await p.locator('.workspace-preferences').isVisible(),'preferences accessible '+lang+' '+width);
+   check(await p.locator('.workspace-settings-area').evaluate(e=>e.querySelector('details').contains(e.querySelector('.workspace-preferences'))),'preferences inside settings');
    await p.locator('.workspace-preferences').click();await p.locator('#kitchen-preferences[open]').waitFor();check(await p.locator('dialog[open]').count()===1,'no stacked dialogs');await p.locator('#kitchen-preferences .close').click();await p.evaluate(id=>MorzsaCompanion.openThread(id),initial);
   }}
   await p.setViewportSize({width:1440,height:1200});await p.evaluate(()=>setLanguage('hu'));await p.locator('[data-open-craft]').click();await p.locator('[data-craft-scope=all]').click();await p.locator('#craft-search').fill('tojás');
