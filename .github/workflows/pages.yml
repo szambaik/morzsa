@@ -32,6 +32,7 @@ jobs:
       - run: npm --prefix design-audit test
       - run: npx --prefix design-audit playwright install --with-deps chromium
       - run: node design-audit/check-release.mjs
+      - run: node tests/check-compact-surfaces.mjs
       - run: node design-audit/performance/runner.mjs regression
       - run: node design-audit/plus-latency.mjs --check
       - run: npm run build:web

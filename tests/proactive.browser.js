@@ -16,7 +16,7 @@ async page=>{
    for(const destination of ['shopping','chat','pantry','recipes','overview']){await nav(p,destination);check(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),destination+' fits '+width);check(await p.locator('nav [data-page]').count()===5,'all destinations accessible from '+destination+' '+width)}
   }
   await p.setViewportSize({width:390,height:844});
-  check(await p.locator('.proactive-overview').innerText().then(t=>t.includes('Morzsa figyel')&&t.includes('Morzsa ajánlja')),'overview surfaces present');
+  check(await p.locator('.proactive-overview').innerText().then(t=>t.includes('Érdemes ránézni')&&t.includes('Morzsa ajánlja')),'overview surfaces present');
   await p.locator('[data-proactive-card="product:tej"] summary').click();await p.locator('[data-proactive-card="product:tej"] [data-proactive-action="later"]').click();
   await p.waitForFunction(()=>!MorzsaProactive.products().some(s=>s.name==='Tej'));check(await p.evaluate(()=>state.stock.Tej===1&&state.cart.length===0),'snooze does not mutate pantry or list');
   await nav(p,'shopping');check(await p.locator('[data-proactive-card="product:tej"]').count()===0,'snooze shared across surfaces');
@@ -32,7 +32,7 @@ async page=>{
   check(await p.evaluate(()=>{const featured=[...document.querySelectorAll('.proactive-recommendations [data-proactive-recipe]')].map(b=>b.dataset.proactiveRecipe);return [...document.querySelectorAll('.recipe-discovery-section .room-card:not([hidden]) [data-feed-recipe]')].every(b=>!featured.includes(b.dataset.feedRecipe))}),'featured recipes are not duplicated below');
   await p.locator('.proactive-recommendations [data-proactive-recipe]').first().click();await p.waitForSelector('.recipe-reading');check(await p.locator('.recipe-reading-detail').innerText().then(t=>t.length>100)&&await p.locator('[data-start-cooking]').count()===1,'recommendation opens a real recipe');
   await nav(p,'shopping');await nav(p,'recipes');check(await p.locator('.recipe-reading').count()===1,'recipe reading context survives tab switch');
-  await p.evaluate(()=>{language='en';render()});await nav(p,'overview');check(await p.locator('.proactive-overview').innerText().then(t=>t.includes('Morzsa recommends')||t.includes('Morzsa is keeping')),'English proactive text');
+  await p.evaluate(()=>{language='en';render()});await nav(p,'overview');check(await p.locator('.proactive-overview').innerText().then(t=>t.includes('Morzsa recommends')||t.includes('Worth a look')),'English proactive text');
   check(await p.evaluate(()=>qaChatRequests.length===0),'no automatic AI conversation requests');
   const a=await open('a'),b=await open('b');
   await a.evaluate(async()=>{await saveVoiceState({...state,stock:{...state.stock,Tej:1,Vaj:0},cart:[]});await MorzsaProactive.refresh(true);dashboardGo('overview')});
