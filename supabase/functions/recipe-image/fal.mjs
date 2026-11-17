@@ -21,10 +21,11 @@ function queueUrl(value,id,kind,model){
 export async function submitFal(input,config,fetcher=fetch){
  if(!config.falKey)throw Error('IMAGE_SETUP_REQUIRED');
  const model=falModel(config),prompt=await imagePrompt(input,config,fetcher);
- const response=await fetcher('https://queue.fal.run/'+model,{method:'POST',headers:{Authorization:'Key '+config.falKey,'Content-Type':'application/json'},body:JSON.stringify({prompt,image_size:{width:768,height:512},num_inference_steps:4,num_images:1,output_format:'jpeg',enable_safety_checker:true}),signal:AbortSignal.timeout(15000)});
+ const endpoint='https://queue.fal.run/'+model+(config.webhookUrl?'?fal_webhook='+encodeURIComponent(config.webhookUrl):'');
+ const response=await fetcher(endpoint,{method:'POST',headers:{Authorization:'Key '+config.falKey,'Content-Type':'application/json'},body:JSON.stringify({prompt,image_size:{width:768,height:512},num_inference_steps:4,num_images:1,output_format:'jpeg',enable_safety_checker:true}),signal:AbortSignal.timeout(15000)});
  if(!response.ok){await response.body?.cancel();throw fail(response.status,response.status<500)}
  const data=await response.json(),id=data.request_id;if(typeof id!=='string'||!/^[a-zA-Z0-9-]{8,100}$/.test(id))throw Error('IMAGE_UNAVAILABLE');
- return {id,model,statusUrl:queueUrl(data.status_url,id,'status',model),resultUrl:queueUrl(data.response_url,id,'result',model)};
+ return {id,model,...(config.webhookUrl?{webhook:true}:{}),statusUrl:queueUrl(data.status_url,id,'status',model),resultUrl:queueUrl(data.response_url,id,'result',model)};
 }
 export async function pollFal(job,config,fetcher=fetch){
  if(!config.falKey)throw Error('IMAGE_SETUP_REQUIRED');

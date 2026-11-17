@@ -1,9 +1,11 @@
 import {cloudImage,IMAGE_PROMPT_VERSION} from './handler.mjs';
-import {submitFal,pollFal,falModel,falJobModel,falEstimatedCents} from './fal.mjs';
+import {submitFal,falModel} from './fal.mjs';
+import {assetStore,finishInBackground} from './assets.mjs';
 import {openaiImage,MODELS} from '../plus-assistant/openai.mjs';
 const uuid=v=>typeof v==='string'&&/^[a-f0-9-]{36}$/i.test(v);
 export async function persistentImage(input,request,config,fetcher,headers){
  const reply=(status,value)=>Response.json(value,{status,headers});let lease,filter,artifactPath,artifactBucket,stage='lookup',generated=false,pollJob,reservedRequest,reservedUser,reservedModel;
+ const store=assetStore(config,fetcher);
  const service={apikey:config.serviceKey,Authorization:'Bearer '+config.serviceKey,'Content-Type':'application/json'};
  const db=(path,body,method=body===undefined?'GET':'POST')=>fetcher(config.url+'/rest/v1/'+path,{method,headers:service,...(body!==undefined?{body:JSON.stringify(body)}:{}),signal:AbortSignal.timeout(10000)});
  try{
@@ -20,15 +22,14 @@ export async function persistentImage(input,request,config,fetcher,headers){
    const r=await fetcher(config.url+'/storage/v1/object/sign/recipe-images/'+job.asset_path,{method:'POST',headers:service,body:JSON.stringify({expiresIn:1800}),signal:AbortSignal.timeout(10000)});if(!r.ok)throw Error('IMAGE_UNAVAILABLE');const data=await r.json();if(!data.signedURL?.startsWith('/object/sign/'))throw Error('IMAGE_UNAVAILABLE');return reply(200,{status:'ready',canReplace:!!row.owner_id,url:config.url+'/storage/v1'+data.signedURL,expiresAt:Date.now()+1700000});
   };
   const saveImage=async(img,token)=>{
-   stage='upload';const bucket=row.published?'recipe-catalog':'recipe-images',path=row.id+'/'+step+'/'+token+'.'+img.ext;artifactPath=path;artifactBucket=bucket;
-   const upload=await fetcher(config.url+'/storage/v1/object/'+bucket+'/'+path,{method:'POST',headers:{...service,'Content-Type':img.type,'cache-control':'public, max-age=31536000, immutable'},body:img.bytes,signal:AbortSignal.timeout(15000)});
-   if(!upload.ok&&upload.status!==409)throw Error('IMAGE_UNAVAILABLE');
-   let thumbnailPath=null;if(row.published&&step===-1&&config.thumbnail){try{const thumb=await config.thumbnail(img.bytes);thumbnailPath=row.id+'/thumb/'+token+'.jpg';const saved=await fetcher(config.url+'/storage/v1/object/recipe-catalog/'+thumbnailPath,{method:'POST',headers:{...service,'Content-Type':'image/jpeg','cache-control':'public, max-age=31536000, immutable'},body:thumb,signal:AbortSignal.timeout(10000)});if(!saved.ok&&saved.status!==409)thumbnailPath=null}catch{thumbnailPath=null}}
-   stage='save';const stored=await db(filter+'&lease=eq.'+token,{state:'ready',asset_path:path,thumbnail_path:thumbnailPath,bucket,updated_at:new Date().toISOString()},'PATCH');if(!stored.ok)throw Error('IMAGE_UNAVAILABLE');lease=null;return ready({asset_path:path,bucket});
+   stage='upload';artifactBucket=row.published?'recipe-catalog':'recipe-images';artifactPath=row.id+'/'+step+'/'+token+'.'+img.ext;
+   const saved=await store.save(row,{recipe_id:row.id,step,lease:token},img);lease=null;return ready(saved);
   };
   let cached=await lookup();
   if(cached?.provider_request&&['pending','uncertain'].includes(cached.state)){
-   stage='poll';pollJob=cached;const img=await pollFal(cached.provider_request,config,fetcher);if(!img)return reply(202,{status:'pending'});generated=true;lease=cached.lease;const result=await saveImage(img,lease);if(cached.provider_request.paidRequest)await db('morzsa_plus_requests?request_id=eq.'+cached.provider_request.paidRequest+'&user_id=eq.'+cached.provider_request.userId,{state:'complete',model:falJobModel(cached.provider_request),usage:{images:1,estimatedCents:falEstimatedCents(cached.provider_request)}},'PATCH');return result;
+   stage='poll';pollJob={...cached,step};const result=await store.completeFal(row,pollJob);
+   if(result.state==='ready')return ready(result);
+   if(!pollJob.provider_request.webhook)finishInBackground(row,pollJob,config,fetcher);return reply(202,{status:'pending'});
   }
 if(cached?.state==='uncertain'&&cached.asset_path){const object=await fetcher(config.url+'/storage/v1/object/authenticated/'+cached.bucket+'/'+cached.asset_path,{method:'HEAD',headers:service,signal:AbortSignal.timeout(10000)});if(object.ok){await db(filter,{state:'ready'},'PATCH');cached={...cached,state:'ready'}}}if(cached?.state==='ready'&&!input.regenerate)return ready(cached);
   if(!input.create)return reply(200,{status:cached?.state==='pending'?'pending':'missing'});
@@ -60,7 +61,7 @@ if(cached?.state==='uncertain'&&cached.asset_path){const object=await fetcher(co
     paidRequest=lease;const reserved=await db('rpc/reserve_morzsa_plus',{user_id:user.id,hid:input.householdId||null,request_id:paidRequest,kind:'image',reserve_cents:1});if(!reserved.ok)throw Error('PLUS_SETUP_REQUIRED');const quota=await reserved.json();if(quota.status!=='reserved')throw Error(quota.status==='limit'?'PLUS_LIMIT':'PLUS_ACCESS_REQUIRED');reservedRequest=paidRequest;reservedUser=user.id;reservedModel=model;
    }
    const handle=await submitFal(image,config,fetcher);if(paidRequest){handle.paidRequest=paidRequest;handle.userId=user.id;}
-const saved=await db(filter+'&lease=eq.'+lease,{provider_request:handle,updated_at:new Date().toISOString()},'PATCH');if(!saved.ok)throw Error('IMAGE_UNAVAILABLE');lease=null;return reply(202,{status:'pending'});
+const saved=await db(filter+'&lease=eq.'+lease,{provider_request:handle,updated_at:new Date().toISOString()},'PATCH');if(!saved.ok)throw Error('IMAGE_UNAVAILABLE');const job={recipe_id:row.id,step,state:'pending',lease,model,provider_request:handle};lease=null;finishInBackground(row,job,config,fetcher);return reply(202,{status:'pending'});
   }
   if(config.generateImage){img=await config.generateImage(image);generated=true}
   else if(useOpenAI){
@@ -71,7 +72,6 @@ const saved=await db(filter+'&lease=eq.'+lease,{provider_request:handle,updated_
  }catch(e){
   // A transient polling/auth/storage error must keep the known request handle.
   // Only an explicit terminal provider failure allows the existing cooldown path.
-  if(pollJob&&e.definite){await db(filter+'&lease=eq.'+pollJob.lease,{state:'failed',updated_at:new Date().toISOString()},'PATCH').catch(()=>{});if(pollJob.provider_request.paidRequest)await db('morzsa_plus_requests?request_id=eq.'+pollJob.provider_request.paidRequest+'&user_id=eq.'+pollJob.provider_request.userId,{state:'failed',model:falJobModel(pollJob.provider_request),usage:{}},'PATCH').catch(()=>{})}
   if(reservedRequest&&e.definite)await db('morzsa_plus_requests?request_id=eq.'+reservedRequest+'&user_id=eq.'+reservedUser,{state:'failed',model:reservedModel,usage:{}},'PATCH').catch(()=>{});
   if(lease)await db(filter+'&lease=eq.'+lease,{state:generated||['TimeoutError','AbortError','TypeError'].includes(e.name)||stage==='generate'&&!['IMAGE_PROVIDER_LIMIT','IMAGE_SETUP_REQUIRED','PLUS_LIMIT','PLUS_ACCESS_REQUIRED','PLUS_API_QUOTA'].includes(e.message)?'uncertain':'failed',...(artifactPath?{asset_path:artifactPath,bucket:artifactBucket}:{}),updated_at:new Date().toISOString()},'PATCH').catch(()=>{});
   const known=['IMAGE_INVALID_INPUT','IMAGE_UNCERTAIN','IMAGE_LIMIT','IMAGE_PROVIDER_LIMIT','IMAGE_SETUP_REQUIRED','PLUS_LIMIT','PLUS_SETUP_REQUIRED','PLUS_ACCESS_REQUIRED','PLUS_API_QUOTA'];const error=known.includes(e.message)?e.message:['TimeoutError','AbortError'].includes(e.name)?'IMAGE_TIMEOUT':'IMAGE_UNAVAILABLE';console.warn(JSON.stringify({event:'morzsa_persistent_image_error',stage,error}));return reply(error==='IMAGE_INVALID_INPUT'?400:['IMAGE_LIMIT','PLUS_LIMIT','IMAGE_PROVIDER_LIMIT'].includes(error)?429:503,{error});

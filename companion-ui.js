@@ -348,8 +348,8 @@ window.MorzsaCompanion=(()=>{
   RecipeIngredientsPanel.open(r,{portions:thread().portions,readOnly:thread().readOnly,valid:()=>book.active===id&&voiceContext()===context&&page==='chat'&&isCooking()});
  }
  function mountCookingImages(){
-  if(!isCooking())return;const r=thread().recipe,selected=cookingStep(),visual=RecipeRoomModel.visualSteps(r);
-  main.querySelectorAll('[data-cooking-image]').forEach(host=>{const i=Number(host.dataset.cookingImage);if(host.closest('[hidden]'))return;window.RecipeImages?.mount(host,r,i,{autoCreate:window.AIMode?.isPlus()===true||thread().status==='active'&&i===selected&&visual.includes(i)})});
+  if(!isCooking())return;const r=thread().recipe;
+  main.querySelectorAll('[data-cooking-image]').forEach(host=>{const i=Number(host.dataset.cookingImage);if(host.closest('[hidden]'))return;window.RecipeImages?.mount(host,r,i,{autoCreate:true})});
  }
  function jumpCookingStep(index){
   sync();if(!isCooking()||thread().readOnly||busy||saving||pending||preparing)return false;const previous=book;
@@ -455,7 +455,7 @@ window.MorzsaCompanion=(()=>{
   if(isCooking()&&C.phase(thread())==='preparation')RecipeRoom.mount(main.querySelector('#cooking-ingredients'),thread().recipe,{ingredientsOnly:true,hidePortions:true,portions:thread().portions,onPortions:changePortions,readOnly:thread().readOnly});
   mountCookingImages();
   bindCookingControls();window.WeeklyPlanUI?.bind(main,thread());
-  main.querySelectorAll('[data-generated-recipe]').forEach(host=>window.RecipeImages?.mount(host,cards[Number(host.dataset.generatedRecipe)]));
+  main.querySelectorAll('[data-generated-recipe]').forEach(host=>window.RecipeImages?.mount(host,cards[Number(host.dataset.generatedRecipe)],-1,{autoCreate:true}));
   updateNudge();viewport();animateAnswer();window.MorzsaWorkspace?.mount();if(timerFocus&&timerFocus.key===main.querySelector('[data-timer-editor]')?.dataset.timerEditor){main.querySelector('[data-custom-timer] input')?.focus({preventScroll:true});window.scrollTo({top:timerFocus.scroll,behavior:'instant'})}
  }
  function scrollEnd(){requestAnimationFrame(()=>main.querySelector('#companion-end')?.scrollIntoView({block:'end',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'}))}

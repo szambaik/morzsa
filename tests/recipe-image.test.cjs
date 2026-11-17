@@ -148,3 +148,18 @@ test('optional cover metadata preserves the existing legacy image cache identity
  await createHandler(b.config,b.fetcher)(new Request('https://function',{method:'POST',headers:{origin:'https://app',Authorization:'Bearer user'},body:JSON.stringify(input)}));
  assert.equal(a.calls.find(c=>c.url.includes('cache_key=')).url,b.calls.find(c=>c.url.includes('cache_key=')).url);assert.equal(b.calls.some(c=>c.url.includes('groq')||c.url.includes('cloudflare')),false);
 });
+
+test('visible quiet cards generate missing images automatically and remounts reuse the cached result',async()=>{
+ const vm=require('node:vm'),fs=require('node:fs'),inputs=[],observers=[];
+ const host=()=>({isConnected:true,children:[],dataset:{},replaceChildren(){this.children=[]},append(...nodes){this.children.push(...nodes)}});
+ const context={window:{MORZSA_CLOUD:{url:'https://cloud'}},household:{active:null,userId:()=> 'test',recipeImage:async input=>{inputs.push(input);return {status:'ready',url:'https://cloud/storage/v1/object/sign/recipe-images/cover.jpg',expiresAt:Date.now()+60000}}},language:'hu',document:{createElement:tag=>({tag})},IntersectionObserver:class{constructor(cb){observers.push(cb)}observe(){}disconnect(){}}};
+ vm.runInNewContext(fs.readFileSync('recipe-images.js','utf8'),context);const images=context.window.RecipeImages,card=host();images.mount(card,recipe,-1,{autoCreate:true,quiet:true});assert.equal(inputs.length,0);assert.equal(card.children.length,0);
+ observers[0]([{isIntersecting:true}]);await new Promise(resolve=>setImmediate(resolve));assert.equal(inputs.length,1);assert.equal(inputs[0].create,true);assert.equal(card.children[0].tag,'img');
+ images.mount(host(),recipe,-1,{autoCreate:true,quiet:true});await new Promise(resolve=>setImmediate(resolve));assert.equal(inputs.length,1);
+});
+test('anonymous automatic cards only read the backend cache and never start generation',async()=>{
+ const vm=require('node:vm'),fs=require('node:fs'),inputs=[];
+ const host={isConnected:true,children:[],dataset:{},replaceChildren(){this.children=[]},append(...nodes){this.children.push(...nodes)}};
+ const context={window:{},household:{active:null,userId:()=>null,recipeImage:async input=>{inputs.push(input);return {status:'missing'}},libraryImage:async input=>{inputs.push(input);return {status:'missing'}}},language:'hu',document:{createElement:tag=>({tag})},IntersectionObserver:class{constructor(cb){this.cb=cb}observe(){this.cb([{isIntersecting:true}])}disconnect(){}}};
+ vm.runInNewContext(fs.readFileSync('recipe-images.js','utf8'),context);context.window.RecipeImages.mount(host,{...recipe,recipeId:'10000000-0000-4000-8000-000000000001'},-1,{autoCreate:true,quiet:true});await new Promise(resolve=>setImmediate(resolve));assert.equal(inputs.length,1);assert.equal(inputs[0].create,false);assert.equal(host.children.length,0);
+});

@@ -5,7 +5,7 @@ function harness({deny=false,generateFailure=false}={}){let job=null,generations
  const fetcher=async(url,options={})=>{requests.push(url);const body=options.body&&typeof options.body==='string'?JSON.parse(options.body):null;
   if(url.includes('/recipe_documents?'))return Response.json(deny?[]:[{id:rid,owner_id:null,published:true,content:recipe}]);
   if(url.endsWith('/auth/v1/user'))return Response.json({id:uid});
-  if(url.includes('/recipe_asset_jobs?')){if(options.method==='PATCH'){job={...job,...body};return Response.json(null)}return Response.json(job?[job]:[])}
+  if(url.includes('/recipe_asset_jobs?')){if(options.method==='PATCH'){job={...job,...body};return Response.json([job])}return Response.json(job?[job]:[])}
   if(url.includes('/rpc/claim_recipe_asset')){if(job?.state==='ready')return Response.json({status:'ready'});if(job?.state==='uncertain')return Response.json({status:'uncertain'});if(job?.state==='pending')return Response.json({status:'pending'});job={state:'pending',lease:'lease'};return Response.json({status:'claimed',lease:'lease'})}
   if(url.includes('/storage/v1/object/')){if(url.includes('/sign/'))signs++;return Response.json({})}throw Error('Unexpected request '+url);
  };

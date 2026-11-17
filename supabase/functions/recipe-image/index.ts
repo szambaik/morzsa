@@ -1,4 +1,5 @@
 import {createHandler} from './handler.mjs';
+import {thumbnail} from './thumbnail.ts';
 Deno.serve(createHandler({
  url:Deno.env.get('SUPABASE_URL'),publishableKey:Deno.env.get('SUPABASE_ANON_KEY'),serviceKey:Deno.env.get('SUPABASE_SERVICE_ROLE_KEY'),
  openaiKey:Deno.env.get('OPENAI_API_KEY'),imageModel:Deno.env.get('OPENAI_IMAGE_MODEL')||'gpt-image-2.6-flare',
@@ -8,6 +9,8 @@ Deno.serve(createHandler({
  falKey:Deno.env.get('FAL_KEY'),falModel:Deno.env.get('FAL_IMAGE_MODEL'),plusImageProvider:Deno.env.get('PLUS_IMAGE_PROVIDER')||(Deno.env.get('FAL_KEY')?'fal':'openai'),
  catalogueProvider:Deno.env.get('CATALOGUE_IMAGE_PROVIDER')||(Deno.env.get('FAL_KEY')?'fal':'cloudflare'),
  // Optional codec loads only when a new catalogue thumbnail is needed.
- thumbnail:async(bytes:Uint8Array)=>{const {Image}=await import('https://deno.land/x/imagescript@1.3.0/mod.ts');const image=await Image.decode(bytes);image.resize(320,Image.RESIZE_AUTO);return image.encodeJPEG(75)},
+ thumbnail,
+ webhookUrl:Deno.env.get('SUPABASE_URL')+'/functions/v1/recipe-image-webhook',
+ defer:(work:Promise<unknown>)=>EdgeRuntime.waitUntil(work),
  origins:(Deno.env.get('VOICE_ORIGINS')||'https://szambaik.github.io,capacitor://localhost,https://localhost').split(',')
 }));
