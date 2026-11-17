@@ -1,6 +1,16 @@
 async page=>{
  const checks=[],check=(ok,label)=>{if(!ok)throw Error(label);checks.push(label)},base=process.env.MORZSA_QA_BASE||'http://127.0.0.1:8942';
  await page.goto(base+'/?actor=c');await page.waitForFunction(()=>MorzsaPersistence.status()==='synced'&&!household.busy);
+ await page.evaluate(()=>MorzsaCompanion.newChat());
+ const send=page.locator('#companion-form [type=submit]'),input=page.locator('#companion-input');
+ check(await send.isDisabled(),'empty web draft disables Send');
+ await input.fill('   ');await input.press('Enter');
+ check(await send.isDisabled()&&await page.locator('.companion-message.user').count()===0,'whitespace and Enter do not submit a blank message');
+ await input.fill('a');
+ check(await send.isEnabled(),'first web character enables Send');
+ check(await send.evaluate(el=>getComputedStyle(el).backgroundColor==='rgb(0, 122, 255)'),'web Send uses the requested blue');
+ await input.fill('');
+ check(await send.isDisabled(),'deleting the web draft disables Send again');
  await page.addStyleTag({url:base+'/mobile/ios.css'});
  await page.evaluate(async()=>{
   document.documentElement.classList.add('native-app','native-ios');
@@ -21,6 +31,12 @@ async page=>{
    check(await page.locator('#main #add-cart').count()===0,'no old shopping editor at '+width);
    if(dest==='shopping')check(await page.evaluate(()=>{const a=document.getElementById('workspace-quick-add').getBoundingClientRect(),b=document.querySelector('[data-start-shopping]').getBoundingClientRect();return a.right<=b.left||a.left>=b.right||a.bottom<=b.top||a.top>=b.bottom}),'shopping switch and plus do not overlap at '+width);
    check(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'no page overflow on '+dest+' '+width);
+  }
+  if(width<1000)for(const dest of ['chat','pantry','shopping','recipes']){
+   await nav(dest);
+   if(dest==='chat')check(await page.locator('.companion-starters').evaluate(el=>el.getBoundingClientRect().top-document.querySelector('.app>header').getBoundingClientRect().bottom<100),'compact space above chat starters '+width);
+   check(await page.locator('.app>header .brand').evaluate(el=>{const r=el.getBoundingClientRect();return Math.abs(r.left+r.width/2-innerWidth/2)<1}),'centered mobile wordmark '+dest+' '+width);
+   check(await page.locator('.app>header .brand').evaluate(el=>{const r=el.getBoundingClientRect();return [...el.parentElement.querySelectorAll('button')].filter(b=>!b.hidden&&b.getBoundingClientRect().width).every(b=>{const a=b.getBoundingClientRect();return a.right<=r.left||a.left>=r.right})}),'header controls clear the wordmark '+dest+' '+width);
   }
  }
  await page.setViewportSize({width:390,height:844});await nav('pantry');
