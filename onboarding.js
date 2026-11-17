@@ -31,7 +31,7 @@ window.MorzsaOnboarding=(()=>{
   main.querySelector('[data-intro-next]')?.addEventListener('click',()=>{if(tour<3){tour++;move(0)}else move(1)});
   main.querySelector('[data-intro-back]')?.addEventListener('click',()=>{tour--;move(0)});
   main.querySelector('[data-intro-setup]')?.addEventListener('click',()=>move(1));
-  main.querySelector('[data-intro-list]')?.addEventListener('click',()=>{finish();dashboardGo('shopping')});
+  main.querySelector('[data-intro-list]')?.addEventListener('click',()=>{finish();dashboardGo('shopping');window.MorzsaWorkspace?.quick('cart')});
   main.querySelectorAll('[data-intro-language]').forEach(b=>b.onclick=()=>{setLanguage(b.dataset.introLanguage,{keepDialogs:true});mount()});
   main.querySelector('[data-intro-search]')?.addEventListener('input',e=>{query=e.target.value;mount();main.querySelector('[data-intro-search]').focus({preventScroll:true})});
   main.querySelectorAll('[data-intro-product]').forEach(b=>b.onclick=()=>{if(!working)selected=M.selection(selected,[b.dataset.introProduct]);mount()});

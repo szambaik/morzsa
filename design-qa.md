@@ -225,3 +225,10 @@ Scope: adapt the user's ChatGPT screenshots for information density and composer
 - Tests use isolated local accounts and SQL-backed fixtures; no production data or paid AI calls. WebKit is a browser-level check, not a physical iPhone test. Native materials and microphone hardware still require device confirmation.
 
 final result: passed
+
+## Mobile viewport and floating addition — 2026-11-17
+
+- History tracks the visible viewport, including keyboard offsets and short landscape layouts. Search uses 16px text; native HTML editors have a 16px minimum to avoid iOS focus magnification. Empty search and expanded management content cannot push the footer off screen.
+- Pantry and list addition now opens from the bottom-right +. The existing iOS native adapter renders the Liquid Glass button. The pantry setup entry moves inside the addition dialog. The shopping mode switch has room alongside the +.
+- Visually checked pantry/list/addition/history at 390px and short history at 430×320. Chrome and WebKit pass 86 viewport checks each; native controls pass 75 checks and UITextView passes 22. The release gate passed its full audit, 32 axe scans and 54 targeted checks; performance regressions and built-web verification passed.
+- Isolated fixtures only. Physical iPhone keyboard focus, safe-area behavior and native material appearance still need a device check with the new build. Details: `docs/MOBILE-VIEWPORT-QUICK-ADD-FIX-LOG-2026-11-17.md`.

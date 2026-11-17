@@ -13,7 +13,7 @@
 .native-ios #companion-input.ios-native-text-input{opacity:0!important;pointer-events:none!important}
 
 /* The drawer reaches the screen edge; its header must clear the status bar. */
-.native-app #companion-history{padding-top:calc(20px + env(safe-area-inset-top,0px))}
+.native-app #companion-history{padding-top:max(12px,calc(8px + env(safe-area-inset-top,0px)))}
 
 /* Keep the existing text, photo and voice handlers inside one iOS glass surface.
    Low specificity on display preserves cooking/crafting modes that hide the form. */
@@ -36,3 +36,10 @@
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
  .native-ios #companion-form{background:#fffdf7}
 }
+
+/* Sub-16px HTML controls trigger iOS focus zoom; the native shell disables
+   pinch zoom, making that magnification feel stuck. Preserve browser zoom. */
+.native-ios input,.native-ios textarea,.native-ios select{font-size:max(16px,1em)!important}
+.native-app #companion-history.history-short{padding-top:12px;padding-bottom:12px}
+.native-app.native-tabbar #workspace-quick-add.workspace-add-fab{bottom:calc(var(--native-tabbar-height,0px) + 16px)}
+.native-app.keyboard-open #workspace-quick-add.workspace-add-fab{visibility:hidden}
