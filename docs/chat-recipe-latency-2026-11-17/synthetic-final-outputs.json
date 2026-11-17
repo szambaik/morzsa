@@ -1,0 +1,390 @@
+[
+  {
+    "kind": "recipe",
+    "variant": "luna",
+    "headersMs": 557.6581209999999,
+    "firstTextMs": 1131.7569829999998,
+    "firstRecipeMs": 1528.5249629999998,
+    "totalMs": 8397.159816000001,
+    "valid": true,
+    "output": {
+      "answer": "Íme egy részletes, két főre szóló recept. A hozzávalók a megadott készlethez igazodnak.",
+      "recipes": [
+        {
+          "title": "Almás palacsinta",
+          "summary": "Puha, serpenyőben sült palacsinták reszelt almával a tésztában; körülbelül 6–8 darab, két főre.",
+          "minutes": 35,
+          "servings": 2,
+          "equipment": [
+            "reszelő",
+            "keverőtál",
+            "habverő",
+            "serpenyő"
+          ],
+          "ingredients": [
+            {
+              "name": "Alma",
+              "amount": "2 db"
+            },
+            {
+              "name": "Tojás",
+              "amount": "2 db"
+            },
+            {
+              "name": "Liszt",
+              "amount": "150 g"
+            },
+            {
+              "name": "Tej",
+              "amount": "250 ml"
+            },
+            {
+              "name": "Só",
+              "amount": "1 csipet"
+            },
+            {
+              "name": "Olaj",
+              "amount": "15 ml"
+            }
+          ],
+          "steps": [
+            "1. Mosd meg az almát, távolítsd el a magházát, majd nagy lyukú reszelőn reszeld le; a héját rajta hagyhatod.\n2. Ha nagyon leveses, enyhén nyomkodd ki a felesleges levet, de ne szárítsd ki teljesen.\n3. Tedd félre a reszelt almát, amíg elkészíted a tésztát.",
+            "1. Üsd a tojásokat egy keverőtálba, add hozzá a tejet és a csipet sót, majd habverővel keverd össze.\n2. Szitáld vagy fokozatosan keverd bele a lisztet, hogy sima, csomómentes tésztát kapj.\n3. Forgasd bele a reszelt almát és 5 ml olajat; a tészta legyen sűrűbb a hagyományos palacsintatésztánál, de még könnyen kanalazható.\n4. Pihentesd 10 percig, majd keverd át; ha túl sűrűnek tűnik, kevés tejjel lazítsd.",
+            "1. Melegíts fel egy tapadásmentes serpenyőt közepes hőfokon, és kend ki vékonyan a maradék olajjal.\n2. Kanalazz bele egy kisebb adag tésztát, majd a kanál hátával terítsd körülbelül 10–12 cm-es körre.\n3. Süsd 2–3 percig, amíg a széle megszilárdul, az alja aranybarna lesz, a tetején pedig már nem folyik a tészta.\n4. Fordítsd meg lapáttal, és süsd a másik oldalát még 1–2 percig; a közepén se maradjon nyers tészta.\n5. Ismételd meg a maradék tésztával, szükség szerint kevés olajat kenve a serpenyőbe."
+          ],
+          "stepTitles": [
+            "Reszeld le az almát",
+            "Keverd ki a tésztát",
+            "Süsd aranybarnára"
+          ]
+        }
+      ],
+      "clarification": "",
+      "operations": [],
+      "transcript": "Adj egy részletes almás palacsinta receptet két főre."
+    },
+    "usage": {
+      "input_tokens": 2023,
+      "input_tokens_details": {
+        "cache_write_tokens": 2020,
+        "cache_write_tokens_details": {
+          "ttl_12h_tokens": 0,
+          "ttl_30m_tokens": 2020
+        },
+        "cached_tokens": 0
+      },
+      "output_tokens": 699,
+      "output_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "total_tokens": 2722
+    }
+  },
+  {
+    "kind": "vegan",
+    "variant": "luna",
+    "headersMs": 323.75208699999894,
+    "firstTextMs": 5027.301686999999,
+    "firstRecipeMs": 5802.175288999999,
+    "totalMs": 13398.040031999999,
+    "valid": true,
+    "output": {
+      "answer": "Ez a kis adagú, kevert vegán almás süti tej és tojás nélkül készül. A megadott készletből az alma és a liszt szerepel; a többi hozzávalót ellenőrizd, vagy szerezd be.",
+      "recipes": [
+        {
+          "title": "Vegán kevert almás süti",
+          "summary": "Puha, fahéjas kis süti; a megadott mennyiség egy 12 cm-es kerek formában sütve körülbelül 2 adag.",
+          "minutes": 45,
+          "servings": 2,
+          "equipment": [
+            "12 cm-es kerek sütőforma",
+            "keverőtál",
+            "habverő vagy kanál",
+            "sütőpapír"
+          ],
+          "ingredients": [
+            {
+              "name": "Alma",
+              "amount": "150 g"
+            },
+            {
+              "name": "Liszt",
+              "amount": "120 g"
+            },
+            {
+              "name": "Cukor",
+              "amount": "50 g"
+            },
+            {
+              "name": "Semleges ízű olaj",
+              "amount": "30 ml"
+            },
+            {
+              "name": "Víz",
+              "amount": "80 ml"
+            },
+            {
+              "name": "Sütőpor",
+              "amount": "4 g"
+            },
+            {
+              "name": "Őrölt fahéj",
+              "amount": "2 g"
+            },
+            {
+              "name": "Só",
+              "amount": "1 g"
+            }
+          ],
+          "steps": [
+            "1. Melegítsd elő a sütőt 180 °C-ra, alsó-felső sütéssel.\n2. Béleld ki a 12 cm-es forma alját sütőpapírral; az oldalát vékonyan olajozd ki, ha szükséges.\n3. Mosd meg az almát, távolítsd el a magházát, majd vágd kis, nagyjából 1 cm-es kockákra.\n4. A lisztet, cukrot, sütőport, fahéjat és sót keverd össze egy tálban, hogy a sütőpor egyenletesen oszoljon el.",
+            "1. Egy másik edényben keverd össze a vizet és az olajat.\n2. Öntsd a folyadékot a lisztes keverékhez, és kanállal vagy habverővel dolgozd össze éppen addig, amíg nem látszik száraz liszt.\n3. A tésztának sűrűn folyó, egyenletes állagúnak kell lennie; ne keverd sokáig, mert tömörebb lehet a süti.\n4. Forgasd bele az almakockákat úgy, hogy nagyjából mindenütt eloszoljanak.",
+            "1. Simítsd a tésztát az előkészített formába, és óvatosan ütögesd a formát a munkalaphoz, hogy nagyobb légbuborékok távozzanak.\n2. Tedd a középső rácsra, és süsd körülbelül 25–35 percig; a pontos idő sütőnként változhat.\n3. Akkor ellenőrizd, ha a teteje enyhén pirult, a közepe pedig már nem remeg: szúrj bele fogpiszkálót, és nézd meg, hogy nem tapad-e rá nyers tészta.\n4. Ha még ragacsos a közepe, süsd tovább 3–5 percenként ellenőrizve, majd hagyd a formában 10 percig hűlni, mielőtt felvágod.\nFontos: Ne süsd túl; az almakockák miatt a belseje a kész süteményben is lehet kissé nedves."
+          ],
+          "stepTitles": [
+            "Készítsd elő a formát",
+            "Keverd össze a tésztát",
+            "Süsd készre a sütit"
+          ]
+        }
+      ],
+      "clarification": "",
+      "operations": [],
+      "transcript": "Adj egy részletes vegán almás süti receptet két főre, tejet és tojást nem használhatok."
+    },
+    "usage": {
+      "input_tokens": 2034,
+      "input_tokens_details": {
+        "cache_write_tokens": 67,
+        "cache_write_tokens_details": {
+          "ttl_12h_tokens": 0,
+          "ttl_30m_tokens": 67
+        },
+        "cached_tokens": 1964
+      },
+      "output_tokens": 1084,
+      "output_tokens_details": {
+        "reasoning_tokens": 261
+      },
+      "total_tokens": 3118
+    }
+  },
+  {
+    "kind": "operations",
+    "variant": "luna",
+    "headersMs": 348.670026,
+    "firstTextMs": null,
+    "firstRecipeMs": null,
+    "totalMs": 1971.54355,
+    "valid": true,
+    "output": {
+      "answer": "",
+      "recipes": [],
+      "clarification": "",
+      "operations": [
+        {
+          "action": "stock_remove",
+          "name": "Tej",
+          "quantity": null,
+          "unit": null
+        },
+        {
+          "action": "list_set",
+          "name": "Tej",
+          "quantity": 2,
+          "unit": "l"
+        }
+      ],
+      "transcript": "Elfogyott a tej, és legyen a listán összesen 2 liter tej. A tojásból még maradt."
+    },
+    "usage": {
+      "input_tokens": 2035,
+      "input_tokens_details": {
+        "cache_write_tokens": 68,
+        "cache_write_tokens_details": {
+          "ttl_12h_tokens": 0,
+          "ttl_30m_tokens": 68
+        },
+        "cached_tokens": 1964
+      },
+      "output_tokens": 112,
+      "output_tokens_details": {
+        "reasoning_tokens": 51
+      },
+      "total_tokens": 2147
+    }
+  },
+  {
+    "kind": "question",
+    "variant": "luna",
+    "headersMs": 575.720656999998,
+    "firstTextMs": 1097.2970669999995,
+    "firstRecipeMs": null,
+    "totalMs": 1622.0434609999975,
+    "valid": true,
+    "output": {
+      "answer": "Igen, a megadott háztartási adatok szerint van otthon tojás.",
+      "recipes": [],
+      "clarification": "",
+      "operations": [],
+      "transcript": "Van itthon tojás?"
+    },
+    "usage": {
+      "input_tokens": 2014,
+      "input_tokens_details": {
+        "cache_write_tokens": 47,
+        "cache_write_tokens_details": {
+          "ttl_12h_tokens": 0,
+          "ttl_30m_tokens": 47
+        },
+        "cached_tokens": 1964
+      },
+      "output_tokens": 42,
+      "output_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "total_tokens": 2056
+    }
+  },
+  {
+    "kind": "chat",
+    "variant": "luna",
+    "headersMs": 573.8011589999987,
+    "firstTextMs": 1076.9120719999992,
+    "firstRecipeMs": null,
+    "totalMs": 2132.851702,
+    "valid": true,
+    "output": {
+      "answer": "Közepes-alacsony lángon, vajjal süsd, és folyamatosan, finoman kevergesd. Vedd le a tűzről, amikor még kissé fényes és lágy; a maradék hő befejezi a sütést. Tejszín nem szükséges.",
+      "recipes": [],
+      "clarification": "",
+      "operations": [],
+      "transcript": "Hogyan lesz krémes a rántotta? Röviden válaszolj, receptkártya nélkül."
+    },
+    "usage": {
+      "input_tokens": 2034,
+      "input_tokens_details": {
+        "cache_write_tokens": 67,
+        "cache_write_tokens_details": {
+          "ttl_12h_tokens": 0,
+          "ttl_30m_tokens": 67
+        },
+        "cached_tokens": 1964
+      },
+      "output_tokens": 93,
+      "output_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "total_tokens": 2127
+    }
+  },
+  {
+    "kind": "followup",
+    "variant": "luna",
+    "headersMs": 502.561757,
+    "firstTextMs": 1386.2653480000001,
+    "firstRecipeMs": null,
+    "totalMs": 3396.6266859999996,
+    "valid": true,
+    "output": {
+      "answer": "Süsd 180 °C-ra előmelegített sütőben, alsó-felső sütéssel. Kezdd 30 perc után ellenőrizni; egy 20 cm-es formában általában 35–45 perc kell, de a sütők és a tészta magassága eltérhet. Szúrj fogpiszkálót a sütemény közepébe: ha tisztán vagy néhány száraz morzsával jön ki, elkészült. Ha nedves tészta tapad rá, süsd tovább 5 percenként. A teteje legyen aranybarna, és a közepe ne remegjen.",
+      "recipes": [],
+      "clarification": "",
+      "operations": [],
+      "transcript": "Hány fokon süssem, és honnan tudom hogy elkészült? Ne generáld újra a receptet."
+    },
+    "usage": {
+      "input_tokens": 2089,
+      "input_tokens_details": {
+        "cache_write_tokens": 122,
+        "cache_write_tokens_details": {
+          "ttl_12h_tokens": 0,
+          "ttl_30m_tokens": 122
+        },
+        "cached_tokens": 1964
+      },
+      "output_tokens": 169,
+      "output_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "total_tokens": 2258
+    }
+  },
+  {
+    "kind": "recipe",
+    "variant": "luna",
+    "headersMs": 244.0622069999954,
+    "firstTextMs": 3339.951879,
+    "firstRecipeMs": 4221.340639999995,
+    "totalMs": 11812.739898,
+    "valid": true,
+    "output": {
+      "answer": "Íme egy puha, reszelt almával készült almás palacsinta két főre. A tojás, liszt, tej és alma szerepel a megadott készletben; az olajat külön feltüntettem, mert a sütéshez szükséges.",
+      "recipes": [
+        {
+          "title": "Reszelt almás palacsinta",
+          "summary": "Puha, almás tésztájú palacsinta; körülbelül 6–8 darab, két főre.",
+          "minutes": 35,
+          "servings": 2,
+          "equipment": [
+            "keverőtál",
+            "kézi habverő",
+            "reszelő",
+            "palacsintasütő"
+          ],
+          "ingredients": [
+            {
+              "name": "Liszt",
+              "amount": "150 g"
+            },
+            {
+              "name": "Tej",
+              "amount": "250 ml"
+            },
+            {
+              "name": "Tojás",
+              "amount": "1 db"
+            },
+            {
+              "name": "Alma",
+              "amount": "2 db"
+            },
+            {
+              "name": "Olaj",
+              "amount": "15 ml"
+            }
+          ],
+          "steps": [
+            "1. Mosd meg az almákat, hámozd meg őket, ha szeretnéd, majd reszeld le egy nagylyukú reszelőn.\n2. Ha sok levet eresztettek, enyhén nyomkodd ki; ne szárítsd ki teljesen, mert a nedvesség a tésztába kerül.\n3. Tedd félre az almát, amíg összeállítod a palacsintatésztát.",
+            "1. Üsd a tojást egy keverőtálba, öntsd hozzá a tej felét, és kézi habverővel keverd össze.\n2. Szórd bele a lisztet több részletben, közben keverd simára, hogy ne maradjanak benne nagyobb csomók.\n3. Fokozatosan add hozzá a maradék tejet; a tészta legyen folyós, de kissé sűrűbb a hagyományos palacsintatésztánál.\n4. Keverd bele a reszelt almát, majd pihentesd 10 percig, hogy a liszt felvegye a nedvességet.\nFontos: Ha pihentetés után túl sűrűnek tűnik, kevés tejjel lazítsd; ne önts hozzá egyszerre sokat.",
+            "1. Melegíts fel egy palacsintasütőt közepes lángon, és kenj bele vékonyan olajat.\n2. Merj a serpenyőbe egy kisebb adag tésztát, majd a kanál hátával vagy a serpenyő mozgatásával terítsd el vékony koronggá.\n3. Süsd körülbelül 2 percig, amíg a széle megszilárdul, az alja pedig aranybarnára pirul; ezután fordítsd meg.\n4. Süsd a másik oldalát is körülbelül 1–2 percig, majd tedd tányérra. Ismételd meg a maradék tésztával, és szükség szerint pótold az olajat.\nFontos: Az almás tészta könnyebben tapadhat, ezért csak akkor fordítsd meg, amikor a széle már elválik a serpenyőtől."
+          ],
+          "stepTitles": [
+            "Alma előkészítése",
+            "Sima tészta keverése",
+            "Palacsinták megsütése"
+          ]
+        }
+      ],
+      "clarification": "",
+      "operations": [],
+      "transcript": "Adj egy részletes almás palacsinta receptet két főre."
+    },
+    "usage": {
+      "input_tokens": 2023,
+      "input_tokens_details": {
+        "cache_write_tokens": 0,
+        "cache_write_tokens_details": {
+          "ttl_12h_tokens": 0,
+          "ttl_30m_tokens": 0
+        },
+        "cached_tokens": 2020
+      },
+      "output_tokens": 930,
+      "output_tokens_details": {
+        "reasoning_tokens": 157
+      },
+      "total_tokens": 2953
+    }
+  }
+]

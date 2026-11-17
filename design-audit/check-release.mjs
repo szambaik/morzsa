@@ -23,3 +23,6 @@ assert.ok(checks.length>=54&&checks.every(c=>c.status==='passed'),'All targeted 
 const ios=spawnSync(process.execPath,[path.join(root,'tests/check-ios-controls.mjs'),path.join(result.runDir,'ios-controls')],{cwd:root,stdio:'inherit'});
 assert.equal(ios.status,0,'Native control scope and web fallback regressions must pass');
 console.log('Release gate passed: full audit, '+scans.length+' axe scans, '+checks.length+' targeted checks.');
+
+const recipeLatency=spawnSync(process.execPath,[path.join(import.meta.dirname,'recipe-latency.mjs')],{cwd:root,stdio:'inherit'});
+assert.equal(recipeLatency.status,0,'Progressive recipe, cancellation and retry regressions must pass');

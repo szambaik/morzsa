@@ -75,12 +75,14 @@ window.MorzsaPersistence=(()=>{
   }catch(e){if(current===user&&generation===epoch){issue=/denied/i.test(e.message||'')?'access':'failed';status()}}
   finally{if(current===user&&generation===epoch){running=false;if(!issue&&Object.keys(queue).length)timer=setTimeout(flush,500)}}
  }
- async function loadThread(id,older=false,force=false,providedPage=null){
+ async function loadThread(id,older=false,force=false,providedPage=null,hydratePhotos=true){
   if(!valid())return;const generation=epoch,current=user,t=book.threads.find(t=>t.id===id);if(!t||!t.revision&&!force)return;
   const result=providedPage||await rpc('conversation_page',{cid:id,before_seq:older?t.before:null});if(!same(current,generation)||book.threads.find(x=>x.id===id)!==t||!force&&callbacks.safe?.()===false)return;
   const previous=JSON.stringify(t);const msgs=result.messages.map(r=>({...r.body,id:r.id,sequence:r.sequence}));msgs.forEach(m=>knownMessages.set(m.id,JSON.stringify(M.message(m))));
   t.messages=M.mergeMessages(msgs,t.messages||[],queue[id]?.items||[]);t.loaded=true;if(older||!t.before){t.before=result.before;t.hasOlder=result.hasOlder}
-  for(const m of msgs)if(m.photoPath)try{let signed=signedPhotos.get(m.photoPath);if(!signed||signed.expires<Date.now()){signed={...await household.mediaSign(m.photoPath,current),expires:Date.now()+1700000};signedPhotos.set(m.photoPath,signed)}if(!same(current,generation))return;const local=t.messages.find(i=>i.id===m.id);if(local)local.photo=window.MORZSA_CLOUD.url+'/storage/v1'+signed.signedURL}catch{}
+  // Historical photo URLs are presentation work; turn preflight needs only text.
+  // The next ordinary refresh hydrates them with the usual account guards.
+  for(const m of msgs)if(m.photoPath)try{let signed=signedPhotos.get(m.photoPath);if(!signed||signed.expires<Date.now()){if(!hydratePhotos)continue;signed={...await household.mediaSign(m.photoPath,current),expires:Date.now()+1700000};signedPhotos.set(m.photoPath,signed)}if(!same(current,generation))return;const local=t.messages.find(i=>i.id===m.id);if(local)local.photo=window.MORZSA_CLOUD.url+'/storage/v1'+signed.signedURL}catch{}
   if(previous!==JSON.stringify(t))changed();
  }
  async function refresh(initial=false){
@@ -118,7 +120,7 @@ window.MorzsaPersistence=(()=>{
     // A missing additive RPC uses the existing deployed contract until rollout.
     if(turnPageSupported===false){guard(current,generation);signal?.throwIfAborted();acquired=await rpc('begin_conversation_turn',{cid:id,tid:turn},current)}
     if(!acquired)throw Error('Another device is answering');guard(current,generation);signal?.throwIfAborted();
-    await loadThread(id,false,true,page);guard(current,generation);signal?.throwIfAborted();turnAccounts.set(turn,{account:current,generation});return turn;
+    await loadThread(id,false,true,page,false);guard(current,generation);signal?.throwIfAborted();turnAccounts.set(turn,{account:current,generation});return turn;
    }catch(e){if(acquired)await rpc('end_conversation_turn',{cid:id,tid:turn},current).catch(()=>{});throw e}
   })();
   if(!signal)return work;

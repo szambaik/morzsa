@@ -27,7 +27,7 @@ test('Plus denies ungranted accounts and exhausted/duplicate requests before any
 test('OpenAI streams answer previews, validates complete output and settles only token metadata',async()=>{
  const {createHandler}=await import('../supabase/functions/plus-assistant/handler.mjs'),f=fixture();const response=await createHandler(config,f.fetcher)(request({stream:true}));const events=(await response.text()).trim().split(String.fromCharCode(10)).map(JSON.parse);
  assert.equal(response.status,200);assert.ok(events.some(e=>e.type==='answer'&&e.text));assert.deepEqual(events.at(-1),{type:'done',output:{...output,transcript:'Másik süti?'}});assert.ok(!JSON.stringify(events).includes('private-'));
- const provider=JSON.parse(f.calls.find(c=>c.url.endsWith('/responses')).options.body);assert.equal(provider.store,false);assert.equal(provider.model,'gpt-6.1-terra');assert.equal(provider.text.format.strict,true);assert.equal(provider.text.format.schema.additionalProperties,false);
+ const provider=JSON.parse(f.calls.find(c=>c.url.endsWith('/responses')).options.body);assert.equal(provider.store,false);assert.equal(provider.model,'gpt-6-luna');assert.equal(provider.text.format.strict,true);assert.equal(provider.text.format.schema.additionalProperties,false);
  const settlement=JSON.parse(f.calls.find(c=>c.options.method==='PATCH').options.body);assert.equal(settlement.charged_cents,1);assert.deepEqual(settlement.usage,{input_tokens:3000,output_tokens:800});assert.ok(!JSON.stringify(settlement).includes('almás'));
 });
 test('invalid paid output cannot become a proposal; no fallback reissues a billable request',async()=>{
@@ -98,4 +98,13 @@ test('Plus stream cancellation propagates to OpenAI and cannot complete a propos
  const {createHandler}=await import('../supabase/functions/plus-assistant/handler.mjs'),controller=new AbortController(),f=fixture();let begin,cancelled=false;
  const started=new Promise(r=>begin=r),fn=createHandler(config,async(url,options)=>{if(url.endsWith('/responses')){begin();return new Response(new ReadableStream({start(c){options.signal.addEventListener('abort',()=>{cancelled=true;c.error(options.signal.reason)},{once:true})}}))}return f.fetcher(url,options)});
  const response=await fn(new Request(request({stream:true}),{signal:controller.signal}));await started;controller.abort();const events=(await response.text()).trim().split('\n').map(JSON.parse);assert.equal(cancelled,true);assert.equal(events.some(e=>e.type==='done'),false);
+});
+
+test('fast typed chat preserves low reasoning, while photos and weekly batches retain Terra; configured models remain overridable',async()=>{
+ const {createHandler}=await import('../supabase/functions/plus-assistant/handler.mjs');
+ for(const [extra,custom,expected] of [[{}, {}, 'gpt-6-luna'],[{image:{mimeType:'image/jpeg',data:'/9j/AAAAAAAAAAAA'}},{},'gpt-6.1-terra'],[{context:{weeklyPlan:{week:'2026-11-16',people:2,cooks:2,budget:'save'}}},{},'gpt-6.1-terra'],[{}, {textModel:'gpt-6.1-terra'},'gpt-6.1-terra']]){
+  const f=fixture(),response=await createHandler({...config,...custom},f.fetcher)(request(extra));assert.equal(response.status,200);
+  const body=JSON.parse(f.calls.find(c=>c.url.endsWith('/responses')).options.body);assert.equal(body.model,expected);assert.equal(body.reasoning.effort,'low');
+  assert.equal(JSON.parse(f.calls.find(c=>c.options.method==='PATCH').options.body).model,expected);
+ }
 });

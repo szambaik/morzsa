@@ -1,0 +1,38 @@
+[
+  {
+    "timestamp": "2026-11-17T10:53:26.631Z",
+    "event": "morzsa_plus_chat_ready",
+    "preflightMs": 656
+  },
+  {
+    "timestamp": "2026-11-17T10:53:44.400Z",
+    "event": "morzsa_plus_text_timing",
+    "model": "gpt-6.1-terra",
+    "headersMs": 2448,
+    "firstTextMs": 3619,
+    "totalMs": 17768,
+    "completed": true,
+    "inputTokens": 3367,
+    "cachedInputTokens": 0,
+    "outputTokens": 708,
+    "reasoningTokens": 0
+  },
+  {
+    "timestamp": "2026-11-17T13:31:14.173Z",
+    "event": "morzsa_plus_chat_ready",
+    "preflightMs": 763
+  },
+  {
+    "timestamp": "2026-11-17T13:31:40.641Z",
+    "event": "morzsa_plus_text_timing",
+    "model": "gpt-6.1-terra",
+    "headersMs": 4235,
+    "firstTextMs": 8579,
+    "totalMs": 26467,
+    "completed": true,
+    "inputTokens": 3366,
+    "cachedInputTokens": 0,
+    "outputTokens": 833,
+    "reasoningTokens": 40
+  }
+]

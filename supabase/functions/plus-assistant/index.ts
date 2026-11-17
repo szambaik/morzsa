@@ -3,7 +3,7 @@ import {createHandler} from './handler.mjs';
 import {VOICE_SECONDS,realtimeCents} from './realtime.mjs';
 const config={
  url:Deno.env.get('SUPABASE_URL'),publishableKey:Deno.env.get('SUPABASE_ANON_KEY'),serviceKey:Deno.env.get('SUPABASE_SERVICE_ROLE_KEY'),
- openaiKey:Deno.env.get('OPENAI_API_KEY'),textModel:Deno.env.get('OPENAI_TEXT_MODEL')||'gpt-6.1-terra',imageModel:Deno.env.get('OPENAI_IMAGE_MODEL')||'gpt-image-2.6-flare',voiceModel:Deno.env.get('OPENAI_REALTIME_MODEL')||'gpt-realtime-2.1-mini',
+ openaiKey:Deno.env.get('OPENAI_API_KEY'),textModel:Deno.env.get('OPENAI_TEXT_MODEL')||'gpt-6-luna',complexTextModel:Deno.env.get('OPENAI_COMPLEX_TEXT_MODEL')||'gpt-6.1-terra',imageModel:Deno.env.get('OPENAI_IMAGE_MODEL')||'gpt-image-2.6-flare',voiceModel:Deno.env.get('OPENAI_REALTIME_MODEL')||'gpt-realtime-2.1-mini',
  origins:(Deno.env.get('VOICE_ORIGINS')||'https://szambaik.github.io,capacitor://localhost,https://localhost').split(','),
  defer:(work:Promise<unknown>)=>EdgeRuntime.waitUntil(work),
  watchCall:(callId:string,expected:any,end:()=>Promise<void>,settle:(cents?:number,usage?:any)=>Promise<void>,policy:{usageLimitsEnabled?:boolean}={})=>new Promise<void>(resolve=>{

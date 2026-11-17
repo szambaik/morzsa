@@ -1,0 +1,594 @@
+{
+  "date": "2026-11-17",
+  "synthetic": true,
+  "provider": "OpenAI via an admin-only temporary Supabase function",
+  "databaseAccess": false,
+  "note": "Sequential small samples; generation is stochastic and cache states differ. These are not p95 or end-to-end UI measurements. First-recipe times on baseline were observed in the probe only; old production clients waited for completion.",
+  "runs": {
+    "initial_comparison": [
+      {
+        "kind": "chat",
+        "variant": "baseline",
+        "headersMs": 1591.594035,
+        "firstTextMs": 2425.816058,
+        "firstRecipeMs": null,
+        "totalMs": 5569.582866000001,
+        "valid": true,
+        "usage": {
+          "input_tokens": 2140,
+          "input_tokens_details": {
+            "cache_write_tokens": 2137,
+            "cache_write_tokens_details": {
+              "ttl_12h_tokens": 0,
+              "ttl_30m_tokens": 2137
+            },
+            "cached_tokens": 0
+          },
+          "output_tokens": 91,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 2231
+        }
+      },
+      {
+        "kind": "chat",
+        "variant": "candidate",
+        "headersMs": 892.2254890000004,
+        "firstTextMs": 2001.1763019999999,
+        "firstRecipeMs": null,
+        "totalMs": 5593.221049999999,
+        "valid": true,
+        "usage": {
+          "input_tokens": 2004,
+          "input_tokens_details": {
+            "cache_write_tokens": 2001,
+            "cache_write_tokens_details": {
+              "ttl_12h_tokens": 0,
+              "ttl_30m_tokens": 2001
+            },
+            "cached_tokens": 0
+          },
+          "output_tokens": 118,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 2122
+        }
+      },
+      {
+        "kind": "recipe",
+        "variant": "baseline",
+        "headersMs": 285.79137099999934,
+        "firstTextMs": 2155.4143239999994,
+        "firstRecipeMs": 4020.7022080000006,
+        "totalMs": 22163.018129999997,
+        "valid": true,
+        "usage": {
+          "input_tokens": 2129,
+          "input_tokens_details": {
+            "cache_write_tokens": 56,
+            "cache_write_tokens_details": {
+              "ttl_12h_tokens": 0,
+              "ttl_30m_tokens": 56
+            },
+            "cached_tokens": 2070
+          },
+          "output_tokens": 897,
+          "output_tokens_details": {
+            "reasoning_tokens": 21
+          },
+          "total_tokens": 3026
+        }
+      },
+      {
+        "kind": "recipe",
+        "variant": "candidate",
+        "headersMs": 627.0224589999998,
+        "firstTextMs": 2251.2633090000018,
+        "firstRecipeMs": 3902.350967999999,
+        "totalMs": 16996.986781,
+        "valid": true,
+        "usage": {
+          "input_tokens": 1993,
+          "input_tokens_details": {
+            "cache_write_tokens": 56,
+            "cache_write_tokens_details": {
+              "ttl_12h_tokens": 0,
+              "ttl_30m_tokens": 56
+            },
+            "cached_tokens": 1934
+          },
+          "output_tokens": 642,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 2635
+        }
+      },
+      {
+        "kind": "followup",
+        "variant": "baseline",
+        "headersMs": 2521.426252999998,
+        "firstTextMs": 3354.702075000001,
+        "firstRecipeMs": null,
+        "totalMs": 7782.586084999995,
+        "valid": true,
+        "usage": {
+          "input_tokens": 2195,
+          "input_tokens_details": {
+            "cache_write_tokens": 122,
+            "cache_write_tokens_details": {
+              "ttl_12h_tokens": 0,
+              "ttl_30m_tokens": 122
+            },
+            "cached_tokens": 2070
+          },
+          "output_tokens": 186,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 2381
+        }
+      },
+      {
+        "kind": "followup",
+        "variant": "candidate",
+        "headersMs": 631.6008510000029,
+        "firstTextMs": 3443.013101999997,
+        "firstRecipeMs": null,
+        "totalMs": 8037.204488000003,
+        "valid": true,
+        "usage": {
+          "input_tokens": 2059,
+          "input_tokens_details": {
+            "cache_write_tokens": 122,
+            "cache_write_tokens_details": {
+              "ttl_12h_tokens": 0,
+              "ttl_30m_tokens": 122
+            },
+            "cached_tokens": 1934
+          },
+          "output_tokens": 193,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 2252
+        }
+      },
+      {
+        "kind": "vegan",
+        "variant": "baseline",
+        "headersMs": 471.75798300000315,
+        "firstTextMs": 2978.925375000006,
+        "firstRecipeMs": 4711.630699000001,
+        "totalMs": 17281.86052500001,
+        "valid": true,
+        "usage": {
+          "input_tokens": 2140,
+          "input_tokens_details": {
+            "cache_write_tokens": 67,
+            "cache_write_tokens_details": {
+              "ttl_12h_tokens": 0,
+              "ttl_30m_tokens": 67
+            },
+            "cached_tokens": 2070
+          },
+          "output_tokens": 735,
+          "output_tokens_details": {
+            "reasoning_tokens": 62
+          },
+          "total_tokens": 2875
+        }
+      },
+      {
+        "kind": "vegan",
+        "variant": "candidate",
+        "headersMs": 270.527824,
+        "firstTextMs": 1808.6197510000002,
+        "firstRecipeMs": 3332.29288,
+        "totalMs": 16307.457440999999,
+        "valid": true,
+        "usage": {
+          "input_tokens": 2004,
+          "input_tokens_details": {
+            "cached_tokens": 1934,
+            "cache_write_tokens": 67,
+            "cache_write_tokens_details": {
+              "ttl_30m_tokens": 67,
+              "ttl_12h_tokens": 0
+            }
+          },
+          "output_tokens": 678,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 2682
+        }
+      }
+    ],
+    "initial_luna": [
+      {
+        "kind": "chat",
+        "variant": "luna",
+        "headersMs": 518.653232,
+        "firstTextMs": 933.451232,
+        "firstRecipeMs": null,
+        "totalMs": 1798.178589,
+        "valid": true,
+        "usage": {
+          "input_tokens": 2004,
+          "input_tokens_details": {
+            "cache_write_tokens": 2001,
+            "cache_write_tokens_details": {
+              "ttl_12h_tokens": 0,
+              "ttl_30m_tokens": 2001
+            },
+            "cached_tokens": 0
+          },
+          "output_tokens": 105,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 2109
+        }
+      },
+      {
+        "kind": "recipe",
+        "variant": "luna",
+        "headersMs": 340.2944339999999,
+        "firstTextMs": 3073.9943359999997,
+        "firstRecipeMs": 3539.1768810000003,
+        "totalMs": 9726.342741,
+        "valid": true,
+        "usage": {
+          "input_tokens": 1993,
+          "input_tokens_details": {
+            "cache_write_tokens": 56,
+            "cache_write_tokens_details": {
+              "ttl_12h_tokens": 0,
+              "ttl_30m_tokens": 56
+            },
+            "cached_tokens": 1934
+          },
+          "output_tokens": 979,
+          "output_tokens_details": {
+            "reasoning_tokens": 215
+          },
+          "total_tokens": 2972
+        }
+      },
+      {
+        "kind": "followup",
+        "variant": "luna",
+        "headersMs": 591.0175020000006,
+        "firstTextMs": 1035.2066990000003,
+        "firstRecipeMs": null,
+        "totalMs": 2731.4771220000002,
+        "valid": true,
+        "usage": {
+          "input_tokens": 2059,
+          "input_tokens_details": {
+            "cache_write_tokens": 122,
+            "cache_write_tokens_details": {
+              "ttl_12h_tokens": 0,
+              "ttl_30m_tokens": 122
+            },
+            "cached_tokens": 1934
+          },
+          "output_tokens": 191,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 2250
+        }
+      },
+      {
+        "kind": "vegan",
+        "variant": "luna",
+        "headersMs": 407.4148430000005,
+        "firstTextMs": 2807.8178880000014,
+        "firstRecipeMs": 3614.4542790000014,
+        "totalMs": 9139.665844,
+        "valid": true,
+        "usage": {
+          "input_tokens": 2004,
+          "input_tokens_details": {
+            "cache_write_tokens": 67,
+            "cache_write_tokens_details": {
+              "ttl_12h_tokens": 0,
+              "ttl_30m_tokens": 67
+            },
+            "cached_tokens": 1934
+          },
+          "output_tokens": 901,
+          "output_tokens_details": {
+            "reasoning_tokens": 138
+          },
+          "total_tokens": 2905
+        }
+      }
+    ],
+    "rejected_unpaired_revision": [
+      {
+        "kind": "recipe",
+        "variant": "luna",
+        "headersMs": 647.0784679999999,
+        "firstTextMs": 3976.1897030000005,
+        "firstRecipeMs": 4718.923686,
+        "totalMs": 8028.792544999999,
+        "valid": false,
+        "usage": {
+          "input_tokens": 2028,
+          "input_tokens_details": {
+            "cache_write_tokens": 2025,
+            "cache_write_tokens_details": {
+              "ttl_12h_tokens": 0,
+              "ttl_30m_tokens": 2025
+            },
+            "cached_tokens": 0
+          },
+          "output_tokens": 687,
+          "output_tokens_details": {
+            "reasoning_tokens": 217
+          },
+          "total_tokens": 2715
+        }
+      },
+      {
+        "kind": "vegan",
+        "variant": "luna",
+        "headersMs": 550.9721609999997,
+        "firstTextMs": 3133.4913429999997,
+        "firstRecipeMs": 3871.6543009999987,
+        "totalMs": 9457.679554,
+        "valid": true,
+        "usage": {
+          "input_tokens": 2039,
+          "input_tokens_details": {
+            "cache_write_tokens": 67,
+            "cache_write_tokens_details": {
+              "ttl_12h_tokens": 0,
+              "ttl_30m_tokens": 67
+            },
+            "cached_tokens": 1969
+          },
+          "output_tokens": 954,
+          "output_tokens_details": {
+            "reasoning_tokens": 217
+          },
+          "total_tokens": 2993
+        }
+      },
+      {
+        "kind": "operations",
+        "variant": "luna",
+        "headersMs": 505.3697330000032,
+        "firstTextMs": null,
+        "firstRecipeMs": null,
+        "totalMs": 1307.0977380000004,
+        "valid": true,
+        "usage": {
+          "input_tokens": 2040,
+          "input_tokens_details": {
+            "cache_write_tokens": 68,
+            "cache_write_tokens_details": {
+              "ttl_12h_tokens": 0,
+              "ttl_30m_tokens": 68
+            },
+            "cached_tokens": 1969
+          },
+          "output_tokens": 59,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 2099
+        }
+      },
+      {
+        "kind": "question",
+        "variant": "luna",
+        "headersMs": 324.0354879999977,
+        "firstTextMs": 748.4763289999973,
+        "firstRecipeMs": null,
+        "totalMs": 1123.79608,
+        "valid": true,
+        "usage": {
+          "input_tokens": 2019,
+          "input_tokens_details": {
+            "cache_write_tokens": 47,
+            "cache_write_tokens_details": {
+              "ttl_12h_tokens": 0,
+              "ttl_30m_tokens": 47
+            },
+            "cached_tokens": 1969
+          },
+          "output_tokens": 37,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 2056
+        }
+      }
+    ],
+    "final_contract": [
+      {
+        "kind": "recipe",
+        "variant": "luna",
+        "headersMs": 557.6581209999999,
+        "firstTextMs": 1131.7569829999998,
+        "firstRecipeMs": 1528.5249629999998,
+        "totalMs": 8397.159816000001,
+        "valid": true,
+        "usage": {
+          "input_tokens": 2023,
+          "input_tokens_details": {
+            "cache_write_tokens": 2020,
+            "cache_write_tokens_details": {
+              "ttl_12h_tokens": 0,
+              "ttl_30m_tokens": 2020
+            },
+            "cached_tokens": 0
+          },
+          "output_tokens": 699,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 2722
+        }
+      },
+      {
+        "kind": "vegan",
+        "variant": "luna",
+        "headersMs": 323.75208699999894,
+        "firstTextMs": 5027.301686999999,
+        "firstRecipeMs": 5802.175288999999,
+        "totalMs": 13398.040031999999,
+        "valid": true,
+        "usage": {
+          "input_tokens": 2034,
+          "input_tokens_details": {
+            "cache_write_tokens": 67,
+            "cache_write_tokens_details": {
+              "ttl_12h_tokens": 0,
+              "ttl_30m_tokens": 67
+            },
+            "cached_tokens": 1964
+          },
+          "output_tokens": 1084,
+          "output_tokens_details": {
+            "reasoning_tokens": 261
+          },
+          "total_tokens": 3118
+        }
+      },
+      {
+        "kind": "operations",
+        "variant": "luna",
+        "headersMs": 348.670026,
+        "firstTextMs": null,
+        "firstRecipeMs": null,
+        "totalMs": 1971.54355,
+        "valid": true,
+        "usage": {
+          "input_tokens": 2035,
+          "input_tokens_details": {
+            "cache_write_tokens": 68,
+            "cache_write_tokens_details": {
+              "ttl_12h_tokens": 0,
+              "ttl_30m_tokens": 68
+            },
+            "cached_tokens": 1964
+          },
+          "output_tokens": 112,
+          "output_tokens_details": {
+            "reasoning_tokens": 51
+          },
+          "total_tokens": 2147
+        }
+      },
+      {
+        "kind": "question",
+        "variant": "luna",
+        "headersMs": 575.720656999998,
+        "firstTextMs": 1097.2970669999995,
+        "firstRecipeMs": null,
+        "totalMs": 1622.0434609999975,
+        "valid": true,
+        "usage": {
+          "input_tokens": 2014,
+          "input_tokens_details": {
+            "cache_write_tokens": 47,
+            "cache_write_tokens_details": {
+              "ttl_12h_tokens": 0,
+              "ttl_30m_tokens": 47
+            },
+            "cached_tokens": 1964
+          },
+          "output_tokens": 42,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 2056
+        }
+      }
+    ],
+    "final_repeat": [
+      {
+        "kind": "chat",
+        "variant": "luna",
+        "headersMs": 573.8011589999987,
+        "firstTextMs": 1076.9120719999992,
+        "firstRecipeMs": null,
+        "totalMs": 2132.851702,
+        "valid": true,
+        "usage": {
+          "input_tokens": 2034,
+          "input_tokens_details": {
+            "cache_write_tokens": 67,
+            "cache_write_tokens_details": {
+              "ttl_12h_tokens": 0,
+              "ttl_30m_tokens": 67
+            },
+            "cached_tokens": 1964
+          },
+          "output_tokens": 93,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 2127
+        }
+      },
+      {
+        "kind": "followup",
+        "variant": "luna",
+        "headersMs": 502.561757,
+        "firstTextMs": 1386.2653480000001,
+        "firstRecipeMs": null,
+        "totalMs": 3396.6266859999996,
+        "valid": true,
+        "usage": {
+          "input_tokens": 2089,
+          "input_tokens_details": {
+            "cache_write_tokens": 122,
+            "cache_write_tokens_details": {
+              "ttl_12h_tokens": 0,
+              "ttl_30m_tokens": 122
+            },
+            "cached_tokens": 1964
+          },
+          "output_tokens": 169,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 2258
+        }
+      },
+      {
+        "kind": "recipe",
+        "variant": "luna",
+        "headersMs": 244.0622069999954,
+        "firstTextMs": 3339.951879,
+        "firstRecipeMs": 4221.340639999995,
+        "totalMs": 11812.739898,
+        "valid": true,
+        "usage": {
+          "input_tokens": 2023,
+          "input_tokens_details": {
+            "cache_write_tokens": 0,
+            "cache_write_tokens_details": {
+              "ttl_12h_tokens": 0,
+              "ttl_30m_tokens": 0
+            },
+            "cached_tokens": 2020
+          },
+          "output_tokens": 930,
+          "output_tokens_details": {
+            "reasoning_tokens": 157
+          },
+          "total_tokens": 2953
+        }
+      }
+    ]
+  }
+}

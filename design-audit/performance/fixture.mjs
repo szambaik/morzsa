@@ -55,7 +55,7 @@ export async function startFixture({repoRoot,port=0}={}) {
 
    if(req.method==='GET')return json({configured:true,enabled:true});
    if(u.pathname.endsWith('/recipe-image'))return json({status:'missing'});
-   if((u.pathname.endsWith('/voice-command')||u.pathname.endsWith('/plus-assistant')&&body.task==='chat')&&ai.length){const plan=ai.shift();if(plan.delay)await new Promise(r=>setTimeout(r,plan.delay));if(plan.error)return json({message:plan.error},503);if(plan.stream){res.writeHead(200,{'Content-Type':'application/x-ndjson'});for(const chunk of plan.stream){res.write(JSON.stringify({type:'answer',text:chunk})+'\n');await new Promise(r=>setTimeout(r,plan.interval||250));}if(plan.truncate){res.destroy();return}res.end(JSON.stringify({type:'done',output:plan.output})+'\n');return}return json(plan.output)}
+   if((u.pathname.endsWith('/voice-command')||u.pathname.endsWith('/plus-assistant')&&body.task==='chat')&&ai.length){const plan=ai.shift();if(plan.delay)await new Promise(r=>setTimeout(r,plan.delay));if(plan.error)return json({message:plan.error},503);if(plan.stream){res.writeHead(200,{'Content-Type':'application/x-ndjson'});for(const chunk of plan.stream){res.write(JSON.stringify(typeof chunk==='string'?{type:'answer',text:chunk}:chunk)+'\n');await new Promise(r=>setTimeout(r,plan.interval||250));}if(plan.truncate){res.destroy();return}res.end(JSON.stringify({type:'done',output:plan.output})+'\n');return}return json(plan.output)}
    return json({message:'AI response requires explicit per-test contract fixture'},503);
   }
   if(req.method!=='GET')return json({message:'Read-only static files'},405);
