@@ -29,7 +29,13 @@ try{
  process.env.MORZSA_QA_BASE=base;
  const run=eval('('+fs.readFileSync(path.join(root,'tests/ios-controls.browser.js'),'utf8')+')');
  const result=await run(page);
+ const composerRun=eval('('+fs.readFileSync(path.join(root,'tests/ios-composer.browser.js'),'utf8')+')');
+ try{result.composer=await composerRun(page)}catch(error){
+  console.error('Native composer fixture at failure:',(await page.locator('body').innerText()).slice(0,3500));
+  if(process.argv[2]){fs.mkdirSync(process.argv[2],{recursive:true});await page.screenshot({path:path.join(process.argv[2],'composer-failure.png')})}
+  throw error;
+ }
  if(errors.length)throw Error('Browser errors: '+errors.join('; '));
  if(process.argv[2]){fs.mkdirSync(process.argv[2],{recursive:true});fs.writeFileSync(path.join(process.argv[2],'results.json'),JSON.stringify(result,null,2))}
- console.log('iOS controls passed: '+result.count+' checks.');
+ console.log('iOS controls passed: '+result.count+' checks; native composer: '+result.composer.count+' checks.');
 }finally{await browser?.close();fixture.kill('SIGTERM')}

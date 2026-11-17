@@ -2,6 +2,9 @@ async page=>{
  const checks=[],check=(ok,label)=>{if(!ok)throw Error(label);checks.push(label)};
  const base=process.env.MORZSA_QA_BASE||'http://127.0.0.1:8899';
  await page.goto(base+'/?actor=c');await page.waitForFunction(()=>!!window.MorzsaCompanion&&!!window.MorzsaWorkspace);
+ // Account/history hydration replaces the initial form. Wait for the fixture's
+ // real signed-in state before holding a DOM reference or exercising controls.
+ await page.waitForFunction(()=>household?.userId()&&MorzsaPersistence.status()==='synced');
  await page.addStyleTag({url:base+'/mobile/ios.css'});
  // Initial history sync can replace the form between locator resolution and evaluation.
  // Resolve and measure the current element in one browser task.
