@@ -51,7 +51,10 @@ button:focus-visible,summary:focus-visible,a:focus-visible,input:focus-visible,t
 #companion-form,.room-composer,.workspace-composer{display:flex;align-items:flex-end;gap:5px;background:var(--white);border:1px solid #d9d7c7;border-radius:25px;padding:7px;box-shadow:4px 4px 10px #665c4114,-3px -3px 10px #ffffff80}
 #companion-form textarea,.workspace-composer input{flex:1;min-width:0;border:0;background:transparent;font-size:16px;line-height:1.45;padding:11px 5px;resize:none}
 #companion-form button,.workspace-composer button{display:grid;place-items:center;flex:none;width:44px;height:44px;min-height:44px;padding:10px;border:0;border-radius:50%;background:transparent}
-#companion-form button[type=submit],.workspace-composer button[type=submit]{background:var(--orange);color:white}
+#companion-form button[type=submit],.workspace-composer button[type=submit]{background:#007AFF;color:white}
+#companion-form button[type=submit]:disabled{background:#DDE3EA;color:#788595;opacity:1;box-shadow:none;cursor:default}
+#companion-form button[type=submit]:not(:disabled) img{filter:brightness(0) invert(1)}
+#companion-form button[type=submit]:disabled img{opacity:.45}
 .companion-voice-glass{display:none}
 .workspace-composer button[type=submit] img{filter:brightness(0) invert(1)}
 #workspace-assistant:before{content:'';position:absolute;inset:-24px -16px -12px;background:linear-gradient(180deg,transparent,var(--bg) 55%);z-index:-1;pointer-events:none}
@@ -1232,11 +1235,10 @@ body.workspace-chat{background:var(--bg)}
 #companion-form{gap:2px;padding:5px;box-shadow:0 3px 16px #3446380b}
 #companion-form [data-photo],#companion-form [data-mic],#companion-form [type=submit]{width:44px;height:44px;min-width:44px;min-height:44px;margin:0}
 #companion-form textarea{min-height:44px;padding:9px 5px;box-sizing:border-box}
-.workspace-chat:not(.workspace-cooking) .companion-welcome{display:flex;flex-direction:column;align-items:center;text-align:center;padding:32px 0 20px;gap:0}
-.workspace-chat:not(.workspace-cooking) .companion-welcome>img{width:48px;height:48px;margin:0 0 14px}
-.workspace-chat:not(.workspace-cooking) .companion-welcome h1{font-size:27px;font-weight:600;letter-spacing:-.7px;line-height:1.3;margin:0 0 8px}
+.workspace-chat:not(.workspace-cooking) .companion-welcome{display:flex;flex-direction:column;align-items:center;text-align:center;padding:10px 0 14px;gap:0}
+.workspace-chat:not(.workspace-cooking) .companion-welcome h1{font-size:23px;font-weight:600;letter-spacing:-.5px;line-height:1.3;margin:0}
 .workspace-chat:not(.workspace-cooking) .workspace-welcome-copy p{font-size:13px!important;max-width:290px!important;margin:0 auto;color:var(--muted)}
-.workspace-chat .companion .companion-starters{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin-top:22px;width:100%}
+.workspace-chat .companion .companion-starters{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin-top:12px;width:100%}
 .workspace-chat .companion .companion-starters button{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:6px;width:auto;flex:0 1 auto;min-height:44px;padding:8px 11px;border-radius:24px;background:transparent;box-shadow:none;font-size:12px;line-height:1.3}
 .workspace-chat .companion-starters button img{width:18px;height:18px}
 .workspace-chat:not(.workspace-cooking) .cooking-resume-card{margin:8px 0;padding:0;border:0;border-radius:0;background:transparent}
@@ -1272,7 +1274,7 @@ body.workspace-chat{background:var(--bg)}
 #companion-history .companion-new,#workspace-sidebar .companion-new{display:flex;align-items:center;justify-content:flex-start;gap:10px;min-height:46px;margin:8px 0 0;padding:10px 12px;border:1px solid var(--line);border-radius:24px;background:transparent;color:var(--ink);font-size:13px}
 #companion-history .companion-new img,#workspace-sidebar .companion-new img{width:19px;height:19px}
 @media(min-width:1000px){#workspace-sidebar{background:#f1eee5;border-right:0;padding:20px 16px 12px}#workspace-sidebar .workspace-brand{font-size:25px;padding-bottom:18px}#workspace-sidebar nav{padding-bottom:10px}#workspace-sidebar nav button{min-height:44px;padding:8px 10px}#workspace-sidebar .companion-new{order:5}#workspace-sidebar .companion-panel-head h2{font-size:12px;letter-spacing:0;text-transform:none}#workspace-sidebar .history-date-group>h4{display:none}.workspace-chat .app>header{height:52px}}
-@media(max-width:360px){.workspace-chat .companion .companion-starters{gap:5px}.workspace-chat .companion .companion-starters button{padding-inline:8px;font-size:11px;gap:4px}.workspace-chat:not(.workspace-cooking) .companion-welcome{padding-top:22px}.workspace-chat:not(.workspace-cooking) .companion-welcome h1{font-size:25px}}
+@media(max-width:360px){.workspace-chat .companion .companion-starters{gap:5px}.workspace-chat .companion .companion-starters button{padding-inline:8px;font-size:11px;gap:4px}.workspace-chat:not(.workspace-cooking) .companion-welcome{padding-top:8px}.workspace-chat:not(.workspace-cooking) .companion-welcome h1{font-size:22px}}
 
 
 /* Keep the drawer within the visual viewport, including a visible keyboard. */
@@ -1292,3 +1294,12 @@ body:has(dialog[open]) #workspace-quick-add.workspace-add-fab{visibility:hidden}
 @media(min-width:1000px){#workspace-quick-add.workspace-add-fab{right:28px;bottom:24px}}
 
 body:has(#companion-history[open]){overflow:hidden}
+
+/* Keep the mobile wordmark centered independently of the side controls. */
+@media(max-width:999px){
+ .app>header{position:relative}
+ .workspace-chat .app>header{position:sticky}
+ .app>header .brand{position:absolute;left:50%;transform:translateX(-50%);margin:0;min-height:44px;white-space:nowrap}
+ .app>header:has(#workspace-quick-add:not([hidden])) .brand{font-size:clamp(18px,4.8vw,27px)}
+ .app>header:has(#workspace-quick-add:not([hidden])) .brand-mark{width:clamp(24px,6.4vw,35px);height:clamp(24px,6.4vw,35px)}
+}

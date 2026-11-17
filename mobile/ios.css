@@ -25,7 +25,7 @@
 .native-ios #companion-form [data-mic]>svg{display:block;width:24px;height:24px}
 
 .native-ios #companion-form [data-photo]{grid-column:1;grid-row:1;color:#344638}
-.native-ios #companion-form button[type=submit]{grid-column:4;grid-row:1;background:linear-gradient(145deg,#c75b36,#ac3f24);box-shadow:inset 0 1px 0 #ffffff66,0 2px 6px #bf4e2c26;color:#fffdf8}
+.native-ios #companion-form button[type=submit]{grid-column:4;grid-row:1}
 .native-ios .companion{padding-bottom:calc(var(--workspace-nav-height) + 150px)}
 .native-ios #companion-end{scroll-margin-bottom:calc(var(--workspace-nav-height) + 150px)}
 .native-ios .cooking-guided #companion-form,.native-ios .cooking-question-open #companion-form{display:grid!important}
