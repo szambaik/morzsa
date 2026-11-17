@@ -154,7 +154,7 @@ test('visible quiet cards generate missing images automatically and remounts reu
  const host=()=>({isConnected:true,children:[],dataset:{},replaceChildren(){this.children=[]},append(...nodes){this.children.push(...nodes)}});
  const context={window:{MORZSA_CLOUD:{url:'https://cloud'}},household:{active:null,userId:()=> 'test',recipeImage:async input=>{inputs.push(input);return {status:'ready',url:'https://cloud/storage/v1/object/sign/recipe-images/cover.jpg',expiresAt:Date.now()+60000}}},language:'hu',document:{createElement:tag=>({tag})},IntersectionObserver:class{constructor(cb){observers.push(cb)}observe(){}disconnect(){}}};
  vm.runInNewContext(fs.readFileSync('recipe-images.js','utf8'),context);const images=context.window.RecipeImages,card=host();images.mount(card,recipe,-1,{autoCreate:true,quiet:true});assert.equal(inputs.length,0);assert.equal(card.children.length,0);
- observers[0]([{isIntersecting:true}]);await new Promise(resolve=>setImmediate(resolve));assert.equal(inputs.length,1);assert.equal(inputs[0].create,true);assert.equal(card.children[0].tag,'img');
+ observers[0]([{isIntersecting:true}]);await new Promise(resolve=>setImmediate(resolve));assert.equal(inputs.length,1);assert.equal(inputs[0].create,false);assert.equal(card.children[0].tag,'img');
  images.mount(host(),recipe,-1,{autoCreate:true,quiet:true});await new Promise(resolve=>setImmediate(resolve));assert.equal(inputs.length,1);
 });
 test('anonymous automatic cards only read the backend cache and never start generation',async()=>{

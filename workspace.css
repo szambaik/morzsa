@@ -1173,3 +1173,7 @@ body.voice-active{overflow:hidden}
 /* Generated catalogue covers keep the same frame as cached feed photos. */
 .feed-card-art:has(.room-image-cache){position:relative}
 .feed-card-art:has(.room-image-cache img)>.feed-art-placeholder{visibility:hidden}
+.room-image-cache.generated-recipe-image:has(.image-retry){display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;gap:4px;padding:10px;box-sizing:border-box}
+.room-image-cache.generated-recipe-image .image-retry{pointer-events:auto;min-height:44px;max-width:100%;padding:8px 12px;border:1px solid #34463830;border-radius:12px;background:#fffaf2;color:#344638;font-family:inherit;font-size:13px;font-weight:600;line-height:1.4}
+.room-image-cache.generated-recipe-image:has(.image-retry)>small{position:static;margin:0;max-width:100%;box-sizing:border-box;font-size:12px;line-height:1.4;opacity:1}
+.room-image-cache.generated-recipe-image .image-progress{font-size:12px;line-height:1.4;opacity:1;color:#344638;background:#fffaf2}
