@@ -9,11 +9,11 @@ function presentation(reduced=false){
 })();`,context);
  return {qa:context.window.qa,stream,answer,frame(){now+=16;const pending=[...frames.values()];frames.clear();pending.forEach(f=>f(now))},pending:()=>frames.size};
 }
-test('a burst of network chunks remains progressive across stream completion',()=>{
- const p=presentation(),text='Morzsa lassan kiírja ezt a választ, akkor is ha egy nagy csomagban érkezik.';
- p.qa.feed(text.slice(0,10));p.qa.feed(text);assert.equal(p.pending(),1);p.frame();const shown=p.stream.textContent;assert.ok(shown.length>0&&shown.length<text.length);
- p.qa.finish(text);assert.equal(p.qa.state().answer,shown);p.frame();assert.ok(p.qa.state().answer.length<text.length);
- for(let i=0;i<500&&p.pending();i++)p.frame();assert.equal(p.answer.final,text);assert.equal(p.pending(),0);
+test('network chunks render in the next frame without an artificial typing backlog',()=>{
+ const p=presentation(),text='Morzsa azonnal megmutatja a már megérkezett választ.';
+ p.qa.feed(text.slice(0,10));p.frame();assert.equal(p.stream.textContent,text.slice(0,10));
+ p.qa.feed(text.slice(0,20));p.qa.feed(text);assert.equal(p.pending(),1);p.frame();assert.equal(p.stream.textContent,text);
+ p.qa.finish(text);assert.equal(p.qa.state().revealCount,undefined);assert.equal(p.pending(),0);
 });
 test('a buffered JSON response also reveals progressively and cancellation clears scheduled text',()=>{
  const p=presentation();p.qa.finish('Egy teljes, nem streamelt válasz.');p.frame();assert.ok(p.qa.state().answer.length<30);
