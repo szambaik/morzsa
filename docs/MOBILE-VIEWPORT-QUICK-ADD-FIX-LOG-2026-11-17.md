@@ -18,3 +18,9 @@ No database, saved-state format, API contract, native UITextView, voice pipeline
 ## Device acceptance
 
 On the new iPhone build: open history, search, show/hide the keyboard and rotate; confirm that Close, Settings and New chat remain accessible without a stuck scale. On pantry/list, tap the floating +, save an item, reopen it and verify that it clears the tab bar. Browser-native bridge tests validate the adapter contract; they do not replace this physical-device check.
+
+## Release-harness follow-up
+
+The main release run `44097845544` exposed the same timing failure twice: the pantry test clicked while the initial realtime refresh was busy, received the existing “Still syncing” response, and waited for a save status that never began. The unclosed dialog then caused unrelated realtime checks to fail. The trace confirms this; no browser runtime errors occurred. The PR and local runs had previously passed.
+
+`design-audit/performance/regressions.mjs` now waits for initial synchronization after opening the first pantry dialog, holds the actual write request until the second dialog opens, and waits for the resulting success feedback instead of relying on 450/3500ms sleeps. Cleanup releases the request and closes the dialog even after a failed assertion. All original persistence, pending-save and dialog identity assertions remain. This changes only the test harness; the signed iPhone build remains current.
