@@ -20,4 +20,6 @@ for(const width of [320,360,390,1280])required.push('RECEIPT-PLANNING-'+width,'R
 for(const lang of ['hu','en'])for(const scope of ['home','low','out','all'])required.push('SEARCH-'+lang+'-'+scope,'SEARCH-CLEAR-'+lang+'-'+scope);
 for(const id of required)assert.ok(checks.some(c=>c.id===id&&c.status==='passed'),'Missing required regression: '+id);
 assert.ok(checks.length>=54&&checks.every(c=>c.status==='passed'),'All targeted checks must pass');
+const ios=spawnSync(process.execPath,[path.join(root,'tests/check-ios-controls.mjs'),path.join(result.runDir,'ios-controls')],{cwd:root,stdio:'inherit'});
+assert.equal(ios.status,0,'Native control scope and web fallback regressions must pass');
 console.log('Release gate passed: full audit, '+scans.length+' axe scans, '+checks.length+' targeted checks.');

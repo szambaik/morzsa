@@ -51,12 +51,14 @@ final class MorzsaViewController: CAPBridgeViewController, UITabBarDelegate {
                 webView.scrollView.addSubview(button)
             }
             let prominent = spec["prominent"] as? Bool == true || spec["selected"] as? Bool == true
+            let stacked = spec["stacked"] as? Bool == true
             var configuration: UIButton.Configuration
             if #available(iOS 26.0, *) { configuration = prominent ? .prominentGlass() : .glass() }
             else { configuration = prominent ? .filled() : .tinted() }
             configuration.cornerStyle = .capsule
             configuration.title = spec["title"] as? String
-            configuration.titleLineBreakMode = .byTruncatingTail
+            configuration.titleLineBreakMode = stacked ? .byWordWrapping : .byTruncatingTail
+            configuration.imagePlacement = stacked ? .top : .leading
             if let symbol = spec["symbol"] as? String, !symbol.isEmpty { configuration.image = UIImage(systemName: symbol) }
             configuration.imagePadding = 5
             configuration.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 8, bottom: 5, trailing: 8)
@@ -71,8 +73,8 @@ final class MorzsaViewController: CAPBridgeViewController, UITabBarDelegate {
             }
             button.configuration = configuration
             button.titleLabel?.adjustsFontForContentSizeCategory = true
-            button.titleLabel?.numberOfLines = 1
-            button.titleLabel?.lineBreakMode = .byTruncatingTail
+            button.titleLabel?.numberOfLines = stacked ? 2 : 1
+            button.titleLabel?.lineBreakMode = stacked ? .byWordWrapping : .byTruncatingTail
             button.isEnabled = spec["disabled"] as? Bool != true
             button.accessibilityLabel = label
             button.accessibilityTraits = spec["selected"] as? Bool == true ? [.button, .selected] : .button
