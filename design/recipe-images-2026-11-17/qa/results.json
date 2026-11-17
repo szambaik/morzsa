@@ -1,0 +1,80 @@
+{
+  "checks": [
+    {
+      "lang": "hu",
+      "width": 320,
+      "first": true,
+      "labels": 0,
+      "delta": 1,
+      "overflow": false,
+      "button": true
+    },
+    {
+      "lang": "hu",
+      "width": 390,
+      "first": true,
+      "labels": 0,
+      "delta": 1,
+      "overflow": false,
+      "button": true
+    },
+    {
+      "lang": "hu",
+      "width": 768,
+      "first": true,
+      "labels": 0,
+      "delta": 1,
+      "overflow": false,
+      "button": true
+    },
+    {
+      "lang": "hu",
+      "width": 1440,
+      "first": true,
+      "labels": 0,
+      "delta": 1,
+      "overflow": false,
+      "button": true
+    },
+    {
+      "lang": "en",
+      "width": 320,
+      "first": true,
+      "labels": 0,
+      "delta": 1,
+      "overflow": false,
+      "button": true
+    },
+    {
+      "lang": "en",
+      "width": 390,
+      "first": true,
+      "labels": 0,
+      "delta": 1,
+      "overflow": false,
+      "button": true
+    },
+    {
+      "lang": "en",
+      "width": 768,
+      "first": true,
+      "labels": 0,
+      "delta": 1,
+      "overflow": false,
+      "button": true
+    },
+    {
+      "lang": "en",
+      "width": 1440,
+      "first": true,
+      "labels": 0,
+      "delta": 1,
+      "overflow": false,
+      "button": true
+    }
+  ],
+  "persistedImagePrompt": true,
+  "reload": true,
+  "recipeOpens": true,
+  "errors": []
+}
