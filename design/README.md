@@ -7,7 +7,7 @@ Lista, Morzsa, Készlet, Receptek**, mobilon és asztalon is. A középső Morzs
 visszafogott kiemelést kap; az induló nézet továbbra is a chat. A menüpontok
 megőrzik a saját nézetüket, szűrőiket, piszkozatukat és görgetési helyüket.
 
-Az Áttekintés „Morzsa figyel” jelzései, a rövid chatnyitó, a „Morzsa ajánlja”
+Az Áttekintés „Érdemes ránézni” jelzései, a rövid chatnyitó, a „Morzsa ajánlja”
 receptek és a jóváhagyható listajavaslatok közös visszajelzési szabályokat
 követnek. Implementáció, korlátok és migráció:
 [Proaktív élmény](../docs/PROACTIVE-EXPERIENCE-2026-11-16.md).

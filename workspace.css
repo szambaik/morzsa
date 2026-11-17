@@ -681,7 +681,13 @@ body.voice-active{overflow:hidden}
 .shopping-category-nav button{min-height:44px;padding:7px 10px;font-size:12px;border-radius:12px}
 .shopping-mode-dock{padding:8px 16px calc(8px + env(safe-area-inset-bottom,0px))}
 #shopping-mode-add[hidden]{display:none}
-#shopping-mode-add{margin-bottom:8px}
+#shopping-mode-add{position:relative;margin-bottom:8px}
+#shopping-mode-options{position:absolute;bottom:calc(100% + 6px);left:-1px;right:-1px;z-index:2;max-height:240px;overflow:auto;overscroll-behavior:contain;padding:4px;border:1px solid var(--line);border-radius:14px;background:var(--white);box-shadow:0 5px 20px #3446381c}
+#shopping-mode-options[hidden]{display:none}
+#shopping-mode-options button{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;height:auto;min-height:44px;padding:9px 10px;border-radius:9px;background:transparent;text-align:left;font-size:14px}
+#shopping-mode-options button span{min-width:0;overflow-wrap:anywhere}
+#shopping-mode-options button small{max-width:45%;text-align:right;font-size:11px;line-height:1.4;color:#586151}
+#shopping-mode-options button:hover,#shopping-mode-options button[aria-selected=true]{background:var(--sage)}
 .shopping-dock-actions{display:flex;align-items:center;gap:8px}
 .shopping-dock-actions [data-toggle-shopping-add]{flex:none;display:grid;place-items:center;width:48px;height:48px;min-width:48px;border:0;border-radius:14px;background:var(--sage);color:var(--green)}
 .shopping-mode-dock .primary{min-height:48px;border-radius:14px;font-size:14px}
@@ -881,6 +887,18 @@ body.voice-active{overflow:hidden}
 [data-weekly-open] small{display:block;font:400 12px/1.6 Inter,system-ui;color:#677362;margin-top:3px}
 [data-weekly-open]>img{width:21px;height:21px;flex:none}.weekly-entry .weekly-config{padding:0 14px 14px;box-sizing:border-box}
 .weekly-entry .weekly-config[hidden]{display:none}
+/* A small entry card; expanded native form controls keep room for focus rings. */
+.dashboard .weekly-entry,.recipe-library .weekly-entry{max-width:560px;margin:12px 0 16px;border-radius:14px}
+.dashboard .weekly-entry>[data-weekly-open],.recipe-library .weekly-entry>[data-weekly-open]{min-height:56px;padding:8px 12px;gap:10px;border-radius:14px}
+[data-weekly-open] small{font-size:11px;line-height:1.45;margin-top:2px}
+.weekly-entry .weekly-config{min-width:0;padding:0 12px 14px}
+.weekly-config form{gap:16px 14px;padding-top:14px;align-items:start}
+.weekly-config label{min-width:0;gap:6px;line-height:1.4}
+.weekly-config input,.weekly-config select{min-width:0;max-width:100%;min-height:44px;font-size:16px;padding:9px}
+.weekly-config input[type=date]::-webkit-datetime-edit{min-width:0;padding:0}
+.weekly-config input[type=date]::-webkit-date-and-time-value{text-align:left}
+.weekly-config form>p{margin:0;font-size:12px;line-height:1.5}
+@media(max-width:540px){.weekly-config label:has([name=week]),.weekly-config label:has([name=budget]){grid-column:1/-1}}
 .recipe-library .recipe-resume{margin-top:20px}
 @media(max-width:360px){.recipe-library-tools{gap:6px}.recipe-library-tools>.small-button{padding:9px 10px}.recipe-discovery-section>h2{font-size:18px}.recipe-library [data-weekly-open] small{font-size:11px}}
 
