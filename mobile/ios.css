@@ -1,10 +1,7 @@
 /* Only active after the native plugin acknowledges its first navigation state. */
 .native-app.native-tabbar .app>nav,.native-app.native-tabbar #workspace-sidebar nav{display:none!important}
 .native-app.native-tabbar{--workspace-nav-height:var(--native-tabbar-height,0px)}
-.native-app.native-tabbar .app{padding-bottom:calc(var(--native-tabbar-height,0px) + 120px)}
-.native-app.native-tabbar .companion-compose-wrap,.native-app.native-tabbar .room-compose-wrap,.native-app.native-tabbar #workspace-assistant{bottom:calc(var(--native-tabbar-height,0px) + 12px)}
 .native-app.native-tabbar #cooking-resume{bottom:calc(var(--native-tabbar-height,0px) + 8px)}
-.native-app.native-tabbar.keyboard-open .app{padding-bottom:100px}
 /* Native selection and scrolling stay responsive; form fields still allow text selection. */
 .native-app button,.native-app summary{-webkit-touch-callout:none;touch-action:manipulation}
 
@@ -26,10 +23,7 @@
 
 .native-ios #companion-form [data-photo]{grid-column:1;grid-row:1;color:#344638}
 .native-ios #companion-form button[type=submit]{grid-column:4;grid-row:1}
-.native-ios .companion{padding-bottom:calc(var(--workspace-nav-height) + 150px)}
-.native-ios #companion-end{scroll-margin-bottom:calc(var(--workspace-nav-height) + 150px)}
 .native-ios .cooking-guided #companion-form,.native-ios .cooking-question-open #companion-form{display:grid!important}
-.native-ios.native-tabbar.keyboard-open .companion-compose-wrap{bottom:8px}
 @media(prefers-reduced-transparency:reduce){
  .native-ios #companion-form{background:#fffdf7;-webkit-backdrop-filter:none;backdrop-filter:none}
 }

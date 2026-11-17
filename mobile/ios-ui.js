@@ -10,7 +10,7 @@ export function installIOSUI(plugin) {
  function setHeight(height){
   nativeHeight=Math.max(0,Number(height)||0);
   root.style.setProperty('--native-tabbar-height',nativeHeight+'px');
-  if(enabled)root.style.setProperty('--workspace-nav-height',nativeHeight+'px');
+  window.MorzsaViewport?.refresh();
  }
  function current(){
   return {page:document.querySelector('.app')?.dataset.page||'chat',language:document.documentElement.lang==='en'?'en':'hu',
@@ -22,7 +22,7 @@ export function installIOSUI(plugin) {
  function fallback(){
   enabled=false;last='';root.classList.remove('native-tabbar');
   root.style.removeProperty('--native-tabbar-height');
-  root.style.setProperty('--workspace-nav-height',(document.querySelector('.app>nav')?.getBoundingClientRect().height||0)+'px');
+  window.MorzsaViewport?.refresh();
  }
  async function update(){
   scheduled=false;if(disposed||failed)return;if(inFlight)return;

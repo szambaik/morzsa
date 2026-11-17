@@ -64,7 +64,7 @@ window.MorzsaWorkspace=(()=>{
    dock.querySelector('[data-workspace-voice]').onclick=()=>{const r=window.RecipeRoom?.reading();if(r&&window.MorzsaCompanion.discuss(r,RecipeRoom.portionsFor(r))===false)return;window.MorzsaCompanion.voice()};
   }
   document.body.classList.toggle('workspace-cooking',page==='chat'&&!!main.querySelector('.cooking-guide,.cooking-preparation,.cooking-completion'));document.body.classList.toggle('cooking-guided',page==='chat'&&!!main.querySelector('.cooking-guide[data-method-view=focus]'));if(page!=='chat')document.body.classList.remove('cooking-reading','cooking-stage-calm','workspace-crafting','craft-question-open');document.body.classList.toggle('workspace-chat',page==='chat');dock.dataset.context=page;document.body.classList.toggle('workspace-local-compose',!!local);
-  document.documentElement.style.setProperty('--workspace-nav-height',desktop?'0px':nav.getBoundingClientRect().height+'px');
+  window.MorzsaViewport?.refresh();
   if(quick?.open&&entryContext!==voiceContext())quick.close();
   window.MorzsaOnboarding?.mount();document.body.classList.toggle('introduction-active',!!main.querySelector('.morzsa-introduction'));
    window.MorzsaCompanion?.mountResume();window.KitchenIntelligence?.mount();window.WeeklyPlanUI?.mountEntry();mountActivity();mountKitchen();mountContext();window.MorzsaProactive?.mount();window.ShoppingMode?.positionFeedback();
@@ -106,6 +106,6 @@ window.MorzsaWorkspace=(()=>{
  }
  function connectionNote(){let note=document.getElementById('workspace-connection-note');if(!note){note=document.createElement('div');note.id='workspace-connection-note';note.setAttribute('role','status');note.setAttribute('data-no-translate','');document.querySelector('.app header').after(note)}note.hidden=navigator.onLine!==false;note.textContent=say('Nincs internet. Az AI és a közös konyha frissítése szünetel.','No internet. AI and shared kitchen updates are unavailable.')}
  window.addEventListener('offline',connectionNote);window.addEventListener('online',connectionNote);connectionNote();
- window.addEventListener('resize',mount);
+ matchMedia('(min-width:1000px)').addEventListener('change',mount);
  mount();return {mount,quick:openEntry,attachSettings};
 })();
