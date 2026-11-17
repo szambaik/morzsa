@@ -3,6 +3,17 @@ window.MorzsaProactive=(()=>{
  const M=ProactiveModel,say=(hu,en)=>language==='en'?en:hu;
  let context='',feedback={},remote=null,remoteReady=false,loading=false,busy=false,loadedAt=0,requestedState='',generation=0;
  const positions=new Map(),selection=new Set();
+ let ingredientKey='',ingredientMatches=new Map();
+ function ingredientResolver(){
+  const key=JSON.stringify(state.custom);if(key!==ingredientKey){ingredientKey=key;ingredientMatches.clear()}
+  const items=[...catalog,...state.custom];
+  return name=>{
+   if(ingredientMatches.has(name))return ingredientMatches.get(name);
+   const resolved=QuickEntry.match(name,items,productEnglish)||name;
+   if(ingredientMatches.size>=512)ingredientMatches.delete(ingredientMatches.keys().next().value);
+   ingredientMatches.set(name,resolved);return resolved;
+  };
+ }
  const scope=()=>JSON.stringify([household?.userId()||'guest',household?.active||'local']);
  const storage=()=> 'morzsa-proactive-v1:'+context;
  const icon=n=>'<img src="assets/ui/'+n+'.svg" width="20" height="20" alt="">';
@@ -27,7 +38,7 @@ window.MorzsaProactive=(()=>{
  function recommendations(){
   const curated=recipes.map((r,i)=>({recipeId:'10000000-0000-4000-8000-'+String(i+1).padStart(12,'0'),curated:r.id,title:language==='en'?englishText(r.name):r.name,summary:language==='en'?englishText(r.desc):r.desc,minutes:r.time,servings:r.servings,ingredients:r.ingredients.map(([name,amount])=>({name,amount})),stepTitles:r.stepTitles?.map(s=>language==='en'?englishText(s):s),steps:r.steps.map(s=>language==='en'?englishText(s):s),tags:r.tags}));
   const feed=page==='recipes'?window.RecipeLibrary?.overview():null,list=[...(feed?.entries||[]),...(feed?.library||[]),...curated];
-  return M.rankRecipes(list,{stock:state.stock,uncertain:PantryReview?.uncertain()||[],resolve:n=>QuickEntry.match(n,[...catalog,...state.custom],productEnglish)||n,feedback,
+  return M.rankRecipes(list,{stock:state.stock,uncertain:PantryReview?.uncertain()||[],resolve:ingredientResolver(),feedback,
    prefs:KitchenIntelligence?.prefs()||{},favourites:[...curated.filter(r=>state.likes.includes(r.curated)).map(r=>r.recipeId),...(feed?.library||[]).filter(r=>r.favourite).map(r=>r.recipeId)],
    recent:KitchenIntelligence?.recentTitles()||[],accepts:r=>KitchenModel.accepts(r,KitchenIntelligence?.prefs()||{},[...catalog,...state.custom],productEnglish)});
  }
@@ -53,7 +64,7 @@ window.MorzsaProactive=(()=>{
  }
  function mount(){
   sync();document.body.classList.add('proactive-enabled');if(!loading&&!busy)queueMicrotask(()=>refresh());
-  const items=products(),picks=recommendations();
+  const items=products(),picks=page==='overview'||page==='recipes'?recommendations():[];
   if(page==='overview'){
    const shown=items.slice(0,picks.length?2:3),html='<div class="proactive-heading"><div><p class="workspace-eyebrow">'+say('Egy lépéssel előrébb','One step ahead')+'</p><h2>'+say('Morzsa figyel','Morzsa is keeping an eye out')+'</h2></div><img src="assets/brands/morzsa.svg" width="36" height="36" alt=""></div>'+(shown.length?'<div class="proactive-grid">'+shown.map(s=>productCard(s)).join('')+'</div>':!picks.length?'<p class="proactive-empty">'+say(Object.keys(state.stock).length?'Most nincs sürgős javaslat. Ha változott valami, jelezd Morzsának.':'Néhány otthoni alapanyagból már tudok ötletet adni.',Object.keys(state.stock).length?'No pressing suggestions right now. Tell Morzsa if something changed.':'Add a few pantry items and I can help you find ideas.')+'</p>':'')+(picks.length?'<h2 class="proactive-subheading">'+say('Morzsa ajánlja','Morzsa recommends')+'</h2>'+recipeCard(picks[0]):'')+privacyNote();
    setHost(main.querySelector('.dashboard'),'.proactive-overview',html,host=>main.querySelector('.daily-counts')?.after(host));

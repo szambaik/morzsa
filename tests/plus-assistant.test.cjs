@@ -57,3 +57,23 @@ test('Plus grants, membership, shared budgets and request IDs are enforced atomi
  assert.equal((await reserve(id)).status,'reserved');assert.equal((await reserve(id)).status,'duplicate');assert.equal((await reserve('42345678-1234-1234-1234-123456789012')).status,'limit');assert.equal((await access(user,hid)).remainingCents,8);
  await db.query('update public.morzsa_plus_entitlements set expires_at=now()-interval '+"'1 minute'"+' where scope=$1',['home:'+hid]);assert.equal((await access(user,hid)).enabled,false);await db.close();
 });
+test('quota failures distinguish personal budget, request count, and shared service limits',async()=>{
+ const {createHandler}=await import('../supabase/functions/plus-assistant/handler.mjs');
+ for(const [details,expected] of [[{scopeType:'personal',reason:'budget'},'PLUS_MONTHLY_BUDGET'],[{scopeType:'personal',reason:'requests'},'PLUS_CHAT_LIMIT'],[{scopeType:'global',reason:'budget'},'PLUS_SERVICE_LIMIT']]){
+  const f=fixture(),fetcher=(url,opts)=>url.endsWith('/rpc/reserve_morzsa_plus')?Response.json({status:'limit',...details}):f.fetcher(url,opts);
+  const r=await createHandler(config,fetcher)(request());assert.equal(r.status,429);assert.equal((await r.json()).error,expected);assert.equal(f.calls.some(c=>c.url.includes('openai.com')),false);
+ }
+});
+test('failed uncharged output releases the reservation',async()=>{
+ const {createHandler}=await import('../supabase/functions/plus-assistant/handler.mjs'),f=fixture({streamData:{...output,operations:[{action:'clear_all',name:'Tej'}]}});
+ await createHandler(config,f.fetcher)(request());
+ const patches=f.calls.filter(c=>c.options.method==='PATCH').map(c=>JSON.parse(c.options.body));assert.ok(patches.length);assert.ok(patches.every(p=>p.state==='failed'&&p.charged_cents===0));
+});
+test('voice receives authoritative test policy and settles observed usage; client cannot disable limits',async()=>{
+ const {createHandler}=await import('../supabase/functions/plus-assistant/handler.mjs');
+ for(const counting of [true,false]){
+  const f=fixture(),fetcher=(url,opts)=>url.endsWith('/rpc/reserve_morzsa_plus')?Response.json({status:'reserved',usageLimitsEnabled:counting}):f.fetcher(url,opts);let work;
+  const r=await createHandler({...config,watchCall:async(id,s,end,settle,policy)=>{assert.equal(policy.usageLimitsEnabled,counting);await settle(2.1,{measuredResponses:2})},defer:p=>{work=p}},fetcher)(request({task:'connect',sdp:'v=0 OFFER',usageLimitsEnabled:false}));await work;assert.equal(r.status,200);
+  const cost=f.calls.filter(c=>c.options.method==='PATCH').map(c=>JSON.parse(c.options.body)).find(v=>v.state==='complete');assert.equal(cost.charged_cents,3);assert.equal(cost.usage.measuredResponses,2);
+ }
+});

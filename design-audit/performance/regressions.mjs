@@ -7,7 +7,7 @@ export async function runRegressions(h){
   fixture.rules.push({match:'/rpc/',delay:600,remaining:-1});fixture.ai.push({output:{transcript:'Előkészítés',answer:'A megszakított kérdést újraküldtük.',operations:[],recipes:[],clarification:''}});
   const at=fixture.calls.length;await p.locator('#companion-input').fill('Előkészítés');await p.locator('#companion-form button[type=submit]').click();
   assert.equal(await p.locator('.companion-thinking').isVisible(),true);assert.equal(await p.getByRole('button',{name:'Válasz leállítása',exact:true}).isVisible(),true);await capture(p,'preparing-with-stop');
-  await p.getByRole('button',{name:'Válasz leállítása',exact:true}).click();await p.locator('[data-retry]').waitFor({timeout:1500});assert.equal(await p.locator('#companion-input').inputValue(),'Előkészítés');await p.waitForTimeout(1600);
+  await p.waitForTimeout(450);await p.getByRole('button',{name:'Válasz leállítása',exact:true}).click();await p.locator('[data-retry]').waitFor({timeout:1500});assert.equal(await p.locator('#companion-input').inputValue(),'Előkészítés');await p.waitForTimeout(1600);
   assert.equal(fixture.calls.slice(at).filter(c=>c.path.endsWith('/voice-command')&&c.method==='POST').length,0);fixture.rules.length=0;
   await p.locator('[data-retry]').click();await p.getByText('A megszakított kérdést újraküldtük.',{exact:true}).waitFor();await settled(p);
   assert.equal(await p.evaluate(()=>document.querySelectorAll('.companion-message.user').length),1);

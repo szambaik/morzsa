@@ -1,4 +1,4 @@
-import {Capacitor} from '@capacitor/core';
+import {Capacitor,registerPlugin} from '@capacitor/core';
 import {App} from '@capacitor/app';
 import {Browser} from '@capacitor/browser';
 import {Keyboard} from '@capacitor/keyboard';
@@ -8,9 +8,14 @@ import {Filesystem,Directory,Encoding} from '@capacitor/filesystem';
 import {Network} from '@capacitor/network';
 import {SecureStoragePlugin} from 'capacitor-secure-storage-plugin';
 import {createVault} from './vault.mjs';
+import {installIOSUI} from './ios-ui.js';
 if(Capacitor.isNativePlatform()){
  const callback='io.github.szambaik.morzsa://auth-callback',vault=createVault(SecureStoragePlugin,localStorage);
  document.documentElement.classList.add('native-app');
+ if(Capacitor.getPlatform()==='ios'){
+  const start=()=>{if(Capacitor.isPluginAvailable('MorzsaUI'))installIOSUI(registerPlugin('MorzsaUI'))};
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+ }
  let handler,pending;const seen=new Set();
  const receive=async url=>{
   let u;try{u=new URL(url)}catch{return}if(u.protocol!=='io.github.szambaik.morzsa:'||u.hostname!=='auth-callback'||u.pathname&&u.pathname!=='/')return;
