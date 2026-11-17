@@ -21,7 +21,7 @@ test('paused timers survive long background gaps, resume, reset and repeated act
 test('session pause leaves running timers alone and newest pause survives concurrent unrelated edits',()=>{
  const t=thread();t.cooking=C.addTimer(t,{id:'a',minutes:5,label:'Rizs'},1000000);const base=M.metadata(t);
  const paused={...base,cooking:C.pause(t,true,1100000)},other={...base,cooking:{...base.cooking,feedback:{notes:'Másik eszköz'}}};
- const merged=M.mergeMetadata(paused,other,base);assert.equal(merged.cooking.paused,true);assert.equal(C.remaining(merged.cooking.timers[0],1120000),180);
+ const merged=M.mergeMetadata(paused,other,base);assert.equal(merged.cooking.activity,'paused');assert.equal(C.remaining(merged.cooking.timers[0],1120000),180);
  assert.equal(merged.cooking.feedback.notes,'Másik eszköz');assert.deepEqual(merged.recipe,recipe);
 });
 test('cancelled timers cannot resurrect on equal-time concurrent timer edits',()=>{

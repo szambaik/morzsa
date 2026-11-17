@@ -31,11 +31,11 @@ try{
  assert.match(await p.locator('#cooking-step-0').textContent(),/50 g/);assert.equal(await p.locator('[data-cooking-step]:visible').count(),1);
  await p.locator('.cooking-timer-tools>summary').click();await p.locator('[data-custom-timer] button').click();
  await p.locator('[data-timer-action="pause"]').click();await synced();const paused=await p.locator('[data-timer-time]').textContent();
- await p.locator('.cooking-task-dock [data-pause-cooking]').click();await synced();assert.equal(await p.locator('.cooking-task-dock [data-complete-step]').isDisabled(),true);
+ await p.locator('.cooking-task-dock [data-toggle-cooking-pause]').click();await synced();assert.equal(await p.locator('.cooking-task-dock [data-complete-step]').isDisabled(),true);
  const id=await p.evaluate(()=>MorzsaCompanion.recipeThreads().find(t=>t.recipe.title===qaRecipe.title).id);
- await p.reload();await synced();await p.evaluate(id=>MorzsaCompanion.openThread(id),id);
+ await p.reload({waitUntil:'domcontentloaded'});await synced();
  assert.equal(await p.locator('[data-timer-time]').textContent(),paused);assert.equal(await p.locator('.cooking-paused').count(),1);
- await context.setOffline(true);await p.locator('.cooking-task-dock [data-pause-cooking]').click();await p.locator('[data-timer-action="reset"]').click();assert.equal(await p.locator('[data-timer-time]').textContent(),'5:00');
+ await context.setOffline(true);await p.locator('.cooking-task-dock [data-toggle-cooking-pause]').click();await p.locator('[data-timer-action="reset"]').click();assert.equal(await p.locator('[data-timer-time]').textContent(),'5:00');
  await p.locator('[data-timer-action="resume"]').click();assert.match(await p.locator('[data-cooking-save-state]').textContent(),/eszközön/);await context.setOffline(false);await synced();
  await p.evaluate(()=>{household.voiceCommandStream=async(payload,onAnswer)=>{qaChatRequests.push(payload);onAnswer('Kisebb lángon folytasd.');return {answer:'Kisebb lángon folytasd.',transcript:payload.text,clarification:'',recipes:[],operations:[],cookingUI:{version:1,step:payload.context.cookingStep,components:[{type:'tip_card',title:'Kíméletes főzés',text:'A csomag főzési idejét kövesd; a rizs fajtája is számít.'},{type:'ingredient_checklist',title:'Ehhez az adaghoz',indices:[0,1]}]}}}});
  await p.locator('[data-open-cooking-question]').click();await p.locator('[data-cooking-help="tip"]').click();await p.locator('#companion-form').evaluate(f=>f.requestSubmit());await p.waitForFunction(()=>!document.querySelector('.companion-thinking'));await synced();

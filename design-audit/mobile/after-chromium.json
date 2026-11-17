@@ -1,0 +1,868 @@
+{
+  "baseline": false,
+  "engine": "chromium",
+  "checks": [
+    {
+      "name": "History DOM has at most 30 initial rows",
+      "ok": true
+    },
+    {
+      "name": "Resize does not rebuild history",
+      "ok": true
+    },
+    {
+      "name": "320 overview no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "320 overview active destination",
+      "ok": true
+    },
+    {
+      "name": "320 overview last action clears navigation",
+      "ok": true
+    },
+    {
+      "name": "320 shopping no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "320 shopping active destination",
+      "ok": true
+    },
+    {
+      "name": "320 shopping last action clears navigation",
+      "ok": true
+    },
+    {
+      "name": "320 chat no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "320 chat active destination",
+      "ok": true
+    },
+    {
+      "name": "320 chat last action clears navigation",
+      "ok": true
+    },
+    {
+      "name": "320 pantry no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "320 pantry active destination",
+      "ok": true
+    },
+    {
+      "name": "320 pantry last action clears navigation",
+      "ok": true
+    },
+    {
+      "name": "320 recipes no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "320 recipes active destination",
+      "ok": true
+    },
+    {
+      "name": "320 recipes last action clears navigation",
+      "ok": true
+    },
+    {
+      "name": "375 overview no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "375 overview active destination",
+      "ok": true
+    },
+    {
+      "name": "375 overview last action clears navigation",
+      "ok": true
+    },
+    {
+      "name": "375 shopping no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "375 shopping active destination",
+      "ok": true
+    },
+    {
+      "name": "375 shopping last action clears navigation",
+      "ok": true
+    },
+    {
+      "name": "375 chat no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "375 chat active destination",
+      "ok": true
+    },
+    {
+      "name": "375 chat last action clears navigation",
+      "ok": true
+    },
+    {
+      "name": "375 pantry no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "375 pantry active destination",
+      "ok": true
+    },
+    {
+      "name": "375 pantry last action clears navigation",
+      "ok": true
+    },
+    {
+      "name": "375 recipes no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "375 recipes active destination",
+      "ok": true
+    },
+    {
+      "name": "375 recipes last action clears navigation",
+      "ok": true
+    },
+    {
+      "name": "390 overview no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "390 overview active destination",
+      "ok": true
+    },
+    {
+      "name": "390 overview last action clears navigation",
+      "ok": true
+    },
+    {
+      "name": "390 shopping no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "390 shopping active destination",
+      "ok": true
+    },
+    {
+      "name": "390 shopping last action clears navigation",
+      "ok": true
+    },
+    {
+      "name": "390 chat no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "390 chat active destination",
+      "ok": true
+    },
+    {
+      "name": "390 chat last action clears navigation",
+      "ok": true
+    },
+    {
+      "name": "390 pantry no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "390 pantry active destination",
+      "ok": true
+    },
+    {
+      "name": "Pantry menu controls do not overlap",
+      "ok": true
+    },
+    {
+      "name": "390 pantry last action clears navigation",
+      "ok": true
+    },
+    {
+      "name": "390 recipes no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "390 recipes active destination",
+      "ok": true
+    },
+    {
+      "name": "390 recipes last action clears navigation",
+      "ok": true
+    },
+    {
+      "name": "430 overview no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "430 overview active destination",
+      "ok": true
+    },
+    {
+      "name": "430 overview last action clears navigation",
+      "ok": true
+    },
+    {
+      "name": "430 shopping no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "430 shopping active destination",
+      "ok": true
+    },
+    {
+      "name": "430 shopping last action clears navigation",
+      "ok": true
+    },
+    {
+      "name": "430 chat no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "430 chat active destination",
+      "ok": true
+    },
+    {
+      "name": "430 chat last action clears navigation",
+      "ok": true
+    },
+    {
+      "name": "430 pantry no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "430 pantry active destination",
+      "ok": true
+    },
+    {
+      "name": "430 pantry last action clears navigation",
+      "ok": true
+    },
+    {
+      "name": "430 recipes no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "430 recipes active destination",
+      "ok": true
+    },
+    {
+      "name": "430 recipes last action clears navigation",
+      "ok": true
+    },
+    {
+      "name": "768 overview no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "768 overview active destination",
+      "ok": true
+    },
+    {
+      "name": "768 overview last action clears navigation",
+      "ok": true
+    },
+    {
+      "name": "768 shopping no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "768 shopping active destination",
+      "ok": true
+    },
+    {
+      "name": "768 shopping last action clears navigation",
+      "ok": true
+    },
+    {
+      "name": "768 chat no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "768 chat active destination",
+      "ok": true
+    },
+    {
+      "name": "768 chat last action clears navigation",
+      "ok": true
+    },
+    {
+      "name": "768 pantry no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "768 pantry active destination",
+      "ok": true
+    },
+    {
+      "name": "768 pantry last action clears navigation",
+      "ok": true
+    },
+    {
+      "name": "768 recipes no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "768 recipes active destination",
+      "ok": true
+    },
+    {
+      "name": "768 recipes last action clears navigation",
+      "ok": true
+    },
+    {
+      "name": "1280 overview no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "1280 overview active destination",
+      "ok": true
+    },
+    {
+      "name": "1280 overview last action clears navigation",
+      "ok": true
+    },
+    {
+      "name": "1280 shopping no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "1280 shopping active destination",
+      "ok": true
+    },
+    {
+      "name": "1280 shopping last action clears navigation",
+      "ok": true
+    },
+    {
+      "name": "1280 chat no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "1280 chat active destination",
+      "ok": true
+    },
+    {
+      "name": "1280 chat last action clears navigation",
+      "ok": true
+    },
+    {
+      "name": "1280 pantry no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "1280 pantry active destination",
+      "ok": true
+    },
+    {
+      "name": "1280 pantry last action clears navigation",
+      "ok": true
+    },
+    {
+      "name": "1280 recipes no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "1280 recipes active destination",
+      "ok": true
+    },
+    {
+      "name": "1280 recipes last action clears navigation",
+      "ok": true
+    },
+    {
+      "name": "1440 overview no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "1440 overview active destination",
+      "ok": true
+    },
+    {
+      "name": "1440 overview last action clears navigation",
+      "ok": true
+    },
+    {
+      "name": "1440 shopping no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "1440 shopping active destination",
+      "ok": true
+    },
+    {
+      "name": "1440 shopping last action clears navigation",
+      "ok": true
+    },
+    {
+      "name": "1440 chat no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "1440 chat active destination",
+      "ok": true
+    },
+    {
+      "name": "1440 chat last action clears navigation",
+      "ok": true
+    },
+    {
+      "name": "1440 pantry no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "1440 pantry active destination",
+      "ok": true
+    },
+    {
+      "name": "1440 pantry last action clears navigation",
+      "ok": true
+    },
+    {
+      "name": "1440 recipes no horizontal overflow",
+      "ok": true
+    },
+    {
+      "name": "1440 recipes active destination",
+      "ok": true
+    },
+    {
+      "name": "1440 recipes last action clears navigation",
+      "ok": true
+    },
+    {
+      "name": "History increment reveals 60 rows",
+      "ok": true
+    },
+    {
+      "name": "Search finds a row beyond first render page",
+      "ok": true
+    },
+    {
+      "name": "Older server page remains searchable",
+      "ok": true
+    },
+    {
+      "name": "Loaded legacy title derived from message",
+      "ok": true
+    },
+    {
+      "name": "Overview and recipes count the same sessions",
+      "ok": true
+    },
+    {
+      "name": "Resume restores step two",
+      "ok": true
+    },
+    {
+      "name": "Completed cook excluded from resumable sessions",
+      "ok": true
+    },
+    {
+      "name": "Completion persists on the existing server schema",
+      "ok": true
+    },
+    {
+      "name": "Pantry stays interactive during AI wait",
+      "ok": true
+    },
+    {
+      "name": "Exactly one AI dispatch for one send",
+      "ok": true
+    },
+    {
+      "name": "AI failure has a working retry",
+      "ok": true
+    },
+    {
+      "name": "Overview count labels fit their cards with wider font metrics",
+      "ok": true
+    },
+    {
+      "name": "Settings distinguish selected Plus from missing access",
+      "ok": true
+    },
+    {
+      "name": "Denied Plus stays on the Plus route",
+      "ok": true
+    },
+    {
+      "name": "Chat explains access instead of claiming Free mode",
+      "ok": true
+    },
+    {
+      "name": "Mode change clears the previous access warning",
+      "ok": true
+    },
+    {
+      "name": "Free dispatch uses the free endpoint",
+      "ok": true
+    },
+    {
+      "name": "Free to Plus dispatch switches immediately",
+      "ok": true
+    },
+    {
+      "name": "Successful Plus response leaves no stale access warning",
+      "ok": true
+    },
+    {
+      "name": "Late Plus status cannot overwrite Free selection",
+      "ok": true
+    },
+    {
+      "name": "Window and viewport listeners do not accumulate after 25 navigations",
+      "ok": true
+    },
+    {
+      "name": "Navigation avoids repeated history fetches (one scheduled poll allowed)",
+      "ok": true
+    },
+    {
+      "name": "Composer clears simulated keyboard",
+      "ok": true
+    },
+    {
+      "name": "Send remains reachable above keyboard",
+      "ok": true
+    },
+    {
+      "name": "Keyboard close restores nav and composer",
+      "ok": true
+    },
+    {
+      "name": "No uncaught browser errors",
+      "ok": true
+    }
+  ],
+  "errors": [],
+  "sizes": [
+    {
+      "width": 320,
+      "height": 640,
+      "dest": "overview",
+      "overflow": false,
+      "scrollWidth": 320,
+      "offenders": [],
+      "active": "overview"
+    },
+    {
+      "width": 320,
+      "height": 640,
+      "dest": "shopping",
+      "overflow": false,
+      "scrollWidth": 320,
+      "offenders": [],
+      "active": "shopping"
+    },
+    {
+      "width": 320,
+      "height": 640,
+      "dest": "chat",
+      "overflow": false,
+      "scrollWidth": 320,
+      "offenders": [],
+      "active": "chat"
+    },
+    {
+      "width": 320,
+      "height": 640,
+      "dest": "pantry",
+      "overflow": false,
+      "scrollWidth": 320,
+      "offenders": [],
+      "active": "pantry"
+    },
+    {
+      "width": 320,
+      "height": 640,
+      "dest": "recipes",
+      "overflow": false,
+      "scrollWidth": 320,
+      "offenders": [],
+      "active": "recipes"
+    },
+    {
+      "width": 375,
+      "height": 812,
+      "dest": "overview",
+      "overflow": false,
+      "scrollWidth": 375,
+      "offenders": [],
+      "active": "overview"
+    },
+    {
+      "width": 375,
+      "height": 812,
+      "dest": "shopping",
+      "overflow": false,
+      "scrollWidth": 375,
+      "offenders": [],
+      "active": "shopping"
+    },
+    {
+      "width": 375,
+      "height": 812,
+      "dest": "chat",
+      "overflow": false,
+      "scrollWidth": 375,
+      "offenders": [],
+      "active": "chat"
+    },
+    {
+      "width": 375,
+      "height": 812,
+      "dest": "pantry",
+      "overflow": false,
+      "scrollWidth": 375,
+      "offenders": [],
+      "active": "pantry"
+    },
+    {
+      "width": 375,
+      "height": 812,
+      "dest": "recipes",
+      "overflow": false,
+      "scrollWidth": 375,
+      "offenders": [],
+      "active": "recipes"
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "dest": "overview",
+      "overflow": false,
+      "scrollWidth": 390,
+      "offenders": [],
+      "active": "overview"
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "dest": "shopping",
+      "overflow": false,
+      "scrollWidth": 390,
+      "offenders": [],
+      "active": "shopping"
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "dest": "chat",
+      "overflow": false,
+      "scrollWidth": 390,
+      "offenders": [],
+      "active": "chat"
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "dest": "pantry",
+      "overflow": false,
+      "scrollWidth": 390,
+      "offenders": [],
+      "active": "pantry"
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "dest": "recipes",
+      "overflow": false,
+      "scrollWidth": 390,
+      "offenders": [],
+      "active": "recipes"
+    },
+    {
+      "width": 430,
+      "height": 932,
+      "dest": "overview",
+      "overflow": false,
+      "scrollWidth": 430,
+      "offenders": [],
+      "active": "overview"
+    },
+    {
+      "width": 430,
+      "height": 932,
+      "dest": "shopping",
+      "overflow": false,
+      "scrollWidth": 430,
+      "offenders": [],
+      "active": "shopping"
+    },
+    {
+      "width": 430,
+      "height": 932,
+      "dest": "chat",
+      "overflow": false,
+      "scrollWidth": 430,
+      "offenders": [],
+      "active": "chat"
+    },
+    {
+      "width": 430,
+      "height": 932,
+      "dest": "pantry",
+      "overflow": false,
+      "scrollWidth": 430,
+      "offenders": [],
+      "active": "pantry"
+    },
+    {
+      "width": 430,
+      "height": 932,
+      "dest": "recipes",
+      "overflow": false,
+      "scrollWidth": 430,
+      "offenders": [],
+      "active": "recipes"
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "dest": "overview",
+      "overflow": false,
+      "scrollWidth": 768,
+      "offenders": [],
+      "active": "overview"
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "dest": "shopping",
+      "overflow": false,
+      "scrollWidth": 768,
+      "offenders": [],
+      "active": "shopping"
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "dest": "chat",
+      "overflow": false,
+      "scrollWidth": 768,
+      "offenders": [],
+      "active": "chat"
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "dest": "pantry",
+      "overflow": false,
+      "scrollWidth": 768,
+      "offenders": [],
+      "active": "pantry"
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "dest": "recipes",
+      "overflow": false,
+      "scrollWidth": 768,
+      "offenders": [],
+      "active": "recipes"
+    },
+    {
+      "width": 1280,
+      "height": 800,
+      "dest": "overview",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "offenders": [],
+      "active": "overview"
+    },
+    {
+      "width": 1280,
+      "height": 800,
+      "dest": "shopping",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "offenders": [],
+      "active": "shopping"
+    },
+    {
+      "width": 1280,
+      "height": 800,
+      "dest": "chat",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "offenders": [],
+      "active": "chat"
+    },
+    {
+      "width": 1280,
+      "height": 800,
+      "dest": "pantry",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "offenders": [],
+      "active": "pantry"
+    },
+    {
+      "width": 1280,
+      "height": 800,
+      "dest": "recipes",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "offenders": [],
+      "active": "recipes"
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "dest": "overview",
+      "overflow": false,
+      "scrollWidth": 1440,
+      "offenders": [],
+      "active": "overview"
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "dest": "shopping",
+      "overflow": false,
+      "scrollWidth": 1440,
+      "offenders": [],
+      "active": "shopping"
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "dest": "chat",
+      "overflow": false,
+      "scrollWidth": 1440,
+      "offenders": [],
+      "active": "chat"
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "dest": "pantry",
+      "overflow": false,
+      "scrollWidth": 1440,
+      "offenders": [],
+      "active": "pantry"
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "dest": "recipes",
+      "overflow": false,
+      "scrollWidth": 1440,
+      "offenders": [],
+      "active": "recipes"
+    }
+  ],
+  "metrics": {
+    "historyRows": 30,
+    "historyRenderMs": 1.5,
+    "resizeHistoryMutations": 0,
+    "heapBefore": 5187340,
+    "heapAfter": 5265956,
+    "navigationHistoryRequests": 0
+  }
+}

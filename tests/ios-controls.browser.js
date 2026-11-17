@@ -42,9 +42,9 @@ async page=>{
  await page.locator('#companion-input').fill('Hosszabb kérdés\nTöbb sorban\nA receptről\nÉs a készletről');
  check(await page.locator('#companion-input').evaluate(el=>el.getBoundingClientRect().height>44&&Math.abs(el.getBoundingClientRect().bottom-el.closest('form').querySelector('[data-mic]').getBoundingClientRect().bottom)<3),'multiline draft grows while controls stay aligned at the bottom');
  await page.locator('#companion-input').fill('');await page.locator('#companion-input').blur();
- await page.evaluate(()=>{document.documentElement.classList.add('native-tabbar','keyboard-open');document.documentElement.style.setProperty('--native-tabbar-height','83px')});await tick();
+ await page.evaluate(()=>{document.documentElement.classList.add('native-tabbar');window.dispatchEvent(new CustomEvent('morzsa-keyboard',{detail:{open:true}}));document.documentElement.style.setProperty('--native-tabbar-height','83px')});await tick();
  check(await page.locator('.companion-compose-wrap').evaluate(el=>Math.abs(innerHeight-el.getBoundingClientRect().bottom-8)<1),'keyboard leaves no hidden-tabbar gap under the composer');
- await page.evaluate(()=>{document.documentElement.classList.remove('native-tabbar','keyboard-open');document.documentElement.style.removeProperty('--native-tabbar-height')});await tick();
+ await page.evaluate(()=>{document.documentElement.classList.remove('native-tabbar');window.dispatchEvent(new CustomEvent('morzsa-keyboard',{detail:{open:false}}));document.documentElement.style.removeProperty('--native-tabbar-height')});await tick();
  for(const destination of ['pantry','shopping','overview','recipes']){
   await page.locator('.app>nav [data-page="'+destination+'"]').click();await tick();
   check(await page.locator('#main .ios-native-control').count()===0,'content actions retain their web layout on '+destination);

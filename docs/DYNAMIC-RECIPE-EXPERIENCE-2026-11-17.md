@@ -74,6 +74,9 @@ meglévő jóváhagyási, jogosultsági és szerveres visszajelzési útvonalon 
   előkészítésre.
 - A főzés saját munkamenet, ugyanazon fiók eszközei között szinkronizálható.
   Más háztartástag megosztott beszélgetésének olvasási korlátja változatlan.
+- A szünet a közös activity/activityAt munkamenet-állapotot használja.
+  A „Később folytatom” ment és kilép; a főzési sáv „Szünet” gombja helyben
+  tartja a lépést. Egy szünetelő főzés kifejezett újranyitása folytatja azt.
 - Az új migration csak servings és difficulty adatot ad a nyilvános
   recipe_feed eredményéhez; nem módosít régi recepteket vagy készletadatot.
 - Kiadáskor alkalmazandó migration: 20261117_dynamic_recipe_experience.sql.

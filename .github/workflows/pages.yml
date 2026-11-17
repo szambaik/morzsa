@@ -30,8 +30,10 @@ jobs:
       - run: python3 -m unittest discover -s tests -p 'test*.py'
       - run: npm --prefix design-audit ci
       - run: npm --prefix design-audit test
-      - run: npx --prefix design-audit playwright install --with-deps chromium
+      - run: npx --prefix design-audit playwright install --with-deps chromium webkit
       - run: node design-audit/check-release.mjs
+      - run: node design-audit/mobile/check-mobile.mjs after chromium
+      - run: node design-audit/mobile/check-mobile.mjs after webkit
       - run: node tests/check-compact-surfaces.mjs
       - run: node design-audit/performance/runner.mjs regression
       - run: node design-audit/plus-latency.mjs --check

@@ -52,8 +52,8 @@ if(Capacitor.isNativePlatform()){
  App.getLaunchUrl().then(value=>{if(value?.url)receive(value.url)}).catch(()=>{});
  App.addListener('appStateChange',({isActive})=>{window.dispatchEvent(new Event(isActive?'morzsa-resume':'morzsa-pause'));if(isActive)window.dispatchEvent(new Event('online'))});
  Network.addListener('networkStatusChange',({connected})=>window.dispatchEvent(new Event(connected?'online':'offline')));
- Keyboard.addListener('keyboardWillShow',()=>document.documentElement.classList.add('keyboard-open'));
- Keyboard.addListener('keyboardDidHide',()=>document.documentElement.classList.remove('keyboard-open'));
+ Keyboard.addListener('keyboardWillShow',()=>window.dispatchEvent(new CustomEvent('morzsa-keyboard',{detail:{open:true}})));
+ Keyboard.addListener('keyboardDidHide',()=>window.dispatchEvent(new CustomEvent('morzsa-keyboard',{detail:{open:false}})));
  document.addEventListener('click',e=>{const a=e.target.closest('a[target="_blank"]');if(a?.href.startsWith('https://')){e.preventDefault();window.MorzsaNative.openExternal(a.href).catch(()=>{window.toast?.('Nem sikerült megnyitni / Could not open')})}});
  App.addListener('backButton',({canGoBack})=>{const dialog=document.querySelector('dialog[open]');if(dialog){if(dialog.requestClose)dialog.requestClose();else{const event=new Event('cancel',{cancelable:true});if(dialog.dispatchEvent(event))dialog.close()}return}if(canGoBack)history.back();else App.minimizeApp()});
 }
