@@ -87,7 +87,12 @@ try{
  }
  await p.setViewportSize({width:390,height:844});await p.evaluate(()=>MorzsaCompanion.openThread('10000000-0000-4000-8000-000000000005'));await shot('cooking');
  await p.evaluate(()=>MorzsaCompanion.newChat());await p.locator('#companion-input').fill('Mit főzzek?');
- await p.evaluate(()=>{window.__mobileOriginalViewport=window.visualViewport;const vv=new EventTarget();Object.assign(vv,{height:460,width:390,offsetTop:40,offsetLeft:0,scale:1});Object.defineProperty(window,'visualViewport',{value:vv,configurable:true});window.dispatchEvent(new Event('resize'));window.MorzsaViewport?.refresh()});await p.waitForTimeout(150);await shot('keyboard-simulation');
+ await p.evaluate(()=>{window.__mobileOriginalViewport=window.visualViewport;const vv=new EventTarget();Object.assign(vv,{height:460,width:390,offsetTop:40,offsetLeft:0,scale:1});Object.defineProperty(window,'visualViewport',{value:vv,configurable:true});window.dispatchEvent(new Event('resize'));window.MorzsaViewport?.refresh()});
+ if(mode!=='before'){
+  // Focus, ResizeObserver and viewport updates settle on separate rendering frames.
+  try{await p.waitForFunction(()=>{const r=document.querySelector('.companion-compose-wrap').getBoundingClientRect(),v=visualViewport;return document.documentElement.classList.contains('keyboard-open')&&r.height>0&&r.bottom<=v.offsetTop+v.height&&r.top>=v.offsetTop},{},{timeout:5000})}
+  finally{result.metrics.keyboard=await p.evaluate(()=>{const el=document.querySelector('.companion-compose-wrap'),r=el.getBoundingClientRect();return {rect:r.toJSON(),focus:document.activeElement?.id,rootClass:document.documentElement.className,bodyClass:document.body.className,style:document.documentElement.getAttribute('style'),display:getComputedStyle(el).display,viewport:{height:visualViewport.height,top:visualViewport.offsetTop}}});await shot('keyboard-simulation')}
+ }else{await p.waitForTimeout(150);await shot('keyboard-simulation')}
  if(mode!=='before'){
   check('Composer clears simulated keyboard',await p.locator('.companion-compose-wrap').evaluate(el=>{const r=el.getBoundingClientRect(),v=visualViewport;return r.bottom<=v.offsetTop+v.height&&r.top>=v.offsetTop}));
   check('Send remains reachable above keyboard',await p.locator('#companion-form button[type=submit]').evaluate(el=>el.getBoundingClientRect().bottom<=visualViewport.offsetTop+visualViewport.height));
