@@ -25,6 +25,19 @@ window.RecipeImages=(()=>{
   IMAGE_LOAD_FAILED:['A kész kép nem töltődött be. Frissítsd a kép linkjét.','The image could not load. Refresh its link.'],
   IMAGE_UNAVAILABLE:['A kép most nem elérhető. Próbáld újra később.','The image is unavailable. Try again later.']
  };
+ // iOS may suspend polling, or navigation may remove the last mounted card.
+ // On return, ask for the existing asset; never submit another generation here.
+ function recoverEntry(entry){for(const paint of entry.views?.values()||[])if(paint.recover?.())return true;return false}
+ function recoverVisible(){if(document.hidden)return;for(const entry of entries.values())recoverEntry(entry)}
+ window.addEventListener?.('morzsa-resume',recoverVisible);
+ window.addEventListener?.('online',recoverVisible);
+ window.addEventListener?.('pageshow',recoverVisible);
+ document.addEventListener?.('visibilitychange',recoverVisible);
+ function retryRead(entry){
+  if(entry.recoveryTimer||(entry.recoveryAttempts||0)>=2)return;
+  entry.recoveryAttempts=(entry.recoveryAttempts||0)+1;
+  entry.recoveryTimer=setTimeout(()=>{entry.recoveryTimer=null;recoverEntry(entry)},entry.recoveryAttempts*1500);
+ }
  function enqueue(recipes){for(const r of recipes||[])auto.add(key(r,-1))}
  function mount(host,recipe,step=-1,options={}){
   if(!host||(!household?.userId()&&!recipe.recipeId)||!household.recipeImage)return;
@@ -38,25 +51,39 @@ window.RecipeImages=(()=>{
    if(entry.status==='missing'&&visible&&canCreate()&&options.autoCreate&&!autoAttempted&&!autoCreated.has(id)){autoAttempted=true;autoCreated.add(id);load(true);return}
    if(entry.status==='ready'){
     const img=document.createElement('img');img.src=entry.url;img.alt=recipe.title+' · '+say(step<0?'AI-illusztráció a recepthez':'AI-illusztráció a főzési lépéshez',step<0?'AI recipe illustration':'AI cooking step illustration');img.loading=options.hero?'eager':'lazy';if(options.hero)img.fetchPriority='high';img.width=768;img.height=512;
-    img.onerror=()=>{if(entry.status!=='ready'||entry.url!==img.src)return;entry.status='failed';entry.error='IMAGE_LOAD_FAILED';refresh()};const caption=document.createElement('small');caption.textContent=say('AI-illusztráció · Morzsa','AI illustration · Morzsa');const cover=entries.get(key(recipe,-1));const duplicate=step>=0&&cover?.url&&new URL(cover.url).pathname===new URL(entry.url).pathname;if(!duplicate)host.append(img,caption);else{host.dataset.duplicateCover='true';const note=document.createElement('small');note.textContent=say('Ehhez a lépéshez nincs külön illusztráció.','No separate illustration for this step.');host.append(note)}
+    img.onload=()=>{if(live()&&host.children[0]===img)entry.recoveryAttempts=0};
+    img.onerror=()=>{if(!live()||host.children[0]!==img||entry.status!=='ready'||entry.url!==img.src)return;entry.status='failed';entry.error='IMAGE_LOAD_FAILED';refresh();if(options.quiet)retryRead(entry)};const caption=document.createElement('small');caption.textContent=say('AI-illusztráció · Morzsa','AI illustration · Morzsa');const cover=entries.get(key(recipe,-1));const duplicate=step>=0&&cover?.url&&new URL(cover.url).pathname===new URL(entry.url).pathname;if(!duplicate)host.append(img,caption);else{host.dataset.duplicateCover='true';const note=document.createElement('small');note.textContent=say('Ehhez a lépéshez nincs külön illusztráció.','No separate illustration for this step.');host.append(note)}
     if(step>=0&&!options.cacheOnly&&entry.canReplace){const replace=document.createElement('button');replace.type='button';replace.className='image-replace';replace.textContent=say('Másik képet kérek','Create a different image');replace.onclick=()=>{
       replace.disabled=true;const confirm=document.createElement('div');confirm.className='image-replace-confirm';const note=document.createElement('span');note.textContent=say('Új képet generálunk és mentünk. Ez a képkeretből fogyaszt.','Generate and cache a replacement. This uses your image allowance.');const yes=document.createElement('button'),no=document.createElement('button');yes.type=no.type='button';yes.textContent=say('Új kép készítése','Generate replacement');no.textContent=say('Mégsem','Cancel');yes.onclick=()=>load(true,true);no.onclick=()=>{confirm.remove();replace.disabled=false};confirm.append(note,yes,no);host.append(confirm)};host.append(replace)}return;
    }
-   if(options.cacheOnly||options.quiet)return;
+   if(options.cacheOnly)return;
+   if(options.quiet){
+    if(entry.status==='new'||entry.status==='missing'&&(!canCreate()||!autoCreated.has(id)))return;
+    if(entry.status==='loading'||entry.status==='pending'&&entry.polls){const note=document.createElement('small');note.className='image-progress';note.setAttribute?.('role','status');note.textContent=entry.status==='pending'||entry.creating?say('Kép készül…','Creating image…'):say('Kép betöltése…','Loading image…');host.append(note);return}
+   }
    const b=document.createElement('button');b.type='button';b.className='small-button';b.disabled=entry.status==='loading';
    b.textContent=entry.status==='loading'?say('Kép készül…','Creating image…'):entry.status==='limit'?say('A mai képkeret elfogyott','Daily image allowance used'):entry.status==='failed'?say('Kép újrapróbálása','Retry image'):entry.status==='pending'?say('Kép állapotának frissítése','Refresh image status'):say(step<0?'Képet kérek a recepthez':'Mutasd képen',step<0?'Create recipe image':'Show this step');
    const waiting=entry.retryAt>Date.now();
    b.disabled ||= entry.status==='limit'||waiting||entry.error==='IMAGE_UNCERTAIN';
    if(waiting)b.textContent=say('Újrapróbálás egy perc múlva','Retry in a minute');
-   if(entry.error==='IMAGE_SIGN_IN_REQUIRED'){b.disabled=false;b.textContent=say('Belépés','Sign in');b.onclick=()=>document.getElementById('household-button')?.click()}
-   else b.onclick=()=>load(entry.error!=='IMAGE_LOAD_FAILED');host.append(b);
+   if(options.quiet){b.className+=' image-retry';b.textContent=say('Kép újratöltése','Reload image');b.disabled=waiting}
+   if(entry.error==='IMAGE_SIGN_IN_REQUIRED'){b.disabled=false;b.textContent=say('Belépés','Sign in');b.onclick=e=>{e?.stopPropagation();document.getElementById('household-button')?.click()}}
+   else b.onclick=async e=>{e?.stopPropagation();entry.recoveryAttempts=0;if(options.quiet){const uncertain=entry.error==='IMAGE_UNCERTAIN';await load(false);if(entry.status==='missing'&&canCreate()&&!uncertain)await load(true)}else await load(entry.error!=='IMAGE_LOAD_FAILED')};host.append(b);
    if(entry.status==='failed'){const hint=document.createElement('small');hint.setAttribute?.('role','status');hint.textContent=say(...(errors[entry.error]||errors.IMAGE_UNAVAILABLE));host.append(hint)}
   };
   entry.views??=new Map();entry.views.set(host,paint);
   const refresh=()=>{for(const draw of entry.views.values())draw()};
+  paint.recover=()=>{
+   if(!live()||document.hidden||entry.status==='loading'||entry.retryAt>Date.now())return false;
+   const rect=host.getBoundingClientRect?.();if(rect?(rect.width===0||rect.height===0||rect.bottom<0||rect.top>innerHeight||rect.right<0||rect.left>innerWidth):!visible)return false;
+   if(!['pending','failed','missing','limit'].includes(entry.status)&&!(entry.expiresAt<Date.now()))return false;
+   if(entry.pollTimer)clearTimeout(entry.pollTimer);entry.polls=null;entry.pollTimer=null;
+   if(entry.recoveryTimer)clearTimeout(entry.recoveryTimer);entry.recoveryTimer=null;
+   entry.requestedAt=Date.now();entry.pollAttempts=0;load(false);return true;
+  };
   async function load(create,regenerate=false){
    autoAttempted ||= create;
-   if(entry.status==='loading'||entry.retryAt>Date.now())return;entry.status='loading';delete entry.error;if(create){entry.requestedAt=Date.now();entry.pollAttempts=0}refresh();
+   if(entry.status==='loading'||entry.retryAt>Date.now())return;entry.status='loading';entry.creating=create;delete entry.error;if(create){entry.requestedAt=Date.now();entry.pollAttempts=0}refresh();
    const work=async()=>{
     // Navigation may detach every view while another image occupies the queue.
     // Keep a replacement view of the same recipe alive, but skip abandoned work.
@@ -64,9 +91,10 @@ window.RecipeImages=(()=>{
     try{let r;if(household.libraryImage&&(recipe.recipeId||window.MorzsaPersistence&&household.dataRpc)){const saved=recipe.recipeId?recipe:await MorzsaPersistence.ensureRecipe(recipe);r=await household.libraryImage({recipeId:saved.recipeId,step,create,...(regenerate?{regenerate:true}:{})})}else r=await household.recipeImage({recipe,step,create});if(r.status==='ready'){
       const base=window.MORZSA_CLOUD?.url;if(typeof r.url!=='string'||!base||!(r.url.startsWith(base+'/storage/v1/object/sign/')||recipe.recipeId&&r.url.startsWith(base+'/storage/v1/object/public/recipe-catalog/')))throw Error('IMAGE_UNAVAILABLE');
       Object.assign(entry,{status:'ready',url:r.url,expiresAt:r.expiresAt,canReplace:r.canReplace===true});
-     }else {entry.status=r.status==='pending'?'pending':'missing';if(entry.status==='pending'&&!entry.polls&&Date.now()-(entry.requestedAt||Date.now())<90000){entry.polls=1;entry.requestedAt??=Date.now();const attempt=entry.pollAttempts||0;entry.pollAttempts=attempt+1;const delay=attempt<4?750:attempt<8?1500:4000;setTimeout(()=>{entry.polls=0;if(key(recipe,step)===id&&[...entry.views.keys()].some(view=>view.isConnected))load(false)},delay)}};
+     }else {entry.status=r.status==='pending'?'pending':'missing';if(entry.status==='pending'&&!entry.polls&&Date.now()-(entry.requestedAt||Date.now())<90000){const token={};entry.polls=token;entry.requestedAt??=Date.now();const attempt=entry.pollAttempts||0;entry.pollAttempts=attempt+1;const delay=attempt<4?750:attempt<8?1500:4000;entry.pollTimer=setTimeout(()=>{if(entry.polls!==token)return;entry.polls=null;entry.pollTimer=null;if(!document.hidden&&key(recipe,step)===id&&[...entry.views.keys()].some(view=>view.isConnected))load(false)},delay)}};
     }catch(e){entry.error=Object.hasOwn(errors,e.message)||e.message==='IMAGE_LIMIT'?e.message:e.httpStatus===401?'IMAGE_SIGN_IN_REQUIRED':['AbortError','TimeoutError'].includes(e.name)?'IMAGE_TIMEOUT':'IMAGE_UNAVAILABLE';entry.status=entry.error==='IMAGE_LIMIT'?'limit':'failed';
      if(['IMAGE_COOLDOWN','IMAGE_PROVIDER_LIMIT'].includes(entry.error)){const seconds=Math.min(300,Math.max(1,Number(e.retryAfter)||60));entry.retryAt=Date.now()+seconds*1000;setTimeout(()=>{delete entry.retryAt;refresh()},seconds*1000)}
+     if(options.quiet&&['IMAGE_TIMEOUT','IMAGE_LOAD_FAILED','IMAGE_UNAVAILABLE'].includes(entry.error))retryRead(entry);
     }
     refresh();
    };
@@ -74,7 +102,10 @@ window.RecipeImages=(()=>{
   }
   paint();
   if(entry.status!=='ready'&&!options.cacheOnly||entry.status==='new'){
-   observer=new IntersectionObserver(items=>{if(items.some(i=>i.isIntersecting)){observer.disconnect();if(!live()||entry.views.get(host)!==paint)return;visible=true;const queued=auto.delete(id),create=canCreate()&&(queued||options.autoCreate===true)&&!autoCreated.has(id);if(entry.status==='new'||entry.status==='missing'){if(create)autoCreated.add(id);load(create)}else paint()}},{rootMargin:'100px'});observer.observe(host);
+   observer=new IntersectionObserver(items=>{if(items.some(i=>i.isIntersecting)){observer.disconnect();if(!live()||entry.views.get(host)!==paint)return;visible=true;const queued=auto.delete(id),create=canCreate()&&(queued||options.autoCreate===true)&&!autoCreated.has(id);if(entry.status==='new'||entry.status==='missing'){
+    // A ready cover must not wait behind another card's slow generation.
+    const generate=create&&(!options.quiet||entry.status==='missing');if(generate)autoCreated.add(id);load(generate);
+   }else if(entry.status==='pending'&&!entry.polls||entry.status==='failed'&&!entry.recoveryTimer)paint.recover();else paint()}},{rootMargin:'100px'});observer.observe(host);
   }
   prune();return dispose;
  }
