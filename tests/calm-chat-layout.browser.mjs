@@ -83,7 +83,7 @@ try{
   await h.locator('[data-share-chat]').click();await h.locator('[data-confirm-share]').click();await h.locator('[data-confirm-share]').waitFor({state:'detached'});
   assert.equal(await indexed(b),true,'shared conversation appears to household member');
   await a.waitForLoadState('networkidle');await a.reload();await settled(a);await a.evaluate(id=>MorzsaCompanion.openThread(id),id);h=await privacy(a);assert.match(await h.innerText(),/Megosztva: QA kitchen/);
-  await b.waitForLoadState('networkidle');await b.reload();await settled(b);await b.evaluate(id=>MorzsaCompanion.openThread(id),id);await b.locator('.companion-header-history').click();
+  await b.evaluate(()=>MorzsaPersistence.refresh());await settled(b);await b.evaluate(id=>MorzsaCompanion.openThread(id),id);await b.locator('.companion-header-history').click();
   const bh=b.locator('#companion-history');await bh.locator('.history-options>summary').click();assert.match(await bh.innerText(),/Megosztva veled · csak olvasható/);assert.equal(await bh.locator('[data-share-chat]').count(),0);
   assert.equal(await bh.locator('[data-archive]').isEnabled(),true,'member can archive their shared view');
   await h.locator('[data-share-chat]').click();await h.locator('[data-confirm-share]').click();await h.locator('[data-confirm-share]').waitFor({state:'detached'});
