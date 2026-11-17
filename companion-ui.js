@@ -2,26 +2,18 @@
 window.MorzsaCompanion=(()=>{
  const M=CompanionModel,C=CookingSession,say=(hu,en)=>language==='en'?en:hu;
  let context='',book={threads:[]},draft='',busy=false,saving=false,error='',pending=null,serial=0,removedNames=[],deferred={},quietUntil=0;
- let streamText='',streamVisible='',failedAnswer='',requestController=null,streamFrame=0,streamTime=0,streamCredit=0;
+ let streamText='',streamVisible='',failedAnswer='',requestController=null,streamFrame=0;
  let composerOrigin='',drafts=new Map(),expandedRecipes=new Set(),expandedDays=new Set(),recipeDetails=null,cookingView='full',cookingQuestion=false,showPast=false,renderedDay='';
  const isCooking=()=>thread()?.kind==='recipe',mainThread=()=>{const active=thread();return (active?.kind!=='recipe'&&!active?.archivedAt?active:null)||book.threads.find(t=>t.id===active?.parentId&&!t.archivedAt&&t.kind!=='recipe')||M.historyGroups(book).recent[0]||book.threads.find(t=>t.kind==='main')};
- function resetStream(){cancelAnimationFrame(streamFrame);streamFrame=0;streamText='';streamVisible='';streamTime=0;streamCredit=0}
+ function resetStream(){cancelAnimationFrame(streamFrame);streamFrame=0;streamText='';streamVisible=''}
  function paintStream(){
   if(streamFrame)return;
-  const tick=now=>{
+  const tick=()=>{
    streamFrame=0;const el=main.querySelector('[data-stream-answer]');if(!el)return;
-   if(!streamText.startsWith(streamVisible)){streamVisible='';streamCredit=0}
-   const delta=streamTime?Math.min(100,Math.max(0,now-streamTime)):16;streamTime=now;
-   const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
-   streamCredit+=delta/1000*Math.max(180,(streamText.length-streamVisible.length)/6);
-   let count=reduced?streamText.length:Math.min(streamText.length,streamVisible.length+Math.floor(streamCredit));
-   // Keep emoji code points intact while revealing a streamed prefix.
-   if(count<streamText.length&&/[\uD800-\uDBFF]/.test(streamText[count-1]||''))count--;
-   streamCredit=Math.max(0,streamCredit-(count-streamVisible.length));
    const follow=scrollY+innerHeight>=document.documentElement.scrollHeight-100;
-   streamVisible=streamText.slice(0,count);el.textContent=streamVisible;main.querySelector('.companion-thinking')?.toggleAttribute('hidden',!!streamVisible);
+   // Render every received character on the next frame; never simulate typing.
+   streamVisible=streamText;el.textContent=streamVisible;main.querySelector('.companion-thinking')?.toggleAttribute('hidden',!!streamVisible);
    if(follow)window.scrollTo({top:document.documentElement.scrollHeight,behavior:'instant'});
-   if(streamVisible.length<streamText.length)streamFrame=requestAnimationFrame(tick);
   };streamFrame=requestAnimationFrame(tick);
  }
  // Ingredient choices are UI drafts per kitchen and chat; sent requests use ordinary persisted messages.
@@ -186,7 +178,7 @@ window.MorzsaCompanion=(()=>{
  function labels(o){const d=VoiceModel.defaults(o,state,productUnit);return ({stock_add:say('Készletbe','To pantry'),stock_remove:say('Elfogyott','Used up'),list_set:say('Listára','To list')})[o.action]+(o.action==='list_set'?' · '+d.quantity+' '+d.unit:'')}
  function revision(bucket,name){return household?.active?household.rows?.find(r=>r.bucket===bucket&&r.key===name)?.revision:null}
  const fingerprint=ops=>M.fingerprint(state,ops,revision);
- function receive(output,text,shown=''){
+ function receive(output,text,shown='',instant=false){
   if(!VoiceModel.validate(output)||output.answer!==undefined&&typeof output.answer!=='string')throw Error('VOICE_INVALID_RESPONSE');
   const operations=VoiceModel.resolve(output,[...catalog,...state.custom],productEnglish,QuickEntry),recipes=(output.recipes||[]).map(RecipeRoomModel.recipe).filter(Boolean),answer=(output.answer||'').trim(),clarification=(output.clarification||'').trim();
   if(!answer&&!clarification&&!operations.length&&!recipes.length)throw Error('VOICE_EMPTY_RESPONSE');
@@ -194,7 +186,7 @@ window.MorzsaCompanion=(()=>{
   append({role:'model',text:answer||clarification||(operations.length?say('Így módosítanám. Nézd át, mielőtt mentjük.','Here are the proposed changes. Review before saving.'):say('Hoztam egy receptötletet.','Here is a recipe idea.')),recipes:(output.recipes||[]).map(RecipeRoomModel.recipe).filter(Boolean),...(operations.length?{result:say('Javaslat, nincs mentve.','Proposed, not saved.')}:clarification?{result:say('Pontosítás szükséges.','Clarification needed.')}:{})});
   window.RecipeImages?.enqueue((output.recipes||[]).map(RecipeRoomModel.recipe).filter(Boolean));
   if(CraftingModel.selection(text))for(const r of (output.recipes||[]).map(RecipeRoomModel.recipe).filter(Boolean))saveChatFavourite(r,true);
-  pending=operations.length?{operations,output,stamp:fingerprint(operations),thread:book.active,message:thread().messages.length-1}:null;startReveal(shown);
+  pending=operations.length?{operations,output,stamp:fingerprint(operations),thread:book.active,message:thread().messages.length-1}:null;if(!instant)startReveal(shown);
  }
  function requestContext(){return {assistant:true,companion:true,destination:'stock',language,context:{...(window.KitchenIntelligence?.context(book)||{}),...(thread().weeklyPlan?{weeklyPlan:WeeklyPlanModel.settings(thread().weeklyPlan)}:{}),...(book.threads.some(t=>t.cooking?.feedback?.householdFavourite)?{cookingFavourites:book.threads.filter(t=>t.cooking?.feedback?.householdFavourite).slice(0,6).map(t=>t.recipe.title)}:{}),...(window.KitchenMeasures?.enabled()?{noScale:true}:{}),...(isCooking()?{cookingRecipe:RecipePortions.view(thread().recipe,thread().portions),...(RecipePortions.selection(thread().recipe,thread().portions)?{cookingBaseServings:RecipePortions.selection(thread().recipe,thread().portions).base}:{}),cookingStep:thread().cookingStep||0,cookingSession:C.context(thread())}:{}),stock:Object.keys(state.stock).filter(n=>state.stock[n]>0).slice(0,1000),cart:state.cart.slice(0,1000).map(i=>({name:i.name,quantity:i.quantity||1,unit:i.unit||productUnit(i.name)})),uncertain:(PantryReview?.uncertain()||[]).slice(0,1000)},history:M.history(M.currentMessages(thread()),12)}}
  let startingTurn=false,retryRequest=null,pendingSend=null,sendStartedAt=0;
@@ -215,7 +207,7 @@ window.MorzsaCompanion=(()=>{
   stopReveal();const recipeOnly=!household.voiceCommandStream&&!selected&&(retry?thread().messages.at(-1)?.provider==='recipes':recipeRequestOnly);const payload=requestContext();if(retry)payload.history=M.history(M.currentMessages(thread()).slice(0,-1),12);else append({role:'user',text,recipes:[],...(selected?{photo:selected.photo}:{}),...(recipeOnly?{provider:'recipes'}:{})});
   if(selected&&cloudEnabled()){const last=thread().messages.at(-1);MorzsaPersistence.queuePhoto(last.id,selected.image);persist()}
   submitted=true;pendingSend=null;retryAttachment=selected;renderChat();scrollEnd();
-  if(selected){const status=await household.voiceStatus();if(!status.supportsImages)throw Error('PHOTO_SETUP');if(current!==scope()||id!==serial)return}let output;if(household.voiceCommandStream){output=await household.voiceCommandStream({...payload,text,...(selected?{image:selected.image}:{})},partial=>{if(current===scope()&&id===serial){streamText=partial;paintStream()}},controller.signal)}else if(recipeOnly){const pantry=recipeRequest();const r=await household.recipeIdeas({conversation:true,text,history:payload.history.map(m=>({...m,text:m.text.slice(0,4000)})),names:pantry.names.slice(0,200),uncertain:pantry.uncertain.slice(0,200),language,preferences:{quick:false,mood:'any'}});if(typeof r.answer!=='string'||!Array.isArray(r.recipes)||r.recipes.some(x=>!RecipeRoomModel.recipe(x)))throw Error('VOICE_INVALID_RESPONSE');output={transcript:text,answer:r.answer,recipes:r.recipes,clarification:'',operations:[]}}else output=await household.voiceCommand({...payload,text,...(selected?{image:selected.image}:{})});if(current!==scope()||id!==serial)return;if(controller.signal.aborted)throw Error('ABORTED');receive(output,text,streamVisible);resetStream();retryAttachment=null}
+  if(selected){const status=await household.voiceStatus();if(!status.supportsImages)throw Error('PHOTO_SETUP');if(current!==scope()||id!==serial)return}let output;if(household.voiceCommandStream){output=await household.voiceCommandStream({...payload,text,...(selected?{image:selected.image}:{})},partial=>{if(current===scope()&&id===serial){streamText=partial;paintStream()}},controller.signal)}else if(recipeOnly){const pantry=recipeRequest();const r=await household.recipeIdeas({conversation:true,text,history:payload.history.map(m=>({...m,text:m.text.slice(0,4000)})),names:pantry.names.slice(0,200),uncertain:pantry.uncertain.slice(0,200),language,preferences:{quick:false,mood:'any'}});if(typeof r.answer!=='string'||!Array.isArray(r.recipes)||r.recipes.some(x=>!RecipeRoomModel.recipe(x)))throw Error('VOICE_INVALID_RESPONSE');output={transcript:text,answer:r.answer,recipes:r.recipes,clarification:'',operations:[]}}else output=await household.voiceCommand({...payload,text,...(selected?{image:selected.image}:{})});if(current!==scope()||id!==serial)return;if(controller.signal.aborted)throw Error('ABORTED');receive(output,text,streamVisible,true);resetStream();retryAttachment=null}
   catch(e){if(current===scope()&&id===serial){if(!submitted)retryRequest={text,retry,recipeRequestOnly};failedAnswer=streamVisible;error=controller.signal.aborted?say('Megállítottad a választ. Újrapróbálhatod vagy írhatsz mást.','Response stopped. Retry or send a new message.'):!submitted?say(/Another device/.test(e.message)?'Morzsa már válaszol egy másik eszközödön.':'Az előzmény még mentésre vár. Próbáld újra.',/Another device/.test(e.message)?'Morzsa is answering on another device.':'History is still syncing. Try again.'):e.message==='PHOTO_SETUP'?say('A képfelismeréshez még frissíteni kell a Morzsa AI-szolgáltatását. A fotót megőriztem az újrapróbáláshoz.','Morzsa’s AI service needs an update for photos. Your photo is kept for retry.'):voiceError(Error(({AI_DAILY_LIMIT:'VOICE_DAILY_LIMIT',AI_SIGN_IN_REQUIRED:'VOICE_SIGN_IN_REQUIRED',AI_NOT_CONFIGURED:'VOICE_SETUP_REQUIRED',AI_SETUP_REQUIRED:'VOICE_SETUP_REQUIRED'})[e.message]||e.message))}}
   finally{if(current===scope()&&id===serial){if(!submitted){draft=draft||text;attachment=attachment||selected}pendingSend=null;busy=false;startingTurn=false;resetStream();requestController=null;renderChat();scrollEnd()}if(turn){if(submitted)window.MorzsaPersistence?.finishTurn(tid,turn);else window.MorzsaPersistence?.endTurn(tid,turn)}}
  }

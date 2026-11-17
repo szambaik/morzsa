@@ -33,6 +33,7 @@ jobs:
       - run: npx --prefix design-audit playwright install --with-deps chromium
       - run: node design-audit/check-release.mjs
       - run: node design-audit/performance/runner.mjs regression
+      - run: node design-audit/plus-latency.mjs --check
       - run: npm run build:web
       - run: node design-audit/verify-web-build.mjs
       - name: Record verified release revision

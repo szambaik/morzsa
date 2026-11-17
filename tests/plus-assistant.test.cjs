@@ -7,7 +7,7 @@ function fixture({enabled=true,reserve='reserved',streamData=output}={}){
  const calls=[];return {calls,fetcher:async(url,options={})=>{calls.push({url,options});
   if(url.endsWith('/auth/v1/user'))return Response.json({id:user});
   if(url.endsWith('/rpc/morzsa_plus_access'))return Response.json({enabled,scope:'user:'+user,remainingCents:500});
-  if(url.endsWith('/rpc/reserve_morzsa_plus'))return Response.json({status:reserve});
+  if(url.endsWith('/rpc/reserve_morzsa_plus'))return Response.json({status:enabled?reserve:'denied'});
   if(url.includes('/morzsa_plus_requests?'))return Response.json(options.method==='GET'?[{scope:'user:'+user,call_id:'rtc_12345678'}]:{});
   if(url.endsWith('/responses')){const raw=JSON.stringify(streamData),events=[{type:'response.output_text.delta',delta:raw.slice(0,25)},{type:'response.output_text.delta',delta:raw.slice(25)},{type:'response.completed',response:{status:'completed',usage:{input_tokens:3000,output_tokens:800}}}];return new Response(events.map(e=>'data: '+JSON.stringify(e)+String.fromCharCode(10,10)).join(''),{headers:{'Content-Type':'text/event-stream'}})}
   if(url.endsWith('/realtime/calls'))return new Response('v=0 ANSWER',{headers:{Location:'/v1/realtime/calls/rtc_12345678'}});
@@ -26,7 +26,7 @@ test('Plus denies ungranted accounts and exhausted/duplicate requests before any
 });
 test('OpenAI streams answer previews, validates complete output and settles only token metadata',async()=>{
  const {createHandler}=await import('../supabase/functions/plus-assistant/handler.mjs'),f=fixture();const response=await createHandler(config,f.fetcher)(request({stream:true}));const events=(await response.text()).trim().split(String.fromCharCode(10)).map(JSON.parse);
- assert.equal(response.status,200);assert.ok(events.some(e=>e.type==='answer'&&e.text));assert.deepEqual(events.at(-1),{type:'done',output});assert.ok(!JSON.stringify(events).includes('private-'));
+ assert.equal(response.status,200);assert.ok(events.some(e=>e.type==='answer'&&e.text));assert.deepEqual(events.at(-1),{type:'done',output:{...output,transcript:'Másik süti?'}});assert.ok(!JSON.stringify(events).includes('private-'));
  const provider=JSON.parse(f.calls.find(c=>c.url.endsWith('/responses')).options.body);assert.equal(provider.store,false);assert.equal(provider.model,'gpt-6.1-terra');assert.equal(provider.text.format.strict,true);assert.equal(provider.text.format.schema.additionalProperties,false);
  const settlement=JSON.parse(f.calls.find(c=>c.options.method==='PATCH').options.body);assert.equal(settlement.charged_cents,1);assert.deepEqual(settlement.usage,{input_tokens:3000,output_tokens:800});assert.ok(!JSON.stringify(settlement).includes('almás'));
 });
@@ -76,4 +76,26 @@ test('voice receives authoritative test policy and settles observed usage; clien
   const r=await createHandler({...config,watchCall:async(id,s,end,settle,policy)=>{assert.equal(policy.usageLimitsEnabled,counting);await settle(2.1,{measuredResponses:2})},defer:p=>{work=p}},fetcher)(request({task:'connect',sdp:'v=0 OFFER',usageLimitsEnabled:false}));await work;assert.equal(r.status,200);
   const cost=f.calls.filter(c=>c.options.method==='PATCH').map(c=>JSON.parse(c.options.body)).find(v=>v.state==='complete');assert.equal(cost.charged_cents,3);assert.equal(cost.usage.measuredResponses,2);
  }
+});
+test('chat uses the atomic reservation gate without an extra entitlement round trip',async()=>{
+ const {createHandler}=await import('../supabase/functions/plus-assistant/handler.mjs'),f=fixture();const r=await createHandler(config,f.fetcher)(request());assert.equal(r.status,200);
+ assert.equal(f.calls.filter(c=>c.url.endsWith('/rpc/morzsa_plus_access')).length,0);assert.equal(f.calls.filter(c=>c.url.endsWith('/rpc/reserve_morzsa_plus')).length,1);
+ const provider=JSON.parse(f.calls.find(c=>c.url.endsWith('/responses')).options.body);assert.equal(provider.text.format.schema.properties.transcript,undefined);assert.equal(provider.text.format.schema.required.includes('transcript'),false);assert.equal((await r.json()).transcript,'Másik süti?');
+ const options=await createHandler(config,f.fetcher)(new Request('https://fn.test',{method:'OPTIONS',headers:{origin:'https://app.test'}}));assert.equal(options.headers.get('Access-Control-Max-Age'),'600');
+});
+test('Plus cancellation during authentication cannot reserve or call the provider',async()=>{
+ const {createHandler}=await import('../supabase/functions/plus-assistant/handler.mjs'),controller=new AbortController(),f=fixture();let began;
+ const started=new Promise(r=>began=r),fn=createHandler(config,async(url,options)=>{if(url.endsWith('/user')){began();return new Promise((resolve,reject)=>options.signal.addEventListener('abort',()=>reject(options.signal.reason),{once:true}))}return f.fetcher(url,options)});
+ const work=fn(new Request(request({stream:true}),{signal:controller.signal}));await started;controller.abort();const r=await work;assert.equal(r.status,503);assert.equal(f.calls.length,0);
+});
+test('Plus cancellation observes a late reservation and releases it without a provider call',async()=>{
+ const {createHandler}=await import('../supabase/functions/plus-assistant/handler.mjs'),controller=new AbortController(),f=fixture();let begin,release;
+ const started=new Promise(r=>begin=r),held=new Promise(r=>release=r),fn=createHandler(config,async(url,options)=>{if(url.endsWith('/reserve_morzsa_plus')){begin();await held;assert.equal(options.signal.aborted,false);return Response.json({status:'reserved'})}return f.fetcher(url,options)});
+ const work=fn(new Request(request({stream:true}),{signal:controller.signal}));await started;controller.abort();release();const response=await work;const events=(await response.text()).trim().split('\n').map(JSON.parse);
+ assert.equal(f.calls.some(c=>c.url.endsWith('/responses')),false);assert.equal(events.some(e=>e.type==='done'),false);assert.ok(f.calls.some(c=>c.options.method==='PATCH'&&JSON.parse(c.options.body).state==='failed'));
+});
+test('Plus stream cancellation propagates to OpenAI and cannot complete a proposal',async()=>{
+ const {createHandler}=await import('../supabase/functions/plus-assistant/handler.mjs'),controller=new AbortController(),f=fixture();let begin,cancelled=false;
+ const started=new Promise(r=>begin=r),fn=createHandler(config,async(url,options)=>{if(url.endsWith('/responses')){begin();return new Response(new ReadableStream({start(c){options.signal.addEventListener('abort',()=>{cancelled=true;c.error(options.signal.reason)},{once:true})}}))}return f.fetcher(url,options)});
+ const response=await fn(new Request(request({stream:true}),{signal:controller.signal}));await started;controller.abort();const events=(await response.text()).trim().split('\n').map(JSON.parse);assert.equal(cancelled,true);assert.equal(events.some(e=>e.type==='done'),false);
 });

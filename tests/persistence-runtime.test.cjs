@@ -8,6 +8,7 @@ function harness(){
  const household={userId:()=>user,subscribeData:()=>({close(){}}),dataRpc:async(name,args,auth,expected)=>{
   calls.push({name,args:structuredClone(args),expected,user});if(expected!==user)throw Error('Account changed');
   if(hook){const result=await hook(name,args,expected);if(result!==undefined)return result}
+  if(name==='begin_conversation_turn_page')throw Object.assign(Error('Could not find begin_conversation_turn_page'),{code:'PGRST202'});
   if(name==='conversation_index')return [...rows.values()].filter(r=>r.account===user).map(({account,...r})=>structuredClone(r));
   if(name==='conversation_page')return {messages:[...(msgs.get(args.cid)||[])].map(m=>({id:m.id,body:Model.message(m),sequence:1})),before:1,hasOlder:false};
   if(name==='sync_conversation'){rows.set(args.cid,{id:args.cid,owner:true,account:expected,revision:1,metadata:args.meta});const old=msgs.get(args.cid)||[];for(const m of args.items){const i=old.findIndex(x=>x.id===m.id);if(i<0)old.push(m);else old[i]=m}msgs.set(args.cid,old);return {revision:1}}
@@ -79,4 +80,25 @@ test('an old AI turn cannot flush or release a lock in a reattached account sess
  h.api.detach();h.attach();await drain();h.calls.length=0;
  h.visible.threads[0].messages.push({id:mid,role:'model',text:'New session',createdAt:6,recipes:[]});h.api.capture(h.visible);
  await h.api.finishTurn(cid,turn);assert.equal(h.calls.length,0);assert.equal(h.api.status(),'pending');
+});
+test('combined turn RPC acquires the lock and merges fresh history in one round trip',async()=>{
+ const h=harness();h.attach();await drain();h.safe(false);h.calls.length=0;
+ h.hook(async name=>{if(name==='begin_conversation_turn_page')return {acquired:true,page:{messages:[{id:mid,body:{role:'model',text:'Fresh response',createdAt:7,recipes:[]},sequence:4}],before:4,hasOlder:false}}});
+ const turn=await h.api.beginTurn(cid);assert.deepEqual(h.calls.map(c=>c.name),['begin_conversation_turn_page']);assert.equal(h.visible.threads[0].messages[0].text,'Fresh response');await h.api.endTurn(cid,turn);
+});
+test('combined RPC fallback is only for a missing function and is remembered',async()=>{
+ const h=harness();h.attach();await drain();h.calls.length=0;
+ for(let i=0;i<2;i++){const turn=await h.api.beginTurn(cid);await h.api.endTurn(cid,turn)}
+ assert.equal(h.calls.filter(c=>c.name==='begin_conversation_turn_page').length,1);assert.equal(h.calls.filter(c=>c.name==='begin_conversation_turn').length,2);
+ for(const response of [{acquired:false},null]){
+  const blocked=harness();blocked.attach();await drain();blocked.calls.length=0;
+  blocked.hook(async name=>{if(name==='begin_conversation_turn_page'){if(response)return response;throw Object.assign(Error('Conversation access denied'),{code:'42501'})}});
+  await assert.rejects(blocked.api.beginTurn(cid));assert.deepEqual(blocked.calls.map(c=>c.name),['begin_conversation_turn_page']);
+ }
+});
+test('cancelled combined turn releases a late grant without applying its history',async()=>{
+ const h=harness();h.attach();await drain();const held=pause(),started=pause();h.calls.length=0;
+ h.hook(async name=>{if(name==='begin_conversation_turn_page'){started.resolve();await held.promise;return {acquired:true,page:{messages:[{id:mid,body:{role:'model',text:'Too late',recipes:[]},sequence:1}],before:1,hasOlder:false}}}});
+ const controller=new AbortController(),work=h.api.beginTurn(cid,{signal:controller.signal});await started.promise;controller.abort();await assert.rejects(work,{name:'AbortError'});held.resolve();await drain();
+ assert.equal(h.visible.threads[0].messages.length,0);assert.deepEqual(h.calls.map(c=>c.name),['begin_conversation_turn_page','end_conversation_turn']);
 });

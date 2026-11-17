@@ -1,0 +1,134 @@
+{
+  "verifiedAt": "2026-11-17T10:53:28.746194+00:00",
+  "projectRef": "cbgcugshwivxpaurzyqq",
+  "function": {
+    "slug": "plus-assistant",
+    "version": 16,
+    "status": "ACTIVE",
+    "verify_jwt": false,
+    "ezbr_sha256": "45c7e36a263643d73f5d063f62b7972b2a727adb1eb02b5a9e5665958512f4c7",
+    "updated_at": 1794912707766
+  },
+  "sourceFiles": [
+    {
+      "file": "plus-assistant/handler.mjs",
+      "matches": true,
+      "sha256": "ea6acb582ac6a40d127b7a720a12bfd611135ae2f4fd72ba9f6fda7c6af5233d"
+    },
+    {
+      "file": "plus-assistant/index.ts",
+      "matches": true,
+      "sha256": "79b08ccab6dd76e80cd50765d456ff266001926bcfcf1c401d2d82e53facd72d"
+    },
+    {
+      "file": "plus-assistant/openai.mjs",
+      "matches": true,
+      "sha256": "dc45e086497bbd0c2799933faef0bcbd821e67a12c15eddd8ca017b8a688212c"
+    },
+    {
+      "file": "plus-assistant/realtime.mjs",
+      "matches": true,
+      "sha256": "a3cab0021c476fbfe34c814c4ee4d43117ed79bb46265d9dd3822124a84b793b"
+    },
+    {
+      "file": "recipe-ideas/handler.mjs",
+      "matches": true,
+      "sha256": "626608298fb4a32bb46bf57ac441d78724b65f46b48139ce042b9e5b37b2468b"
+    },
+    {
+      "file": "recipe-image/assets.mjs",
+      "matches": true,
+      "sha256": "629b2ead5255120ecc8b1d0756701bdcaa42394a4eeb8e24a8afeb8fa9d1a24e"
+    },
+    {
+      "file": "recipe-image/fal.mjs",
+      "matches": true,
+      "sha256": "f2d587611bb2bfdf32f1bff0d348c1a86503cd450a16233c95ee665b419dec7e"
+    },
+    {
+      "file": "recipe-image/handler.mjs",
+      "matches": true,
+      "sha256": "8be87a1ca50038ab50a9cd76c7caa825127963c57b4b44bc7c423211d55d1127"
+    },
+    {
+      "file": "recipe-image/persistent.mjs",
+      "matches": true,
+      "sha256": "60abb631f922ea1ed506b1b1d2159811754512cf970debfe5ae692ae56cbf731"
+    },
+    {
+      "file": "voice-command/groq.mjs",
+      "matches": true,
+      "sha256": "bfcc58c758a95f8c339ce17b57e1e6802a5866fd40b715f13ce19fb951f4f8d3"
+    },
+    {
+      "file": "voice-command/handler.mjs",
+      "matches": true,
+      "sha256": "7b8df563cdccae9499fa4ac8f8a57c61271e8c9c1fce7bec58f39b6b9bff896c"
+    },
+    {
+      "file": "voice-command/provider.mjs",
+      "matches": true,
+      "sha256": "15b762f41ee5f0faeb01e939e77c6c2a5ece452c7e86e37b4b23b6db377f6645"
+    },
+    {
+      "file": "voice-command/stream.mjs",
+      "matches": true,
+      "sha256": "2cbe795fb6dceebc5c28482f4750ddd752a9446f5d20eee2bc0f1114bf367467"
+    }
+  ],
+  "httpSmoke": [
+    {
+      "method": "GET",
+      "origin": "https://szambaik.github.io",
+      "status": 200,
+      "allowOrigin": "https://szambaik.github.io",
+      "maxAge": "600",
+      "body": {
+        "configured": true,
+        "enabled": false,
+        "supportsImages": true,
+        "supportsStreaming": true,
+        "textProvider": "openai"
+      }
+    },
+    {
+      "method": "OPTIONS",
+      "origin": "https://szambaik.github.io",
+      "status": 204,
+      "allowOrigin": "https://szambaik.github.io",
+      "maxAge": "600",
+      "body": null
+    },
+    {
+      "method": "POST",
+      "origin": "https://szambaik.github.io",
+      "status": 401,
+      "allowOrigin": "https://szambaik.github.io",
+      "maxAge": "600",
+      "body": {
+        "error": "VOICE_SIGN_IN_REQUIRED"
+      }
+    },
+    {
+      "method": "GET",
+      "origin": "https://invalid.example",
+      "status": 403,
+      "allowOrigin": null,
+      "maxAge": null,
+      "body": {
+        "error": "VOICE_ORIGIN_DENIED"
+      }
+    }
+  ],
+  "databaseVerification": {
+    "signature": "begin_conversation_turn_page(uuid,uuid)",
+    "securityDefiner": true,
+    "emptySearchPath": true,
+    "authenticatedExecute": true,
+    "anonExecute": false,
+    "publicExecute": false,
+    "definitionMatchesMigration": true
+  },
+  "paidProviderRequests": 0,
+  "householdRecordsModified": 0
+}

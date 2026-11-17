@@ -1,0 +1,277 @@
+{
+  "labOnly": true,
+  "baselineCommit": "ab1ea37",
+  "sourceNote": "Before was measured before application edits. Final includes runtime source hashes. No paid provider calls or real household data were used.",
+  "runs": {
+    "before": {
+      "rawEvidence": "design-audit/runs/plus-latency-2026-11-17T10-36-45.368Z",
+      "labOnly": true,
+      "rpcDelayMs": 200,
+      "providerDependenciesDelayMs": 120,
+      "sourceRevision": "working-tree",
+      "errors": [],
+      "browser": {
+        "started": 1086.7000000029802,
+        "dispatched": 1722.9000000059605,
+        "firstChunk": 1727.4000000059605,
+        "visibleAfter450ms": 110,
+        "expectedPrefixChars": 1472,
+        "afterComplete": {
+          "completed": 5227.9000000059605,
+          "stillAnimating": true,
+          "text": 2193
+        },
+        "sendToDispatchMs": 636.2000000029802,
+        "dispatchToChunkMs": 4.5,
+        "rpcCalls": [
+          {
+            "path": "/rest/v1/rpc/list_household_email_invites",
+            "duration": 0.7918749999998909,
+            "status": 200
+          },
+          {
+            "path": "/rest/v1/rpc/conversation_index",
+            "duration": 2.365332999999737,
+            "status": 200
+          },
+          {
+            "path": "/rest/v1/rpc/sync_conversation",
+            "duration": 3.081125000000611,
+            "status": 200
+          },
+          {
+            "path": "/rest/v1/rpc/conversation_index",
+            "duration": 2.2334159999991243,
+            "status": 200
+          },
+          {
+            "path": "/rest/v1/rpc/conversation_page",
+            "duration": 1.7791250000000218,
+            "status": 200
+          },
+          {
+            "path": "/rest/v1/rpc/sync_conversation",
+            "duration": 203.49320799999987,
+            "status": 200
+          },
+          {
+            "path": "/rest/v1/rpc/begin_conversation_turn",
+            "duration": 202.30054100000052,
+            "status": 200
+          },
+          {
+            "path": "/rest/v1/rpc/conversation_page",
+            "duration": 203.01975000000039,
+            "status": 200
+          },
+          {
+            "path": "/rest/v1/rpc/sync_conversation",
+            "duration": 204.46491700000024,
+            "status": 200
+          },
+          {
+            "path": "/rest/v1/rpc/sync_conversation",
+            "status": null
+          }
+        ]
+      },
+      "server": {
+        "calls": [
+          {
+            "path": "/auth/v1/user",
+            "atMs": 2.0448749999995925
+          },
+          {
+            "path": "/rest/v1/rpc/morzsa_plus_access",
+            "atMs": 127.15749999999935
+          },
+          {
+            "path": "/rest/v1/rpc/reserve_morzsa_plus",
+            "atMs": 250.80958399999872
+          },
+          {
+            "path": "/v1/responses",
+            "atMs": 374.0276670000003
+          },
+          {
+            "path": "/rest/v1/morzsa_plus_requests",
+            "atMs": 436.7167499999996
+          }
+        ],
+        "firstPreviewMs": 436.2928749999992,
+        "totalMs": 558.312249999999
+      }
+    },
+    "after": {
+      "rawEvidence": "design-audit/runs/plus-latency-2026-11-17T10-39-52.112Z",
+      "labOnly": true,
+      "rpcDelayMs": 200,
+      "providerDependenciesDelayMs": 120,
+      "sourceRevision": "working-tree",
+      "errors": [],
+      "browser": {
+        "started": 874.5999999940395,
+        "dispatched": 1306.7000000029802,
+        "firstChunk": 1309.7999999970198,
+        "visibleAfter450ms": 1472,
+        "expectedPrefixChars": 1472,
+        "afterComplete": {
+          "completed": 4815.20000000298,
+          "stillAnimating": false,
+          "text": 1523
+        },
+        "sendToDispatchMs": 432.1000000089407,
+        "dispatchToChunkMs": 3.0999999940395355,
+        "rpcCalls": [
+          {
+            "path": "/rest/v1/rpc/list_household_email_invites",
+            "duration": 0.6702080000000024,
+            "status": 200
+          },
+          {
+            "path": "/rest/v1/rpc/conversation_index",
+            "duration": 2.3739579999999023,
+            "status": 200
+          },
+          {
+            "path": "/rest/v1/rpc/sync_conversation",
+            "duration": 3.920667000000094,
+            "status": 200
+          },
+          {
+            "path": "/rest/v1/rpc/conversation_index",
+            "duration": 2.2355830000001333,
+            "status": 200
+          },
+          {
+            "path": "/rest/v1/rpc/conversation_page",
+            "duration": 1.6364999999998417,
+            "status": 200
+          },
+          {
+            "path": "/rest/v1/rpc/sync_conversation",
+            "duration": 205.31866600000012,
+            "status": 200
+          },
+          {
+            "path": "/rest/v1/rpc/begin_conversation_turn_page",
+            "duration": 208.2244999999998,
+            "status": 200
+          },
+          {
+            "path": "/rest/v1/rpc/sync_conversation",
+            "duration": 208.4665,
+            "status": 200
+          },
+          {
+            "path": "/rest/v1/rpc/sync_conversation",
+            "status": null
+          }
+        ]
+      },
+      "server": {
+        "calls": [
+          {
+            "path": "/auth/v1/user",
+            "atMs": 1.6824159999996482
+          },
+          {
+            "path": "/rest/v1/rpc/reserve_morzsa_plus",
+            "atMs": 124.32187499999964
+          },
+          {
+            "path": "/v1/responses",
+            "atMs": 248.74912500000028
+          },
+          {
+            "path": "/rest/v1/morzsa_plus_requests",
+            "atMs": 311.6231250000001
+          }
+        ],
+        "firstPreviewMs": 310.6966659999998,
+        "totalMs": 433.85949999999957
+      }
+    },
+    "final": {
+      "rawEvidence": "design-audit/runs/plus-latency-2026-11-17T10-45-34.545Z",
+      "labOnly": true,
+      "rpcDelayMs": 200,
+      "providerDependenciesDelayMs": 120,
+      "sourceRevision": "working-tree",
+      "errors": [],
+      "sourceHashes": {
+        "companion-ui.js": "aab8b8a8c9cc37a2c04f5f1e7dcb3d621dd5aec4f5e74046411c55462f20a901",
+        "persistence.js": "cc983c0976bff14a6dac44d3d8d3a303a8ddb7ab28344a7ea0f91eb8256ad3eb",
+        "supabase/functions/plus-assistant/handler.mjs": "ea6acb582ac6a40d127b7a720a12bfd611135ae2f4fd72ba9f6fda7c6af5233d",
+        "supabase/functions/plus-assistant/openai.mjs": "dc45e086497bbd0c2799933faef0bcbd821e67a12c15eddd8ca017b8a688212c"
+      },
+      "browser": {
+        "started": 875.7999999970198,
+        "dispatched": 1314.6000000089407,
+        "firstChunk": 1317.5,
+        "visibleAfter450ms": 1472,
+        "expectedPrefixChars": 1472,
+        "afterComplete": {
+          "completed": 4818.600000008941,
+          "stillAnimating": false,
+          "text": 1523
+        },
+        "sendToDispatchMs": 438.80000001192093,
+        "dispatchToChunkMs": 2.8999999910593033,
+        "rpcCalls": [
+          {
+            "path": "/rest/v1/rpc/sync_conversation",
+            "duration": 206.07283400000006,
+            "status": 200
+          },
+          {
+            "path": "/rest/v1/rpc/begin_conversation_turn_page",
+            "duration": 204.2086250000002,
+            "status": 200
+          },
+          {
+            "path": "/rest/v1/rpc/sync_conversation",
+            "duration": 210.01049999999987,
+            "status": 200
+          },
+          {
+            "path": "/rest/v1/rpc/sync_conversation",
+            "status": null
+          }
+        ]
+      },
+      "server": {
+        "calls": [
+          {
+            "path": "/auth/v1/user",
+            "atMs": 2.164082999999664
+          },
+          {
+            "path": "/rest/v1/rpc/reserve_morzsa_plus",
+            "atMs": 124.46516699999938
+          },
+          {
+            "path": "/v1/responses",
+            "atMs": 248.23108299999967
+          },
+          {
+            "path": "/rest/v1/morzsa_plus_requests",
+            "atMs": 311.0967499999997
+          }
+        ],
+        "firstPreviewMs": 310.1927919999998,
+        "totalMs": 432.67291699999987
+      }
+    }
+  },
+  "validation": {
+    "javascriptTests": 333,
+    "sqlSuites": 10,
+    "pythonTests": 9,
+    "auditInfrastructureTests": 26,
+    "axeScans": 32,
+    "targetedUXChecks": 54,
+    "nativeControlChecks": 68,
+    "nativeComposerChecks": 22
+  }
+}

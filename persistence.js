@@ -1,6 +1,6 @@
 window.MorzsaPersistence=(()=>{
  const M=PersistenceModel,read=k=>{try{return JSON.parse(localStorage.getItem(k))}catch{return null}},say=(hu,en)=>language==='en'?en:hu;
- let refreshDeferred=false,lastIndexRefresh=0;
+ let refreshDeferred=false,lastIndexRefresh=0,turnPageSupported=null;
  let user='',book=null,callbacks={},epoch=0,ready=false,running=false,refreshing=false,queue={},timer,refreshTimer,live,issue='',indexPages=1,more=false;
  const signedPhotos=new Map(),knownMeta=new Map(),knownMessages=new Map(),recipeIds=new Map(),media=new Map(),turnAccounts=new Map();
  const valid=()=>user&&user===household?.userId();
@@ -75,9 +75,9 @@ window.MorzsaPersistence=(()=>{
   }catch(e){if(current===user&&generation===epoch){issue=/denied/i.test(e.message||'')?'access':'failed';status()}}
   finally{if(current===user&&generation===epoch){running=false;if(!issue&&Object.keys(queue).length)timer=setTimeout(flush,500)}}
  }
- async function loadThread(id,older=false,force=false){
+ async function loadThread(id,older=false,force=false,providedPage=null){
   if(!valid())return;const generation=epoch,current=user,t=book.threads.find(t=>t.id===id);if(!t||!t.revision&&!force)return;
-  const result=await rpc('conversation_page',{cid:id,before_seq:older?t.before:null});if(!same(current,generation)||book.threads.find(x=>x.id===id)!==t||!force&&callbacks.safe?.()===false)return;
+  const result=providedPage||await rpc('conversation_page',{cid:id,before_seq:older?t.before:null});if(!same(current,generation)||book.threads.find(x=>x.id===id)!==t||!force&&callbacks.safe?.()===false)return;
   const previous=JSON.stringify(t);const msgs=result.messages.map(r=>({...r.body,id:r.id,sequence:r.sequence}));msgs.forEach(m=>knownMessages.set(m.id,JSON.stringify(M.message(m))));
   t.messages=M.mergeMessages(msgs,t.messages||[],queue[id]?.items||[]);t.loaded=true;if(older||!t.before){t.before=result.before;t.hasOlder=result.hasOlder}
   for(const m of msgs)if(m.photoPath)try{let signed=signedPhotos.get(m.photoPath);if(!signed||signed.expires<Date.now()){signed={...await household.mediaSign(m.photoPath,current),expires:Date.now()+1700000};signedPhotos.set(m.photoPath,signed)}if(!same(current,generation))return;const local=t.messages.find(i=>i.id===m.id);if(local)local.photo=window.MORZSA_CLOUD.url+'/storage/v1'+signed.signedURL}catch{}
@@ -110,9 +110,15 @@ window.MorzsaPersistence=(()=>{
    const turn=crypto.randomUUID();let acquired=false;
    try{
     // Do not abort an in-flight lock RPC: observe its result and release a granted lock.
-    acquired=await rpc('begin_conversation_turn',{cid:id,tid:turn},current);
+    let page=null;
+    if(turnPageSupported!==false){
+     try{const result=await rpc('begin_conversation_turn_page',{cid:id,tid:turn},current);if(typeof result?.acquired!=='boolean')throw Error('Invalid turn response');turnPageSupported=true;acquired=result.acquired;page=result.page}
+     catch(e){if(e.code==='PGRST202'||/Could not find.*begin_conversation_turn_page|function.*begin_conversation_turn_page.*does not exist/i.test(e.message||''))turnPageSupported=false;else throw e}
+    }
+    // A missing additive RPC uses the existing deployed contract until rollout.
+    if(turnPageSupported===false){guard(current,generation);signal?.throwIfAborted();acquired=await rpc('begin_conversation_turn',{cid:id,tid:turn},current)}
     if(!acquired)throw Error('Another device is answering');guard(current,generation);signal?.throwIfAborted();
-    await loadThread(id,false,true);guard(current,generation);signal?.throwIfAborted();turnAccounts.set(turn,{account:current,generation});return turn;
+    await loadThread(id,false,true,page);guard(current,generation);signal?.throwIfAborted();turnAccounts.set(turn,{account:current,generation});return turn;
    }catch(e){if(acquired)await rpc('end_conversation_turn',{cid:id,tid:turn},current).catch(()=>{});throw e}
   })();
   if(!signal)return work;
