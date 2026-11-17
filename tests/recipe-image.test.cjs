@@ -130,3 +130,21 @@ test('a cached miss does not trigger offscreen generation on a new Plus step vie
  images.mount(host(),recipe,0,{autoCreate:true});await new Promise(resolve=>setImmediate(resolve));assert.deepEqual(calls.map(i=>i.create),[false]);
  observers.at(-1)([{isIntersecting:true}]);await new Promise(resolve=>setImmediate(resolve));assert.deepEqual(calls.map(i=>i.create),[false,true]);
 });
+
+test('pending images poll quickly then back off, never resubmit and stop after navigation',async()=>{
+ const vm=require('node:vm'),fs=require('node:fs'),inputs=[],timers=[];
+ const host={isConnected:true,children:[],dataset:{},replaceChildren(){this.children=[]},append(...nodes){this.children.push(...nodes)}};
+ const context={window:{},household:{active:null,userId:()=> 'test',recipeImage:async input=>{inputs.push(input);return {status:'pending'}}},language:'hu',document:{createElement:tag=>({tag})},IntersectionObserver:class{constructor(cb){this.cb=cb}observe(){this.cb([{isIntersecting:true}])}disconnect(){}},setTimeout:(fn,ms)=>timers.push({fn,ms})};
+ vm.runInNewContext(fs.readFileSync('recipe-images.js','utf8'),context);context.window.RecipeImages.mount(host,recipe,-1,{autoCreate:true});
+ const flush=()=>new Promise(resolve=>setImmediate(resolve));await flush();
+ for(let i=0;i<8;i++){await timers[i].fn();await flush()}
+ assert.deepEqual(timers.map(t=>t.ms),[750,750,750,750,1500,1500,1500,1500,4000]);assert.equal(inputs[0].create,true);assert.equal(inputs.slice(1).every(i=>i.create===false),true);
+ host.isConnected=false;await timers.at(-1).fn();await flush();assert.equal(inputs.length,9);
+});
+test('optional cover metadata preserves the existing legacy image cache identity',async()=>{
+ const {createHandler}=await import('../supabase/functions/recipe-image/handler.mjs'),a=imageApiFixture(),b=imageApiFixture();
+ await createHandler(a.config,a.fetcher)(a.request(false));
+ const input=await b.request(false).json();input.recipe.imagePrompt='Golden thin pancakes stacked on a cream ceramic plate in warm daylight, without toppings.';
+ await createHandler(b.config,b.fetcher)(new Request('https://function',{method:'POST',headers:{origin:'https://app',Authorization:'Bearer user'},body:JSON.stringify(input)}));
+ assert.equal(a.calls.find(c=>c.url.includes('cache_key=')).url,b.calls.find(c=>c.url.includes('cache_key=')).url);assert.equal(b.calls.some(c=>c.url.includes('groq')||c.url.includes('cloudflare')),false);
+});

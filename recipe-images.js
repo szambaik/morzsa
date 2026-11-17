@@ -49,7 +49,7 @@ window.RecipeImages=(()=>{
   const refresh=()=>{for(const draw of entry.views.values())draw()};
   async function load(create,regenerate=false){
    autoAttempted ||= create;
-   if(entry.status==='loading'||entry.retryAt>Date.now())return;entry.status='loading';delete entry.error;if(create)entry.requestedAt=Date.now();refresh();
+   if(entry.status==='loading'||entry.retryAt>Date.now())return;entry.status='loading';delete entry.error;if(create){entry.requestedAt=Date.now();entry.pollAttempts=0}refresh();
    const work=async()=>{
     // Navigation may detach every view while another image occupies the queue.
     // Keep a replacement view of the same recipe alive, but skip abandoned work.
@@ -57,7 +57,7 @@ window.RecipeImages=(()=>{
     try{let r;if(household.libraryImage&&(recipe.recipeId||window.MorzsaPersistence&&household.dataRpc)){const saved=recipe.recipeId?recipe:await MorzsaPersistence.ensureRecipe(recipe);r=await household.libraryImage({recipeId:saved.recipeId,step,create,...(regenerate?{regenerate:true}:{})})}else r=await household.recipeImage({recipe,step,create});if(r.status==='ready'){
       const base=window.MORZSA_CLOUD?.url;if(typeof r.url!=='string'||!base||!(r.url.startsWith(base+'/storage/v1/object/sign/')||recipe.recipeId&&r.url.startsWith(base+'/storage/v1/object/public/recipe-catalog/')))throw Error('IMAGE_UNAVAILABLE');
       Object.assign(entry,{status:'ready',url:r.url,expiresAt:r.expiresAt,canReplace:r.canReplace===true});
-     }else {entry.status=r.status==='pending'?'pending':'missing';if(entry.status==='pending'&&!entry.polls&&Date.now()-(entry.requestedAt||Date.now())<90000){entry.polls=1;entry.requestedAt??=Date.now();setTimeout(()=>{entry.polls=0;if(key(recipe,step)===id&&[...entry.views.keys()].some(view=>view.isConnected))load(false)},4000)}};
+     }else {entry.status=r.status==='pending'?'pending':'missing';if(entry.status==='pending'&&!entry.polls&&Date.now()-(entry.requestedAt||Date.now())<90000){entry.polls=1;entry.requestedAt??=Date.now();const attempt=entry.pollAttempts||0;entry.pollAttempts=attempt+1;const delay=attempt<4?750:attempt<8?1500:4000;setTimeout(()=>{entry.polls=0;if(key(recipe,step)===id&&[...entry.views.keys()].some(view=>view.isConnected))load(false)},delay)}};
     }catch(e){entry.error=Object.hasOwn(errors,e.message)||e.message==='IMAGE_LIMIT'?e.message:e.httpStatus===401?'IMAGE_SIGN_IN_REQUIRED':['AbortError','TimeoutError'].includes(e.name)?'IMAGE_TIMEOUT':'IMAGE_UNAVAILABLE';entry.status=entry.error==='IMAGE_LIMIT'?'limit':'failed';
      if(['IMAGE_COOLDOWN','IMAGE_PROVIDER_LIMIT'].includes(entry.error)){const seconds=Math.min(300,Math.max(1,Number(e.retryAfter)||60));entry.retryAt=Date.now()+seconds*1000;setTimeout(()=>{delete entry.retryAt;refresh()},seconds*1000)}
     }
