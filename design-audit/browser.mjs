@@ -62,7 +62,7 @@ export async function runBrowser({runDir,profile='full',repoRoot=path.resolve(im
   current='B';active=await open();p=active.p;
   await attempt('B-journey','Inventory add, availability, detail, undo and refresh',async()=>{
    await clickNav(p,'pantry');await capture(p,'B-inventory',{axe:true});
-   await p.locator('#catalog-search').fill('Audit bazsalikom');await p.locator('.pantry-inline-search button').click();await p.locator('#workspace-entry').waitFor({state:'visible'});await capture(p,'B-quick-add',{axe:true});
+   await p.locator('#catalog-search').fill('Audit bazsalikom');await p.locator('#workspace-quick-add').click();await p.locator('#workspace-entry').waitFor({state:'visible'});await capture(p,'B-quick-add',{axe:true});
    if(await p.locator('#workspace-entry input').inputValue())await p.locator('#workspace-entry input').press('Enter');await p.locator('.workspace-entry-save').click();
    record('B-add-no-quantity','Custom inventory item added without quantity',await p.evaluate(()=>state.stock['Audit bazsalikom']===2));
    await p.locator('#catalog-search').fill('');await p.locator('[data-pantry-details="Tej"]').click();await capture(p,'B-availability-details',{axe:true});await p.locator('#pantry-item-dialog [data-value="1"]').click();record('B-low','Kevés persists as approximate availability',await p.evaluate(()=>state.stock.Tej===1));await p.locator('#pantry-item-dialog [data-value="0"]').click();record('B-used-up','Elfogyott persists distinctly from Kevés',await p.evaluate(()=>state.stock.Tej===0));await p.locator('#pantry-item-dialog [data-value="2"]').click();record('B-have','Van otthon persists distinctly',await p.evaluate(()=>state.stock.Tej===2));await p.locator('#pantry-item-dialog .close').click();

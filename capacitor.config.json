@@ -3,7 +3,8 @@
   "appName": "Morzsa",
   "webDir": "dist",
   "ios": {
-    "contentInset": "never"
+    "contentInset": "never",
+    "zoomEnabled": false
   },
   "android": {
     "backgroundColor": "#f7f5ef"

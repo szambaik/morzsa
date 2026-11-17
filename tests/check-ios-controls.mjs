@@ -35,7 +35,9 @@ try{
   if(process.argv[2]){fs.mkdirSync(process.argv[2],{recursive:true});await page.screenshot({path:path.join(process.argv[2],'composer-failure.png')})}
   throw error;
  }
+ const viewportRun=eval('('+fs.readFileSync(path.join(root,'tests/mobile-viewport.browser.js'),'utf8')+')');
+ result.viewport=await viewportRun(page);
  if(errors.length)throw Error('Browser errors: '+errors.join('; '));
  if(process.argv[2]){fs.mkdirSync(process.argv[2],{recursive:true});fs.writeFileSync(path.join(process.argv[2],'results.json'),JSON.stringify(result,null,2))}
- console.log('iOS controls passed: '+result.count+' checks; native composer: '+result.composer.count+' checks.');
+ console.log('iOS controls passed: '+result.count+' checks; native composer: '+result.composer.count+' checks; mobile viewport: '+result.viewport.count+' checks.');
 }finally{await browser?.close();fixture.kill('SIGTERM')}
