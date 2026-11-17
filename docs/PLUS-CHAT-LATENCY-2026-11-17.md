@@ -1,6 +1,6 @@
 # Morzsa Plus — szöveges válaszok késleltetése
 
-A felhasználó a gépelt Plus-üzenet elküldését és a válasz megjelenését is lassúnak tapasztalta. A javítás az ab1ea37 main állapotra épül, a már összeolvasztott natív UI- és AI-beállítási változásokkal együtt.
+A felhasználó a gépelt Plus-üzenet elküldését és a válasz megjelenését is lassúnak tapasztalta. A javítás az ab1ea37 main állapotra épül, a már összeolvasztott natív UI- és AI-beállítási változásokkal együtt. A kiadás előtt az újabb f71918c main állapot (receptképek helyreállítása navigáció és iOS-visszatérés után) is be lett olvasztva, majd a tesztek és a teljes release gate ismét lefutottak.
 
 ## Megtalált és javított késleltetések
 
@@ -31,7 +31,7 @@ Ezek egy-egy szintetikus laborfutás adatai, nem éles OpenAI-latenciák vagy p9
 
 ## Ellenőrzés
 
-333 JavaScript-teszt, 10 SQL-csomag, 9 Python-teszt és 26 audit-infrastruktúra teszt sikeres. A teljes release gate 32 axe-scant, 54 UX-ellenőrzést, 68 natív vezérlő- és 22 composer-ellenőrzést teljesített. A csomagolt web build külön böngészős ellenőrzése is sikeres.
+339 JavaScript-teszt, 10 SQL-csomag, 9 Python-teszt és 26 audit-infrastruktúra teszt sikeres. A teljes release gate 32 axe-scant, 54 UX-ellenőrzést, 68 natív vezérlő- és 22 composer-ellenőrzést teljesített. A csomagolt web build külön böngészős ellenőrzése és a natív bundle összeállítása is sikeres.
 
 A regressziók ellenőrzik a teljes beérkezett szöveg azonnali megjelenését; a régi és új lock közös viselkedését; a friss előzmény egyetlen RPC-ből történő átvételét; a hiányzó RPC-re visszaállást; a megosztott/idegen/anonim felhasználó elutasítását; a megszakított authot, a késői foglalást és a megszakított OpenAI-streamet. Az új migrációt kétszer alkalmazó SQL-teszt is fut.
 
@@ -58,5 +58,9 @@ CI-ben MORZSA_AUDIT_BROWSER_CHANNEL=chromium választja a telepített böngész�
 A webes változtatás a kötelező audit után publikálható. A teljes gyorsításhoz az új 20261117_chat_turn_page.sql migráció és a plus-assistant Edge Function telepítése is szükséges. A migráció új függvényt ad hozzá, meglévő felhasználói rekordot, RLS-szabályt vagy régi RPC-t nem módosít. Egy régebbi natív kliens a régi RPC-ket használja tovább; a felületi gyorsításhoz új natív build kell.
 
 A telepített Plus-függvény v15 forrása helyben le lett mentve összehasonlításhoz és visszaállításhoz. A chat-kódja megegyezett a mainnel; a behúzott képkezelő függőségei régebbiek voltak. Az új kiadás a main már tesztelt képkezelő függőségeit tartalmazza.
+
+2026-11-17-én, külön felhasználói jóváhagyással élesítve lett az új RPC és a plus-assistant v16 a cbgcugshwivxpaurzyqq Supabase-projekten. A visszaolvasott SQL-definíció megfelel a migrációnak; az authenticated szerep futtathatja, az anon és PUBLIC szerep nem. A régi RPC-k változatlanok. Az Edge Function ACTIVE állapotú, és a letöltött 13 forrásfájl bájtról bájtra egyezik a helyi, tesztelt kóddal.
+
+Az éles HTTP-ellenőrzésben a publikus GET 200, az OPTIONS 204 és 600 másodperces CORS-cache, a bejelentkezés nélküli POST 401, a tiltott origin 403 választ adott. A deployment ellenőrzése nem küldött modellkérést és nem módosított háztartási adatot. A verzió, forráshashek és HTTP-eredmények a [production-deployment.json](plus-chat-latency-2026-11-17/production-deployment.json) fájlban találhatók. A felületi változás a webes kiadással, telepített natív alkalmazásban új builddel válik elérhetővé.
 
 Az új szervernaplók csak időzítést, modellnevet és token-darabszámokat tartalmaznak: morzsa_plus_chat_ready.preflightMs és morzsa_plus_text_timing.headersMs/firstTextMs/totalMs, valamint cachedInputTokens és reasoningTokens. Kérdés, válasz, fotó, hozzáférési token vagy felhasználóazonosító nem kerül ezekbe a naplókba. Így egy későbbi éles mintából elkülöníthető az alkalmazás várakozása a modell tényleges elsőszöveg-idejétől.
