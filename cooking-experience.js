@@ -3,7 +3,7 @@ const CookingExperience = (() => {
  const types=['tip_card','substitution_card','troubleshooting_card','timer_card','ingredient_checklist','step_visual'];
  const text=(v,max)=>typeof v==='string'&&v.trim().length>0&&v.length<=max&&!/[\u0000-\u0008]/.test(v);
  function guidance(value,recipe,step){
-  if(!value||value.version!==1||value.step!==step||!Number.isInteger(step)||step<0||step>=recipe?.steps?.length||!Array.isArray(value.components)||value.components.length>4)return null;
+  if(!Array.isArray(recipe?.steps)||!Array.isArray(recipe?.ingredients)||!value||value.version!==1||value.step!==step||!Number.isInteger(step)||step<0||step>=recipe.steps.length||!Array.isArray(value.components)||value.components.length>4)return null;
   const components=[];
   for(const raw of value.components){
    if(!raw||typeof raw!=='object'||Array.isArray(raw))return null;

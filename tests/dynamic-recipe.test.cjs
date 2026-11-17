@@ -48,6 +48,9 @@ test('both provider paths discard invalid UI without losing a useful answer or a
  const input=normalizeInput({assistant:true,companion:true,text:'Mire figyeljek?',context:{cookingRecipe:recipe,cookingStep:0,cookingSession:{phase:'guided',paused:true,completedSteps:[],timers:[]}}});
  const base={transcript:'Mire figyeljek?',answer:'A csomag utasítása szerint.',clarification:'',recipes:[],operations:[]};
  const result=finalOutput({...base,cookingUI:{version:1,step:0,components:[{type:'html',text:'<script>'}]}},input);assert.deepEqual(result,base);
+ const unsolicited={version:1,step:0,components:[{type:'ingredient_checklist',title:'Előkészítés',indices:[0]}]};
+ assert.equal(E.guidance(unsolicited,undefined,0),null);assert.equal(E.guidance(unsolicited,{},0),null);
+ assert.deepEqual(finalOutput({...base,cookingUI:unsolicited},normalizeInput({assistant:true,companion:true,text:'Szia',context:{}})),base);
  assert(bodyFor(input).generationConfig.responseSchema.properties.cookingUI);const schema=responsesBody(textBodyFor(input),{}).text.format.schema;assert(schema.properties.cookingUI.type.includes('null'));
  assert.equal(input.context.cookingSession.paused,true);assert.deepEqual(result.operations,[]);
 });
