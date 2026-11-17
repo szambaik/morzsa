@@ -56,20 +56,23 @@ final class MorzsaViewController: CAPBridgeViewController, UITabBarDelegate {
             else { configuration = prominent ? .filled() : .tinted() }
             configuration.cornerStyle = .capsule
             configuration.title = spec["title"] as? String
+            configuration.titleLineBreakMode = .byTruncatingTail
             if let symbol = spec["symbol"] as? String, !symbol.isEmpty { configuration.image = UIImage(systemName: symbol) }
             configuration.imagePadding = 5
             configuration.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 8, bottom: 5, trailing: 8)
             configuration.baseBackgroundColor = prominent ? UIColor(red: 0.75, green: 0.306, blue: 0.173, alpha: 1) : UIColor(red: 0.973, green: 0.953, blue: 0.914, alpha: 0.8)
             configuration.baseForegroundColor = prominent ? .white : UIColor(red: 0.204, green: 0.275, blue: 0.220, alpha: 1)
             if spec["destructive"] as? Bool == true { configuration.baseForegroundColor = .systemRed }
+            let fontSize = CGFloat(spec["fontSize"] as? Double ?? 14)
             configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
                 var attributes = incoming
-                attributes.font = UIFont.preferredFont(forTextStyle: .subheadline)
+                attributes.font = UIFontMetrics(forTextStyle: .subheadline).scaledFont(for: UIFont.systemFont(ofSize: max(12, min(22, fontSize))))
                 return attributes
             }
             button.configuration = configuration
             button.titleLabel?.adjustsFontForContentSizeCategory = true
-            button.titleLabel?.numberOfLines = 2
+            button.titleLabel?.numberOfLines = 1
+            button.titleLabel?.lineBreakMode = .byTruncatingTail
             button.isEnabled = spec["disabled"] as? Bool != true
             button.accessibilityLabel = label
             button.accessibilityTraits = spec["selected"] as? Bool == true ? [.button, .selected] : .button

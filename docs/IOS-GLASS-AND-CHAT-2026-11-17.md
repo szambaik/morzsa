@@ -22,7 +22,7 @@ retained the performance session's web bundle and existing audit regressions.
   bridge calls for streamed answer text. UIScrollView owns panning; fixed native
   controls track its offset. Nested scrolling temporarily uses web buttons.
 
-Browser validation: tests/ios-controls.browser.js (29 checks),
+Browser validation: tests/ios-controls.browser.js (30 checks),
 tests/ios-native.browser.js (36 checks), using the synthetic persistence
 fixture on port 8899. Widths: 320, 360, 390 and 1366px. These tests issue no
 external AI requests and do not write to production households. Native build
@@ -33,3 +33,7 @@ Validation on 2026-11-17: all JavaScript/SQL suites and 9 Python tests passed;
 gate passed with 32 axe scans and 54 targeted checks. Web build validation and
 Xcode 27.2 iOS Simulator compilation passed. Fresh simulator startup required
 OS migration; no physical iPhone voice/permission test is claimed.
+
+iPad and iPhone 17e launch screens were inspected in the simulator. Compact
+button typography follows each existing control; icon-only actions avoid
+duplicate text glyphs. Signed iPhone build and extracted IPA signature verified.

@@ -9,6 +9,7 @@ async page=>{
  check(await page.locator('.ios-native-control').count()===0,'web buttons stay usable before native acknowledgment');
  await page.evaluate(()=>{glassMode='normal';glassResolve()});await tick();
  check(await page.locator('.ios-native-control').count()>0,'acknowledged native buttons replace simple web buttons');
+ check(await page.evaluate(()=>{const b=glassCalls.at(-1).buttons.find(b=>b.symbol==='sidebar.left');return !b||b.title===''}),'native history icon does not duplicate the web hamburger glyph');
  check(await page.locator('.ios-native-control').evaluateAll(els=>els.every(el=>el.getAttribute('aria-hidden')==='true'&&el.tabIndex===-1)),'native controls have no duplicate accessibility targets');
  check(await page.locator('#companion-form [data-photo]').evaluate(el=>!el.classList.contains('ios-native-control')),'photo picker retains trusted user activation');
  await page.evaluate(()=>{window.oldCalls=glassCalls.length;for(let i=0;i<10;i++)native.refresh()});await tick();check(await page.evaluate(()=>glassCalls.length===oldCalls),'unchanged state sends no repeated control payloads');

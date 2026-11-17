@@ -23,7 +23,7 @@ export function installIOSControls(plugin){
    let fixed=false;for(let parent=el;parent;parent=parent.parentElement)if(['fixed','sticky'].includes(getComputedStyle(parent).position)){fixed=true;break}
    if(!ids.has(el))ids.set(el,String(++next));const id=ids.get(el),r=el.getBoundingClientRect();
    const selected=el.getAttribute('aria-pressed')==='true'||el.getAttribute('aria-selected')==='true';
-   buttons.push({id,x:Math.round(r.x*2)/2,y:Math.round(r.y*2)/2,width:r.width,height:r.height,fixed,label,title:symbol&&(!text||text==='×'||el.matches('[type=submit]'))?'':text,symbol:symbol||'',disabled:el.disabled,selected,prominent:el.matches('.primary,[type=submit],.cooking-complete,.recipe-chat-cook,[data-start-shopping]'),destructive:el.matches('[data-end],[data-voice-end]')});elements.set(id,el);
+   buttons.push({id,x:Math.round(r.x*2)/2,y:Math.round(r.y*2)/2,width:r.width,height:r.height,fixed,label,title:symbol&&(!/[\p{L}\p{N}]/u.test(text)||el.matches('[type=submit],.companion-header-history'))?'':text,fontSize:parseFloat(getComputedStyle(el).fontSize)||14,symbol:symbol||'',disabled:el.disabled,selected,prominent:el.matches('.primary,[type=submit],.cooking-complete,.recipe-chat-cook,[data-start-shopping]'),destructive:el.matches('[data-end],[data-voice-end]')});elements.set(id,el);
    if(buttons.length>=80)break;
   }
   return {buttons,elements};
