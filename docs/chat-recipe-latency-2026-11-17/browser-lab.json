@@ -1,0 +1,51 @@
+{
+  "labOnly": true,
+  "checks": [
+    "Preview before completion without saves, image generation or cooking actions",
+    "Validated final recipe replaces preview",
+    "Stop removes incomplete cards",
+    "Retry produces exactly one complete card",
+    "Invalid final recipe discards preview"
+  ],
+  "errors": [],
+  "timings": [
+    {
+      "event": "morzsa_chat_timing",
+      "mode": "plus",
+      "preflightMs": 19.899999991059303,
+      "firstTextMs": 3.4000000059604645,
+      "firstRecipeMs": 2006,
+      "outcome": "complete",
+      "totalMs": 4028.8999999910593
+    },
+    {
+      "event": "morzsa_chat_timing",
+      "mode": "plus",
+      "preflightMs": 16.19999998807907,
+      "firstTextMs": null,
+      "firstRecipeMs": 2.5,
+      "outcome": "cancelled",
+      "totalMs": 547.6999999880791
+    },
+    {
+      "event": "morzsa_chat_timing",
+      "mode": "plus",
+      "preflightMs": 21.700000002980232,
+      "firstTextMs": 2.5999999940395355,
+      "firstRecipeMs": null,
+      "outcome": "complete",
+      "totalMs": 424.70000000298023
+    },
+    {
+      "event": "morzsa_chat_timing",
+      "mode": "plus",
+      "preflightMs": 18.299999997019768,
+      "firstTextMs": null,
+      "firstRecipeMs": 2.2000000029802322,
+      "outcome": "complete",
+      "totalMs": 422
+    }
+  ],
+  "firstCardMs": 2329.56775,
+  "completeCardMs": 4269.96325
+}

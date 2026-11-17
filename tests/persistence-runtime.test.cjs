@@ -102,3 +102,9 @@ test('cancelled combined turn releases a late grant without applying its history
  const controller=new AbortController(),work=h.api.beginTurn(cid,{signal:controller.signal});await started.promise;controller.abort();await assert.rejects(work,{name:'AbortError'});held.resolve();await drain();
  assert.equal(h.visible.threads[0].messages.length,0);assert.deepEqual(h.calls.map(c=>c.name),['begin_conversation_turn_page','end_conversation_turn']);
 });
+
+test('fresh history is loaded before sending without waiting on historical photo signing',async()=>{
+ const h=harness();h.attach();await drain();h.calls.length=0;
+ h.hook(async name=>{if(name==='begin_conversation_turn_page')return {acquired:true,page:{messages:[{id:mid,sequence:1,body:{role:'user',text:'Fresh photo context',photoPath:a+'/chat/'+mid+'.jpg',createdAt:4,recipes:[]}}],before:1,hasOlder:false}}});
+ const turn=await h.api.beginTurn(cid);assert.equal(h.visible.threads[0].messages[0].text,'Fresh photo context');assert.deepEqual(h.calls.map(c=>c.name),['begin_conversation_turn_page']);await h.api.endTurn(cid,turn);
+});

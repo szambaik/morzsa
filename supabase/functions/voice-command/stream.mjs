@@ -43,7 +43,7 @@ export function outputResponse(produce,headers,clientSignal){
  const encoder=new TextEncoder(),abort=new AbortController(),signal=AbortSignal.any([abort.signal,...(clientSignal?[clientSignal]:[])]);let cancelled=false;
  const body=new ReadableStream({async start(c){
   const send=v=>{if(!cancelled)c.enqueue(encoder.encode(JSON.stringify(v)+'\n'))};
-  try{const output=await produce(text=>send({type:'answer',text}),signal);if(!signal.aborted)send({type:'done',output})}
+  try{const output=await produce(text=>send({type:'answer',text}),signal,recipes=>send({type:'recipe_preview',recipes}));if(!signal.aborted)send({type:'done',output})}
   catch(e){const error=['PLUS_API_QUOTA','VOICE_PROVIDER_LIMIT','VOICE_PROVIDER_BUSY','VOICE_SETUP_REQUIRED','VOICE_PROVIDER_ERROR','VOICE_INVALID_RESPONSE','VOICE_TIMEOUT'].includes(e.message)?e.message:['TimeoutError','AbortError'].includes(e.name)?'VOICE_TIMEOUT':'VOICE_UNAVAILABLE';send({type:'error',error})}
   finally{if(!cancelled)c.close()}
  },cancel(){cancelled=true;abort.abort()}});

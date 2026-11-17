@@ -1,0 +1,48 @@
+{
+  "checkedAt": "2026-11-17T14:12:02.330Z",
+  "project": "cbgcugshwivxpaurzyqq",
+  "slug": "plus-assistant",
+  "version": 17,
+  "status": "ACTIVE",
+  "sourceFilesMatched": 15,
+  "sources": {
+    "supabase/functions/plus-assistant/handler.mjs": "855481c8b1c7892da6977ca541a423397a0e234133e61c3a220bd98f69ee2e61",
+    "supabase/functions/plus-assistant/index.ts": "7a88c69beb10271fd686b83f23f1efd2d91f146b06c9ceb147f1ef3b45cbc378",
+    "supabase/functions/plus-assistant/openai.mjs": "cebb66e254b3da6003f385b33b2ade8b64d38cd320691d1a1fe29a1f144c30d3",
+    "supabase/functions/plus-assistant/realtime.mjs": "a3cab0021c476fbfe34c814c4ee4d43117ed79bb46265d9dd3822124a84b793b",
+    "supabase/functions/plus-assistant/recipe-preview.mjs": "1dd2ef0d6c4e5a253aa96baa32ed23fd1c561aa30b871631e9b72becf685d70d",
+    "supabase/functions/plus-assistant/text-contract.mjs": "d8fd9f0e933c4d6a13dc1b0fadb774c06ecad9ec821f7c8e85a3c1b48026bdd2",
+    "supabase/functions/recipe-ideas/handler.mjs": "626608298fb4a32bb46bf57ac441d78724b65f46b48139ce042b9e5b37b2468b",
+    "supabase/functions/recipe-image/assets.mjs": "629b2ead5255120ecc8b1d0756701bdcaa42394a4eeb8e24a8afeb8fa9d1a24e",
+    "supabase/functions/recipe-image/fal.mjs": "f2d587611bb2bfdf32f1bff0d348c1a86503cd450a16233c95ee665b419dec7e",
+    "supabase/functions/recipe-image/handler.mjs": "8be87a1ca50038ab50a9cd76c7caa825127963c57b4b44bc7c423211d55d1127",
+    "supabase/functions/recipe-image/persistent.mjs": "60abb631f922ea1ed506b1b1d2159811754512cf970debfe5ae692ae56cbf731",
+    "supabase/functions/voice-command/groq.mjs": "bfcc58c758a95f8c339ce17b57e1e6802a5866fd40b715f13ce19fb951f4f8d3",
+    "supabase/functions/voice-command/handler.mjs": "202523174bd4da696657552641e954361b955399df415dbcabdf26e8e977d087",
+    "supabase/functions/voice-command/provider.mjs": "15b762f41ee5f0faeb01e939e77c6c2a5ece452c7e86e37b4b23b6db377f6645",
+    "supabase/functions/voice-command/stream.mjs": "5d3a360093ce7286c7e12ca7ed1dd20890f566c07a0dd5f3ec7c5d77fb6ec73a"
+  },
+  "http": [
+    {
+      "label": "public-status",
+      "status": 200,
+      "corsMaxAge": "600"
+    },
+    {
+      "label": "cors",
+      "status": 204,
+      "corsMaxAge": "600"
+    },
+    {
+      "label": "no-auth",
+      "status": 401,
+      "corsMaxAge": "600"
+    },
+    {
+      "label": "denied-origin",
+      "status": 403,
+      "corsMaxAge": null
+    }
+  ],
+  "temporaryProbeDeleted": true
+}

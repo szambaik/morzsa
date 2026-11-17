@@ -30,11 +30,12 @@ A backend ellenőrzi az aktuális konyhatagságot. Egy kliens által megadott cs
 
 | Funkció | Alapértelmezett modell | Opcionális secret |
 |---|---|---|
-| Szöveg, receptek, fotóértelmezés | gpt-6.1-terra, low reasoning, valódi válaszstream | OPENAI_TEXT_MODEL |
+| Gépelt chat és egyedi receptek | gpt-6-luna, low reasoning, valódi válaszstream | OPENAI_TEXT_MODEL |
+| Fotóértelmezés és heti tervek | gpt-6.1-terra, low reasoning | OPENAI_COMPLEX_TEXT_MODEL |
 | Recept- és indokolt lépéskép | gpt-image-2.6-flare, 1024×1024, medium | OPENAI_IMAGE_MODEL |
 | Kétirányú hang | gpt-realtime-2.1-mini, WebRTC, marin | OPENAI_REALTIME_MODEL |
 
-A Luna választható olcsóbb szöveges alternatíva (OPENAI_TEXT_MODEL=gpt-6-luna). Ismeretlen modell felülírásakor a költségkönyvelés konzervatív marad; a képméret/quality támogatását ellenőrizni kell.
+A Luna az éles szolgáltatón mért gyorsabb szöveges alapértelmezés. Az OPENAI_TEXT_MODEL=gpt-6.1-terra beállítással visszaállítható a korábbi szöveges modell. Ismeretlen modell felülírásakor a költségkönyvelés konzervatív marad; a képméret/quality támogatását ellenőrizni kell.
 
 ## Telepítés
 
