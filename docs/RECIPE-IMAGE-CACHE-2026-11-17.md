@@ -31,3 +31,5 @@ Verified after merging origin/main at 5f342a8:
 - tests/recipe-image-cache.browser.mjs uses the local SQL fixture with a mocked image endpoint and an existing fixture photo. It checks an old chat's missing cover, all three ordinary steps in Free mode, cache reuse after reload, and automatic catalogue card images without extra image buttons.
 - Browser evidence: [results](../design/recipe-image-cache-2026-11-17/results.json) and [mobile catalogue](../design/recipe-image-cache-2026-11-17/library-auto-images.png).
 - These deterministic checks do not measure live fal latency, generated food-image quality or production webhook delivery. Production deployment is separate from this source change.
+
+The first CI run exposed a startup race in the inherited iOS-control test: history sync could replace the composer between locator resolution and style measurement. A local 15-reload probe reproduced an empty computed style on a detached element. The assertion now resolves and measures the current form in one browser task; the same 15-reload probe passed, and the flex/grid expectations and release requirements remain unchanged.
