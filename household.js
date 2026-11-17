@@ -9,6 +9,7 @@
  const cartReceipts=new WeakMap();
  const reportCart=(intent,outcome)=>{try{cartReceipts.get(intent)?.(outcome)}catch{/* A presentation callback must not interrupt synchronization. */}};
  cloud.retryCart=()=>flushCart();
+ cloud.realtimeHealthy=()=>liveConnection?.healthy?.()===true;
  const outboxKey=()=> 'morzsa-cart-outbox-'+session?.user?.id+'-'+cloud.active;
  const persistCart=()=>{if(cartOutbox.length)localStorage.setItem(outboxKey(),JSON.stringify(cartOutbox));else localStorage.removeItem(outboxKey())};
  const overlayCart=rows=>HouseholdModel.applyCartIntents(HouseholdModel.decode(rows,state),cartOutbox);
@@ -117,16 +118,17 @@
  }
  const blockingDialog=()=>document.querySelector('dialog[open]:not(#companion-quick):not(#companion-history)');
  const editingText=()=>document.activeElement?.matches('textarea,select,input:not([type=checkbox]):not([type=radio]):not([type=button])');
- function stopLive(){liveConnection?.close();liveConnection=null;clearTimeout(liveRefreshTimer);liveDirty=false}
- function queueLiveRefresh(){liveDirty=true;clearTimeout(liveRefreshTimer);liveRefreshTimer=setTimeout(async()=>{if(!cloud.active||document.hidden)return;if(cloud.busy||blockingDialog()||editingText()){queueLiveRefresh();return}liveDirty=false;await refresh()},350)}
+ let lastSharedRefresh=0;const liveTables=new Set();let liveAll=false;
+ function stopLive(){liveConnection?.close();liveConnection=null;clearTimeout(liveRefreshTimer);liveDirty=false;liveTables.clear();liveAll=false}
+ function queueLiveRefresh(table){if(['household_records','household_pantry_reviews','household_kitchen_preferences','household_kitchen_events','household_shopping_sessions','household_shopping_routes'].includes(table))liveTables.add(table);else if(table!==false)liveAll=true;liveDirty=true;clearTimeout(liveRefreshTimer);liveRefreshTimer=setTimeout(async()=>{if(!cloud.active||document.hidden)return;if(cloud.busy||blockingDialog()||editingText()){queueLiveRefresh(false);return}liveDirty=false;const tables=liveAll?null:[...liveTables];liveAll=false;liveTables.clear();await refresh({tables})},350)}
  function startLive(){stopLive();if(!cloud.active||!session||typeof HouseholdLive==='undefined')return;liveConnection=HouseholdLive.connect({url:config.url,key:config.publishableKey,token:session.access_token,householdId:cloud.active,extraTables:[...(window.KitchenIntelligence?.realtimeTables()||[]),'household_shopping_sessions','household_shopping_routes'],onChange:queueLiveRefresh,onReady:queueLiveRefresh})}
  document.addEventListener('visibilitychange',()=>{if(!document.hidden&&cloud.active)queueLiveRefresh()});
  window.addEventListener('online',()=>{if(cloud.active){startLive();queueLiveRefresh()}});
- async function refresh(){
+ async function refresh({tables=null}={}){
   if(!cloud.active||document.hidden||cloud.busy||q.open||blockingDialog()||editingText())return;
   cloud.busy=true;refreshing=true;
   try{
-   const rows=await fetchRows();
+   if(!tables||tables.includes('household_records')){const rows=await fetchRows();
    if(JSON.stringify(rows)!==JSON.stringify(cloud.rows)){
     const changed=HouseholdLive.changedNames(cloud.rows,rows),details=HouseholdLive.describeChanges(cloud.rows,rows);cloud.rows=rows;state=overlayCart(rows);
     try{localStorage.setItem(cloud.storageKey(),JSON.stringify(state))}catch{}
@@ -138,7 +140,11 @@
      requestAnimationFrame(()=>document.querySelectorAll('[data-ingredient]').forEach(el=>{if(changed.includes(el.dataset.ingredient)){el.classList.add('shared-change');setTimeout(()=>el.classList.remove('shared-change'),1500)}}));
     }
    }
-   window.PantryReview?.refresh();window.KitchenIntelligence?.refresh();window.ShoppingMode?.refresh();status('Közös háztartás · szinkronizálva','Shared household · synced');
+   }
+   if(!tables||tables.includes('household_pantry_reviews'))window.PantryReview?.refresh();
+   if(!tables||tables.some(t=>['household_kitchen_preferences','household_kitchen_events'].includes(t)))window.KitchenIntelligence?.refresh();
+   if(!tables||tables.some(t=>['household_shopping_sessions','household_shopping_routes'].includes(t)))window.ShoppingMode?.refresh();
+   if(!tables)lastSharedRefresh=Date.now();status('Közös háztartás · szinkronizálva','Shared household · synced');
   }catch(e){status('Szinkronizálás sikertelen','Sync failed')}finally{cloud.busy=false;refreshing=false;if(cartOutbox.length&&!cartFailed)cartTimer=setTimeout(flushCart,0)}
  }
 
@@ -154,7 +160,7 @@
  }
  async function connect(hid,{name}={}){
   if(cloud.busy||pendingCart())return;const previous=cloud.active;cloud.busy=true;switchingName=name||houseNames.get(hid)||say('Háztartás','Household');paintInviteBadge();
-  try{const rows=await fetchRows(hid);if(!previous)localBackup=JSON.parse(JSON.stringify(state));cloud.active=hid;cloud.rows=rows;cartOutbox=[];try{const saved=JSON.parse(localStorage.getItem(outboxKey())||'[]');if(Array.isArray(saved)&&saved.every(i=>Array.isArray(i.cart)&&Array.isArray(i.custom)))cartOutbox=saved}catch{}cartFailed=!!cartOutbox.length;homeUndo.length=0;shoppingDraft='';pantryDraft='';pantryBatch=[];pantryListed.clear();state=overlayCart(rows);rememberHousehold();render();window.PantryReview?.refresh();q.close();status('Közös háztartás · szinkronizálva','Shared household · synced');clearInterval(pollTimer);pollTimer=setInterval(refresh,8000);startLive()}finally{cloud.busy=false;switchingName='';paintInviteBadge();if(cartOutbox.length)cartTimer=setTimeout(flushCart,0)}
+  try{const rows=await fetchRows(hid);if(!previous)localBackup=JSON.parse(JSON.stringify(state));cloud.active=hid;cloud.rows=rows;cartOutbox=[];try{const saved=JSON.parse(localStorage.getItem(outboxKey())||'[]');if(Array.isArray(saved)&&saved.every(i=>Array.isArray(i.cart)&&Array.isArray(i.custom)))cartOutbox=saved}catch{}cartFailed=!!cartOutbox.length;homeUndo.length=0;shoppingDraft='';pantryDraft='';pantryBatch=[];pantryListed.clear();state=overlayCart(rows);rememberHousehold();render();window.PantryReview?.refresh();q.close();status('Közös háztartás · szinkronizálva','Shared household · synced');clearInterval(pollTimer);pollTimer=setInterval(()=>{if(!liveConnection?.healthy?.()||Date.now()-lastSharedRefresh>=60000)refresh()},8000);startLive()}finally{cloud.busy=false;switchingName='';paintInviteBadge();if(cartOutbox.length)cartTimer=setTimeout(flushCart,0)}
  }
  function disconnect({remember=true}={}){if(cloud.busy)return;stopLive();clearTimeout(cartTimer);cartOutbox=[];cartFailed=false;homeUndo.length=0;shoppingDraft='';pantryDraft='';pantryBatch=[];pantryListed.clear();cloud.active=null;clearInterval(pollTimer);if(localBackup){state={...localBackup,likes:state.likes,skips:state.skips,chats:state.chats,sortMode:state.sortMode};localStorage.setItem('morzsa-v2',JSON.stringify(state));localBackup=null;render()}if(remember)rememberHousehold();paintInviteBadge();window.PantryReview?.refresh();status('Csak ezen az eszközön','This device only')}
  async function run(button,fn){if(menuBusy||cloud.busy||pendingCart())return;menuBusy=true;button.disabled=true;const error=q.querySelector('.household-error');error.textContent='';try{await fn()}catch(e){(q.querySelector('.household-error')||error).textContent=errorText(e)}finally{button.disabled=false;menuBusy=false}}
@@ -293,7 +299,7 @@
  q.addEventListener('click',e=>{if(e.target===q){const r=q.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)q.close()}});
  window.addEventListener('resize',()=>{if(q.open)positionHouseholdMenu()});window.visualViewport?.addEventListener('resize',()=>{if(q.open)positionHouseholdMenu()});
  // Freeze mutations until a write is acknowledged; other devices use revision checks.
- for(const event of ['click','submit','pointerdown','keydown'])document.addEventListener(event,e=>{const cartAction=e.target.closest('[data-cart],[data-step],[data-delete],.list-row label,#add-cart,[data-check-item],[data-edit-item],#shopping-mode-add,#shopping-action-feedback');if(cloud.cartInteractive&&cartAction)return;if((cloud.busy||cartOutbox.length)&&e.target.closest('#main,#quantity-dialog,#clear-dialog,#history-dialog')){e.preventDefault();e.stopImmediatePropagation()}},true);
+ for(const event of ['click','submit','pointerdown','keydown'])document.addEventListener(event,e=>{if(e.target.closest('[data-pantry-details],#catalog-search,[data-pantry-view],#pantry-category'))return;const cartAction=e.target.closest('[data-cart],[data-step],[data-delete],.list-row label,#add-cart,[data-check-item],[data-edit-item],#shopping-mode-add,#shopping-action-feedback');if(cloud.cartInteractive&&cartAction)return;if((cloud.busy||cartOutbox.length)&&e.target.closest('#main,#quantity-dialog,#clear-dialog,#history-dialog')){e.preventDefault();e.stopImmediatePropagation()}},true);
  window.addEventListener('online',()=>{if(cartOutbox.length)flushCart();else refresh()});document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh()});
  paintInviteBadge();window.PantryReview?.refresh();status('Csak ezen az eszközön','This device only');
  async function start(){try{if(window.MorzsaNative)session=await window.MorzsaNative.loadSession();authPending=!!incomingLink;if(incomingLink)await receiveLink();else await restoreHousehold();await window.MorzsaNative?.onAuth(nativeAuth);if(q.open)await open()}catch{authPending=false;authNotice=say('A biztonságos bejelentkezést nem sikerült betölteni. Nyisd meg újra az appot.','Could not load secure sign-in. Reopen the app.');status(authNotice,authNotice);await open()}}

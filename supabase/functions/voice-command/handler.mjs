@@ -85,14 +85,16 @@ export function createHandler(config,fetcher=fetch){return async request=>{
  const auth=request.headers.get('authorization');if(!auth?.startsWith('Bearer '))return reply(401,{error:'VOICE_SIGN_IN_REQUIRED'});
  if(!configured||! /^[a-z0-9.-]+$/.test(config.model||'gemini-3.1-flash-lite'))return reply(503,{error:'VOICE_SETUP_REQUIRED'});
  try{
-  const userResult=await fetcher(config.url+'/auth/v1/user',{headers:{apikey:config.publishableKey,Authorization:auth},signal:AbortSignal.timeout(10000)});
+  request.signal.throwIfAborted();
+  const userResult=await fetcher(config.url+'/auth/v1/user',{headers:{apikey:config.publishableKey,Authorization:auth},signal:AbortSignal.any([request.signal,AbortSignal.timeout(10000)])});
   if(!userResult.ok)return reply(401,{error:'VOICE_SIGN_IN_REQUIRED'});const user=await userResult.json();if(!/^[0-9a-f-]{36}$/i.test(user.id||''))return reply(401,{error:'VOICE_SIGN_IN_REQUIRED'});
-  const input=await readInput(request);
-  const quota=await fetcher(config.url+'/rest/v1/rpc/claim_voice_command',{method:'POST',headers:{apikey:config.serviceKey,Authorization:'Bearer '+config.serviceKey,'Content-Type':'application/json'},body:JSON.stringify({user_id:user.id}),signal:AbortSignal.timeout(10000)});
+  request.signal.throwIfAborted();const input=await readInput(request);request.signal.throwIfAborted();
+  const quota=await fetcher(config.url+'/rest/v1/rpc/claim_voice_command',{method:'POST',headers:{apikey:config.serviceKey,Authorization:'Bearer '+config.serviceKey,'Content-Type':'application/json'},body:JSON.stringify({user_id:user.id}),signal:AbortSignal.any([request.signal,AbortSignal.timeout(10000)])});
   if(!quota.ok)throw Error('VOICE_SETUP_REQUIRED');if(await quota.json()!==true)throw Error('VOICE_DAILY_LIMIT');
-  if(config.groqKey&&input.text&&!input.image&&!input.audio){const produce=(onAnswer,signal)=>textOutput(input,bodyFor(input),config,fetcher,onAnswer,o=>finalOutput(o,input),signal);if(input.stream)return outputResponse(produce,headers);return reply(200,await produce(()=>{},request.signal))}
-  const response=await generate(input,bodyFor(input),config,fetcher);
-  if(input.stream)return streamedResponse(response,headers,output=>finalOutput(output,input));
+  request.signal.throwIfAborted();
+  if(config.groqKey&&input.text&&!input.image&&!input.audio){const produce=(onAnswer,signal)=>textOutput(input,bodyFor(input),config,fetcher,onAnswer,o=>finalOutput(o,input),signal);if(input.stream)return outputResponse(produce,headers,request.signal);return reply(200,await produce(()=>{},request.signal))}
+  const response=await generate(input,bodyFor(input),config,fetcher,request.signal);
+  if(input.stream)return streamedResponse(response,headers,output=>finalOutput(output,input),request.signal);
   const data=await response.json(),candidate=data.candidates?.[0];if(candidate?.finishReason!=='STOP')throw Error('VOICE_INVALID_RESPONSE');
   const raw=(candidate.content?.parts||[]).filter(p=>!p.thought).map(p=>p.text||'').join('');if(raw.length>(input.companion?50000:24000))throw Error('VOICE_INVALID_RESPONSE');let output;try{output=JSON.parse(raw)}catch{throw Error('VOICE_INVALID_RESPONSE')}
   if(!validOutput(output))throw Error('VOICE_INVALID_RESPONSE');return reply(200,finalOutput(output,input));
