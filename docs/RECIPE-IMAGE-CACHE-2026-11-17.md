@@ -33,3 +33,20 @@ Verified after merging origin/main at 5f342a8:
 - These deterministic checks do not measure live fal latency, generated food-image quality or production webhook delivery. Production deployment is separate from this source change.
 
 The first CI run exposed a startup race in the inherited iOS-control test: history sync could replace the composer between locator resolution and style measurement. A local 15-reload probe reproduced an empty computed style on a detached element. The assertion now resolves and measures the current form in one browser task; the same 15-reload probe passed, and the flex/grid expectations and release requirements remain unchanged.
+
+## Follow-up: existing iOS cards stayed on ingredient illustrations
+
+The user's updated iOS build still showed the Sonkás-gombás palacsintabatyu placeholder. Its published cover was already ready in production; the asset returned HTTP 200 with image/jpeg and the image endpoint returned ready with the correct capacitor://localhost CORS response. The issue was therefore not explained by an ungenerated cover or an old binary alone.
+
+Reproduced and fixed:
+
+- Navigation removed the last image mount, so polling stopped. Remounting a pending entry only repainted its placeholder and never restarted the cache lookup. Returning to a card now checks the existing asset again.
+- Native resume, browser visibility restoration and connection recovery now recheck visible pending/failed cards. Cancelled polling callbacks cannot duplicate a resumed polling cycle.
+- Quiet cards suppressed all failure and pending information. They now show a compact loading label and a 44px retry control on failure. Transient lookup/decode failures get at most two automatic cache reads; manual retry remains available. Detached image callbacks cannot overwrite a recovered view.
+- Automatic cards previously entered the serial generation queue even for already-cached covers. They now read the cache first through the independent, bounded read queue; only a confirmed miss enters generation.
+
+No recipe, image object, provider or quota data is reset. Automatic recovery reads existing jobs; it does not regenerate completed images. Offscreen cards are excluded from resume recovery.
+
+Validation: 332 JavaScript tests plus all SQL suites passed. The release gate passed 32 accessibility scans, 54 targeted regressions and 90 native-control/composer checks. The new browser regression passed in Chromium and WebKit at 320, 390 and 430px, including real image decoding, returning after navigation, native-resume events, visible retry controls and no page overflow. These browser tests use isolated fixture data and a fixture photo, with external calls blocked. Physical iPhone verification remains a separate device check.
+
+Regression files: tests/recipe-image-recovery.test.cjs and tests/recipe-image-recovery.browser.mjs. Run the latter against tests/persistence-fixture.mjs on port 8942, with MORZSA_QA_PROACTIVE=1; MORZSA_IMAGE_BROWSER selects webkit or chromium.
