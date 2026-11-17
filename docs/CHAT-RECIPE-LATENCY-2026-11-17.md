@@ -51,3 +51,11 @@ A backend plus-assistant külön Supabase-telepítést igényel, a webfelület a
 Az OPENAI_TEXT_MODEL=gpt-6.1-terra secrettel a gépelt chat visszaállítható a korábbi modellre; az OPENAI_COMPLEX_TEXT_MODEL külön kezeli a fotókat és a heti terveket. A korábbi plus-assistant v16 forrása telepítés előtt le lett mentve, mind a 13 fájlja egyezett a main alapverziójával. A helyreállításhoz nincs felhasználói adat-visszatöltés vagy sémamigráció.
 
 Források: [OpenAI latency optimization](https://developers.openai.com/api/docs/guides/latency-optimization), [GPT-6 Luna](https://developers.openai.com/api/docs/models/gpt-6-luna), [GPT-6.1 Terra](https://developers.openai.com/api/docs/models/gpt-6.1-terra).
+
+2026-11-17: a plus-assistant v17 ACTIVE állapotban élesítve. Mind a 15 letöltött forrásfájl megegyezett a tesztelt kóddal. A publikus GET 200, OPTIONS 204 (600 s CORS-cache), jogosulatlan POST 401, tiltott origin 403 választ adott. Az ideiglenes próbaendpoint törlését külön ellenőriztük. A deployment ellenőrzése nem küldött új modellkérést vagy háztartási módosítást. Részletek: [deployment.json](chat-recipe-latency-2026-11-17/deployment.json).
+
+A végső helyi kiadásellenőrzés a párhuzamos mobilnézet-javítás f4ee0e2 main verziójának beolvasztása után futott: 352 JS-teszt, 10 SQL-csomag, 32 axe-scan, 54 célzott UX-ellenőrzés, 75 natív vezérlő-, 22 composer- és 86 mobilviewport-ellenőrzés sikeres. A korábbi teljesítményregresszió, Plus-latenciateszt, kompakt felületek, webes bundle böngészős próbája és natív bundle-build is sikeres. A 9 Python- és 26 audit-infrastruktúra teszt a saját módosításokon korábban szintén sikeres volt.
+
+A böngészős szintetikus próba eredménye: [browser-lab.json](chat-recipe-latency-2026-11-17/browser-lab.json). A kártya 390 px-es előnézete:
+
+![Készülő receptkártya](chat-recipe-latency-2026-11-17/recipe-preview-390.png)
