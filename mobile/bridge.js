@@ -13,6 +13,7 @@ if(Capacitor.isNativePlatform()){
  const callback='io.github.szambaik.morzsa://auth-callback',vault=createVault(SecureStoragePlugin,localStorage);
  document.documentElement.classList.add('native-app');
  if(Capacitor.getPlatform()==='ios'){
+  document.documentElement.classList.add('native-ios');
   const start=()=>{if(Capacitor.isPluginAvailable('MorzsaUI'))installIOSUI(registerPlugin('MorzsaUI'))};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
  }

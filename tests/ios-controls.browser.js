@@ -3,10 +3,12 @@ async page=>{
  const base=process.env.MORZSA_QA_BASE||'http://127.0.0.1:8899';
  await page.goto(base+'/?actor=c');await page.waitForFunction(()=>!!window.MorzsaCompanion&&!!window.MorzsaWorkspace);
  await page.addStyleTag({url:base+'/mobile/ios.css'});
+ check(await page.locator('#companion-form').evaluate(el=>getComputedStyle(el).display==='flex'),'web composer keeps its original layout');
+ check(await page.locator('.companion-voice-glass').isHidden(),'reference voice icon is iOS-only');
  await page.evaluate(async()=>{
   // Synthetic personal pantry; no production household or provider is used.
   Object.assign(state.stock,{Tej:2,'Tojás':2,Alma:2});
-  const {installIOSControls}=await import('/mobile/ios-controls.js');document.documentElement.classList.add('native-app');
+  const {installIOSControls}=await import('/mobile/ios-controls.js');document.documentElement.classList.add('native-app','native-ios');
   window.glassCalls=[];window.glassMode='defer';window.native=installIOSControls({setControls:value=>{glassCalls.push(value);return glassMode==='reject'?Promise.reject(Error('bridge offline')):glassMode==='defer'?new Promise(resolve=>window.glassResolve=()=>resolve({revision:value.revision})):Promise.resolve({revision:value.revision})}});
  });
  const tick=()=>page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));await tick();
@@ -18,20 +20,36 @@ async page=>{
  check(await page.evaluate(()=>{const b=glassCalls.at(-1).buttons.find(b=>b.symbol==='sidebar.left');return !b||b.title===''}),'native history icon does not duplicate the web hamburger glyph');
  check(await page.locator('.ios-native-control').evaluateAll(els=>els.every(el=>el.getAttribute('aria-hidden')==='true'&&el.tabIndex===-1)),'native controls have no duplicate accessibility targets');
  check(await page.locator('#companion-form [data-photo]').evaluate(el=>!el.classList.contains('ios-native-control')),'photo picker retains trusted user activation');
+ check(await page.locator('.companion-voice-glass').isVisible(),'iOS shows the reference voice icon');
+ const chooser=page.waitForEvent('filechooser');await page.locator('#companion-form [data-photo]').click();await chooser;
+ check(true,'iOS photo control opens the real file picker');
  await page.evaluate(()=>{window.oldCalls=glassCalls.length;for(let i=0;i<10;i++)native.refresh()});await tick();check(await page.evaluate(()=>glassCalls.length===oldCalls),'unchanged state sends no repeated control payloads');
  for(const width of [320,360,390,1366]){
   await page.setViewportSize({width,height:844});await tick();
   check(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'no overflow at '+width);
+  check(await page.evaluate(()=>{const box=el=>el.getBoundingClientRect(),form=document.getElementById('companion-form'),text=box(document.getElementById('companion-input')),buttons=[...form.querySelectorAll('button')].map(box),frame=box(form);return getComputedStyle(form).display==='grid'&&buttons.every(b=>b.width>=44&&b.height>=44&&b.top>=text.bottom&&b.left>=frame.left&&b.right<=frame.right)&&text.width>frame.width-40}),'full-width text and reachable toolbar fit at '+width);
   check(await page.evaluate(()=>glassCalls.at(-1).buttons.filter(b=>b.title==='Kotyvasszunk').every(b=>b.stacked===(innerWidth<1000))),'native starter label uses the available width at '+width);
   check(await page.locator('#workspace-kitchen').count()===0,'no duplicate header household at '+width);
   check(await page.evaluate(()=>{const a=document.getElementById('workspace-new-chat').getBoundingClientRect(),b=document.querySelector('#companion-form button[type=submit]').getBoundingClientRect();return Math.abs(a.x+a.width/2-b.x-b.width/2)<2&&a.bottom<b.top}),'new chat floats above Send at '+width);
  }
  await page.setViewportSize({width:390,height:844});await tick();
+ await page.locator('#companion-input').fill('Hosszabb kérdés\nTöbb sorban\nA receptről\nÉs a készletről');
+ check(await page.locator('#companion-input').evaluate(el=>el.getBoundingClientRect().height>44&&el.getBoundingClientRect().bottom<=el.closest('form').querySelector('[data-mic]').getBoundingClientRect().top),'multiline draft expands above the toolbar');
+ await page.locator('#companion-input').fill('');await page.locator('#companion-input').blur();
+ await page.evaluate(()=>{document.documentElement.classList.add('native-tabbar','keyboard-open');document.documentElement.style.setProperty('--native-tabbar-height','83px')});await tick();
+ check(await page.locator('.companion-compose-wrap').evaluate(el=>Math.abs(innerHeight-el.getBoundingClientRect().bottom-8)<1),'keyboard leaves no hidden-tabbar gap under the composer');
+ await page.evaluate(()=>{document.documentElement.classList.remove('native-tabbar','keyboard-open');document.documentElement.style.removeProperty('--native-tabbar-height')});await tick();
  for(const destination of ['pantry','shopping','overview','recipes']){
   await page.locator('.app>nav [data-page="'+destination+'"]').click();await tick();
   check(await page.locator('#main .ios-native-control').count()===0,'content actions retain their web layout on '+destination);
   check(await page.locator('details:not([open]) .ios-native-control').count()===0,'closed menus expose no native buttons on '+destination);
   if(destination==='pantry')check(await page.locator('[data-pantry-list]').first().evaluate(el=>getComputedStyle(el).opacity==='1'&&getComputedStyle(el).pointerEvents!=='none'),'pantry quick-add remains visible and interactive');
+  if(['pantry','shopping'].includes(destination)){
+   check(await page.locator('#workspace-assistant [data-workspace-assistant]').count()===0,'no duplicate Ask Morzsa button on '+destination);
+   check(await page.locator('#workspace-new-chat').evaluate(el=>!el.hidden&&el.getBoundingClientRect().width>=44&&el.getBoundingClientRect().bottom<innerHeight),'floating new chat stays reachable on '+destination);
+  }
+  if(destination==='pantry')check(await page.locator('#workspace-assistant .workspace-fast-actions').count()===0,'pantry has no empty quick-action row');
+  if(destination==='shopping')check(await page.locator('[data-start-shopping]').isVisible(),'shopping mode entry stays visible');
  }
  await page.locator('.app>nav [data-page="chat"]').click();await tick();
  // Exercise WebKit's closed-disclosure case with an otherwise eligible action.
