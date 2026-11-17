@@ -17,15 +17,32 @@ window.MorzsaWorkspace=(()=>{
  settings.querySelector('.workspace-preferences').onclick=()=>{document.getElementById('companion-history')?.close();window.KitchenIntelligence?.openPreferences()};
  settings.querySelector('.workspace-introduction').onclick=()=>{document.getElementById('companion-history')?.close();window.MorzsaOnboarding?.open()};
  const aiMode=settings.querySelector('#workspace-ai-mode');
+ const aiStatus=document.createElement('p');aiStatus.id='workspace-ai-status';aiStatus.className='workspace-ai-status';aiStatus.setAttribute('role','status');aiMode.setAttribute('aria-describedby',aiStatus.id);aiMode.closest('label').after(aiStatus);
+ let aiStatusKey='',aiStatusSerial=0;
+ const aiContext=()=>JSON.stringify([household?.userId(),household?.active,window.AIMode?.get(),language]);
+ async function refreshAIStatus(){
+  const key=aiContext();if(key===aiStatusKey)return;aiStatusKey=key;const serial=++aiStatusSerial;
+  if(!window.AIMode?.isPlus()){aiStatus.textContent=say('Ingyenes AI-módot használsz.','You are using Free AI mode.');return}
+  if(!household?.userId()){aiStatus.textContent=say('A Plus használatához jelentkezz be.','Sign in to use Plus.');return}
+  aiStatus.textContent=say('Plus-hozzáférés ellenőrzése…','Checking Plus access…');
+  try{
+   const status=await household.plusStatus();if(serial!==aiStatusSerial||key!==aiContext())return;
+   aiStatus.textContent=!status?.configured?say('A Plus most nem elérhető. Próbáld újra később.','Plus is unavailable right now. Try again later.'):status.enabled?say('Plus-hozzáférés aktív.','Plus access is active.'):say('Plus mód kiválasztva, de ehhez a fiókhoz vagy konyhához még nincs hozzáférés beállítva.','Plus mode selected, but access is not enabled for this account or kitchen yet.');
+  }catch{if(serial===aiStatusSerial&&key===aiContext())aiStatus.textContent=say('A Plus-hozzáférést most nem sikerült ellenőrizni.','Could not check Plus access right now.')}
+ }
  function syncAIMode(){
   settings.querySelector('[data-ai-mode-label]').textContent=say('AI mód','AI mode');
   aiMode.querySelector('[value=free]').textContent=say('Ingyenes','Free');
   aiMode.value=window.AIMode?.get()||'plus';
   aiMode.disabled=!window.AIMode||window.MorzsaCompanion?.canChangeAIMode?.()===false;
+  if(settings.querySelector('.workspace-settings').open)refreshAIStatus();
  }
  aiMode.onchange=()=>{if(window.MorzsaCompanion?.canChangeAIMode?.()===false){syncAIMode();return}if(!window.AIMode?.set(aiMode.value))toast(say('A beállítást nem sikerült menteni.','Could not save this setting.'));syncAIMode()};
- settings.querySelector('.workspace-settings').addEventListener('toggle',syncAIMode);
+ settings.querySelector('.workspace-settings').addEventListener('toggle',()=>{aiStatusKey='';syncAIMode()});
+ window.addEventListener('morzsa-ai-mode-change',syncAIMode);
+ window.addEventListener('morzsa-auth-change',syncAIMode);
  function attachSettings(host){
+  if(host?.id==='companion-history'&&!host.open)aiStatusKey='';
   const dialog=document.getElementById('companion-history');host=host||(matchMedia('(min-width:1000px)').matches?sidebar:dialog?.open?dialog:sidebar);
   if(settings.parentElement!==host)host.append(settings);
   syncAIMode();

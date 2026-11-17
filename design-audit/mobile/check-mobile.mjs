@@ -1,6 +1,7 @@
 import {chromium,webkit} from 'playwright';
 import fs from 'node:fs';import path from 'node:path';import assert from 'node:assert/strict';
 import {startFixture,actors} from '../performance/fixture.mjs';
+import {verifyAIMode} from './ai-mode-regression.mjs';
 const root=path.resolve(import.meta.dirname,'../..'),mode=process.argv[2]||'after',engine=process.argv[3]||'chromium';
 const out=path.join(root,'design-audit/runs/mobile-'+mode+'-'+engine);fs.mkdirSync(out,{recursive:true});
 const fixture=await startFixture({repoRoot:process.env.MORZSA_MOBILE_BASELINE_ROOT||root});
@@ -66,6 +67,14 @@ try{
   fixture.ai.push({error:'AUDIT_FAILURE'});await p.locator('#companion-input').fill('És még?');await p.locator('#companion-form').evaluate(el=>el.requestSubmit());await p.locator('[data-retry]').waitFor();
   fixture.ai.push({output});await p.locator('[data-retry]').click();await p.locator('[data-action=send]').waitFor();check('AI failure has a working retry',await p.locator('[data-retry]').count()===0);
   await p.waitForFunction(()=>MorzsaPersistence.status()==='synced');
+ }
+ if(mode!=='before'){
+  await p.setViewportSize({width:320,height:640});await p.evaluate(()=>dashboardGo('overview'));
+  // Font fallback metrics vary by OS. Stress the longest Hungarian label too.
+  await p.locator('.daily-counts span').evaluateAll(els=>els.forEach(el=>el.style.letterSpacing='.6px'));
+  check('Overview count labels fit their cards with wider font metrics',await p.locator('.daily-counts span').evaluateAll(els=>els.every(el=>{const range=document.createRange();range.selectNodeContents(el);const card=el.closest('button').getBoundingClientRect();return [...range.getClientRects()].every(r=>r.right<=card.right&&r.left>=card.left)})));
+  await p.setViewportSize({width:390,height:844});await p.evaluate(()=>MorzsaCompanion.newChat());await p.locator('#companion-input').blur();await p.waitForFunction(()=>MorzsaPersistence.status()==='synced');
+  await verifyAIMode(p,fixture,check,shot);
  }
  if(mode!=='before'&&engine==='chromium'){
   const cdp=await ctx.newCDPSession(p),listeners=async()=>JSON.parse((await cdp.send('Runtime.evaluate',{expression:'JSON.stringify([window,visualViewport].map(t=>Object.fromEntries(Object.entries(getEventListeners(t)).map(([k,v])=>[k,v.length]))))',includeCommandLineAPI:true,returnByValue:true})).result.value);

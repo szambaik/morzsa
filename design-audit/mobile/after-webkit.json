@@ -479,6 +479,42 @@
       "ok": true
     },
     {
+      "name": "Overview count labels fit their cards with wider font metrics",
+      "ok": true
+    },
+    {
+      "name": "Settings distinguish selected Plus from missing access",
+      "ok": true
+    },
+    {
+      "name": "Denied Plus stays on the Plus route",
+      "ok": true
+    },
+    {
+      "name": "Chat explains access instead of claiming Free mode",
+      "ok": true
+    },
+    {
+      "name": "Mode change clears the previous access warning",
+      "ok": true
+    },
+    {
+      "name": "Free dispatch uses the free endpoint",
+      "ok": true
+    },
+    {
+      "name": "Free to Plus dispatch switches immediately",
+      "ok": true
+    },
+    {
+      "name": "Successful Plus response leaves no stale access warning",
+      "ok": true
+    },
+    {
+      "name": "Late Plus status cannot overwrite Free selection",
+      "ok": true
+    },
+    {
       "name": "Composer clears simulated keyboard",
       "ok": true
     },
@@ -502,6 +538,8 @@
       "height": 640,
       "dest": "overview",
       "overflow": false,
+      "scrollWidth": 320,
+      "offenders": [],
       "active": "overview"
     },
     {
@@ -509,6 +547,8 @@
       "height": 640,
       "dest": "shopping",
       "overflow": false,
+      "scrollWidth": 320,
+      "offenders": [],
       "active": "shopping"
     },
     {
@@ -516,6 +556,8 @@
       "height": 640,
       "dest": "chat",
       "overflow": false,
+      "scrollWidth": 320,
+      "offenders": [],
       "active": "chat"
     },
     {
@@ -523,6 +565,8 @@
       "height": 640,
       "dest": "pantry",
       "overflow": false,
+      "scrollWidth": 320,
+      "offenders": [],
       "active": "pantry"
     },
     {
@@ -530,6 +574,8 @@
       "height": 640,
       "dest": "recipes",
       "overflow": false,
+      "scrollWidth": 320,
+      "offenders": [],
       "active": "recipes"
     },
     {
@@ -537,6 +583,8 @@
       "height": 812,
       "dest": "overview",
       "overflow": false,
+      "scrollWidth": 375,
+      "offenders": [],
       "active": "overview"
     },
     {
@@ -544,6 +592,8 @@
       "height": 812,
       "dest": "shopping",
       "overflow": false,
+      "scrollWidth": 375,
+      "offenders": [],
       "active": "shopping"
     },
     {
@@ -551,6 +601,8 @@
       "height": 812,
       "dest": "chat",
       "overflow": false,
+      "scrollWidth": 375,
+      "offenders": [],
       "active": "chat"
     },
     {
@@ -558,6 +610,8 @@
       "height": 812,
       "dest": "pantry",
       "overflow": false,
+      "scrollWidth": 375,
+      "offenders": [],
       "active": "pantry"
     },
     {
@@ -565,6 +619,8 @@
       "height": 812,
       "dest": "recipes",
       "overflow": false,
+      "scrollWidth": 375,
+      "offenders": [],
       "active": "recipes"
     },
     {
@@ -572,6 +628,8 @@
       "height": 844,
       "dest": "overview",
       "overflow": false,
+      "scrollWidth": 390,
+      "offenders": [],
       "active": "overview"
     },
     {
@@ -579,6 +637,8 @@
       "height": 844,
       "dest": "shopping",
       "overflow": false,
+      "scrollWidth": 390,
+      "offenders": [],
       "active": "shopping"
     },
     {
@@ -586,6 +646,8 @@
       "height": 844,
       "dest": "chat",
       "overflow": false,
+      "scrollWidth": 390,
+      "offenders": [],
       "active": "chat"
     },
     {
@@ -593,6 +655,8 @@
       "height": 844,
       "dest": "pantry",
       "overflow": false,
+      "scrollWidth": 390,
+      "offenders": [],
       "active": "pantry"
     },
     {
@@ -600,6 +664,8 @@
       "height": 844,
       "dest": "recipes",
       "overflow": false,
+      "scrollWidth": 390,
+      "offenders": [],
       "active": "recipes"
     },
     {
@@ -607,6 +673,8 @@
       "height": 932,
       "dest": "overview",
       "overflow": false,
+      "scrollWidth": 430,
+      "offenders": [],
       "active": "overview"
     },
     {
@@ -614,6 +682,8 @@
       "height": 932,
       "dest": "shopping",
       "overflow": false,
+      "scrollWidth": 430,
+      "offenders": [],
       "active": "shopping"
     },
     {
@@ -621,6 +691,8 @@
       "height": 932,
       "dest": "chat",
       "overflow": false,
+      "scrollWidth": 430,
+      "offenders": [],
       "active": "chat"
     },
     {
@@ -628,6 +700,8 @@
       "height": 932,
       "dest": "pantry",
       "overflow": false,
+      "scrollWidth": 430,
+      "offenders": [],
       "active": "pantry"
     },
     {
@@ -635,6 +709,8 @@
       "height": 932,
       "dest": "recipes",
       "overflow": false,
+      "scrollWidth": 430,
+      "offenders": [],
       "active": "recipes"
     },
     {
@@ -642,6 +718,8 @@
       "height": 1024,
       "dest": "overview",
       "overflow": false,
+      "scrollWidth": 768,
+      "offenders": [],
       "active": "overview"
     },
     {
@@ -649,6 +727,8 @@
       "height": 1024,
       "dest": "shopping",
       "overflow": false,
+      "scrollWidth": 768,
+      "offenders": [],
       "active": "shopping"
     },
     {
@@ -656,6 +736,8 @@
       "height": 1024,
       "dest": "chat",
       "overflow": false,
+      "scrollWidth": 768,
+      "offenders": [],
       "active": "chat"
     },
     {
@@ -663,6 +745,8 @@
       "height": 1024,
       "dest": "pantry",
       "overflow": false,
+      "scrollWidth": 768,
+      "offenders": [],
       "active": "pantry"
     },
     {
@@ -670,6 +754,8 @@
       "height": 1024,
       "dest": "recipes",
       "overflow": false,
+      "scrollWidth": 768,
+      "offenders": [],
       "active": "recipes"
     },
     {
@@ -677,6 +763,8 @@
       "height": 800,
       "dest": "overview",
       "overflow": false,
+      "scrollWidth": 1280,
+      "offenders": [],
       "active": "overview"
     },
     {
@@ -684,6 +772,8 @@
       "height": 800,
       "dest": "shopping",
       "overflow": false,
+      "scrollWidth": 1280,
+      "offenders": [],
       "active": "shopping"
     },
     {
@@ -691,6 +781,8 @@
       "height": 800,
       "dest": "chat",
       "overflow": false,
+      "scrollWidth": 1280,
+      "offenders": [],
       "active": "chat"
     },
     {
@@ -698,6 +790,8 @@
       "height": 800,
       "dest": "pantry",
       "overflow": false,
+      "scrollWidth": 1280,
+      "offenders": [],
       "active": "pantry"
     },
     {
@@ -705,6 +799,8 @@
       "height": 800,
       "dest": "recipes",
       "overflow": false,
+      "scrollWidth": 1280,
+      "offenders": [],
       "active": "recipes"
     },
     {
@@ -712,6 +808,8 @@
       "height": 900,
       "dest": "overview",
       "overflow": false,
+      "scrollWidth": 1440,
+      "offenders": [],
       "active": "overview"
     },
     {
@@ -719,6 +817,8 @@
       "height": 900,
       "dest": "shopping",
       "overflow": false,
+      "scrollWidth": 1440,
+      "offenders": [],
       "active": "shopping"
     },
     {
@@ -726,6 +826,8 @@
       "height": 900,
       "dest": "chat",
       "overflow": false,
+      "scrollWidth": 1440,
+      "offenders": [],
       "active": "chat"
     },
     {
@@ -733,6 +835,8 @@
       "height": 900,
       "dest": "pantry",
       "overflow": false,
+      "scrollWidth": 1440,
+      "offenders": [],
       "active": "pantry"
     },
     {
@@ -740,12 +844,14 @@
       "height": 900,
       "dest": "recipes",
       "overflow": false,
+      "scrollWidth": 1440,
+      "offenders": [],
       "active": "recipes"
     }
   ],
   "metrics": {
     "historyRows": 30,
-    "historyRenderMs": 4,
+    "historyRenderMs": 3,
     "resizeHistoryMutations": 0
   }
 }

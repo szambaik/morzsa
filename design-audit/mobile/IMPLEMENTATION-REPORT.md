@@ -20,7 +20,7 @@ Baseline: 9fb9924 (main, PR #19), branch codex/mobile-ux-stabilization.
 - Repeated recipes may be legitimate sessions. Completion wins concurrent merges; pause preserves steps and timers.
 - Another session edits native components. Merge latest main and preserve its fixes.
 
-No database migration or production data modification is planned. Validation results follow after implementation.
+No database migration or changes to saved household content are required. The later, explicitly approved Plus access correction is recorded below.
 
 ## Problems and implemented changes
 
@@ -33,6 +33,8 @@ No database migration or production data modification is planned. Validation res
 | History titles | Generic/blank metadata was shown despite a locally available user message or recipe title. Unloaded cloud rows contain no messages locally. | Deterministic titles use a recipe or first available user message and preserve custom titles. Unknown cloud rows are not labelled empty. Fallback labels include date/time. No LLM title request or deletion. |
 | History rendering | All 101 loaded rows rendered; every resize rebuilt desktop history. Search repeatedly looked up rows in the entire book. | Initially 30 rows, then increments of 30. Search covers all loaded records, with existing 100-record server pagination still available. Only breakpoint changes rebuild the sidebar. |
 | Cooking lifecycle | Recipes counted status=active; overview also excluded completion phase. “Resume later” only navigated away. Old cooks stayed active indefinitely. | One definition of preparation, in progress, paused and completed. Explicit pause/resume uses additive metadata. More than 24h without an update is displayed as paused, without writes/deletion. Completion is excluded everywhere; counts deduplicate IDs, not recipe names. |
+| Narrow overview | Linux WebKit's fallback font made the Hungarian shopping-count label extend to 321px in a 320px viewport. | Bound the label to the card width and allow wrapping. No clipping or relaxed overflow assertion. A text-range regression also checks wider font metrics. |
+| Plus selection | The live kitchen had two members, one personal Plus grant and no shared kitchen grant. Selecting Plus does not grant server access. | Settings now check and display actual access when opened, separately from the chosen mode. Late status responses cannot overwrite another mode/account/kitchen. Chat errors explain the missing access and point to Settings. |
 
 Pause preserves steps, timers and feedback. Existing active/completed status and RPC schemas remain unchanged. Timers retain elapsed wall-clock time while paused. Old clients can still read these records but do not display the new pause distinction. Opening a paused session resumes it. Legacy phase-completed sessions are not reused for new cooks.
 
@@ -51,13 +53,13 @@ Synthetic account with 130 conversations, initially 100 server records plus an u
 | Measurement | Before Chromium | After Chromium |
 | --- | ---: | ---: |
 | Initial history DOM rows | 101 | 30 |
-| History render | 4.0 ms | 1.8 ms |
+| History render | 4.0 ms | 1.5 ms |
 | Full history replacements across 20 resize events | 20 | 0 |
 | History requests during 25 navigations | — | 0 |
 | Window/visualViewport listener growth after 25 navigations | — | 0 |
-| Used JS heap after forced GC | — | 5,000,480 → 5,104,712 bytes |
+| Used JS heap after forced GC | — | 5,187,340 → 5,265,956 bytes |
 
-The small heap change in this bounded run does not prove long-term leak freedom. WebKit after: 4 ms, 30 rows, zero history replacements. No claim that model inference, cold starts or production networking became faster. Prior recipe-streaming/latency fixes are preserved.
+The small heap change in this bounded run does not prove long-term leak freedom. The final heap sample includes the additional AI-mode regression before navigation. WebKit after: 3 ms, 30 rows, zero history replacements. No claim that model inference, cold starts or production networking became faster. Prior recipe-streaming/latency fixes are preserved.
 
 ## Validation
 
@@ -65,14 +67,18 @@ Passed locally:
 
 - npm test: 358 JavaScript tests and all 10 SQL suites, including legacy saves, unrelated-data preservation, concurrent progress, RLS, stale writes and household synchronization.
 - Six new unit cases: title fallback, 600-record history/search, consistent counts, pause persistence, concurrent pause/resume with completion priority, legacy completed-session reuse.
-- Chromium mobile suite: 125 checks. WebKit: 123 checks; CDP heap/listener inspection is Chromium-specific.
+- Chromium mobile suite: 134 checks. WebKit: 132 checks; CDP heap/listener inspection is Chromium-specific.
 - Both engines: 320×640, 375×812, 390×844, 430×932, 768×1024, 1280×800, 1440×900 across all five pages. Active navigation, horizontal overflow and a last-action probe clearing navigation.
 - Additional browser cases: menu overlap; 30/60-row history; search beyond initial rows and older server pages; legacy title after hydration; pause/resume at the correct step; completion persisted on existing SQL; matching counts; navigation during AI wait; one dispatch per send; provider error/retry; simulated keyboard composer/send geometry and close restoration.
 - Native adapters: 75 controls, 28 composer and 127 mobile viewport checks, including acknowledgment, hidden-tabbar spacing, multiline input, short drawers and narrow layouts.
 - node design-audit/check-release.mjs: complete journeys, 32 axe scans, 54 targeted UX checks, native adapters and progressive recipe/cancellation/retry cases passed on unchanged product sources.
 - npm run build:web, npm run sync:mobile and git diff --check passed. Python unittest discovery: 9 passed.
 
-A preliminary release gate correctly rejected an edit to companion-model.js during the run; the full gate was rerun with unchanged product sources and passed. An early native fixture still injected the old keyboard class; it now dispatches the same event as the bridge. The shared shell also replaces the obsolete native composer offset, preventing double positioning. No unresolved automated failure remains in the recorded final runs. CI must pass before the authorized main merge.
+A preliminary release gate correctly rejected an edit to companion-model.js during the run; the full gate was rerun with unchanged product sources and passed. An early native fixture still injected the old keyboard class; it now dispatches the same event as the bridge. The shared shell also replaces the obsolete native composer offset, preventing double positioning. Linux CI then caught the 1px overview overflow described above; the fix and wider-font regression pass both local engines. CI must pass before the authorized main merge.
+
+The new AI-mode browser regression sends real fixture requests through the settings-selected routes: denied Plus, Free, then enabled Plus, while preserving the same signed-in session/history. It verifies error clearing and a deliberately delayed Plus status arriving after switching to Free. These checks use synthetic responses and never call a paid model. Status checks run on settings interaction and do not add a preflight round trip to chat sending.
+
+The final Debug iOS simulator build succeeded after syncing the updated frontend. This build was not installed on a physical device.
 
 ## Evidence
 
@@ -92,6 +98,12 @@ Synthetic data and loopback services only; no production data or external AI use
 | Cooking | [before](evidence/before-cooking.png) | [after](evidence/after-cooking.png) |
 
 Raw results: [before Chromium](before-chromium.json), [after Chromium](after-chromium.json), [after WebKit](after-webkit.json), [native adapters](native-adapters.json).
+
+Additional evidence: [Linux WebKit count-label failure](evidence/linux-webkit-count-label-before.png), [Plus selected without access](evidence/plus-access-required.png), [Plus access active](evidence/plus-access-active.png).
+
+## Approved production access correction
+
+On 2026-11-17, the user explicitly approved enabling Plus for both members of their shared kitchen. Added one kitchen-level entitlement using the existing personal grant's settings; verified through the authoritative access RPC that both current members resolve to the shared grant. Existing personal/global grants were preserved. The existing test-mode setting (Morzsa usage counters disabled) was left unchanged and disclosed before approval. This does not disable OpenAI billing. No model call, saved-content mutation, schema change or RLS change was needed.
 
 ## Limitations and unchanged areas
 
