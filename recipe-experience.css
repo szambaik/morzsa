@@ -1,0 +1,52 @@
+/* Focused recipe workspace; shares Morzsa's existing tokens and navigation. */
+.cooking-equipment{border:1px solid #34463826;border-radius:18px;margin:20px 0;padding:16px;display:grid;gap:6px}
+.cooking-equipment legend{font-weight:650;font-size:14px;padding:0 6px}
+.cooking-equipment label{display:flex;align-items:center;gap:12px;min-height:44px}
+.cooking-equipment input{width:20px;height:20px;accent-color:#344638}
+.cooking-prep-tips{margin:16px 0;border-radius:16px;background:#E8EDDE;padding:12px 16px}
+.cooking-prep-tips summary{min-height:32px;cursor:pointer;font-weight:650}
+.cooking-prep-tips li{margin:10px 0;line-height:1.6}
+.cooking-paused{padding:18px;border:1px solid #D9AD76;border-radius:18px;background:#fbefd9;margin:20px 0}
+.cooking-paused p{font-size:14px;line-height:1.5}
+.cooking-timers>div{flex-wrap:wrap}
+.cooking-timers .timer-actions{display:flex;justify-content:flex-end;gap:4px;width:100%;border-top:1px solid #34463818;padding-top:4px}
+.cooking-timers .timer-actions button{font-size:13px;border-radius:10px;padding:8px 12px}
+.cooking-timers .timer-actions button:hover{background:#34463812}
+.cooking-guidance{display:grid;gap:12px;margin:20px 0}
+.cooking-guidance-card{padding:18px;border:1px solid #34463826;border-radius:18px;background:#E8EDDE;overflow-wrap:anywhere}
+.cooking-guidance-card[data-guidance-type="troubleshooting_card"]{background:#fbefd9}
+.cooking-guidance-card h4{font-size:16px;margin:8px 0}
+.cooking-guidance-card p,.cooking-guidance-card li{font-size:15px;line-height:1.6;white-space:pre-line}
+.cooking-guidance-card small{font-size:12px;color:#495643;line-height:1.5}
+.cooking-help-context{padding:18px;border:1px solid #34463826;background:#E8EDDE;border-radius:20px;margin:8px 0 20px}
+.cooking-help-context>small{font-size:12px;color:#495643;font-weight:650}
+.cooking-help-context h2{font-size:19px;line-height:1.35;margin:8px 0 14px}
+.cooking-help-context .cooking-instructions{font-size:15px;line-height:1.6}
+.cooking-help-context .cooking-tip{background:#F8F3E9}
+.cooking-help-prompts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.cooking-help-prompts button{min-height:44px;background:#fffaf2;color:#344638;border:1px solid #34463835;border-radius:12px;padding:10px 12px;font-size:14px}
+/* Context is an ordinary scroll surface, never a full-screen layer over the step. */
+.cooking-question-open .companion-messages{position:static;inset:auto;overflow:visible;padding:0 0 260px;background:transparent}
+.cooking-question-open .companion-compose-wrap{z-index:40}
+.workspace-cooking .app{padding-inline:0}
+.workspace-cooking.cooking-question-open .app .companion-compose-wrap{left:50%;right:auto;width:min(calc(100% - 32px),680px);max-width:680px}
+.cooking-question-open .cooking-hero{display:none}
+.cooking-task-dock{max-height:45dvh;overflow-y:auto}
+.cooking-dock-tools{flex-wrap:wrap;gap:4px}
+.cooking-dock-tools button{flex:1;white-space:nowrap}
+.cooking-compact-title h1{font-size:clamp(20px,4.5vw,30px);overflow-wrap:anywhere}
+.recipe-ingredient-row[data-availability="low"]{background:#fbefd9}
+.recipe-ingredient-row[data-availability="out"]{background:#fbe9df}
+.cooking-leftovers{display:grid;gap:8px;margin:16px 0}
+.cooking-leftovers input{min-height:44px;width:100%;max-width:180px;border:1px solid #34463835;border-radius:10px;padding:8px;background:#fffaf2;font:inherit}
+.cooking-save-state{font-size:12px;color:#495643;margin:8px 0}
+@media(min-width:1280px){
+ .workspace-cooking.cooking-question-open .app{max-width:1120px}
+ .workspace-cooking.cooking-question-open #main{max-width:1120px}
+ .cooking-question-open .companion{max-width:none}
+ .cooking-question-open .companion-messages{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 28px;align-items:start}
+ .cooking-question-open .companion-messages>*{grid-column:2;min-width:0}
+ .cooking-question-open .companion-messages>.cooking-help-context{grid-column:1;grid-row:1 / span 50;position:sticky;top:90px}
+}
+@media(max-width:360px){.cooking-dock-tools button{font-size:12px;padding:8px 5px;gap:4px}.cooking-help-context{padding:14px}.cooking-timers>div{padding:10px}.cooking-task-dock{padding-inline:10px}}
+@media(prefers-reduced-motion:reduce){.cooking-help-context,.cooking-guidance-card{scroll-behavior:auto;animation:none;transition:none}}

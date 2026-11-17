@@ -1,4 +1,4 @@
-import {normalizeInput,validOutput} from '../voice-command/handler.mjs';
+import {normalizeInput,validOutput,finalOutput} from '../voice-command/handler.mjs';
 import {textBodyFor,publicTextOutput} from './text-contract.mjs';
 import {outputResponse} from '../voice-command/stream.mjs';
 import {createHandler as imageHandler} from '../recipe-image/handler.mjs';
@@ -64,7 +64,7 @@ export function createHandler(config,fetcher=fetch){return async request=>{
   const produce=async(onAnswer,signal,onRecipes)=>{try{signal?.throwIfAborted();console.info(JSON.stringify({event:'morzsa_plus_chat_ready',preflightMs:Date.now()-started}));const responseBody=textBodyFor(clean);
    const generated=await openaiText(responseBody,textConfig,fetcher,onAnswer,signal,clean.recipePreview?onRecipes:undefined),usage=generated.usage,output=publicTextOutput(generated.output,clean.text);if(!validOutput(output))throw Error('VOICE_INVALID_RESPONSE');
    // Response-only compatibility with the older focused recipe discussion.
-   if(clean.context?.recipe)output.operations=[];
+   finalOutput(output,clean);if(clean.context?.recipe)output.operations=[];
    const model=textConfig.textModel,rates=model==='gpt-6.1-terra'?[1,5]:model==='gpt-6-luna'?[.1,.5]:null;
    const cents=rates&&Number.isFinite(usage.input_tokens)&&Number.isFinite(usage.output_tokens)?Math.max(1,Math.ceil((usage.input_tokens*rates[0]+usage.output_tokens*rates[1])/10000)):undefined;
    const settlementStarted=Date.now();await settle('complete',model,usage,cents);console.info(JSON.stringify({event:'morzsa_plus_chat_complete',settlementMs:Date.now()-settlementStarted,totalMs:Date.now()-started,recipes:output.recipes?.length||0}));return output;
