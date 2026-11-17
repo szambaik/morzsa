@@ -52,6 +52,7 @@ button:focus-visible,summary:focus-visible,a:focus-visible,input:focus-visible,t
 #companion-form textarea,.workspace-composer input{flex:1;min-width:0;border:0;background:transparent;font-size:16px;line-height:1.45;padding:11px 5px;resize:none}
 #companion-form button,.workspace-composer button{display:grid;place-items:center;flex:none;width:44px;height:44px;min-height:44px;padding:10px;border:0;border-radius:50%;background:transparent}
 #companion-form button[type=submit],.workspace-composer button[type=submit]{background:var(--orange);color:white}
+.companion-voice-glass{display:none}
 .workspace-composer button[type=submit] img{filter:brightness(0) invert(1)}
 #workspace-assistant:before{content:'';position:absolute;inset:-24px -16px -12px;background:linear-gradient(180deg,transparent,var(--bg) 55%);z-index:-1;pointer-events:none}
 #workspace-assistant.workspace-quick-only .workspace-composer{display:none}
