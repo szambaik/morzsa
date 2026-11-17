@@ -5,6 +5,7 @@ final class NativeComposerTests: XCTestCase {
     func testNativeTypingRedrawSubmissionAndNavigation() {
         let app = XCUIApplication(bundleIdentifier: "io.github.szambaik.morzsa.composerqa")
         app.launch()
+        XCTAssertTrue(app.staticTexts["Composer QA ready"].waitForExistence(timeout: 20))
         let editor = app.textViews["morzsa-native-chat-input"]
         XCTAssertTrue(editor.waitForExistence(timeout: 20), "A real UITextView must replace the HTML editor")
         editor.tap()
@@ -39,9 +40,10 @@ final class NativeComposerTests: XCTestCase {
         app.buttons["Bezárás"].firstMatch.tap()
         XCTAssertTrue(editor.waitForExistence(timeout: 5))
         XCTAssertEqual(editor.value as? String, "Next draft")
-        app.buttons["Új beszélgetés"].tap()
+        app.buttons["Új Morzsa-beszélgetés"].tap()
         XCTAssertTrue(editor.waitForExistence(timeout: 5))
-        XCTAssertEqual(editor.value as? String, "")
+        XCTAssertEqual(editor.value as? String, "Next draft", "Opening an already empty chat preserves its draft")
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "New chat invoked")).firstMatch.waitForExistence(timeout: 5))
         XCTAssertTrue(app.keyboards.firstMatch.exists, "Web focus requests must open the native keyboard")
     }
 }

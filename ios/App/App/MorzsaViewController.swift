@@ -121,6 +121,16 @@ final class MorzsaViewController: CAPBridgeViewController, UITabBarDelegate {
     }
 
     override func capacitorDidLoad() {
+        // Capacitor initially makes WKWebView the controller's root view. Give
+        // UIKit controls their own host so WebKit cannot reposition or resign
+        // the UITextView while managing HTML focus and keyboard resizing.
+        if let webView {
+            let container = UIView(frame: webView.frame)
+            container.backgroundColor = UIColor(red: 0.973, green: 0.953, blue: 0.914, alpha: 1)
+            webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            container.addSubview(webView)
+            view = container
+        }
         bridge?.registerPluginInstance(MorzsaUIPlugin())
         webView?.isOpaque = false
         webView?.backgroundColor = UIColor(red: 0.973, green: 0.953, blue: 0.914, alpha: 1)

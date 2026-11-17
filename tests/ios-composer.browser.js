@@ -22,6 +22,8 @@ async page=>{
  await page.evaluate(()=>{composerMode='normal';ackComposer()});await tick();
  check(await page.locator('#companion-input').evaluate(el=>el.classList.contains('ios-native-text-input')&&el.tabIndex===-1&&el.getAttribute('aria-hidden')==='true'),'acknowledged UITextView replaces only the web text editor');
  check(await page.locator('#companion-form button').evaluateAll(els=>els.every(el=>getComputedStyle(el).opacity==='1')),'photo voice and send retain their existing web controls');
+ await page.evaluate(()=>document.getElementById('companion-input').focus());await tick();
+ check(await page.evaluate(()=>composerCalls.some(c=>c.focus)&&document.activeElement.id!=='companion-input'),'programmatic focus transfers to UIKit without leaving WebKit focused');
  await page.evaluate(()=>nativeEdit('Első sor\nMásodik sor 🍎',86));await tick();
  check(await page.locator('#companion-input').inputValue()==='Első sor\nMásodik sor 🍎','native multiline text and emoji update the draft');
  check(await page.locator('#companion-input').evaluate(el=>el.getBoundingClientRect().height===86),'native text measurement updates reserved height');

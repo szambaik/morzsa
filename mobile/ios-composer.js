@@ -9,7 +9,9 @@ export function installIOSComposer(plugin){
  function visible(el){
   if(!el||document.hidden||document.querySelector('dialog[open]')||window.MorzsaRealtime?.running())return false;
   for(let node=el;node;node=node.parentElement){const style=getComputedStyle(node);if(node.hidden||style.display==='none'||style.visibility!=='visible')return false}
-  const r=el.getBoundingClientRect();return r.width>40&&r.height>20&&r.bottom>0&&r.top<innerHeight;
+  // The fixed composer can briefly sit outside the resized visual viewport
+  // during keyboard animation. Its logical visibility must keep focus intact.
+  const r=el.getBoundingClientRect();return r.width>40&&r.height>20;
  }
  function current(){
   const el=document.getElementById('companion-input'),key=window.MorzsaCompanion?.composerContext?.()||'';
@@ -31,6 +33,9 @@ export function installIOSComposer(plugin){
   const state=current(),target=input,key=JSON.stringify(state);if(key===last)return;
   inFlight=true;const rev=++revision;
   try{
+   // Release WebKit's input focus before UIKit takes over. Blurring after the
+   // acknowledgment can dismiss the keyboard that UITextView just opened.
+   if(state.focus&&document.activeElement===target)target.blur();
    const result=await plugin.setComposer({...state,revision:rev});
    if(disposed)return;
    if(result.revision!==rev||result.kind!=='UITextView')throw Error('Native text input unavailable');
@@ -38,7 +43,6 @@ export function installIOSComposer(plugin){
    // Only transfer accessibility/focus for the exact node and chat we sent.
    if(target!==document.getElementById('companion-input')||state.session!==(window.MorzsaCompanion?.composerContext?.()||'')){last='';again=true;return}
    last=key;focusNext=false;
-   if(state.focus&&document.activeElement===input)input.blur();
    if(state.visible&&state.session===session&&visible(input))acknowledge();else restore();
   }catch{if(!disposed)fallback()}
   finally{inFlight=false;if(again){again=false;schedule()}}
@@ -82,7 +86,7 @@ export function installIOSComposer(plugin){
   }catch{if(!disposed){fallback();input?.focus()}}
   finally{submitting=false}
  }
- function focus(event){if(event.target.id==='companion-input'&&!failed){focusNext=true;last='';schedule()}}
+ function focus(event){if(event.target.id==='companion-input'&&!failed){focusNext=true;event.target.blur();last='';schedule()}}
  function onInput(event){if(event.target.id==='companion-input')schedule()}
  function resume(){failed=false;last='';schedule()}
  const observer=new MutationObserver(schedule);observer.observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class','hidden','open','style']});

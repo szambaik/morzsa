@@ -20,7 +20,7 @@ args = parser.parse_args()
 os.environ.setdefault('DEVELOPER_DIR', '/Applications/Xcode.app/Contents/Developer')
 args.output.mkdir(parents=True, exist_ok=True)
 sim = lambda *parts: subprocess.check_output(['xcrun', 'simctl', *parts], text=True)
-devices = [d for rows in json.loads(sim('list', 'devices', 'available', '-j'))['devices'].values() for d in rows if 'iPhone' in d['name']]
+devices = [d for rows in json.loads(sim('list', 'devices', 'available', '-j'))['devices'].values() for d in rows if 'iPhone' in d.get('deviceTypeIdentifier', '')]
 device = args.device or next((d['udid'] for d in devices if d['state'] == 'Booted'), devices[0]['udid'])
 if not any(d['udid'] == device and d['state'] == 'Booted' for d in devices):
     sim('boot', device)
@@ -43,10 +43,12 @@ with tempfile.TemporaryDirectory(prefix='morzsa-native-composer-') as temp:
     const qaFetch=window.fetch;window.fetch=(input,options)=>/^https?:/i.test(String(input?.url||input))?Promise.reject(Error('External traffic disabled for native UI QA')):qaFetch(input,options);</script>'''
     fixture = r'''<script>setTimeout(()=>{
       const tools=document.createElement('div');tools.style='position:fixed;top:80px;right:16px;z-index:9000;font-size:12px';
-      tools.innerHTML='<p id="qa-sent" role="status" style="white-space:pre-wrap"></p>';document.body.append(tools);
+      tools.innerHTML='<p id="qa-sent" role="status" style="white-space:pre-wrap">Composer QA ready</p>';document.body.append(tools);
+      const originalNewChat=MorzsaCompanion.newChat;let focusEvents=0;document.addEventListener('focusin',e=>{if(e.target.id==='companion-input')focusEvents++});
+      MorzsaCompanion.newChat=(...args)=>{const result=originalNewChat(...args);document.getElementById('qa-sent').textContent='New chat invoked, focus events: '+focusEvents;return result};
       function bind(){const form=document.getElementById('companion-form');if(!form)return;
         form.onsubmit=e=>{e.preventDefault();const input=document.getElementById('companion-input');document.getElementById('qa-sent').textContent='Sent: '+input.value;input.value='';input.dispatchEvent(new Event('input',{bubbles:true}));MorzsaCompanion.render();bind()};}
-      let redrawn=false;document.addEventListener('input',e=>{if(e.target.id==='companion-input'&&e.target.value==='Native draft\nSecond line'&&!redrawn){redrawn=true;setTimeout(()=>{MorzsaCompanion.render();bind();document.getElementById('qa-sent').textContent='Redraw complete'},750)}});bind();
+      let redrawn=false;window.addEventListener('morzsa-native-text',e=>{if((e.detail||e).text==='Native draft\nSecond line'&&!redrawn){redrawn=true;setTimeout(()=>{MorzsaCompanion.render();bind();document.getElementById('qa-sent').textContent='Redraw complete'},750)}});bind();
     },2000)</script>'''
     html = html.replace('<script src="native-bridge.js">', preamble + '<script src="native-bridge.js">').replace('</body>', fixture + '</body>')
     (app / 'public/index.html').write_text(html)
