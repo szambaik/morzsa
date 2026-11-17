@@ -1,4 +1,20 @@
 const {test}=require('node:test'),assert=require('node:assert/strict'),M=require('../companion-model'),R=require('../recipe-room-model');
+test('timeline mixes recipes, chats and shared threads by last message without discarding older chats',()=>{
+ const book={threads:[
+  {id:'chat',kind:'chat',updated:999,messages:[{createdAt:20}]},
+  {id:'recipe',kind:'recipe',updated:1,messages:[{createdAt:10},{createdAt:40}]},
+  {id:'shared',kind:'recipe',readOnly:true,updated:2,lastMessageAt:30,messages:[]},
+  {id:'legacy',kind:'main',updated:5,messages:[]},
+  {id:'archived',kind:'chat',archivedAt:100,updated:100,messages:[{createdAt:90}]}
+ ]},before=JSON.stringify(book),groups=M.historyTimeline(book);
+ assert.deepEqual(groups.recent.map(t=>t.id),['recipe','shared','chat','legacy']);
+ assert.deepEqual(groups.archive.map(t=>t.id),['archived']);assert.equal(JSON.stringify(book),before);
+});
+test('cloud normalization retains last-message metadata before older messages are loaded',()=>{
+ const book=M.workspace({cloud:true,threads:[{id:'cloud',kind:'chat',lastMessageAt:90,updated:100,messages:[{role:'user',text:'Older loaded page',createdAt:10}]}]},R.recipe);
+ const thread=book.threads.find(t=>t.id==='cloud');assert.equal(thread.lastMessageAt,90);assert.equal(M.historyTimestamp(thread),90);
+ assert.equal(M.historyTimestamp({updated:12,lastMessageAt:Infinity,messages:[{createdAt:NaN}]}),12);
+});
 const recipe={title:'Palacsinta',summary:'Gyors.',minutes:20,ingredients:[{name:'Tej',amount:'250 ml'}],steps:['Süsd meg.']};
 test('v4 migration keeps v3 daily history, active recipe and all original data',()=>{
  const old={version:3,active:'recipe',threads:[{id:'main',kind:'main',updated:1,messages:Array.from({length:80},(_,i)=>({role:'user',text:String(i)}))},{id:'recipe',kind:'recipe',recipe,status:'completed',cookingStep:0,messages:[{role:'user',text:'Finom lett.'}]}]},before=JSON.stringify(old);

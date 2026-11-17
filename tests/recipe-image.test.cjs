@@ -108,9 +108,10 @@ test('frontend explains cooldown, blocks repeated clicks, then enables a manual 
  vm.runInNewContext(fs.readFileSync('recipe-images.js','utf8'),context);context.window.RecipeImages.mount(host,recipe);await new Promise(resolve=>setImmediate(resolve));assert.equal(host.dataset.imageStatus,'failed');assert.equal(host.children[0].disabled,true);assert.match(host.children[1].textContent,/Várj egy percet/);await host.children[0].onclick();assert.equal(calls,1);retryTimer();assert.equal(host.children[0].disabled,false);assert.equal(calls,1);
 });
 test('a broken image link refreshes the cache without consuming another generation',async()=>{
- const vm=require('node:vm'),fs=require('node:fs');const inputs=[];const host={isConnected:true,children:[],dataset:{},replaceChildren(){this.children=[]},append(...nodes){this.children.push(...nodes)}};
+ const vm=require('node:vm'),fs=require('node:fs');const inputs=[];let retryTimer;const host={isConnected:true,children:[],dataset:{},replaceChildren(){this.children=[]},append(...nodes){this.children.push(...nodes)}};
  const context={window:{MORZSA_CLOUD:{url:'https://test.supabase.co'}},household:{active:null,userId:()=> 'test',recipeImage:async input=>{inputs.push(input);return {status:'ready',url:'https://test.supabase.co/storage/v1/object/sign/cover'}}},language:'hu',document:{createElement:tag=>({tag})},IntersectionObserver:class{constructor(cb){this.cb=cb}observe(){this.cb([{isIntersecting:true}])}disconnect(){}}};
- vm.runInNewContext(fs.readFileSync('recipe-images.js','utf8'),context);context.window.RecipeImages.mount(host,recipe,-1,{autoCreate:true});await new Promise(resolve=>setImmediate(resolve));host.children[0].onerror();assert.match(host.children[1].textContent,/Frissítsd a kép linkjét/);await host.children[0].onclick();assert.deepEqual(inputs.map(i=>i.create),[true,false]);assert.equal(host.dataset.imageStatus,'ready');
+ context.setTimeout=fn=>(retryTimer=fn);context.clearTimeout=()=>{};
+ vm.runInNewContext(fs.readFileSync('recipe-images.js','utf8'),context);context.window.RecipeImages.mount(host,recipe,-1,{autoCreate:true});await new Promise(resolve=>setImmediate(resolve));host.children[0].onerror();assert.equal(host.children[0].className,'image-placeholder');retryTimer();await new Promise(resolve=>setImmediate(resolve));assert.deepEqual(inputs.map(i=>i.create),[true,false]);assert.equal(host.dataset.imageStatus,'ready');
 });
 test('queued step creation is cancelled after navigation and can run when viewed again',async()=>{
  const vm=require('node:vm'),fs=require('node:fs'),calls=[];let release;
@@ -153,7 +154,7 @@ test('visible quiet cards generate missing images automatically and remounts reu
  const vm=require('node:vm'),fs=require('node:fs'),inputs=[],observers=[];
  const host=()=>({isConnected:true,children:[],dataset:{},replaceChildren(){this.children=[]},append(...nodes){this.children.push(...nodes)}});
  const context={window:{MORZSA_CLOUD:{url:'https://cloud'}},household:{active:null,userId:()=> 'test',recipeImage:async input=>{inputs.push(input);return {status:'ready',url:'https://cloud/storage/v1/object/sign/recipe-images/cover.jpg',expiresAt:Date.now()+60000}}},language:'hu',document:{createElement:tag=>({tag})},IntersectionObserver:class{constructor(cb){observers.push(cb)}observe(){}disconnect(){}}};
- vm.runInNewContext(fs.readFileSync('recipe-images.js','utf8'),context);const images=context.window.RecipeImages,card=host();images.mount(card,recipe,-1,{autoCreate:true,quiet:true});assert.equal(inputs.length,0);assert.equal(card.children.length,0);
+ vm.runInNewContext(fs.readFileSync('recipe-images.js','utf8'),context);const images=context.window.RecipeImages,card=host();images.mount(card,recipe,-1,{autoCreate:true,quiet:true});assert.equal(inputs.length,0);assert.equal(card.children.length,1);assert.equal(card.children[0].className,'image-placeholder');
  observers[0]([{isIntersecting:true}]);await new Promise(resolve=>setImmediate(resolve));assert.equal(inputs.length,1);assert.equal(inputs[0].create,false);assert.equal(card.children[0].tag,'img');
  images.mount(host(),recipe,-1,{autoCreate:true,quiet:true});await new Promise(resolve=>setImmediate(resolve));assert.equal(inputs.length,1);
 });

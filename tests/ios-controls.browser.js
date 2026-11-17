@@ -9,7 +9,7 @@ async page=>{
  // Initial history sync can replace the form between locator resolution and evaluation.
  // Resolve and measure the current element in one browser task.
  check(await page.evaluate(()=>getComputedStyle(document.getElementById('companion-form')).display==='flex'),'web composer keeps its original layout');
- check(await page.locator('.companion-voice-glass').isHidden(),'reference voice icon is iOS-only');
+ check(await page.locator('#companion-form [data-mic]>svg').isVisible(),'web voice action shows a recognizable microphone');
  await page.evaluate(async()=>{
   // Synthetic personal pantry; no production household or provider is used.
   Object.assign(state.stock,{Tej:2,'Tojás':2,Alma:2});
@@ -25,7 +25,8 @@ async page=>{
  check(await page.evaluate(()=>{const b=glassCalls.at(-1).buttons.find(b=>b.symbol==='sidebar.left');return !b||b.title===''}),'native history icon does not duplicate the web hamburger glyph');
  check(await page.locator('.ios-native-control').evaluateAll(els=>els.every(el=>el.getAttribute('aria-hidden')==='true'&&el.tabIndex===-1)),'native controls have no duplicate accessibility targets');
  check(await page.locator('#companion-form [data-photo]').evaluate(el=>!el.classList.contains('ios-native-control')),'photo picker retains trusted user activation');
- check(await page.locator('.companion-voice-glass').isVisible(),'iOS shows the reference voice icon');
+ check(await page.locator('#companion-form [data-mic]>svg').isVisible(),'iOS voice action shows the same microphone');
+ check(await page.locator('.companion-disclosure').isHidden(),'signed-in composer has no redundant save explanation');
  const chooser=page.waitForEvent('filechooser');await page.locator('#companion-form [data-photo]').click();await chooser;
  check(true,'iOS photo control opens the real file picker');
  await page.evaluate(()=>{window.oldCalls=glassCalls.length;for(let i=0;i<10;i++)native.refresh()});await tick();check(await page.evaluate(()=>glassCalls.length===oldCalls),'unchanged state sends no repeated control payloads');
@@ -49,11 +50,18 @@ async page=>{
   check(await page.locator('#main .ios-native-control').count()===0,'content actions retain their web layout on '+destination);
   check(await page.locator('details:not([open]) .ios-native-control').count()===0,'closed menus expose no native buttons on '+destination);
   if(destination==='pantry')check(await page.locator('[data-pantry-list]').first().evaluate(el=>getComputedStyle(el).opacity==='1'&&getComputedStyle(el).pointerEvents!=='none'),'pantry quick-add remains visible and interactive');
-  if(['pantry','shopping'].includes(destination)){
+  if(['pantry','shopping','recipes'].includes(destination)){
    check(await page.locator('#workspace-assistant [data-workspace-assistant]').count()===0,'no duplicate Ask Morzsa button on '+destination);
    check(await page.locator('#workspace-new-chat').evaluate(el=>!el.hidden&&el.getBoundingClientRect().width>=44&&el.getBoundingClientRect().bottom<innerHeight),'floating new chat stays reachable on '+destination);
   }
-  if(destination==='pantry')check(await page.locator('#workspace-assistant .workspace-fast-actions').count()===0,'pantry has no empty quick-action row');
+  if(['pantry','recipes'].includes(destination))check(await page.locator('#workspace-assistant .workspace-fast-actions').count()===0,destination+' has no empty quick-action row');
+  if(destination==='recipes'){
+   check(await page.locator('#workspace-quick-add.ios-native-control').count()===1,'Recipes quick add uses the native plus control');
+   check(await page.evaluate(()=>{const a=document.getElementById('workspace-quick-add').getBoundingClientRect(),b=document.getElementById('workspace-new-chat').getBoundingClientRect();return a.width>=44&&a.height>=44&&a.right<b.left&&Math.abs(a.top-b.top)<2}),'Recipes plus sits beside new chat without overlap');
+   await page.evaluate(()=>document.getElementById('workspace-quick-add').click());
+   check(await page.locator('#workspace-entry[open]').count()===1,'Recipes plus opens the existing quick-add flow');
+   await page.evaluate(()=>document.getElementById('workspace-entry').close());await tick();
+  }
   if(destination==='shopping')check(await page.locator('[data-start-shopping]').isVisible(),'shopping mode entry stays visible');
  }
  await page.locator('.app>nav [data-page="chat"]').click();await tick();

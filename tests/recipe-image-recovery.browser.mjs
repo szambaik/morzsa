@@ -26,7 +26,11 @@ const show=async()=>{await p.locator('nav [data-page=recipes]').click();await p.
 try{
  await p.goto('http://127.0.0.1:8942/?actor=c');await p.waitForFunction(()=>MorzsaPersistence.status()==='synced'&&!household.busy);
  await show();await p.waitForFunction(id=>document.querySelector('[data-feed-image="'+id+'"]')?.dataset.imageStatus==='pending',rid);
- assert.match(await host.innerText(),/Kép készül/);
+ assert.equal(await host.locator('.image-placeholder').isVisible(),true);
+ assert.equal(await host.locator('[role=status]').getAttribute('aria-label'),'Receptkép betöltése folyamatban');
+ assert.equal(await host.innerText(),'');
+ assert.equal(await host.locator('.image-placeholder-progress i').first().evaluate(el=>getComputedStyle(el).animationName),'none');
+ await p.screenshot({path:out+'/'+engine+'-placeholder-390.png'});
  await p.locator('nav [data-page=chat]').click();await p.waitForTimeout(1100);mode='ready';
  await show();await host.locator('img').waitFor();await p.waitForFunction(id=>document.querySelector('[data-feed-image="'+id+'"] img')?.naturalWidth>0,rid);
  assert.equal(inputs.filter(i=>i.create).length,1);

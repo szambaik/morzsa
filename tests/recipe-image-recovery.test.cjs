@@ -7,7 +7,7 @@ function fixture(reply){
  const host=()=>({isConnected:true,children:[],dataset:{},replaceChildren(){this.children=[]},append(...nodes){this.children.push(...nodes)},getBoundingClientRect(){return {top:100,bottom:300,left:0,right:300,width:300,height:200}}});
  const context={window:{MORZSA_CLOUD:{url:'https://cloud'},addEventListener:(name,fn)=>listeners[name]=fn},innerHeight:844,innerWidth:390,household:{active:null,userId:()=> 'test',recipeImage:async input=>{inputs.push(input);return reply(input)}},language:'hu',document:{hidden:false,addEventListener:(name,fn)=>listeners[name]=fn,createElement:tag=>({tag,setAttribute(){}})},IntersectionObserver:class{constructor(cb){observers.push(cb)}observe(){}disconnect(){}},setTimeout:(fn,ms)=>{const timer={fn,ms};timers.push(timer);return timer},clearTimeout:timer=>{if(timer)timer.cancelled=true}};
  vm.runInNewContext(fs.readFileSync('recipe-images.js','utf8'),context);
- const mount=(r=recipe)=>{const node=host();context.window.RecipeImages.mount(node,r,-1,{autoCreate:true,quiet:true});observers.at(-1)([{isIntersecting:true}]);return node};
+ const mount=(r=recipe,options={})=>{const node=host(),before=observers.length;context.window.RecipeImages.mount(node,r,-1,{autoCreate:true,quiet:true,...options});if(observers.length>before)observers.at(-1)([{isIntersecting:true}]);return node};
  return {inputs,timers,listeners,context,mount};
 }
 test('returning to a pending card retrieves its completed image without another generation',async()=>{
@@ -18,20 +18,20 @@ test('returning to a pending card retrieves its completed image without another 
 });
 test('native resume recovers a failed quiet card from the backend cache',async()=>{
  let completed=false;const f=fixture(()=>{if(!completed)throw Error('IMAGE_TIMEOUT');return ready}),card=f.mount();await flush();
- assert.equal(card.dataset.imageStatus,'failed');assert.ok(card.children.some(n=>n.tag==='button'),'failed card has a reachable retry');
+ assert.equal(card.dataset.imageStatus,'failed');assert.equal(card.children[0].className,'image-placeholder');assert.equal(card.children.some(n=>n.tag==='button'),false,'transient failure recovers before offering manual retry');
  completed=true;f.listeners['morzsa-resume']();await flush();
  assert.equal(card.dataset.imageStatus,'ready');assert.deepEqual(f.inputs.map(i=>i.create),[false,false]);
 });
 test('quiet card image decode failure recovers with a cache read and ignores detached callbacks',async()=>{
  const f=fixture(()=>ready),card=f.mount();await flush();const oldImage=card.children[0];oldImage.onerror();await flush();
- assert.equal(card.dataset.imageStatus,'failed');assert.ok(card.children.some(n=>n.tag==='button'));
+ assert.equal(card.dataset.imageStatus,'failed');assert.equal(card.children[0].className,'image-placeholder');
  const timer=f.timers.find(t=>!t.cancelled);assert.ok(timer);await timer.fn();await flush();
  assert.equal(card.dataset.imageStatus,'ready');assert.deepEqual(f.inputs.map(i=>i.create),[false,false]);
  oldImage.onerror();await flush();assert.equal(card.dataset.imageStatus,'ready');
 });
 test('a cached cover is not blocked behind another card generating an image',async()=>{
  let release;const f=fixture(input=>input.recipe.title==='Slow'?(input.create?new Promise(resolve=>release=resolve):{status:'missing'}):ready);
- const slow=f.mount({...recipe,title:'Slow'});await flush();assert.equal(slow.dataset.imageStatus,'loading');
+ const slow=f.mount({...recipe,recipeId:'10000000-0000-4000-8000-000000000002',title:'Slow'});await flush();assert.equal(slow.dataset.imageStatus,'loading');
  const cached=f.mount();await flush();assert.equal(cached.dataset.imageStatus,'ready');
  assert.deepEqual(f.inputs.map(i=>i.create),[false,true,false]);release(ready);await flush();
 });
@@ -44,6 +44,16 @@ test('automatic failed-card recovery is bounded and skips offscreen cards',async
  const f=fixture(()=>{throw Error('IMAGE_TIMEOUT')}),card=f.mount();await flush();
  for(let i=0;i<2;i++){await f.timers[i].fn();await flush()}
  assert.equal(f.inputs.length,3);assert.equal(f.timers.length,2);assert.equal(f.inputs.every(i=>i.create===false),true);
+ assert.ok(card.children.some(n=>n.tag==='button'),'exhausted automatic recovery leaves an actionable retry');
  card.getBoundingClientRect=()=>({top:1500,bottom:1700,left:0,right:300,width:300,height:200});
  f.listeners['morzsa-resume']();await flush();assert.equal(f.inputs.length,3);
+});
+test('chat and cooking images recover transient first failures without a manual tap',async()=>{
+ let attempts=0;const f=fixture(()=>{if(!attempts++)throw Error('IMAGE_TIMEOUT');return ready}),card=f.mount(recipe,{quiet:false});await flush();
+ assert.equal(card.children[0].className,'image-placeholder');assert.equal(card.children.some(n=>n.tag==='button'),false);
+ await f.timers[0].fn();await flush();assert.equal(card.dataset.imageStatus,'ready');assert.deepEqual(f.inputs.map(i=>i.create),[true,false]);
+});
+test('recommendation and library versions of one persistent recipe share one cached image',async()=>{
+ const f=fixture(()=>ready);f.mount();await flush();const duplicate=f.mount({...recipe,summary:'A recommendation with a different summary',servings:2});await flush();
+ assert.equal(duplicate.dataset.imageStatus,'ready');assert.equal(f.inputs.length,1);
 });

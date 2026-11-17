@@ -4,12 +4,13 @@ const PersistenceModel=(()=>{
  const weeklySettings=value=>(typeof WeeklyPlanModel==='undefined'?require('./weekly-plan-model'):WeeklyPlanModel).settings(value);
  const uuid=v=>typeof v==='string'&&/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(v);
  const accountKey=user=>'morzsa-cloud-chats-v1:'+user;
- const metadata=t=>({... (t.weeklyPlan?{weeklyPlan:weeklySettings(t.weeklyPlan)}:{}),kind:t.kind||'chat',title:t.title||'',language:t.language||'hu',updated:t.updated||Date.now(),...(t.archivedAt?{archivedAt:t.archivedAt}:{}),...(t.parentId?{parentId:t.parentId}:{}),...(t.recipe?{recipe:t.recipe,...(t.portions?{portions:t.portions}:{}),...(t.cooking?{cooking:Cooking.normalize(t.cooking,t.recipe,t.status)}:{}),status:t.status||'active',cookingStep:t.cookingStep||0,completedSteps:t.completedSteps||[]}: {})});
+ const lastMessageAt=t=>(t.messages||[]).reduce((latest,m)=>Number.isFinite(m.createdAt)?Math.max(latest,m.createdAt):latest,Number.isFinite(t.lastMessageAt)&&t.lastMessageAt>0?t.lastMessageAt:0);
+ const metadata=t=>({...(lastMessageAt(t)?{lastMessageAt:lastMessageAt(t)}:{}),... (t.weeklyPlan?{weeklyPlan:weeklySettings(t.weeklyPlan)}:{}),kind:t.kind||'chat',title:t.title||'',language:t.language||'hu',updated:t.updated||Date.now(),...(t.archivedAt?{archivedAt:t.archivedAt}:{}),...(t.parentId?{parentId:t.parentId}:{}),...(t.recipe?{recipe:t.recipe,...(t.portions?{portions:t.portions}:{}),...(t.cooking?{cooking:Cooking.normalize(t.cooking,t.recipe,t.status)}:{}),status:t.status||'active',cookingStep:t.cookingStep||0,completedSteps:t.completedSteps||[]}: {})});
  const message=m=>({id:m.id,role:m.role,text:m.text,createdAt:m.createdAt,recipes:m.recipes||[],...(m.result?{result:m.result}:{}),...(m.archived?{archived:true}:{}),...(m.provider?{provider:m.provider}:{}),...(m.photoPath?{photoPath:m.photoPath}:{})});
  function mergeMessages(remote,local=[],pending=[]){const dirty=new Set(pending.map(m=>m.id)),map=new Map(remote.map(m=>[m.id,m]));for(const m of local){if(!map.has(m.id)||dirty.has(m.id))map.set(m.id,m);else if(m.photo)map.set(m.id,{...map.get(m.id),photo:m.photo})}return [...map.values()].sort((a,b)=>a.sequence&&b.sequence?a.sequence-b.sequence:(a.createdAt||0)-(b.createdAt||0)||a.id.localeCompare(b.id))}
  function mergeProgress(remote,local){const done=[...new Set([...(remote.completedSteps||[]),...(local.completedSteps||[])])].sort((a,b)=>a-b);return {...remote,...(local.cooking||remote.cooking?{cooking:Cooking.merge(remote.cooking,local.cooking)}:{}),...(done.length?{completedSteps:done,cookingStep:Math.max(remote.cookingStep||0,local.cookingStep||0),status:remote.status==='completed'||local.status==='completed'?'completed':'active'}:{})}}
  function mergeMetadata(remote,local,base){
-  if(!base)return {...remote,...local};
+  if(!base)return {...remote,...local,...(remote.lastMessageAt||local.lastMessageAt?{lastMessageAt:Math.max(remote.lastMessageAt||0,local.lastMessageAt||0)}:{})};
   const merged={...remote};
   for(const key of new Set([...Object.keys(base),...Object.keys(local)])){
    if(JSON.stringify(local[key])===JSON.stringify(base[key]))continue;
@@ -18,6 +19,7 @@ const PersistenceModel=(()=>{
   const done=[...new Set([...(remote.completedSteps||[]),...(local.completedSteps||[])])].sort((a,b)=>a-b);
   if(done.length){merged.completedSteps=done;merged.cookingStep=JSON.stringify(local.cookingStep)!==JSON.stringify(base.cookingStep)&&local.cookingStep<base.cookingStep?local.cookingStep:Math.max(remote.cookingStep||0,local.cookingStep||0);merged.status=remote.status==='completed'||local.status==='completed'?'completed':'active'}
   if(local.cooking||remote.cooking){merged.cooking=Cooking.merge(remote.cooking,local.cooking);if(base?.cooking&&JSON.stringify(local.cooking?.feedback)===JSON.stringify(base.cooking?.feedback))merged.cooking.feedback=remote.cooking?.feedback||local.cooking?.feedback;}
+  if(remote.lastMessageAt||local.lastMessageAt)merged.lastMessageAt=Math.max(remote.lastMessageAt||0,local.lastMessageAt||0);
   return merged;
  }
  function rank(list,{stock={},favourites=[],recent=[],prefs={},month=new Date().getMonth()+1}={}){
