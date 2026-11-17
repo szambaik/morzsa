@@ -7,7 +7,7 @@ function voiceError(error){
  const en=language==='en',messages={
  PLUS_API_QUOTA:['A Plus most nem elérhető. Próbáld később újra, vagy folytasd ingyenes módban.','Plus is unavailable right now. Try again later or continue in Free mode.'],
  PLUS_SETUP_REQUIRED:['Most nem sikerült kapcsolódni. Próbáld újra, vagy folytasd írásban, ingyenes módban.','Could not connect. Try again or continue by typing in Free mode.'],
- PLUS_ACCESS_REQUIRED:['A fiókodhoz vagy konyhádhoz még nincs Plus-hozzáférés beállítva. A chatben választhatod az ingyenes módot.','Plus access is not enabled for your account or kitchen yet. Select Free in the chat.'],
+ PLUS_ACCESS_REQUIRED:['Plus módban vagy, de a fiókodhoz vagy a kiválasztott konyhához még nincs Plus-hozzáférés beállítva. A Beállításokban ingyenes módra válthatsz.','You are in Plus mode, but access is not enabled for your account or selected kitchen yet. You can switch to Free in Settings.'],
  PLUS_LIMIT:['A Plus használati keret elfogyott. A chatben ingyenes módra válthatsz.','Your Plus allowance is used up. Switch to Free in the chat.'],
  PLUS_REQUEST_PENDING:['Ez a kérés vagy hangbeszélgetés már folyamatban van. Várj, vagy fejezd be az előzőt.','This request or voice conversation is already in progress. Wait or end the previous one.'],
  VOICE_SIGN_IN_REQUIRED:['Morzsa AI-segítségéhez előbb lépj be.','Sign in to use Morzsa’s AI assistant.'],

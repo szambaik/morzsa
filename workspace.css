@@ -644,6 +644,7 @@ body.voice-active{overflow:hidden}
 .workspace-ai-mode{display:grid;gap:7px;min-width:0;padding:8px 10px 12px;font-size:12px;color:var(--muted)}
 .workspace-ai-mode select{width:100%;min-width:0;min-height:44px;padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:#fffdf7;color:var(--ink);font:inherit;font-size:13px;cursor:pointer}
 .workspace-ai-mode select:disabled{opacity:.6;cursor:default}
+.workspace-ai-status{margin:0 10px 12px;font-size:12px;line-height:1.5;color:var(--muted);overflow-wrap:anywhere}
 .workspace-language{padding:8px 10px 12px}
 .workspace-language>span{display:block;font-size:12px;color:var(--muted);margin-bottom:7px}
 .workspace-language .language-switch{display:grid;grid-template-columns:1fr 1fr;width:100%;background:#fff7;border:1px solid var(--line);border-radius:12px;overflow:hidden}
@@ -969,7 +970,7 @@ body.voice-active{overflow:hidden}
 .intro-success .introduction-demo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.intro-success .introduction-demo-grid button{min-width:0;min-height:96px;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px;padding:10px;background:#FFFDF8;border:1px solid #34463815;border-radius:16px;color:#344638}
 .intro-success .introduction-demo-grid strong{font-size:14px}.intro-success .introduction-language{display:flex;gap:8px;margin:16px 0}.introduction-language button{min-height:44px;border:0;border-radius:12px;padding:10px 16px;background:#E8EDDE;color:#344638}
 .history-search{width:100%;box-sizing:border-box;min-height:44px;background:#FFFDF8;border:1px solid #34463820;border-radius:12px;padding:10px 12px;font:400 14px Inter,system-ui;margin:8px 0}.history-thread[hidden]{display:none!important}.history-sharing summary{min-height:44px;display:flex;align-items:center;font-size:13px;cursor:pointer}
-.daily-counts{grid-template-columns:repeat(3,minmax(0,1fr))}.daily-counts button{min-width:0;padding:12px 8px}.daily-counts span{font-size:12px}.daily-counts small{display:none}.daily-counts strong{font-size:24px}
+.daily-counts{grid-template-columns:repeat(3,minmax(0,1fr))}.daily-counts button{min-width:0;padding:12px 8px}.daily-counts span{font-size:12px;max-width:100%;overflow-wrap:anywhere}.daily-counts small{display:none}.daily-counts strong{font-size:24px}
 .recipe-library .recipe-feed-search{margin-top:14px}.recipe-library .room-card .feed-card-art{aspect-ratio:16/9}.recipe-library .room-card h3{font-size:18px}
 .recipe-library .saved-compact .room-card{display:grid;grid-template-columns:100px minmax(0,1fr)}.saved-compact .room-card-visual{min-width:0}.recipe-library .saved-compact .room-card .room-art{height:100%;min-height:150px;aspect-ratio:auto}.saved-compact .room-card .room-heart{right:4px;top:4px}.recipe-library .saved-compact .room-card .room-card-body{padding:12px}.saved-compact .room-stock-match{font-size:12px}.saved-compact .room-card h3{font-size:16px}
 @media(min-width:1000px){.recipe-library .room-favourites{grid-template-columns:repeat(2,minmax(0,1fr))}.workspace-chat:not(.workspace-cooking) .companion{max-width:700px;margin-inline:auto}.recipe-library .room-card .feed-card-art{aspect-ratio:16/9}.recipe-reading-hero>.room-art{max-height:300px}.recipe-library .room-heading h1{font-size:30px}}

@@ -17,15 +17,32 @@ window.MorzsaWorkspace=(()=>{
  settings.querySelector('.workspace-preferences').onclick=()=>{document.getElementById('companion-history')?.close();window.KitchenIntelligence?.openPreferences()};
  settings.querySelector('.workspace-introduction').onclick=()=>{document.getElementById('companion-history')?.close();window.MorzsaOnboarding?.open()};
  const aiMode=settings.querySelector('#workspace-ai-mode');
+ const aiStatus=document.createElement('p');aiStatus.id='workspace-ai-status';aiStatus.className='workspace-ai-status';aiStatus.setAttribute('role','status');aiMode.setAttribute('aria-describedby',aiStatus.id);aiMode.closest('label').after(aiStatus);
+ let aiStatusKey='',aiStatusSerial=0;
+ const aiContext=()=>JSON.stringify([household?.userId(),household?.active,window.AIMode?.get(),language]);
+ async function refreshAIStatus(){
+  const key=aiContext();if(key===aiStatusKey)return;aiStatusKey=key;const serial=++aiStatusSerial;
+  if(!window.AIMode?.isPlus()){aiStatus.textContent=say('Ingyenes AI-módot használsz.','You are using Free AI mode.');return}
+  if(!household?.userId()){aiStatus.textContent=say('A Plus használatához jelentkezz be.','Sign in to use Plus.');return}
+  aiStatus.textContent=say('Plus-hozzáférés ellenőrzése…','Checking Plus access…');
+  try{
+   const status=await household.plusStatus();if(serial!==aiStatusSerial||key!==aiContext())return;
+   aiStatus.textContent=!status?.configured?say('A Plus most nem elérhető. Próbáld újra később.','Plus is unavailable right now. Try again later.'):status.enabled?say('Plus-hozzáférés aktív.','Plus access is active.'):say('Plus mód kiválasztva, de ehhez a fiókhoz vagy konyhához még nincs hozzáférés beállítva.','Plus mode selected, but access is not enabled for this account or kitchen yet.');
+  }catch{if(serial===aiStatusSerial&&key===aiContext())aiStatus.textContent=say('A Plus-hozzáférést most nem sikerült ellenőrizni.','Could not check Plus access right now.')}
+ }
  function syncAIMode(){
   settings.querySelector('[data-ai-mode-label]').textContent=say('AI mód','AI mode');
   aiMode.querySelector('[value=free]').textContent=say('Ingyenes','Free');
   aiMode.value=window.AIMode?.get()||'plus';
   aiMode.disabled=!window.AIMode||window.MorzsaCompanion?.canChangeAIMode?.()===false;
+  if(settings.querySelector('.workspace-settings').open)refreshAIStatus();
  }
  aiMode.onchange=()=>{if(window.MorzsaCompanion?.canChangeAIMode?.()===false){syncAIMode();return}if(!window.AIMode?.set(aiMode.value))toast(say('A beállítást nem sikerült menteni.','Could not save this setting.'));syncAIMode()};
- settings.querySelector('.workspace-settings').addEventListener('toggle',syncAIMode);
+ settings.querySelector('.workspace-settings').addEventListener('toggle',()=>{aiStatusKey='';syncAIMode()});
+ window.addEventListener('morzsa-ai-mode-change',syncAIMode);
+ window.addEventListener('morzsa-auth-change',syncAIMode);
  function attachSettings(host){
+  if(host?.id==='companion-history'&&!host.open)aiStatusKey='';
   const dialog=document.getElementById('companion-history');host=host||(matchMedia('(min-width:1000px)').matches?sidebar:dialog?.open?dialog:sidebar);
   if(settings.parentElement!==host)host.append(settings);
   syncAIMode();
@@ -64,7 +81,7 @@ window.MorzsaWorkspace=(()=>{
    dock.querySelector('[data-workspace-voice]').onclick=()=>{const r=window.RecipeRoom?.reading();if(r&&window.MorzsaCompanion.discuss(r,RecipeRoom.portionsFor(r))===false)return;window.MorzsaCompanion.voice()};
   }
   document.body.classList.toggle('workspace-cooking',page==='chat'&&!!main.querySelector('.cooking-guide,.cooking-preparation,.cooking-completion'));document.body.classList.toggle('cooking-guided',page==='chat'&&!!main.querySelector('.cooking-guide[data-method-view=focus]'));if(page!=='chat')document.body.classList.remove('cooking-reading','cooking-stage-calm','workspace-crafting','craft-question-open');document.body.classList.toggle('workspace-chat',page==='chat');dock.dataset.context=page;document.body.classList.toggle('workspace-local-compose',!!local);
-  document.documentElement.style.setProperty('--workspace-nav-height',desktop?'0px':nav.getBoundingClientRect().height+'px');
+  window.MorzsaViewport?.refresh();
   if(quick?.open&&entryContext!==voiceContext())quick.close();
   window.MorzsaOnboarding?.mount();document.body.classList.toggle('introduction-active',!!main.querySelector('.morzsa-introduction'));
    window.MorzsaCompanion?.mountResume();window.KitchenIntelligence?.mount();window.WeeklyPlanUI?.mountEntry();mountActivity();mountKitchen();mountContext();window.MorzsaProactive?.mount();window.ShoppingMode?.positionFeedback();
@@ -106,6 +123,6 @@ window.MorzsaWorkspace=(()=>{
  }
  function connectionNote(){let note=document.getElementById('workspace-connection-note');if(!note){note=document.createElement('div');note.id='workspace-connection-note';note.setAttribute('role','status');note.setAttribute('data-no-translate','');document.querySelector('.app header').after(note)}note.hidden=navigator.onLine!==false;note.textContent=say('Nincs internet. Az AI és a közös konyha frissítése szünetel.','No internet. AI and shared kitchen updates are unavailable.')}
  window.addEventListener('offline',connectionNote);window.addEventListener('online',connectionNote);connectionNote();
- window.addEventListener('resize',mount);
+ matchMedia('(min-width:1000px)').addEventListener('change',mount);
  mount();return {mount,quick:openEntry,attachSettings};
 })();

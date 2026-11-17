@@ -1,0 +1,33 @@
+/* Shared document scroll owner. Measured controls reserve their own bottom space. */
+:root{--shell-content-bottom:160px;--composer-bottom:84px;--shell-bottom:72px;--viewport-top:0px;--viewport-height:100dvh;--viewport-width:100vw}
+:root .app,:root .app:has(.ingredient-grid){padding-bottom:var(--shell-content-bottom)}
+:root .app #main,:root .app .companion,:root .app .recipe-room,:root .app .companion-messages{padding-bottom:0}
+:root .app .companion,:root .app .recipe-room{min-height:0}
+:root #companion-end{scroll-margin-bottom:var(--shell-content-bottom)}
+:root .app .companion-compose-wrap,:root .app .room-compose-wrap{bottom:var(--composer-bottom)}
+:root #workspace-assistant{bottom:calc(var(--shell-bottom) + 12px)}
+:root .cooking-task-dock{bottom:var(--shell-bottom)}
+:root.keyboard-open .app nav{display:none}
+:root.keyboard-open #workspace-quick-add.workspace-add-fab{visibility:hidden}
+:root .cooking-question-open .companion-messages{padding-bottom:16px;top:var(--viewport-top);bottom:calc(var(--keyboard-inset,0px) + var(--task-dock-height,0px) + var(--composer-height,0px) + 24px)}
+@media(max-width:999px){
+ :root .app>header{position:sticky;top:var(--viewport-top);z-index:22;background:var(--bg);padding-top:env(safe-area-inset-top,0px);box-sizing:content-box}
+}
+/* One flowing popup, independent of the title and of the legacy catalog menu. */
+.pantry-library .pantry-tools{flex:none;align-self:flex-start}
+.pantry-library .pantry-tools[open]{padding:0;background:transparent;box-shadow:none}
+.pantry-tools-panel{position:absolute;right:0;top:48px;width:min(280px,calc(100vw - 40px));max-height:calc(var(--viewport-height) - 140px);overflow:auto;overscroll-behavior:contain;display:flex;flex-direction:column;gap:4px;padding:10px;background:var(--white);border:1px solid var(--line);border-radius:14px;box-shadow:0 6px 20px #34463818}
+.pantry-tools-panel>button{position:static;min-height:44px;width:100%;text-align:left;white-space:normal;box-shadow:none}
+.pantry-tools-panel label{padding:6px}
+.pantry-tools-panel select{max-width:none;font-size:16px}
+.pantry-tools-panel #clear-stock{order:2;background:transparent;border:0;color:var(--muted)}
+.pantry-card-actions{display:block;width:100%;padding:0;border:0}
+.pantry-card-actions>summary{list-style:none;display:grid;place-items:center;min-height:44px;border-radius:10px;cursor:pointer}
+.pantry-card-actions>summary::-webkit-details-marker{display:none}
+.pantry-card-actions>div{display:flex;flex-wrap:wrap;justify-content:center;gap:4px}
+.pantry-card-actions>div>button{display:grid;place-items:center;min-width:44px;min-height:44px;border:0;border-radius:10px;background:var(--sage);padding:10px}
+.pantry-card-actions>div>button:last-child{background:transparent}
+.pantry-card-actions>div>button:disabled{opacity:.5}
+.history-thread .history-row-copy{min-width:0}
+.history-thread .history-row-copy small{display:block;font-size:11px;color:var(--muted);margin-top:3px}
+.cooking-compact-title [data-pause-cooking]{min-height:44px;background:transparent;border:1px solid var(--line);border-radius:12px;padding:8px 12px;font-size:13px}
