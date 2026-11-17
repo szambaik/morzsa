@@ -9,15 +9,25 @@ window.MorzsaWorkspace=(()=>{
  sidebar.innerHTML='<a class="workspace-brand" href="#">'+document.querySelector('header .brand').innerHTML+'</a><div class="workspace-navigation"></div><div class="workspace-history"></div>';
  const dashboard=e=>{e.preventDefault();page='overview';render();window.scrollTo(0,0)};sidebar.querySelector('a').onclick=dashboard;document.querySelector('header .brand').onclick=dashboard;document.body.append(sidebar);
  const settings=document.createElement('section');settings.className='workspace-settings-area';settings.setAttribute('data-no-translate','');
- settings.innerHTML='<details class="workspace-settings"><summary>'+glyph('sliders-horizontal')+'<span data-settings-label></span></summary><div class="workspace-account"></div><div class="workspace-language"><span data-language-label></span><div class="workspace-language-host"></div></div></details><button type="button" class="workspace-preferences" data-kitchen-preferences>'+glyph('heart')+'<span></span></button><button type="button" class="workspace-introduction">'+glyph('sparkles')+'<span></span></button>';
+ settings.innerHTML='<details class="workspace-settings"><summary>'+glyph('sliders-horizontal')+'<span data-settings-label></span></summary><div class="workspace-account"></div><div class="workspace-language"><span data-language-label></span><div class="workspace-language-host"></div></div><label class="workspace-ai-mode"><span data-ai-mode-label></span><select id="workspace-ai-mode"><option value="plus">Morzsa Plus</option><option value="free"></option></select></label></details><button type="button" class="workspace-preferences" data-kitchen-preferences>'+glyph('heart')+'<span></span></button><button type="button" class="workspace-introduction">'+glyph('sparkles')+'<span></span></button>';
  const account=document.getElementById('household-button'),languageSwitch=document.querySelector('.language-switch');
  settings.querySelector('.workspace-account').append(account);settings.querySelector('.workspace-language-host').append(languageSwitch);
  languageSwitch.querySelector('[data-language=hu]').textContent='Magyar';languageSwitch.querySelector('[data-language=en]').textContent='English';
  settings.querySelector('.workspace-preferences').onclick=()=>{document.getElementById('companion-history')?.close();window.KitchenIntelligence?.openPreferences()};
  settings.querySelector('.workspace-introduction').onclick=()=>{document.getElementById('companion-history')?.close();window.MorzsaOnboarding?.open()};
+ const aiMode=settings.querySelector('#workspace-ai-mode');
+ function syncAIMode(){
+  settings.querySelector('[data-ai-mode-label]').textContent=say('AI mód','AI mode');
+  aiMode.querySelector('[value=free]').textContent=say('Ingyenes','Free');
+  aiMode.value=window.AIMode?.get()||'plus';
+  aiMode.disabled=!window.AIMode||window.MorzsaCompanion?.canChangeAIMode?.()===false;
+ }
+ aiMode.onchange=()=>{if(window.MorzsaCompanion?.canChangeAIMode?.()===false){syncAIMode();return}if(!window.AIMode?.set(aiMode.value))toast(say('A beállítást nem sikerült menteni.','Could not save this setting.'));syncAIMode()};
+ settings.querySelector('.workspace-settings').addEventListener('toggle',syncAIMode);
  function attachSettings(host){
   const dialog=document.getElementById('companion-history');host=host||(matchMedia('(min-width:1000px)').matches?sidebar:dialog?.open?dialog:sidebar);
   if(settings.parentElement!==host)host.append(settings);
+  syncAIMode();
   settings.querySelector('[data-settings-label]').textContent=say('Beállítások','Settings');settings.querySelector('[data-language-label]').textContent=say('Nyelv','Language');
   settings.querySelector('.workspace-preferences span').textContent=say('Főzési ízlésem','Cooking preferences');
   settings.querySelector('.workspace-introduction span').textContent=say('Morzsa bemutató','Morzsa introduction');languageSwitch.setAttribute('aria-label',say('Nyelv','Language'));
