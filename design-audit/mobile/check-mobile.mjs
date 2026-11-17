@@ -32,7 +32,7 @@ try{
   await p.setViewportSize({width,height});
   for(const dest of ['overview','shopping','chat','pantry','recipes']){
    await p.evaluate(dest=>document.querySelector('nav [data-page="'+dest+'"]').click(),dest);await p.waitForTimeout(120);
-   const geo=await p.evaluate(()=>({overflow:document.documentElement.scrollWidth>innerWidth,active:document.querySelector('nav button.active')?.dataset.page}));result.sizes.push({width,height,dest,...geo});check(width+' '+dest+' no horizontal overflow',!geo.overflow);check(width+' '+dest+' active destination',geo.active===dest);
+   const geo=await p.evaluate(()=>({overflow:document.documentElement.scrollWidth>innerWidth,scrollWidth:document.documentElement.scrollWidth,offenders:[...document.querySelectorAll('body *')].filter(el=>{const r=el.getBoundingClientRect();return r.width&&r.right>innerWidth+1}).slice(-12).map(el=>({tag:el.tagName,cls:el.className,id:el.id,right:el.getBoundingClientRect().right,width:el.getBoundingClientRect().width,text:el.textContent.slice(0,100)})),active:document.querySelector('nav button.active')?.dataset.page}));result.sizes.push({width,height,dest,...geo});if(geo.overflow)await p.screenshot({path:path.join(out,'overflow-'+width+'-'+dest+'.png')});check(width+' '+dest+' no horizontal overflow',!geo.overflow);check(width+' '+dest+' active destination',geo.active===dest);
    if(width===390){await p.evaluate(()=>scrollTo(0,0));await shot(dest);if(dest==='pantry'){await p.locator('.pantry-tools summary').click();await shot('pantry-menu');const overlap=await p.locator('.pantry-tools').evaluate(el=>{const rs=[...el.querySelectorAll('button,select')].filter(b=>b.getBoundingClientRect().height).map(b=>b.getBoundingClientRect());return rs.some((a,i)=>rs.some((b,j)=>i!==j&&a.left<b.right&&a.right>b.left&&a.top<b.bottom&&a.bottom>b.top))});check('Pantry menu controls do not overlap',!overlap);await p.locator('.pantry-tools summary').click()}}
    if(mode!=='before'){
     await p.evaluate(()=>{const end=document.createElement('div');end.id='mobile-end-check';end.style.height='44px';document.querySelector('#main').append(end);scrollTo(0,document.documentElement.scrollHeight)});await p.waitForTimeout(80);
@@ -88,4 +88,4 @@ try{
 
  check('No uncaught browser errors',result.errors.length===0);
  await ctx.close();
-}finally{fs.writeFileSync(path.join(out,'results.json'),JSON.stringify(result,null,2)+'\n');await browser.close();await fixture.close();console.log(JSON.stringify({out,...result.metrics,checks:result.checks.length,errors:result.errors}))}
+}finally{fs.writeFileSync(path.join(out,'results.json'),JSON.stringify(result,null,2)+'\n');await browser.close();await fixture.close();console.log(JSON.stringify({out,...result.metrics,checks:result.checks.length,errors:result.errors,overflow:result.sizes.filter(s=>s.overflow)}))}
