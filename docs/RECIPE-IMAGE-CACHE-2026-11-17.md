@@ -21,6 +21,12 @@ Reference: [fal webhook delivery and signature protocol](https://fal.ai/docs/mod
 
 ## Verification
 
+Verified after merging origin/main at 5f342a8:
+
+- 326 JavaScript tests and all SQL suites passed; nine Python tests and 26 audit-engine tests passed.
+- Release gate: full audit, 32 axe scans, 54 targeted regressions and 68 iOS control checks passed.
+- Performance regressions, web build and bundled-web browser checks passed.
+
 - Backend tests cover covers/steps without browser polling, forged/tampered/stale callbacks, early delivery, duplicate delivery, concurrent polling, storage and settlement recovery, terminal failure, stale leases, old-model handles and cache reuse. The SQL suite reapplies the additive migration and checks one image job across users.
 - tests/recipe-image-cache.browser.mjs uses the local SQL fixture with a mocked image endpoint and an existing fixture photo. It checks an old chat's missing cover, all three ordinary steps in Free mode, cache reuse after reload, and automatic catalogue card images without extra image buttons.
 - Browser evidence: [results](../design/recipe-image-cache-2026-11-17/results.json) and [mobile catalogue](../design/recipe-image-cache-2026-11-17/library-auto-images.png).
