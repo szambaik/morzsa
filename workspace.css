@@ -1273,3 +1273,22 @@ body.workspace-chat{background:var(--bg)}
 #companion-history .companion-new img,#workspace-sidebar .companion-new img{width:19px;height:19px}
 @media(min-width:1000px){#workspace-sidebar{background:#f1eee5;border-right:0;padding:20px 16px 12px}#workspace-sidebar .workspace-brand{font-size:25px;padding-bottom:18px}#workspace-sidebar nav{padding-bottom:10px}#workspace-sidebar nav button{min-height:44px;padding:8px 10px}#workspace-sidebar .companion-new{order:5}#workspace-sidebar .companion-panel-head h2{font-size:12px;letter-spacing:0;text-transform:none}#workspace-sidebar .history-date-group>h4{display:none}.workspace-chat .app>header{height:52px}}
 @media(max-width:360px){.workspace-chat .companion .companion-starters{gap:5px}.workspace-chat .companion .companion-starters button{padding-inline:8px;font-size:11px;gap:4px}.workspace-chat:not(.workspace-cooking) .companion-welcome{padding-top:22px}.workspace-chat:not(.workspace-cooking) .companion-welcome h1{font-size:25px}}
+
+
+/* Keep the drawer within the visual viewport, including a visible keyboard. */
+#companion-history{position:fixed;inset:auto;top:var(--history-top,0px);left:var(--history-left,0px);box-sizing:border-box;width:min(340px,calc(var(--history-width,100vw) - 24px));height:var(--history-height,100dvh);max-height:var(--history-height,100dvh);overflow:hidden}
+#companion-history>.workspace-settings-area,#companion-history>.history-options{flex:0 1 auto;min-height:44px;overflow:auto;overscroll-behavior:contain}
+#companion-history .companion-history-items{min-height:0;overflow-x:hidden}
+#companion-history .history-search{font-size:16px}
+#companion-history.history-short{padding-top:12px;padding-bottom:12px}
+#companion-history.history-short .companion-panel-head{padding-bottom:4px}
+#companion-history.history-short .history-options,#companion-history.history-short .companion-new{margin-top:4px}
+#workspace-quick-add.workspace-add-fab{position:fixed;inset:auto 20px calc(var(--workspace-nav-height,72px) + 16px) auto;z-index:18;display:grid;place-items:center;width:52px;height:52px;min-width:52px;min-height:52px;margin:0;padding:14px;border-radius:50%;border:1px solid #ffffffd9;background:#fffdf7ed;box-shadow:0 3px 14px #3446381a}
+#workspace-quick-add.workspace-add-fab img{width:24px;height:24px}
+body:has(.workspace-add-fab:not([hidden])) #workspace-assistant[data-context=shopping]{padding-right:72px}
+body:has(dialog[open]) #workspace-quick-add.workspace-add-fab{visibility:hidden}
+.workspace-entry-setup{display:flex;align-items:center;gap:8px;min-height:44px;margin:0 0 10px;padding:8px 2px;border:0;background:transparent;color:var(--ink);font-size:13px}
+.workspace-entry-setup img{width:20px;height:20px}
+@media(min-width:1000px){#workspace-quick-add.workspace-add-fab{right:28px;bottom:24px}}
+
+body:has(#companion-history[open]){overflow:hidden}
