@@ -18,7 +18,7 @@ const PersistenceModel=(()=>{
   }
   const done=[...new Set([...(remote.completedSteps||[]),...(local.completedSteps||[])])].sort((a,b)=>a-b);
   if(done.length){merged.completedSteps=done;merged.cookingStep=JSON.stringify(local.cookingStep)!==JSON.stringify(base.cookingStep)&&local.cookingStep<base.cookingStep?local.cookingStep:Math.max(remote.cookingStep||0,local.cookingStep||0);merged.status=remote.status==='completed'||local.status==='completed'?'completed':'active'}
-  if(local.cooking||remote.cooking){merged.cooking=Cooking.merge(remote.cooking,local.cooking);if(base?.cooking&&JSON.stringify(local.cooking?.feedback)===JSON.stringify(base.cooking?.feedback))merged.cooking.feedback=remote.cooking?.feedback||local.cooking?.feedback;}
+  if(local.cooking||remote.cooking){merged.cooking=Cooking.merge(remote.cooking,local.cooking);if(base?.cooking&&JSON.stringify(local.cooking?.feedback)===JSON.stringify(base.cooking?.feedback))merged.cooking.feedback=remote.cooking?.feedback||local.cooking?.feedback;for(const field of ['guidance','equipmentReady'])if(base?.cooking&&JSON.stringify(local.cooking?.[field])===JSON.stringify(base.cooking?.[field])&&remote.cooking?.[field]!==undefined)merged.cooking[field]=remote.cooking[field];}
   if(remote.lastMessageAt||local.lastMessageAt)merged.lastMessageAt=Math.max(remote.lastMessageAt||0,local.lastMessageAt||0);
   return merged;
  }

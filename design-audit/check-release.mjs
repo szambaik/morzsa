@@ -26,3 +26,6 @@ console.log('Release gate passed: full audit, '+scans.length+' axe scans, '+chec
 
 const recipeLatency=spawnSync(process.execPath,[path.join(import.meta.dirname,'recipe-latency.mjs')],{cwd:root,stdio:'inherit'});
 assert.equal(recipeLatency.status,0,'Progressive recipe, cancellation and retry regressions must pass');
+
+const dynamicRecipes=spawnSync(process.execPath,[path.join(import.meta.dirname,'dynamic-recipes.mjs')],{cwd:root,stdio:'inherit',env:{...process.env,MORZSA_DYNAMIC_OUTPUT:path.join(result.runDir,'dynamic-recipes')}});
+assert.equal(dynamicRecipes.status,0,'Dynamic recipe, timer and contextual guidance regressions must pass');
