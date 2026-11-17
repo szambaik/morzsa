@@ -55,9 +55,11 @@ async page=>{
  check(await page.locator('#companion-input').inputValue()==='Következő kérdésem','typing during native submission becomes the next draft');
  await page.waitForTimeout(450);await page.locator('#companion-form [data-action=stop]').click();await page.locator('[data-retry]').waitFor();
  check(await page.locator('#companion-input').inputValue()==='Következő kérdésem','stopping a response retains the next native draft');
- await page.evaluate(()=>{MorzsaPersistence.beginTurn=originalBegin;composerMode='reject';composer.refresh()});
- // Force a changed payload, otherwise there is correctly no extra bridge call.
- await page.evaluate(()=>nativeEdit('Megmaradó piszkozat'));await tick();await tick();
+ // Commit the native edit before failing its bridge update, in the same task.
+ // Separate evaluations can let the bridge fail before the edit is dispatched;
+ // callbacks from a disconnected native editor are correctly ignored then.
+ await page.evaluate(()=>{MorzsaPersistence.beginTurn=originalBegin;nativeEdit('Megmaradó piszkozat');composerMode='reject';composer.refresh()});
+ await page.waitForFunction(()=>!document.getElementById('companion-input').hasAttribute('aria-hidden'));
  check(await page.locator('#companion-input').evaluate(el=>getComputedStyle(el).opacity==='1'&&!el.hasAttribute('aria-hidden')),'bridge failure restores the web editor and accessibility');
  check(await page.locator('#companion-input').inputValue()==='Megmaradó piszkozat','fallback retains the last synchronized draft');
  await page.evaluate(()=>{composerMode='normal';window.dispatchEvent(new Event('morzsa-resume'))});await tick();
