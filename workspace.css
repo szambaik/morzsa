@@ -1159,3 +1159,10 @@ body.voice-active{overflow:hidden}
 .pantry-search-scope{font-size:12px;line-height:1.5;color:var(--muted);margin:8px 0 12px}
 .cooking-compact-title p,.cooking-hero>p{color:var(--orange-ink)}
 .maintenance-heading>div>p,.companion-nudge>p,.cooking-timers small{color:var(--muted)}
+
+/* The new conversation action stays in thumb reach, aligned with Send. */
+#workspace-new-chat{position:absolute;right:8px;bottom:calc(100% + 10px);z-index:2;border-radius:50%;background:#fffdf8;border-color:#34463818;box-shadow:0 3px 12px #34463812}
+#workspace-new-chat:hover{background:#f0f2e9}
+#workspace-new-chat:focus-visible{outline:2px solid #344638;outline-offset:3px}
+.companion-pending-send small{display:block;margin-top:7px;font-size:12px;opacity:.8}
+.companion-pending-send p{white-space:pre-wrap}

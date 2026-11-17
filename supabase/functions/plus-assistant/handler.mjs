@@ -22,17 +22,17 @@ export function createHandler(config,fetcher=fetch){return async request=>{
  if(!configured)return reply(503,{error:'PLUS_SETUP_REQUIRED'});
  const dbHeaders={apikey:config.serviceKey,Authorization:'Bearer '+config.serviceKey,'Content-Type':'application/json'};
  const db=(path,body,method='POST')=>fetcher(config.url+'/rest/v1/'+path,{method,headers:dbHeaders,...(body===undefined?{}:{body:JSON.stringify(body)}),signal:AbortSignal.timeout(10000)});
- let id,user,reserved=false;
- const settle=async(state,model,usage={},cents)=>{if(!reserved)return;const r=await db('morzsa_plus_requests?request_id=eq.'+id+'&user_id=eq.'+user.id,{state,model,usage,...(Number.isInteger(cents)?{charged_cents:cents}:{})},'PATCH');if(!r.ok)throw Error('PLUS_SETUP_REQUIRED')};
+ let id,user,reserved=false,usageLimitsEnabled=true;
+ const settle=async(state,model,usage={},cents)=>{if(!reserved)return;const r=await db('morzsa_plus_requests?request_id=eq.'+id+'&user_id=eq.'+user.id,{state,model,usage,...(Number.isInteger(cents)?{charged_cents:cents}:state==='failed'?{charged_cents:0}:{})},'PATCH');if(!r.ok)throw Error('PLUS_SETUP_REQUIRED')};
  try{
   const result=await fetcher(config.url+'/auth/v1/user',{headers:{apikey:config.publishableKey,Authorization:auth},signal:AbortSignal.timeout(10000)});if(!result.ok)return reply(401,{error:'VOICE_SIGN_IN_REQUIRED'});user=await result.json();if(!uuid(user.id))return reply(401,{error:'VOICE_SIGN_IN_REQUIRED'});
   const input=request.method==='GET'?{householdId:new URL(request.url).searchParams.get('householdId')||null}:await readBody(request),hid=input.householdId??null;
   if(hid!==null&&!uuid(hid))throw Error('VOICE_INVALID_INPUT');
   const accessResponse=await db('rpc/morzsa_plus_access',{user_id:user.id,hid});if(!accessResponse.ok)throw Error('PLUS_SETUP_REQUIRED');const access=await accessResponse.json();
-  if(request.method==='GET')return reply(200,{configured,enabled:access.enabled===true,remainingCents:access.remainingCents??0,supportsImages:true,supportsStreaming:true,textProvider:'openai',voiceSeconds:VOICE_SECONDS});
+  if(request.method==='GET')return reply(200,{configured,enabled:access.enabled===true,usageLimitsEnabled:access.usageLimitsEnabled!==false,remainingCents:access.remainingCents??null,monthlyCents:access.monthlyCents,resetsAt:access.resetsAt,supportsImages:true,supportsStreaming:true,textProvider:'openai',voiceSeconds:VOICE_SECONDS});
   if(!access.enabled)throw Error('PLUS_ACCESS_REQUIRED');
   id=input.requestId;if(!uuid(id))throw Error('VOICE_INVALID_INPUT');
-  const reserve=async(kind,cents)=>{const r=await db('rpc/reserve_morzsa_plus',{user_id:user.id,hid,request_id:id,kind,reserve_cents:cents});if(!r.ok)throw Error('PLUS_SETUP_REQUIRED');const v=await r.json();if(v.status!=='reserved')throw Error(['duplicate','pending'].includes(v.status)?'PLUS_REQUEST_PENDING':v.status==='limit'?'PLUS_LIMIT':'PLUS_ACCESS_REQUIRED');reserved=true};
+  const reserve=async(kind,cents)=>{const r=await db('rpc/reserve_morzsa_plus',{user_id:user.id,hid,request_id:id,kind,reserve_cents:cents});if(!r.ok)throw Error('PLUS_SETUP_REQUIRED');const v=await r.json();if(v.status!=='reserved')throw Error(['duplicate','pending'].includes(v.status)?'PLUS_REQUEST_PENDING':v.status==='limit'?(v.scopeType==='global'?'PLUS_SERVICE_LIMIT':v.reason==='budget'?'PLUS_MONTHLY_BUDGET':v.reason==='requests'?'PLUS_'+kind.toUpperCase()+'_LIMIT':'PLUS_LIMIT'):'PLUS_ACCESS_REQUIRED');reserved=true;usageLimitsEnabled=v.usageLimitsEnabled!==false};
   if(input.task==='image'){
    // Existing private image cache and lease guard; a cache hit spends nothing.
    return await imageHandler({...config,model:config.imageModel||MODELS.image,generateImage:async image=>{await reserve('image',25);try{const img=await openaiImage(image,config,fetcher);await settle('complete',config.imageModel||MODELS.image,img.usage);return img}catch(e){await settle('failed',config.imageModel||MODELS.image).catch(()=>{});throw e}}},fetcher)(new Request(request.url,{method:'POST',headers:request.headers,body:JSON.stringify(input)}));
@@ -45,7 +45,7 @@ export function createHandler(config,fetcher=fetch){return async request=>{
    const clean=normalizeInput({...input,text:'Voice session',assistant:true,companion:true});await reserve('voice',30);
    const call=await createCall(input.sdp,clean,config,fetcher);
    try{const stored=await db('morzsa_plus_requests?request_id=eq.'+id+'&user_id=eq.'+user.id,{call_id:call.callId,expires_at:new Date(Date.now()+VOICE_SECONDS*1000).toISOString()},'PATCH');if(!stored.ok)throw Error('PLUS_SETUP_REQUIRED');
-    config.defer(config.watchCall(call.callId,realtimeSession(clean,config),()=>hangup(call.callId,config,fetcher),()=>settle('complete',config.voiceModel||MODELS.voice)));
+    config.defer(config.watchCall(call.callId,realtimeSession(clean,config),()=>hangup(call.callId,config,fetcher),(cents,usage)=>settle('complete',config.voiceModel||MODELS.voice,usage||{},Number.isFinite(cents)?Math.max(0,Math.ceil(cents)):undefined),{usageLimitsEnabled}));
    }catch(e){await hangup(call.callId,config,fetcher).catch(()=>{});throw e}
    return reply(200,{sdp:call.sdp,seconds:VOICE_SECONDS,requestId:id,expiresAt:new Date(Date.now()+VOICE_SECONDS*1000).toISOString()});
   }
@@ -59,5 +59,5 @@ export function createHandler(config,fetcher=fetch){return async request=>{
    await settle('complete',model,usage,cents);return output;
   }catch(e){await settle('failed',config.textModel||MODELS.text).catch(()=>{});throw e}};
   if(clean.stream)return outputResponse(produce,headers);return reply(200,await produce(()=>{},request.signal));
- }catch(e){if(reserved)await settle('failed',config.textModel||MODELS.text).catch(()=>{});const known=['PLUS_API_QUOTA','PLUS_SETUP_REQUIRED','PLUS_ACCESS_REQUIRED','PLUS_LIMIT','PLUS_REQUEST_PENDING','VOICE_INVALID_INPUT','VOICE_PROVIDER_LIMIT','VOICE_PROVIDER_BUSY','VOICE_SETUP_REQUIRED','VOICE_INVALID_RESPONSE','VOICE_PROVIDER_ERROR'];const error=known.includes(e.message)?e.message:['TimeoutError','AbortError'].includes(e.name)?'VOICE_TIMEOUT':'VOICE_UNAVAILABLE';return reply(error==='VOICE_INVALID_INPUT'?400:error==='PLUS_ACCESS_REQUIRED'?403:['PLUS_API_QUOTA','PLUS_LIMIT','PLUS_REQUEST_PENDING','VOICE_PROVIDER_LIMIT'].includes(error)?429:503,{error})}
+ }catch(e){if(reserved)await settle('failed',config.textModel||MODELS.text).catch(()=>{});const known=['PLUS_MONTHLY_BUDGET','PLUS_SERVICE_LIMIT','PLUS_CHAT_LIMIT','PLUS_IMAGE_LIMIT','PLUS_VOICE_LIMIT','PLUS_API_QUOTA','PLUS_SETUP_REQUIRED','PLUS_ACCESS_REQUIRED','PLUS_LIMIT','PLUS_REQUEST_PENDING','VOICE_INVALID_INPUT','VOICE_PROVIDER_LIMIT','VOICE_PROVIDER_BUSY','VOICE_SETUP_REQUIRED','VOICE_INVALID_RESPONSE','VOICE_PROVIDER_ERROR'];const error=known.includes(e.message)?e.message:['TimeoutError','AbortError'].includes(e.name)?'VOICE_TIMEOUT':'VOICE_UNAVAILABLE';return reply(error==='VOICE_INVALID_INPUT'?400:error==='PLUS_ACCESS_REQUIRED'?403:['PLUS_MONTHLY_BUDGET','PLUS_SERVICE_LIMIT','PLUS_CHAT_LIMIT','PLUS_IMAGE_LIMIT','PLUS_VOICE_LIMIT','PLUS_API_QUOTA','PLUS_LIMIT','PLUS_REQUEST_PENDING','VOICE_PROVIDER_LIMIT'].includes(error)?429:503,{error})}
 }}
