@@ -1167,13 +1167,35 @@ body.voice-active{overflow:hidden}
 #workspace-new-chat{position:absolute;right:8px;bottom:calc(100% + 10px);z-index:2;border-radius:50%;background:#fffdf8;border-color:#34463818;box-shadow:0 3px 12px #34463812}
 #workspace-new-chat:hover{background:#f0f2e9}
 #workspace-new-chat:focus-visible{outline:2px solid #344638;outline-offset:3px}
+.companion-disclosure:empty{display:none}
+#workspace-quick-add{position:absolute;right:60px;bottom:calc(100% + 10px);z-index:2;display:grid;place-items:center;width:44px;height:44px;min-width:44px;min-height:44px;padding:10px;border:1px solid #34463818;border-radius:50%;background:#fffdf8;color:#344638;box-shadow:0 3px 12px #34463812}
+#workspace-quick-add[hidden]{display:none}
+#workspace-quick-add .workspace-icon{width:21px;height:21px}
+#workspace-quick-add:focus-visible{outline:2px solid #344638;outline-offset:3px}
 .companion-pending-send small{display:block;margin-top:7px;font-size:12px;opacity:.8}
 .companion-pending-send p{white-space:pre-wrap}
 
 /* Generated catalogue covers keep the same frame as cached feed photos. */
 .feed-card-art:has(.room-image-cache){position:relative}
-.feed-card-art:has(.room-image-cache img)>.feed-art-placeholder{visibility:hidden}
+.feed-card-art:has(.room-image-cache img,.room-image-cache .image-placeholder)>.feed-art-placeholder{visibility:hidden}
 .room-image-cache.generated-recipe-image:has(.image-retry){display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;gap:4px;padding:10px;box-sizing:border-box}
 .room-image-cache.generated-recipe-image .image-retry{pointer-events:auto;min-height:44px;max-width:100%;padding:8px 12px;border:1px solid #34463830;border-radius:12px;background:#fffaf2;color:#344638;font-family:inherit;font-size:13px;font-weight:600;line-height:1.4}
 .room-image-cache.generated-recipe-image:has(.image-retry)>small{position:static;margin:0;max-width:100%;box-sizing:border-box;font-size:12px;line-height:1.4;opacity:1}
 .room-image-cache.generated-recipe-image .image-progress{font-size:12px;line-height:1.4;opacity:1;color:#344638;background:#fffaf2}
+/* Image-sized feedback, including the first download and automatic recovery. */
+.generated-recipe-image{position:relative}
+.room-image-cache.generated-recipe-image{position:absolute;inset:0;margin:0;width:100%;height:100%}
+.image-placeholder{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;width:100%;aspect-ratio:3/2;overflow:hidden;border-radius:16px;background:linear-gradient(135deg,#eee8dc,#f5ecdf 55%,#eadbcc);color:#9b785d;isolation:isolate;box-sizing:border-box}
+.image-placeholder::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(100deg,transparent 15%,#fffaf280 50%,transparent 85%);transform:translateX(-100%);animation:image-shimmer 2.2s ease-in-out infinite}
+.image-placeholder-mark{width:36px;height:36px;opacity:.65}
+.image-placeholder-progress{display:flex;gap:5px}
+.image-placeholder-progress i{width:5px;height:5px;border-radius:50%;background:#BF4E2C;opacity:.3;animation:image-dot 1.4s ease-in-out infinite}
+.image-placeholder-progress i:nth-child(2){animation-delay:.16s}.image-placeholder-progress i:nth-child(3){animation-delay:.32s}
+.room-image-cache>.image-placeholder{height:100%;aspect-ratio:auto;border-radius:inherit}
+.image-download-placeholder{position:absolute;inset:0;height:100%;aspect-ratio:auto;border-radius:inherit}
+.companion-recipe>.generated-recipe-image>.image-placeholder{height:190px;aspect-ratio:auto}
+#cooking-cover>.image-placeholder{height:180px;aspect-ratio:auto}
+.room-image-cache[data-image-status=failed]{background:#f0e9df}
+@keyframes image-shimmer{to{transform:translateX(100%)}}
+@keyframes image-dot{50%{opacity:.85;transform:translateY(-2px)}}
+@media(prefers-reduced-motion:reduce){.image-placeholder::before,.image-placeholder-progress i{animation:none}.image-placeholder::before{transform:none}.image-placeholder-progress i{opacity:.6}}
