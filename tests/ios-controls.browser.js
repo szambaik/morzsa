@@ -2,8 +2,11 @@ async page=>{
  const checks=[],check=(ok,label)=>{if(!ok)throw Error(label);checks.push(label)};
  const base=process.env.MORZSA_QA_BASE||'http://127.0.0.1:8899';
  await page.goto(base+'/?actor=c');await page.waitForFunction(()=>!!window.MorzsaCompanion&&!!window.MorzsaWorkspace);
+ // Account/history hydration replaces the initial form. Wait for the fixture's
+ // real signed-in state before holding a DOM reference or exercising controls.
+ await page.waitForFunction(()=>household?.userId()&&MorzsaPersistence.status()==='synced');
  await page.addStyleTag({url:base+'/mobile/ios.css'});
- check(await page.locator('#companion-form').evaluate(el=>getComputedStyle(el).display==='flex'),'web composer keeps its original layout');
+ check(await page.evaluate(()=>getComputedStyle(document.getElementById('companion-form')).display==='flex'),'web composer keeps its original layout');
  check(await page.locator('.companion-voice-glass').isHidden(),'reference voice icon is iOS-only');
  await page.evaluate(async()=>{
   // Synthetic personal pantry; no production household or provider is used.

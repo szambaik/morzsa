@@ -20,6 +20,31 @@ final class MorzsaViewController: CAPBridgeViewController, UITabBarDelegate {
     private var controlsRevision = 0
     private var viewportWidth: CGFloat = 1
     private var offsetObservation: NSKeyValueObservation?
+    private let composerInput = MorzsaTextInput()
+
+    func updateComposer(_ state: [String: Any], revision: Int, width: CGFloat) {
+        guard let webView, width > 0 else { return }
+        if composerInput.superview == nil {
+            composerInput.onChange = { [weak self] data in self?.emit("morzsa-native-text", data: data) }
+            // A sibling avoids WKWebView moving or dismissing our editor while
+            // it lays out its own HTML editing and keyboard views.
+            view.addSubview(composerInput)
+        }
+        let scale = webView.bounds.width / width
+        if state["visible"] as? Bool == true,
+           let x = state["x"] as? Double, let y = state["y"] as? Double,
+           let w = state["width"] as? Double, let h = state["height"] as? Double,
+           [x, y, w, h].allSatisfy({ $0.isFinite }), w > 0, h > 0 {
+            composerInput.frame = webView.convert(CGRect(x: x * scale, y: y * scale, width: w * scale, height: h * scale), to: view)
+        }
+        composerInput.update(state, revision: revision, scale: scale)
+        view.bringSubviewToFront(composerInput)
+        view.bringSubviewToFront(navigationBar)
+    }
+
+    func submitComposer(session: String) -> [String: Any]? {
+        composerInput.takeSubmission(for: session)
+    }
 
     func updateControls(_ specifications: [[String: Any]], revision: Int, width: CGFloat) {
         guard let webView, width > 0 else { return }
@@ -100,6 +125,7 @@ final class MorzsaViewController: CAPBridgeViewController, UITabBarDelegate {
         webView?.isOpaque = false
         webView?.backgroundColor = UIColor(red: 0.973, green: 0.953, blue: 0.914, alpha: 1)
         webView?.scrollView.backgroundColor = webView?.backgroundColor
+        webView?.scrollView.keyboardDismissMode = .interactive
     }
 
     override func viewDidLoad() {
@@ -184,8 +210,35 @@ final class MorzsaUIPlugin: CAPPlugin, CAPBridgedPlugin {
         CAPPluginMethod(name: "setNavigation", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "selectionFeedback", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "showActions", returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: "setControls", returnType: CAPPluginReturnPromise)
+        CAPPluginMethod(name: "setControls", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "setComposer", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "submitComposer", returnType: CAPPluginReturnPromise)
     ]
+
+    @objc func setComposer(_ call: CAPPluginCall) {
+        guard let revision = call.getInt("revision"), let width = call.getDouble("viewportWidth"), width.isFinite, width > 0 else {
+            call.reject("Invalid composer"); return
+        }
+        guard let state = call.options as? [String: Any] else { call.reject("Invalid composer state"); return }
+        DispatchQueue.main.async { [weak self] in
+            guard let controller = self?.bridge?.viewController as? MorzsaViewController else {
+                call.reject("Native composer unavailable"); return
+            }
+            controller.updateComposer(state, revision: revision, width: CGFloat(width))
+            call.resolve(["revision": revision, "kind": "UITextView"])
+        }
+    }
+
+    @objc func submitComposer(_ call: CAPPluginCall) {
+        let session = call.getString("session") ?? ""
+        DispatchQueue.main.async { [weak self] in
+            guard let controller = self?.bridge?.viewController as? MorzsaViewController,
+                  let value = controller.submitComposer(session: session) else {
+                call.reject("Composer changed"); return
+            }
+            call.resolve(value)
+        }
+    }
 
     @objc func setControls(_ call: CAPPluginCall) {
         guard let buttons = call.getArray("buttons", JSObject.self), buttons.count <= 80,

@@ -1,8 +1,10 @@
 import {installIOSControls} from './ios-controls.js';
+import {installIOSComposer} from './ios-composer.js';
 // Native UIKit controls are optional. A failed bridge always restores the web UI.
 export function installIOSUI(plugin) {
  const root=document.documentElement;
  const controls=installIOSControls(plugin);
+ const composer=installIOSComposer(plugin);
  let scheduled=false,inFlight=false,last='',enabled=false,sheetOpen=false,disposed=false,failed=false;
  let nativeHeight=0;
  function setHeight(height){
@@ -79,7 +81,7 @@ export function installIOSUI(plugin) {
  document.addEventListener('change',onChange);
  schedule();
  return {refresh(){failed=false;schedule()},dispose(){
-  disposed=true;observer.disconnect();controls.dispose();
+  disposed=true;observer.disconnect();controls.dispose();composer.dispose();
   window.removeEventListener('morzsa-native-tab',onTab);window.removeEventListener('morzsa-native-insets',onInsets);window.removeEventListener('morzsa-resume',onResume);
   document.removeEventListener('click',onClick,true);document.removeEventListener('change',onChange);
   if(window.MorzsaWorkspace?.mount===mount)window.MorzsaWorkspace.mount=originalMount;
