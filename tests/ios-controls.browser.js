@@ -19,7 +19,7 @@ async page=>{
  const tick=()=>page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));await tick();
  check(await page.locator('.ios-native-control').count()===0,'web buttons stay usable before native acknowledgment');
  await page.evaluate(()=>{glassMode='normal';glassResolve()});await tick();
- check(await page.locator('.ios-native-control').count()>0,'acknowledged native navigation and chat starters replace web buttons');
+ check(await page.locator('.ios-native-control').count()>0,'acknowledged chat starters replace web buttons');
  check(await page.locator('.companion-starters button.ios-native-control').count()===3,'all three chat starters retain Liquid Glass');
  check(await page.locator('#companion-form [type=submit]').evaluate(el=>!el.classList.contains('ios-native-control')&&getComputedStyle(el).opacity==='1'),'Send keeps its original visible web control');
  check(await page.evaluate(()=>{const b=glassCalls.at(-1).buttons.find(b=>b.symbol==='sidebar.left');return !b||b.title===''}),'native history icon does not duplicate the web hamburger glyph');
@@ -56,7 +56,7 @@ async page=>{
   }
   if(['pantry','recipes'].includes(destination))check(await page.locator('#workspace-assistant .workspace-fast-actions').count()===0,destination+' has no empty quick-action row');
   if(destination==='recipes'){
-   check(await page.locator('#workspace-quick-add.ios-native-control').count()===1,'Recipes quick add uses the native plus control');
+   check(await page.locator('.app>header .ios-native-control').count()===0,'header navigation and plus keep one DOM geometry owner');
    check(await page.evaluate(()=>{const a=document.getElementById('workspace-quick-add').getBoundingClientRect(),b=document.getElementById('workspace-new-chat').getBoundingClientRect();return a.width>=44&&a.height>=44&&a.right<b.left&&Math.abs(a.top-b.top)<2}),'Recipes plus sits beside new chat without overlap');
    await page.evaluate(()=>document.getElementById('workspace-quick-add').click());
    check(await page.locator('#workspace-entry[open]').count()===1,'Recipes plus opens the existing quick-add flow');
@@ -75,18 +75,20 @@ async page=>{
  await page.evaluate(()=>document.getElementById('glass-disclosure-test').remove());await tick();
  // History settings, sharing and archive controls must not become floating pills.
  await page.evaluate(()=>document.querySelector('.companion-header-history').click());await tick();
- await page.locator('#companion-history [data-close].ios-native-control').waitFor({state:'attached'});
- check(await page.locator('#companion-history [data-close].ios-native-control').count()===1,'history close remains native navigation');
- check(await page.locator('#companion-history [data-new-chat].ios-native-control').count()===1,'history new chat retains Liquid Glass');
- check(await page.locator('#companion-history [data-archive].ios-native-control,#companion-history .history-sharing .ios-native-control,#companion-history .workspace-settings .ios-native-control').count()===0,'history archive, sharing and settings retain web controls');
- check(await page.locator('.ios-native-control').evaluateAll(els=>els.every(el=>el.closest('#companion-history'))),'opening history removes native controls behind the dialog');
- await page.evaluate(()=>document.getElementById('companion-history').close());await tick();
- // Dispatch a real native callback. The existing web handler must create a chat.
- await page.evaluate(()=>{window.newChatCalls=0;window.originalNewChat=MorzsaCompanion.newChat;MorzsaCompanion.newChat=(...args)=>{newChatCalls++;return originalNewChat(...args)};const payload=glassCalls.at(-1),button=payload.buttons.find(b=>b.symbol==='square.and.pencil');window.oldNativeAction={...button,revision:payload.revision};window.dispatchEvent(new CustomEvent('morzsa-native-action',{detail:oldNativeAction}))});await tick();
- check(await page.evaluate(()=>newChatCalls===1),'native new chat invokes existing business handler');
- await page.evaluate(()=>{window.dispatchEvent(new CustomEvent('morzsa-native-action',{detail:oldNativeAction}))});await tick();check(await page.evaluate(()=>newChatCalls===1),'stale native action cannot act after rerender');
- await page.evaluate(()=>{glassMode='reject';document.getElementById('workspace-new-chat').disabled=true});await tick();await tick();check(await page.locator('.ios-native-control').count()===0,'bridge failure restores web controls and accessibility');
- await page.evaluate(()=>{glassMode='normal';document.getElementById('workspace-new-chat').disabled=false;window.dispatchEvent(new Event('morzsa-resume'))});await tick();check(await page.locator('.ios-native-control').count()>0,'resume restores native controls after failure');
+ check(await page.locator('#companion-history .ios-native-control').count()===0,'history drawer keeps one DOM geometry owner for all actions');
+ check(await page.locator('.ios-native-control').count()===0,'opening history removes native controls behind the dialog');
+ check(await page.locator('#companion-history [data-close]').isVisible(),'history close remains visible and reachable');
+ await page.evaluate(()=>{window.newChatCalls=0;document.querySelector('#companion-history [data-new-chat]').addEventListener('click',()=>newChatCalls++)});
+ await page.locator('#companion-history [data-new-chat]').click();await tick();
+ check(await page.evaluate(()=>newChatCalls===1),'drawer new chat invokes its existing DOM handler');
+ // A real native callback still activates a starter, while stale revisions cannot.
+ await page.evaluate(()=>{const payload=glassCalls.at(-1),button=payload.buttons.find(b=>b.title==='Kotyvasszunk');window.oldNativeAction={...button,revision:payload.revision};window.dispatchEvent(new CustomEvent('morzsa-native-action',{detail:oldNativeAction}))});await tick();
+ check(await page.locator('.craft-workbench').count()>0,'native starter invokes the existing crafting handler');
+ await page.evaluate(()=>MorzsaCompanion.newChat());await tick();
+ await page.evaluate(()=>window.dispatchEvent(new CustomEvent('morzsa-native-action',{detail:oldNativeAction})));await tick();
+ check(await page.locator('.craft-workbench').count()===0,'stale native action cannot act after rerender');
+ await page.evaluate(()=>{glassMode='reject';document.querySelector('.companion-starters button').disabled=true});await tick();await tick();check(await page.locator('.ios-native-control').count()===0,'bridge failure restores web controls and accessibility');
+ await page.evaluate(()=>{glassMode='normal';document.querySelector('.companion-starters button').disabled=false;window.dispatchEvent(new Event('morzsa-resume'))});await tick();check(await page.locator('.ios-native-control').count()>0,'resume restores native controls after failure');
  await page.evaluate(()=>native.dispose());await tick();check(await page.locator('.ios-native-control').count()===0,'disposal restores all web controls');
  // Artificially hold history sync: user feedback must precede any provider call.
  await page.evaluate(()=>{

@@ -8,7 +8,7 @@ async page=>{
  check(await send.isDisabled()&&await page.locator('.companion-message.user').count()===0,'whitespace and Enter do not submit a blank message');
  await input.fill('a');
  check(await send.isEnabled(),'first web character enables Send');
- check(await send.evaluate(el=>getComputedStyle(el).backgroundColor==='rgb(0, 122, 255)'),'web Send uses the requested blue');
+ check(await send.evaluate(el=>getComputedStyle(el).backgroundColor==='rgb(191, 78, 44)'),'web Send uses the Morzsa orange');
  await input.fill('');
  check(await send.isDisabled(),'deleting the web draft disables Send again');
  await page.addStyleTag({url:base+'/mobile/ios.css'});

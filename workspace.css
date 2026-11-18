@@ -51,7 +51,7 @@ button:focus-visible,summary:focus-visible,a:focus-visible,input:focus-visible,t
 #companion-form,.room-composer,.workspace-composer{display:flex;align-items:flex-end;gap:5px;background:var(--white);border:1px solid #d9d7c7;border-radius:25px;padding:7px;box-shadow:4px 4px 10px #665c4114,-3px -3px 10px #ffffff80}
 #companion-form textarea,.workspace-composer input{flex:1;min-width:0;border:0;background:transparent;font-size:16px;line-height:1.45;padding:11px 5px;resize:none}
 #companion-form button,.workspace-composer button{display:grid;place-items:center;flex:none;width:44px;height:44px;min-height:44px;padding:10px;border:0;border-radius:50%;background:transparent}
-#companion-form button[type=submit],.workspace-composer button[type=submit]{background:#007AFF;color:white}
+#companion-form button[type=submit],.workspace-composer button[type=submit]{background:var(--orange);color:white}
 #companion-form button[type=submit]:disabled{background:#DDE3EA;color:#788595;opacity:1;box-shadow:none;cursor:default}
 #companion-form button[type=submit]:not(:disabled) img{filter:brightness(0) invert(1)}
 #companion-form button[type=submit]:disabled img{opacity:.45}

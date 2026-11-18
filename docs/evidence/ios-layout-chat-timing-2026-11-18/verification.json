@@ -1,0 +1,21 @@
+{
+  "date": "2026-11-18",
+  "productionLatencyAfterChange": null,
+  "unitTests": 392,
+  "persistenceRuntimeTests": 17,
+  "iosBrowserChecks": {
+    "controls": 75,
+    "composer": 30,
+    "viewport": 127
+  },
+  "nativeUI": "passed",
+  "nativeUIBundle": "io.github.szambaik.morzsa.composerqa",
+  "nativeSimulator": "74B05BBC-794F-4E80-BFBB-A4CAE0ADB78B",
+  "nativeBuild": "passed",
+  "frontendSync": "passed",
+  "releaseGate": "passed",
+  "releaseGateRun": "2026-11-18T09-07-04-034Z-f304ff",
+  "accessibilityScans": 32,
+  "targetedReleaseChecks": 54,
+  "externalTrafficInNativeQA": "blocked"
+}
