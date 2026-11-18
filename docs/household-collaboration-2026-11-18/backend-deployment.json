@@ -1,0 +1,45 @@
+{
+  "verifiedAt": "2026-11-18T06:46:55.075647+00:00",
+  "projectRef": "cbgcugshwivxpaurzyqq",
+  "migration": "20261118_household_collaboration.sql",
+  "sha256": "faf4b481143b99aff924442cab9356c2bf3c2a04278edd9bd8cab9f578945921",
+  "checks": [
+    {
+      "shared_recipes_table": true,
+      "names_table": true,
+      "receipts_table": true,
+      "snapshot_rpc": true,
+      "retry_rpc": true
+    }
+  ],
+  "rls": [
+    {
+      "relname": "household_recipe_entries",
+      "relrowsecurity": true
+    },
+    {
+      "relname": "household_member_names",
+      "relrowsecurity": true
+    },
+    {
+      "relname": "household_change_receipts",
+      "relrowsecurity": true
+    }
+  ],
+  "privileges": [
+    {
+      "anonymous_snapshot_access": false,
+      "authenticated_snapshot_access": true,
+      "direct_recipe_write": false,
+      "receipt_read": false
+    }
+  ],
+  "realtimePublication": [
+    {
+      "tablename": "household_member_names"
+    },
+    {
+      "tablename": "household_recipe_entries"
+    }
+  ]
+}

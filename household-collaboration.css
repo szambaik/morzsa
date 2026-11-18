@@ -1,0 +1,11 @@
+.household-cooking{margin:16px 0;padding:12px;border:1px solid #dedfd4;border-radius:20px;background:#f1f3e9;min-width:0}
+.household-cooking h2{margin:0 0 8px;font-size:15px;color:#344638}
+.household-cooking-row{display:flex;align-items:center;gap:10px;min-height:48px;width:100%;border:0;border-radius:12px;background:transparent;text-align:left;padding:8px;color:#344638;font:inherit}
+.household-cooking-row>img,.household-cooking-row>span:last-child{flex:none}
+.household-cooking-row>span:nth-child(2){min-width:0;flex:1}
+.household-cooking-row strong,.household-cooking-row small{display:block;overflow-wrap:anywhere}
+.household-cooking-row strong{font-size:14px;font-weight:600}
+.household-cooking-row small,.list-item-author{font-size:12px;color:#58634e;line-height:1.5}
+.household-cooking-row:focus-visible{outline:2px solid #344638;outline-offset:2px}
+.room-card-body .household-cooking-row{margin:4px 0;padding:6px 0}
+.household-shared-note{font-size:13px;color:#58634e;line-height:1.5;margin:6px 0 12px}

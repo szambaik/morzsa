@@ -1,18 +1,19 @@
 // Pure shared-state conversion and per-record optimistic concurrency diff.
 const HouseholdModel={
+ productKey(name){return String(name).normalize('NFC').trim().replace(/\s+/g,' ').toLocaleLowerCase('hu')},
  // Store field-level shopping intent, so a check never overwrites a partner's quantity.
  mergeRecipeNeeds(before=[],added=[]){const result=[];for(const n of [...before,...added])if(n?.recipe&&!result.some(x=>JSON.stringify([x.recipe.title,x.recipe.ingredients,x.recipe.steps])===JSON.stringify([n.recipe.title,n.recipe.ingredients,n.recipe.steps])))result.push(n);return result.slice(0,3)},
  cartIntent(before,next){
-  const old=new Map(before.cart.map(x=>[x.name,x])),fresh=new Map(next.cart.map(x=>[x.name,x])),cart=[];
-  for(const [name,item] of old)if(!fresh.has(name))cart.push({name,remove:true});
-  for(const [name,item] of fresh){const previous=old.get(name),fields={};for(const key of Object.keys(item))if(key!=='name'&&JSON.stringify(item[key])!==JSON.stringify(previous?.[key]))fields[key]=item[key];if(!previous||Object.keys(fields).length)cart.push({name,create:!previous,fields})}
-  return {cart,custom:next.custom.filter(x=>!before.custom.some(y=>y.name===x.name))};
+  const old=new Map(before.cart.map(x=>[this.productKey(x.name),x])),fresh=new Map(next.cart.map(x=>[this.productKey(x.name),x])),cart=[];
+  for(const [key,item] of old)if(!fresh.has(key))cart.push({name:item.name,remove:true});
+  for(const [key,item] of fresh){const previous=old.get(key),fields={};for(const field of Object.keys(item))if(field!=='name'&&JSON.stringify(item[field])!==JSON.stringify(previous?.[field]))fields[field]=item[field];if(!previous||Object.keys(fields).length)cart.push({name:previous?.name||item.name,create:!previous,fields})}
+  return {cart,custom:next.custom.filter(x=>!before.custom.some(y=>this.productKey(y.name)===this.productKey(x.name)))};
  },
  applyCartIntents(base,intents,onConflict){
   const next={...base,cart:base.cart.map(x=>({...x})),custom:[...base.custom]};
   for(const intent of intents){
-   for(const op of intent.cart){const i=next.cart.findIndex(x=>x.name===op.name);if(op.when&&(i<0||!Object.entries(op.when).every(([key,value])=>JSON.stringify(next.cart[i][key]??null)===JSON.stringify(value??null)))){onConflict?.(op.name,intent);continue;}if(op.create&&op.onlyIfMissing&&i>=0){if(op.fields.recipeNeeds)next.cart[i]={...next.cart[i],recipeNeeds:this.mergeRecipeNeeds(next.cart[i].recipeNeeds,op.fields.recipeNeeds)};continue;}if(op.remove){if(i>=0)next.cart.splice(i,1)}else if(i>=0)next.cart[i]={...next.cart[i],...op.fields,...(op.fields.recipeNeeds?{recipeNeeds:this.mergeRecipeNeeds(next.cart[i].recipeNeeds,op.fields.recipeNeeds)}:{}),name:op.name};else if(op.create)next.cart.push({...op.fields,name:op.name})}
-   for(const item of intent.custom)if(!next.custom.some(x=>x.name===item.name))next.custom.push(item);
+   for(const op of intent.cart){const i=next.cart.findIndex(x=>this.productKey(x.name)===this.productKey(op.name));if(op.when&&(i<0||!Object.entries(op.when).every(([key,value])=>JSON.stringify(next.cart[i][key]??null)===JSON.stringify(value??null)))){onConflict?.(op.name,intent);continue;}if(op.create&&i>=0){if(op.fields.recipeNeeds)next.cart[i]={...next.cart[i],recipeNeeds:this.mergeRecipeNeeds(next.cart[i].recipeNeeds,op.fields.recipeNeeds)};continue;}if(op.remove){if(i>=0)next.cart.splice(i,1)}else if(i>=0)next.cart[i]={...next.cart[i],...op.fields,...(op.fields.recipeNeeds?{recipeNeeds:this.mergeRecipeNeeds(next.cart[i].recipeNeeds,op.fields.recipeNeeds)}:{}),name:next.cart[i].name};else if(op.create)next.cart.push({...op.fields,name:op.name.trim()})}
+   for(const item of intent.custom)if(!next.custom.some(x=>this.productKey(x.name)===this.productKey(item.name)))next.custom.push(item);
   }return next;
  },
  // Additive pantry-only import; keep the older full import contract unchanged.

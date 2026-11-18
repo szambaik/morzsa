@@ -14,7 +14,7 @@ async function settle(p){await p.waitForFunction(()=>!household.busy&&!household
 const receipt=p=>p.locator('#shopping-action-feedback');
 async function edit(p,name,quantity){if(!await p.locator('[data-item="'+name+'"] .shopping-product-open').isVisible())await p.locator('.shopping-purchased > summary').click();await p.locator('[data-item="'+name+'"] .shopping-product-open').click();await p.locator('#shopping-item-form [name=quantity]').fill(String(quantity));await p.locator('#shopping-item-form .primary').click()}
 async function shot(p,name){await p.screenshot({path:path.join(out,name+'.png'),animations:'disabled'});fs.writeFileSync(path.join(out,name+'.txt'),await p.locator('body').ariaSnapshot())}
-async function holdNext(p){let release,entered;const gate=new Promise(r=>release=r),seen=new Promise(r=>entered=r);await p.route('**/rest/v1/rpc/apply_household_changes',async r=>{entered();await gate;await r.continue()},{times:1});return {release,seen}}
+async function holdNext(p){let release,entered;const gate=new Promise(r=>release=r),seen=new Promise(r=>entered=r);await p.route(/\/rest\/v1\/rpc\/apply_household_changes(?:_once)?$/,async r=>{entered();await gate;await r.continue()},{times:1});return {release,seen}}
 async function aiSend(p,text,output){fixture.ai.push({output});const sent=p.waitForRequest(r=>r.method()==='POST'&&r.url().includes('/functions/')&&r.postDataJSON()?.text===text);await p.locator('#companion-input').fill(text);await p.locator('#companion-input').press('Enter');await sent;await p.waitForFunction(()=>!document.querySelector('.companion-thinking')&&MorzsaPersistence.status()==='synced')}
 try{
  const p=await open({shared:true,actor:'a'});await p.locator('nav [data-page=shopping]').click();
@@ -27,7 +27,7 @@ try{
  await receipt(p).getByRole('button',{name:'Visszavonás'}).click();await settle(p);
  const undone=await p.evaluate(()=>state.cart.find(i=>i.name==='Tej'));check('UNDO-PRESERVES-PARTNER',undone.quantity===1&&undone.notes==='Partner note',undone);check('UNDO-CONFIRMED',/Visszavonva/.test(await receipt(p).innerText()));
  // Fail the real HTTP save; retry retains the queued edit and only then confirms.
- await p.route('**/rest/v1/rpc/apply_household_changes',r=>r.fulfill({status:503,contentType:'application/json',body:JSON.stringify({message:'Synthetic connection failure'})}),{times:1});await edit(p,'Tej',4);
+ await p.route(/\/rest\/v1\/rpc\/apply_household_changes(?:_once)?$/,r=>r.fulfill({status:503,contentType:'application/json',body:JSON.stringify({message:'Synthetic connection failure'})}),{times:1});await edit(p,'Tej',4);
  await p.waitForFunction(()=>document.querySelector('#shopping-action-feedback')?.dataset.status==='failed');
  check('RECEIPT-FAILED',!/Mentve:/.test(await receipt(p).innerText())&&await receipt(p).getByRole('button',{name:'Újrapróbálás'}).count()===1,await receipt(p).innerText());await receipt(p).getByRole('button',{name:'Újrapróbálás'}).click();await settle(p);check('RECEIPT-RETRY',/Mentve: 4 l/.test(await receipt(p).innerText()));
  // A newer action owns the receipt, even when the first batch resolves later.

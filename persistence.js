@@ -35,7 +35,7 @@ window.MorzsaPersistence=(()=>{
  function capture(value){
   if(!valid())return;book=value;book.cloud=true;
   for(const t of value.threads){if(t.readOnly||!ready&&!t.revision&&!t.messages.length&&!t.recipe)continue;if(!M.uuid(t.id))t.id=crypto.randomUUID();for(const m of t.messages||[])if(!M.uuid(m.id))m.id=crypto.randomUUID();
-   const meta=M.metadata(t),items=t.messages.map(M.message),dirty=items.filter(m=>knownMessages.get(m.id)!==JSON.stringify(m));
+   if(t.kind==='recipe'&&t.recipe&&!Object.hasOwn(t,'recipeHousehold')&&M.uuid(t.sharedHousehold||household?.active))t.recipeHousehold=t.sharedHousehold||household.active;const meta=M.metadata(t),items=t.messages.map(M.message),dirty=items.filter(m=>knownMessages.get(m.id)!==JSON.stringify(m));
    if(JSON.stringify(meta)!==knownMeta.get(t.id)||dirty.length)queue[t.id]={meta,base:queue[t.id]?.base||(knownMeta.has(t.id)?JSON.parse(knownMeta.get(t.id)):null),items:dirty,revision:t.revision||0,photos:Object.fromEntries(t.messages.filter(m=>m.photo&&!m.photoPath).map(m=>[m.id,media.get(m.id)||{data:m.photo.split(',')[1]}]))};
   }
   try{saveQueue()}catch{issue='storage';status();return}clearTimeout(timer);timer=setTimeout(flush,250);status();
@@ -67,11 +67,11 @@ window.MorzsaPersistence=(()=>{
      result=await run('sync_conversation',{cid:id,meta:job.meta,expected:job.revision,items:[m],recipe_ids:[...refs]});job.revision=result.revision;
     }
     if(current!==user||generation!==epoch)return;
-    knownMeta.set(id,JSON.stringify(job.meta));job.items.forEach(m=>knownMessages.set(m.id,JSON.stringify(m)));
+    if(job.meta.kind==='recipe'&&M.uuid(job.meta.recipeHousehold)&&book.threads.find(t=>t.id===id)?.sharedHousehold!==job.meta.recipeHousehold){try{await run('share_household_recipe_conversation',{hid:job.meta.recipeHousehold,cid:id})}catch(e){if(!/Could not find.*share_household_recipe_conversation|function.*share_household_recipe_conversation.*does not exist/i.test(e.message||''))throw e;await run('share_conversation',{hid:job.meta.recipeHousehold,cid:id})}const t=book.threads.find(t=>t.id===id);if(t)t.sharedHousehold=job.meta.recipeHousehold}knownMeta.set(id,JSON.stringify(job.meta));job.items.forEach(m=>knownMessages.set(m.id,JSON.stringify(m)));
     const t=book.threads.find(t=>t.id===id);if(t){t.revision=job.revision;if(t.recipe&&job.meta.recipe)t.recipe=job.meta.recipe;for(const m of t.messages){const saved=job.items.find(i=>i.id===m.id);if(saved){m.recipes=saved.recipes;if(saved.photoPath)m.photoPath=saved.photoPath}}}
     if(queue[id]===original)delete queue[id];else if(queue[id]){queue[id].base=job.meta;queue[id].revision=job.revision}saveQueue();
    }
-   issue='';callbacks.saved?.();status();await refresh();
+   issue='';callbacks.saved?.();status();window.KitchenIntelligence?.refresh();await refresh();
   }catch(e){if(current===user&&generation===epoch){issue=/denied/i.test(e.message||'')?'access':'failed';status()}}
   finally{if(current===user&&generation===epoch){running=false;if(!issue&&Object.keys(queue).length)timer=setTimeout(flush,500)}}
  }
@@ -98,7 +98,7 @@ window.MorzsaPersistence=(()=>{
  }
  function scheduleRefresh(){refreshDeferred=true;clearTimeout(refreshTimer);refreshTimer=setTimeout(()=>refresh(),350)}
  function queuePhoto(id,image){media.set(id,image)}
- async function share(id,hid){const current=user,generation=epoch;await flush();if(generation!==epoch)throw Error('Account changed');if(queue[id])throw Error('Sync pending');await rpc('share_conversation',{cid:id,hid},current);await refresh()}
+ async function share(id,hid){const current=user,generation=epoch;await flush();if(generation!==epoch)throw Error('Account changed');if(queue[id])throw Error('Sync pending');await rpc('share_conversation',{cid:id,hid},current);const t=book.threads.find(t=>t.id===id);if(t?.kind==='recipe'){t.recipeHousehold=hid;capture(book)}await refresh()}
  async function fork(t){const current=user,generation=epoch;while(t.hasOlder){await loadThread(t.id,true);guard(current,generation);t=book.threads.find(x=>x.id===t.id);if(!t)throw Error('Conversation access denied')}const copy=structuredClone(t);copy.id=crypto.randomUUID();copy.readOnly=false;copy.sharedHousehold=null;copy.revision=0;delete copy.parentId;copy.kind=t.kind==='recipe'?'recipe':'chat';const cloned=new Map(),clone=async r=>{if(!r.recipeId)return r;if(!cloned.has(r.recipeId))cloned.set(r.recipeId,await rpc('clone_recipe_document',{rid:r.recipeId,new_id:crypto.randomUUID()},current));return {...r,recipeId:cloned.get(r.recipeId)}};copy.messages=await Promise.all(copy.messages.map(async m=>({...m,id:crypto.randomUUID(),sequence:undefined,photo:undefined,photoPath:undefined,recipes:await Promise.all(m.recipes.map(clone))})));if(copy.recipe)copy.recipe=await clone(copy.recipe);if(generation!==epoch)throw Error('Account changed');book.threads.unshift(copy);book.active=copy.id;capture(book);changed();return copy.id}
  async function remove(id){const generation=epoch;await rpc('delete_conversation',{cid:id});if(generation!==epoch)return;delete queue[id];book.threads=book.threads.filter(t=>t.id!==id);book.active=book.threads.find(t=>!t.readOnly)?.id;saveQueue();changed()}
  window.addEventListener('online',()=>{refresh().then(()=>flush())});document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh().then(()=>flush())});

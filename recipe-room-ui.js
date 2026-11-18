@@ -39,7 +39,7 @@
  }
  function card(r,t=null){
   const id=remember(r);
-  return '<article class="room-card" data-room-card="'+id+'"><div class="room-card-visual">'+art(r)+'<button class="room-heart" data-room-save="'+id+'" aria-pressed="'+favourite(r)+'" aria-label="'+esc(say('Kedvenc: ','Favourite: ')+r.title)+'">'+ui('heart')+'</button></div><div class="room-card-body"><p class="room-meta">'+r.minutes+say(' perc',' min')+' · '+(RecipePortions.base(r).value?RecipePortions.base(r).value+say(' adag',' portions'):say('Adag a részletekben','See portions'))+'</p><h3>'+esc(r.title)+'</h3>'+coverageMarkup(r)+'<div class="room-card-actions"><button class="room-continue" data-room-open="'+id+'" aria-label="'+esc(say('Megnézem: ','View: ')+r.title)+'">'+say('Megnézem','View recipe')+ui('arrow-right')+'</button></div></div></article>';
+  return '<article class="room-card" data-room-card="'+id+'"><div class="room-card-visual">'+art(r)+'<button class="room-heart" data-room-save="'+id+'" aria-pressed="'+favourite(r)+'" aria-label="'+esc(say('Kedvenc: ','Favourite: ')+r.title)+'">'+ui('heart')+'</button></div><div class="room-card-body"><p class="room-meta">'+r.minutes+say(' perc',' min')+' · '+(RecipePortions.base(r).value?RecipePortions.base(r).value+say(' adag',' portions'):say('Adag a részletekben','See portions'))+'</p><h3>'+esc(r.title)+'</h3>'+coverageMarkup(r)+(window.MorzsaHousehold?.cookingMarkup(r)||'')+'<div class="room-card-actions"><button class="room-continue" data-room-open="'+id+'" aria-label="'+esc(say('Megnézem: ','View: ')+r.title)+'">'+say('Megnézem','View recipe')+ui('arrow-right')+'</button></div></div></article>';
  }
  function resumeStrip(threads){
   const sessions=CookingSession.sessions(threads),active=sessions.all;if(!active.length)return '';
@@ -48,7 +48,7 @@
  }
  function savedRecipes(mine,saved,threads){
   const seen=new Set(),list=[];
-  for(const r of [...saved,...mine.filter(r=>r.status!=='started'||r.favourite),...threads.filter(t=>t.status==='completed').map(t=>t.recipe)]){
+  for(const r of [...saved,...mine,...threads.map(t=>t.recipe)]){
    const id=r.recipeId,identity=M.identity(r);if((id&&seen.has(id))||seen.has(identity))continue;
    if(id)seen.add(id);seen.add(identity);list.push(r);
   }return list;
@@ -100,7 +100,7 @@
   main.querySelector('[data-start-cooking]').textContent=say('Előkészítem a főzést','Prepare to cook');
   main.querySelector('[data-start-cooking]').onclick=()=>window.MorzsaCompanion?.discuss(r,portionsFor(r));
   bind(main);window.RecipeImages?.mount(main.querySelector('.room-image-cache'),r,-1,{autoCreate:true,hero:true});
-  renderDetail(r,main.querySelector('.recipe-reading-detail'),false);window.MorzsaWorkspace?.mount();
+  renderDetail(r,main.querySelector('.recipe-reading-detail'),false);window.MorzsaWorkspace?.mount();window.MorzsaHousehold?.mount();window.MorzsaHousehold?.bind(main);
  }
  function renderDetail(r,detail,modal=false,options={}){
   if(!r)return;sync();const id=remember(r),portions=RecipePortions.selection(r,options.portions||portionsFor(r)),displayRecipe=RecipePortions.view(r,portions);
@@ -153,12 +153,12 @@
   const discovered=window.MorzsaCompanion?.discoveries()||[],discoveredKeys=new Set(discovered.map(d=>M.identity(d.recipe))),mine=savedRecipes([...(feed?.library||[]),...discovered.map(d=>d.recipe)],saved,threads),tab=feed?.tab||RecipeLibrary.tab();
   const completed=new Set(threads.filter(t=>t.status==='completed').map(t=>M.identity(t.recipe)));
   const own=r=>completed.has(M.identity(r))||r.status==='completed'||(!r.curated&&r.published!==true&&!r.recipeId?.startsWith('10000000-'));
-  const options=[['all','Mind','All'],...(mine.some(favourite)?[['favourite','Kedvencek','Favourites']]:[]),...(mine.some(own)?[['own','Saját és megfőzött','Own and cooked']]:[]),...(discoveredKeys.size?[['discovered','Felfedezések','Discoveries']]:[])];
+  const sharedFavourite=r=>r.favourite===true||favourite(r);const options=[['all','Mind','All'],...(mine.some(sharedFavourite)?[['favourite','Kedvencek','Favourites']]:[]),...(mine.some(own)?[['own','Saját és megfőzött','Own and cooked']]:[]),...(discoveredKeys.size?[['discovered','Felfedezések','Discoveries']]:[])];
   if(!options.some(([v])=>v===savedFilter))savedFilter='all';
-  const visibleMine=mine.filter(r=>savedFilter==='all'||savedFilter==='favourite'&&favourite(r)||savedFilter==='own'&&own(r)||savedFilter==='discovered'&&discoveredKeys.has(M.identity(r)));
+  const visibleMine=mine.filter(r=>savedFilter==='all'||savedFilter==='favourite'&&sharedFavourite(r)||savedFilter==='own'&&own(r)||savedFilter==='discovered'&&discoveredKeys.has(M.identity(r)));
   const savedHTML=mine.length?(options.length>2||discoveredKeys.size?'<div class="saved-filters" role="group" aria-label="'+say('Mentett receptek szűrése','Filter saved recipes')+'">'+options.map(([v,hu,en])=>'<button data-saved-filter="'+v+'" aria-pressed="'+(savedFilter===v)+'">'+say(hu,en)+'</button>').join('')+'</div>':'')+(visibleMine.length?'<div class="room-favourites saved-compact">'+visibleMine.map(r=>card(r)).join('')+'</div>':'<p class="recipe-feed-state">'+say('Ebben a csoportban még nincs recept.','No recipes in this group yet.')+'</p>'):'<div class="room-library-empty"><h2>'+say('A bevált receptek helye','A home for your favourites')+'</h2><p>'+say('Jelöld a szívvel, amit megőriznél. A megfőzött saját receptjeidet is itt találod.','Tap the heart to keep a recipe. Your completed recipes appear here too.')+'</p></div>';
   main.innerHTML='<section class="recipe-room recipe-library" data-no-translate><div class="room-heading"><div><p class="workspace-eyebrow">'+say('Receptek','Recipes')+'</p><h1>'+say('Mit főznél szívesen?','What would you love to cook?')+'</h1></div></div><p class="pantry-intro">'+say('Bevált kedvencek és új ötletek a konyhádhoz.','Familiar favourites and new ideas for your kitchen.')+'</p>'+(tab==='browse'?'':resumeStrip(threads))+RecipeLibrary.controls()+(tab==='mine'?savedHTML:feed?RecipeLibrary.cards():'<div class="room-favourites">'+recipes.map(r=>card(curated(r))).join('')+'</div>')+'</section>';
-  main.querySelector('.recipe-library').dataset.feedTab=tab;main.querySelectorAll('[data-saved-filter]').forEach(b=>b.onclick=()=>{savedFilter=b.dataset.savedFilter;renderRoom()});bind(main);window.RecipeLibrary?.bind(main);window.MorzsaWorkspace?.mount();
+  main.querySelector('.recipe-library').dataset.feedTab=tab;main.querySelectorAll('[data-saved-filter]').forEach(b=>b.onclick=()=>{savedFilter=b.dataset.savedFilter;renderRoom()});bind(main);window.RecipeLibrary?.bind(main);window.MorzsaWorkspace?.mount();window.MorzsaHousehold?.mount();window.MorzsaHousehold?.bind(main);
  }
  async function send(value,retry=false,options={}){
   sync();const text=retry?(messages.at(-1)?.request||messages.at(-1)?.text):String(value).trim();if(busy||!text||text.length>2000)return;

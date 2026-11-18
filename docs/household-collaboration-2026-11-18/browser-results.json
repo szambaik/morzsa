@@ -1,0 +1,22 @@
+{
+  "checks": [
+    "A partner favourite is visible without pretending the viewer favourited it",
+    "Current cooking names the partner and shows the real activity",
+    "Viewing partner cooking cannot advance their steps",
+    "A shared recipe provides a clear own-cooking action",
+    "A partner starts an independent cooking session with the same recipe",
+    "Paused cooking is distinguished from active cooking",
+    "Normal shopping rows show who added an item",
+    "Purchased item shows who checked it",
+    "Remote household activity uses the actual member name",
+    "Household dietary restrictions are shared and feed Morzsa context",
+    "Ordinary chat remains private",
+    "A committed save with a lost response cannot resurrect an item deleted by the partner",
+    "Shared recipe UI fits 320px",
+    "Shared recipe UI fits 360px",
+    "Shared recipe UI fits 390px",
+    "Shared recipe UI fits 1280px",
+    "No browser JavaScript errors"
+  ],
+  "errors": []
+}
