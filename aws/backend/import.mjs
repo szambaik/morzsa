@@ -25,6 +25,8 @@ export async function handler(event) {
  }
  if(event.action==='configure-providers'){
   const settings=JSON.parse(Buffer.from(await object('migration/setup/providers.json')).toString('utf8'));
+  // Supabase secret-list output contains SHA-256 digests, not usable credentials.
+  if(settings.GOOGLE_CLIENT_SECRET&&/^[a-f0-9]{64}$/i.test(settings.GOOGLE_CLIENT_SECRET))throw Error('Google OAuth secret is a digest; supply the original client credentials');
   await new SecretsManagerClient(options).send(new PutSecretValueCommand({SecretId:process.env.PROVIDER_SECRET,SecretString:JSON.stringify(settings)}));
   if(settings.GOOGLE_CLIENT_ID&&settings.GOOGLE_CLIENT_SECRET){
    const provider={UserPoolId:pool,ProviderName:'Google',ProviderDetails:{client_id:settings.GOOGLE_CLIENT_ID,client_secret:settings.GOOGLE_CLIENT_SECRET,authorize_scopes:'openid email profile'},AttributeMapping:{email:'email',email_verified:'email_verified'}};
