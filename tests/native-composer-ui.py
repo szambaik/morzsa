@@ -42,8 +42,9 @@ with tempfile.TemporaryDirectory(prefix='morzsa-native-composer-') as temp:
     preamble = '''<script>localStorage.clear();localStorage.setItem('morzsa-introduction-v1','done');
     const qaFetch=window.fetch;window.fetch=(input,options)=>/^https?:/i.test(String(input?.url||input))?Promise.reject(Error('External traffic disabled for native UI QA')):qaFetch(input,options);</script>'''
     fixture = r'''<script>setTimeout(()=>{
-      const tools=document.createElement('div');tools.style='position:fixed;top:80px;right:16px;z-index:9000;font-size:12px';
-      tools.innerHTML='<p id="qa-sent" role="status" style="white-space:pre-wrap">Composer QA ready</p>';document.body.append(tools);
+      const tools=document.createElement('div');tools.style='position:fixed;top:180px;right:16px;z-index:9000;font-size:12px';
+      tools.innerHTML='<p id="qa-sent" role="status" style="white-space:pre-wrap">Composer QA ready</p><button id="qa-cooking">Cooking QA</button>';document.body.append(tools);
+      document.getElementById('qa-cooking').onclick=()=>{tools.style.display='none';MorzsaCompanion.discuss({title:'Native cooking QA',summary:'Layout check',minutes:10,servings:2,ingredients:[{name:'Tojás',amount:'2 db'}],steps:['Készítsd elő.']})};
       const originalNewChat=MorzsaCompanion.newChat;let focusEvents=0;document.addEventListener('focusin',e=>{if(e.target.id==='companion-input')focusEvents++});
       MorzsaCompanion.newChat=(...args)=>{const result=originalNewChat(...args);document.getElementById('qa-sent').textContent='New chat invoked, focus events: '+focusEvents;return result};
       function bind(){const form=document.getElementById('companion-form');if(!form)return;

@@ -87,13 +87,17 @@ export function installIOSComposer(plugin){
   finally{submitting=false}
  }
  function focus(event){if(event.target.id==='companion-input'&&!failed){focusNext=true;event.target.blur();last='';schedule()}}
+ function dismissOutside(event){
+  if(!active||failed||typeof plugin.dismissComposer!=='function'||event.target.closest?.('#companion-form,button,a,input,textarea,select,summary,label,dialog'))return;
+  focusNext=false;input?.blur();plugin.dismissComposer({session}).catch(()=>{});
+ }
  function onInput(event){if(event.target.id==='companion-input')schedule()}
  function resume(){failed=false;last='';schedule()}
  const observer=new MutationObserver(schedule);observer.observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class','hidden','open','style']});
  const resize=new ResizeObserver(schedule);
  window.addEventListener('morzsa-native-text',changed);window.addEventListener('resize',schedule);window.addEventListener('morzsa-resume',resume);
- document.addEventListener('input',onInput);document.addEventListener('focusin',focus);document.addEventListener('submit',submit,true);document.addEventListener('visibilitychange',schedule);
+ document.addEventListener('pointerdown',dismissOutside);document.addEventListener('input',onInput);document.addEventListener('focusin',focus);document.addEventListener('submit',submit,true);document.addEventListener('visibilitychange',schedule);
  window.visualViewport?.addEventListener('resize',schedule);
  schedule();
- return {refresh:schedule,dispose(){disposed=true;cancelAnimationFrame(frame);observer.disconnect();resize.disconnect();restore();window.removeEventListener('morzsa-native-text',changed);window.removeEventListener('resize',schedule);window.removeEventListener('morzsa-resume',resume);document.removeEventListener('input',onInput);document.removeEventListener('focusin',focus);document.removeEventListener('submit',submit,true);document.removeEventListener('visibilitychange',schedule);window.visualViewport?.removeEventListener('resize',schedule);plugin.setComposer({visible:false,session,revision:++revision,viewportWidth:innerWidth}).catch(()=>{})}};
+ return {refresh:schedule,dispose(){disposed=true;cancelAnimationFrame(frame);observer.disconnect();resize.disconnect();restore();window.removeEventListener('morzsa-native-text',changed);window.removeEventListener('resize',schedule);window.removeEventListener('morzsa-resume',resume);document.removeEventListener('pointerdown',dismissOutside);document.removeEventListener('input',onInput);document.removeEventListener('focusin',focus);document.removeEventListener('submit',submit,true);document.removeEventListener('visibilitychange',schedule);window.visualViewport?.removeEventListener('resize',schedule);plugin.setComposer({visible:false,session,revision:++revision,viewportWidth:innerWidth}).catch(()=>{})}};
 }

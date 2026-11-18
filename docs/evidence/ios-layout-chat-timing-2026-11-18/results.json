@@ -1,0 +1,230 @@
+[
+  {
+    "engine": "chromium",
+    "width": 320,
+    "status": "passed",
+    "overflow": false,
+    "plus": {
+      "x": 208,
+      "y": 14,
+      "width": 44,
+      "height": 44,
+      "top": 14,
+      "right": 252,
+      "bottom": 58,
+      "left": 208
+    },
+    "newChat": {
+      "x": 260,
+      "y": 14,
+      "width": 44,
+      "height": 44,
+      "top": 14,
+      "right": 304,
+      "bottom": 58,
+      "left": 260
+    },
+    "header": {
+      "x": 16,
+      "y": 0,
+      "width": 288,
+      "height": 80,
+      "top": 0,
+      "right": 304,
+      "bottom": 80,
+      "left": 16
+    },
+    "ratio": 1.7777777777777777,
+    "tabsFirst": true
+  },
+  {
+    "engine": "chromium",
+    "width": 390,
+    "status": "passed",
+    "overflow": false,
+    "plus": {
+      "x": 276,
+      "y": 14,
+      "width": 44,
+      "height": 44,
+      "top": 14,
+      "right": 320,
+      "bottom": 58,
+      "left": 276
+    },
+    "newChat": {
+      "x": 328,
+      "y": 14,
+      "width": 44,
+      "height": 44,
+      "top": 14,
+      "right": 372,
+      "bottom": 58,
+      "left": 328
+    },
+    "header": {
+      "x": 18,
+      "y": 0,
+      "width": 354,
+      "height": 80,
+      "top": 0,
+      "right": 372,
+      "bottom": 80,
+      "left": 18
+    },
+    "ratio": 1.7777777777777777,
+    "tabsFirst": true
+  },
+  {
+    "engine": "chromium",
+    "width": 1366,
+    "status": "passed",
+    "overflow": false,
+    "plus": {
+      "x": 1230,
+      "y": 14,
+      "width": 44,
+      "height": 44,
+      "top": 14,
+      "right": 1274,
+      "bottom": 58,
+      "left": 1230
+    },
+    "newChat": {
+      "x": 1282,
+      "y": 14,
+      "width": 44,
+      "height": 44,
+      "top": 14,
+      "right": 1326,
+      "bottom": 58,
+      "left": 1282
+    },
+    "header": {
+      "x": 312,
+      "y": 0,
+      "width": 1014,
+      "height": 72,
+      "top": 0,
+      "right": 1326,
+      "bottom": 72,
+      "left": 312
+    },
+    "ratio": 1.7777777777777777,
+    "tabsFirst": true
+  },
+  {
+    "engine": "webkit",
+    "width": 320,
+    "status": "passed",
+    "overflow": false,
+    "plus": {
+      "x": 208,
+      "y": 14,
+      "width": 44,
+      "height": 44,
+      "top": 14,
+      "right": 252,
+      "bottom": 58,
+      "left": 208
+    },
+    "newChat": {
+      "x": 260,
+      "y": 14,
+      "width": 44,
+      "height": 44,
+      "top": 14,
+      "right": 304,
+      "bottom": 58,
+      "left": 260
+    },
+    "header": {
+      "x": 16,
+      "y": 0,
+      "width": 288,
+      "height": 80,
+      "top": 0,
+      "right": 304,
+      "bottom": 80,
+      "left": 16
+    },
+    "ratio": 1.7777777777777777,
+    "tabsFirst": true
+  },
+  {
+    "engine": "webkit",
+    "width": 390,
+    "status": "passed",
+    "overflow": false,
+    "plus": {
+      "x": 276,
+      "y": 14,
+      "width": 44,
+      "height": 44,
+      "top": 14,
+      "right": 320,
+      "bottom": 58,
+      "left": 276
+    },
+    "newChat": {
+      "x": 328,
+      "y": 14,
+      "width": 44,
+      "height": 44,
+      "top": 14,
+      "right": 372,
+      "bottom": 58,
+      "left": 328
+    },
+    "header": {
+      "x": 18,
+      "y": 0,
+      "width": 354,
+      "height": 80,
+      "top": 0,
+      "right": 372,
+      "bottom": 80,
+      "left": 18
+    },
+    "ratio": 1.7777777777777777,
+    "tabsFirst": true
+  },
+  {
+    "engine": "webkit",
+    "width": 1366,
+    "status": "passed",
+    "overflow": false,
+    "plus": {
+      "x": 1230,
+      "y": 14,
+      "width": 44,
+      "height": 44,
+      "top": 14,
+      "right": 1274,
+      "bottom": 58,
+      "left": 1230
+    },
+    "newChat": {
+      "x": 1282,
+      "y": 14,
+      "width": 44,
+      "height": 44,
+      "top": 14,
+      "right": 1326,
+      "bottom": 58,
+      "left": 1282
+    },
+    "header": {
+      "x": 312,
+      "y": 0,
+      "width": 1014,
+      "height": 72,
+      "top": 0,
+      "right": 1326,
+      "bottom": 72,
+      "left": 312
+    },
+    "ratio": 1.7777777777777777,
+    "tabsFirst": true
+  }
+]

@@ -10,8 +10,9 @@ async page=>{
  await page.evaluate(async()=>{
   document.documentElement.classList.add('native-app','native-ios');
   const {installIOSComposer}=await import('/mobile/ios-composer.js');
-  window.composerCalls=[];window.composerMode='defer';window.nativeText='';window.nativeSequence=0;window.submitCalls=0;
+  window.composerCalls=[];window.composerMode='defer';window.nativeText='';window.nativeSequence=0;window.submitCalls=0;window.dismissCalls=0;
   window.composer=installIOSComposer({
+   dismissComposer:async()=>{dismissCalls++},
    setComposer:async state=>{composerCalls.push(state);if(composerMode==='reject')throw Error('offline');if(composerMode==='defer')await new Promise(resolve=>window.ackComposer=resolve);return {revision:state.revision,kind:'UITextView'}},
    submitComposer:async({session})=>{submitCalls++;const value={session,sequence:++nativeSequence,text:nativeText};nativeText='';await new Promise(resolve=>window.resolveNativeSubmit=()=>resolve());return value}
   });
@@ -23,11 +24,15 @@ async page=>{
  check(await page.locator('#companion-input').evaluate(el=>el.classList.contains('ios-native-text-input')&&el.tabIndex===-1&&el.getAttribute('aria-hidden')==='true'),'acknowledged UITextView replaces only the web text editor');
  check(await page.locator('#companion-form button').evaluateAll(els=>els.every(el=>getComputedStyle(el).opacity==='1')),'photo voice and send retain their existing web controls');
  check(await page.locator('#companion-form [type=submit]').isDisabled(),'empty native draft disables Send');
+ await page.evaluate(()=>document.body.dispatchEvent(new PointerEvent('pointerdown',{bubbles:true})));
+ check(await page.evaluate(()=>dismissCalls===1),'background tap requests native keyboard dismissal');
+ await page.evaluate(()=>document.querySelector('#companion-form [data-mic]').dispatchEvent(new PointerEvent('pointerdown',{bubbles:true})));
+ check(await page.evaluate(()=>dismissCalls===1),'composer controls preserve native editing focus');
  await page.evaluate(()=>nativeEdit('   '));
  check(await page.locator('#companion-form [type=submit]').isDisabled(),'whitespace native draft keeps Send disabled');
  await page.evaluate(()=>nativeEdit('a'));
  check(await page.locator('#companion-form [type=submit]').isEnabled(),'first native character enables Send immediately');
- check(await page.locator('#companion-form [type=submit]').evaluate(el=>getComputedStyle(el).backgroundColor==='rgb(0, 122, 255)'),'native composer uses the blue Send button');
+ check(await page.locator('#companion-form [type=submit]').evaluate(el=>getComputedStyle(el).backgroundColor==='rgb(191, 78, 44)'),'native composer uses the Morzsa orange Send button');
  await page.evaluate(()=>nativeEdit(''));
  check(await page.locator('#companion-form [type=submit]').isDisabled(),'deleting the native draft disables Send again');
  await page.evaluate(()=>document.getElementById('companion-input').focus());await tick();

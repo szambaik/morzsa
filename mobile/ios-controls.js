@@ -23,10 +23,13 @@ export function installIOSControls(plugin){
  }
  function snapshot(){
   const buttons=[],elements=new Map(),modal=[...document.querySelectorAll('dialog[open]')].at(-1);
+  // Drawers animate independently of the root scroll view. Their actions stay
+  // in the DOM so a moving UIKit copy cannot miss the close/new-chat target.
+  if(modal)return {buttons,elements};
   for(const el of (modal||document).querySelectorAll(allowed)){
    // File selection, login/popups, audio start and permission prompts need the
    // browser's trusted activation. Rich cards are content, not toolbar buttons.
-   if(el.closest('nav,.workspace-navigation')||el.matches('[data-photo],[data-workspace-photo],[data-mic],[data-workspace-mic],[data-cooking-voice],[data-login],#household-button')||el.querySelector('h1,h2,h3,strong,small,input,textarea')||!visible(el))continue;
+   if(el.closest('.app>header')||el.matches('.companion-back-main')||el.closest('nav,.workspace-navigation')||el.matches('[data-photo],[data-workspace-photo],[data-mic],[data-workspace-mic],[data-cooking-voice],[data-login],#household-button')||el.querySelector('h1,h2,h3,strong,small,input,textarea')||!visible(el))continue;
    const text=el.textContent.trim(),label=el.getAttribute('aria-label')||el.title||text;
    if(!label||label.length>180||text.length>65)continue;
    let symbol=special.find(([selector])=>el.matches(selector))?.[1];

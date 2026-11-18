@@ -2,6 +2,7 @@ window.MorzsaPersistence=(()=>{
  const M=PersistenceModel,read=k=>{try{return JSON.parse(localStorage.getItem(k))}catch{return null}},say=(hu,en)=>language==='en'?en:hu;
  let refreshDeferred=false,lastIndexRefresh=0,turnPageSupported=null;
  let user='',book=null,callbacks={},epoch=0,ready=false,running=false,refreshing=false,queue={},timer,refreshTimer,live,issue='',indexPages=1,more=false;
+ const savingThreads=new Map();
  const signedPhotos=new Map(),knownMeta=new Map(),knownMessages=new Map(),recipeIds=new Map(),media=new Map(),turnAccounts=new Map();
  const valid=()=>user&&user===household?.userId();
  const same=(account,generation)=>valid()&&account===user&&generation===epoch;
@@ -48,12 +49,12 @@ window.MorzsaPersistence=(()=>{
   const promise=rpc('save_recipe_document',{rid:crypto.randomUUID(),recipe:clean},current);recipeIds.set(key,promise);
   try{const id=await promise;if(current!==user||generation!==epoch)throw Error('Account changed');return {...clean,recipeId:id}}catch(e){if(recipeIds.get(key)===promise)recipeIds.delete(key);throw e}
  }
- async function flush(current=user,generation=epoch){
-  if(!same(current,generation))return;
-  if(running){await new Promise(resolve=>setTimeout(resolve,100));return flush(current,generation)}
-  if(!ready||!Object.keys(queue).length)return;running=true;const run=async(name,args)=>{guard(current,generation);const result=await rpc(name,args,current);guard(current,generation);return result};
-  try{
-   for(const [id,original] of Object.entries(queue)){
+ async function saveThread(id,current,generation){
+  guard(current,generation);const key=generation+':'+id;
+  if(savingThreads.has(key))return savingThreads.get(key);
+  const original=queue[id];if(!original)return;
+  const run=async(name,args)=>{guard(current,generation);const result=await rpc(name,args,current);guard(current,generation);return result};
+  const work=Promise.resolve().then(async()=>{
     if(!valid()||current!==user||generation!==epoch)return;const job=structuredClone(original),refs=new Set();
     if(job.meta.recipe){job.meta.recipe=await ensureRecipe(job.meta.recipe,current,generation);refs.add(job.meta.recipe.recipeId)}
     for(const m of job.items){m.recipes=await Promise.all((m.recipes||[]).map(r=>ensureRecipe(r,current,generation)));m.recipes.forEach(r=>refs.add(r.recipeId))}
@@ -70,8 +71,24 @@ window.MorzsaPersistence=(()=>{
     if(job.meta.kind==='recipe'&&M.uuid(job.meta.recipeHousehold)&&book.threads.find(t=>t.id===id)?.sharedHousehold!==job.meta.recipeHousehold){try{await run('share_household_recipe_conversation',{hid:job.meta.recipeHousehold,cid:id})}catch(e){if(!/Could not find.*share_household_recipe_conversation|function.*share_household_recipe_conversation.*does not exist/i.test(e.message||''))throw e;await run('share_conversation',{hid:job.meta.recipeHousehold,cid:id})}const t=book.threads.find(t=>t.id===id);if(t)t.sharedHousehold=job.meta.recipeHousehold}knownMeta.set(id,JSON.stringify(job.meta));job.items.forEach(m=>knownMessages.set(m.id,JSON.stringify(m)));
     const t=book.threads.find(t=>t.id===id);if(t){t.revision=job.revision;if(t.recipe&&job.meta.recipe)t.recipe=job.meta.recipe;for(const m of t.messages){const saved=job.items.find(i=>i.id===m.id);if(saved){m.recipes=saved.recipes;if(saved.photoPath)m.photoPath=saved.photoPath}}}
     if(queue[id]===original)delete queue[id];else if(queue[id]){queue[id].base=job.meta;queue[id].revision=job.revision}saveQueue();
-   }
-   issue='';callbacks.saved?.();status();window.KitchenIntelligence?.refresh();await refresh();
+  });
+  savingThreads.set(key,work);
+  try{await work}finally{if(savingThreads.get(key)===work)savingThreads.delete(key)}
+ }
+ async function flushThread(id,current=user,generation=epoch){
+  guard(current,generation);if(!ready)throw Error('History sync pending');
+  // A chat waits only for its own writes. Other chats and their media continue
+  // in the background; one promise per thread preserves optimistic revisions.
+  while(queue[id]){await saveThread(id,current,generation);guard(current,generation)}
+  status();
+ }
+ async function flush(current=user,generation=epoch){
+  if(!same(current,generation))return;
+  if(running){await new Promise(resolve=>setTimeout(resolve,100));return flush(current,generation)}
+  if(!ready||!Object.keys(queue).length)return;running=true;
+  try{
+   for(const id of Object.keys(queue)){guard(current,generation);await saveThread(id,current,generation)}
+   guard(current,generation);issue='';callbacks.saved?.();status();window.KitchenIntelligence?.refresh();await refresh();
   }catch(e){if(current===user&&generation===epoch){issue=/denied/i.test(e.message||'')?'access':'failed';status()}}
   finally{if(current===user&&generation===epoch){running=false;if(!issue&&Object.keys(queue).length)timer=setTimeout(flush,500)}}
  }
@@ -104,25 +121,28 @@ window.MorzsaPersistence=(()=>{
  window.addEventListener('online',()=>{refresh().then(()=>flush())});document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh().then(()=>flush())});
  document.addEventListener('focusout',()=>{if(refreshDeferred)scheduleRefresh()});
  setInterval(()=>{if(!document.hidden&&valid()){if(!running){if(refreshDeferred||!live?.healthy?.()||Date.now()-lastIndexRefresh>=60000)refresh().then(()=>flush());else flush()}}},15000);
- async function beginTurn(id,{signal}={}){
-  const current=user,generation=epoch;
+ async function beginTurn(id,{signal,onTiming}={}){
+  const current=user,generation=epoch,metrics={historySyncMs:0,turnLockMs:0,historyLoadMs:0,turnPageRpcMs:0,turnAcquireRpcMs:0},now=()=>Date.now();
   const work=(async()=>{
-   await flush(current,generation);guard(current,generation);signal?.throwIfAborted();
+   signal?.throwIfAborted();let started=now();
+   try{await flushThread(id,current,generation)}finally{metrics.historySyncMs=now()-started}
+   guard(current,generation);signal?.throwIfAborted();
    if(queue[id]||!ready)throw Error('History sync pending');
    const turn=crypto.randomUUID();let acquired=false;
    try{
     // Do not abort an in-flight lock RPC: observe its result and release a granted lock.
-    let page=null;
+    let page=null;started=now();const lockStarted=started;
     if(turnPageSupported!==false){
      try{const result=await rpc('begin_conversation_turn_page',{cid:id,tid:turn},current);if(typeof result?.acquired!=='boolean')throw Error('Invalid turn response');turnPageSupported=true;acquired=result.acquired;page=result.page}
      catch(e){if(e.code==='PGRST202'||/Could not find.*begin_conversation_turn_page|function.*begin_conversation_turn_page.*does not exist/i.test(e.message||''))turnPageSupported=false;else throw e}
+     finally{metrics.turnPageRpcMs=now()-started;metrics.turnLockMs=now()-lockStarted}
     }
     // A missing additive RPC uses the existing deployed contract until rollout.
-    if(turnPageSupported===false){guard(current,generation);signal?.throwIfAborted();acquired=await rpc('begin_conversation_turn',{cid:id,tid:turn},current)}
+    if(turnPageSupported===false){guard(current,generation);signal?.throwIfAborted();started=now();try{acquired=await rpc('begin_conversation_turn',{cid:id,tid:turn},current)}finally{metrics.turnAcquireRpcMs=now()-started;metrics.turnLockMs=now()-lockStarted}}
     if(!acquired)throw Error('Another device is answering');guard(current,generation);signal?.throwIfAborted();
-    await loadThread(id,false,true,page,false);guard(current,generation);signal?.throwIfAborted();turnAccounts.set(turn,{account:current,generation});return turn;
+    started=now();try{await loadThread(id,false,true,page,false)}finally{metrics.historyLoadMs=now()-started}guard(current,generation);signal?.throwIfAborted();turnAccounts.set(turn,{account:current,generation});return turn;
    }catch(e){if(acquired)await rpc('end_conversation_turn',{cid:id,tid:turn},current).catch(()=>{});throw e}
-  })();
+  })().finally(()=>{try{onTiming?.(metrics)}catch{/* Diagnostics cannot fail an acquired turn. */}});
   if(!signal)return work;
   return new Promise((resolve,reject)=>{
    const cancel=()=>reject(signal.reason);signal.addEventListener('abort',cancel,{once:true});if(signal.aborted)cancel();
@@ -133,7 +153,7 @@ window.MorzsaPersistence=(()=>{
  function endTurn(id,turn){const owner=turnAccounts.get(turn);turnAccounts.delete(turn);return owner&&same(owner.account,owner.generation)?rpc('end_conversation_turn',{cid:id,tid:turn},owner.account).catch(()=>{}):Promise.resolve()}
  async function finishTurn(id,turn){
   const owner=turnAccounts.get(turn);
-  try{if(owner)await flush(owner.account,owner.generation)}finally{await endTurn(id,turn)}
+  try{if(owner&&same(owner.account,owner.generation))await flushThread(id,owner.account,owner.generation)}catch{if(owner&&same(owner.account,owner.generation)){issue='failed';status()}}finally{await endTurn(id,turn)}
  }
  async function archiveShared(id,archived){await rpc('archive_shared_conversation',{cid:id,archived});await refresh()}
  return {archiveShared,beginTurn,endTurn,finishTurn,attach,detach,capture,flush,refresh,loadThread,ensureRecipe,queuePhoto,share,fork,remove,more:()=>more,moreHistory:async()=>{indexPages++;await refresh()},retry:()=>{issue='';refresh().then(()=>flush())},status:()=>issue||(!ready?'loading':Object.keys(queue).length?'pending':'synced')};

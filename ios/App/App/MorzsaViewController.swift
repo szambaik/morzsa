@@ -42,6 +42,10 @@ final class MorzsaViewController: CAPBridgeViewController, UITabBarDelegate {
         view.bringSubviewToFront(navigationBar)
     }
 
+    func dismissComposer(session: String) {
+        composerInput.dismiss(for: session)
+    }
+
     func submitComposer(session: String) -> [String: Any]? {
         composerInput.takeSubmission(for: session)
     }
@@ -128,14 +132,19 @@ final class MorzsaViewController: CAPBridgeViewController, UITabBarDelegate {
             let container = UIView(frame: webView.frame)
             container.backgroundColor = UIColor(red: 0.973, green: 0.953, blue: 0.914, alpha: 1)
             webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            webView.frame = container.bounds
             container.addSubview(webView)
             view = container
+            // The previous root owned the tab bar; move it with the web view.
+            container.addSubview(navigationBar)
         }
         bridge?.registerPluginInstance(MorzsaUIPlugin())
         webView?.isOpaque = false
         webView?.backgroundColor = UIColor(red: 0.973, green: 0.953, blue: 0.914, alpha: 1)
         webView?.scrollView.backgroundColor = webView?.backgroundColor
         webView?.scrollView.keyboardDismissMode = .interactive
+        // CSS env(safe-area-inset-*) owns content insets in the shared shell.
+        webView?.scrollView.contentInsetAdjustmentBehavior = .never
     }
 
     override func viewDidLoad() {
@@ -156,8 +165,8 @@ final class MorzsaViewController: CAPBridgeViewController, UITabBarDelegate {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        // UIKit includes its bottom safe area in the fitted tab-bar height.
-        let height = navigationBar.sizeThatFits(view.bounds.size).height
+        // Reserve the home-indicator area explicitly after root reparenting.
+        let height: CGFloat = 49 + view.safeAreaInsets.bottom
         navigationBar.frame = CGRect(x: 0, y: view.bounds.height - height, width: view.bounds.width, height: height)
         view.bringSubviewToFront(navigationBar)
         publishHeight()
@@ -222,8 +231,16 @@ final class MorzsaUIPlugin: CAPPlugin, CAPBridgedPlugin {
         CAPPluginMethod(name: "showActions", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "setControls", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "setComposer", returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: "submitComposer", returnType: CAPPluginReturnPromise)
+        CAPPluginMethod(name: "submitComposer", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "dismissComposer", returnType: CAPPluginReturnPromise)
     ]
+
+    @objc func dismissComposer(_ call: CAPPluginCall) {
+        DispatchQueue.main.async {
+            (self.bridge?.viewController as? MorzsaViewController)?.dismissComposer(session: call.getString("session") ?? "")
+            call.resolve()
+        }
+    }
 
     @objc func setComposer(_ call: CAPPluginCall) {
         guard let revision = call.getInt("revision"), let width = call.getDouble("viewportWidth"), width.isFinite, width > 0 else {

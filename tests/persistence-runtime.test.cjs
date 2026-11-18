@@ -108,3 +108,24 @@ test('fresh history is loaded before sending without waiting on historical photo
  h.hook(async name=>{if(name==='begin_conversation_turn_page')return {acquired:true,page:{messages:[{id:mid,sequence:1,body:{role:'user',text:'Fresh photo context',photoPath:a+'/chat/'+mid+'.jpg',createdAt:4,recipes:[]}}],before:1,hasOlder:false}}});
  const turn=await h.api.beginTurn(cid);assert.equal(h.visible.threads[0].messages[0].text,'Fresh photo context');assert.deepEqual(h.calls.map(c=>c.name),['begin_conversation_turn_page']);await h.api.endTurn(cid,turn);
 });
+
+test('a blocked save in another conversation does not delay chat preflight or lock release',async()=>{
+ const h=harness();h.attach();await drain();const other=crypto.randomUUID(),held=pause(),started=pause();
+ h.visible.threads.unshift({id:other,kind:'chat',title:'Other',updated:2,messages:[{id:crypto.randomUUID(),role:'user',text:'Background photo',createdAt:2,recipes:[]}]});h.api.capture(h.visible);
+ h.hook(async(name,args)=>{if(name==='sync_conversation'&&args.cid===other){started.resolve();await held.promise}});
+ const background=h.api.flush();await started.promise;let metrics;
+ const turn=await h.api.beginTurn(cid,{onTiming:value=>metrics=value});
+ assert(h.calls.some(c=>c.name==='begin_conversation_turn'&&c.args.cid===cid));
+ assert(Object.values(metrics).every(v=>Number.isFinite(v)&&v>=0));
+ await h.api.finishTurn(cid,turn);assert.equal(h.calls.at(-1).name,'end_conversation_turn');
+ held.resolve();await background;assert(h.msgs.has(other));
+});
+test('preflight shares an in-flight current-thread write and retains edits captured during it',async()=>{
+ const h=harness();h.attach();await drain();const held=pause(),started=pause();let writes=0;
+ h.visible.threads[0].messages.push({id:mid,role:'user',text:'First',createdAt:2,recipes:[]});h.api.capture(h.visible);
+ h.hook(async(name,args)=>{if(name==='sync_conversation'&&args.cid===cid&&++writes===1){started.resolve();await held.promise}});
+ const background=h.api.flush();await started.promise;
+ h.visible.threads[0].messages.push({id:crypto.randomUUID(),role:'user',text:'Second',createdAt:3,recipes:[]});h.api.capture(h.visible);
+ const turnWork=h.api.beginTurn(cid);await drain();assert.equal(writes,1);held.resolve();
+ const turn=await turnWork;await background;assert.equal(h.msgs.get(cid).length,2);await h.api.endTurn(cid,turn);
+});

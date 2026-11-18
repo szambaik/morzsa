@@ -31,3 +31,42 @@
 .history-thread .history-row-copy{min-width:0}
 .history-thread .history-row-copy small{display:block;font-size:11px;color:var(--muted);margin-top:3px}
 .cooking-compact-title [data-pause-cooking]{min-height:44px;background:transparent;border:1px solid var(--line);border-radius:12px;padding:8px 12px;font-size:13px}
+
+/* Header controls use DOM geometry on iOS, including scroll and safe areas. */
+.native-ios .app>header button,.companion-back-main{flex-shrink:0}
+.companion-back-main{display:inline-grid!important;place-items:center;width:44px;height:44px;min-height:44px;padding:10px!important;border-radius:50%;background:#fffdf7d9!important;position:relative;z-index:2}
+.companion-back-main img{width:22px;height:22px}
+.recipe-library>.recipe-feed-tabs{margin-top:4px}
+.recipe-search-tools{display:flex;gap:8px;align-items:flex-start;margin:12px 0 18px}
+.recipe-search-tools .recipe-feed-search{flex:1;margin:0;min-width:0}
+.recipe-feed-search>button img{filter:brightness(0) invert(1)}
+.recipe-filter-menu{position:relative;flex:none}
+.recipe-filter-menu>summary{list-style:none;display:grid;place-items:center;width:44px;height:44px;border:1px solid var(--line);border-radius:14px;background:var(--white);cursor:pointer}
+.recipe-filter-menu>summary::-webkit-details-marker{display:none}
+.recipe-filter-menu>summary[data-filter-active]{background:var(--sage);border-color:var(--green);box-shadow:inset 0 0 0 1px var(--green)}
+.recipe-filter-menu .recipe-feed-filters{position:absolute;top:52px;right:0;z-index:30;display:flex;flex-direction:column;width:200px;gap:4px;padding:8px;border:1px solid var(--line);border-radius:16px;background:var(--white);box-shadow:0 8px 24px #34463820}
+.recipe-filter-menu .recipe-feed-filters button{text-align:left;border-radius:10px;min-height:44px}
+.recipe-resume{margin-top:14px}
+/* Absolute image bounds avoid WebKit intrinsic image height stretching a grid. */
+.recipe-library .room-card .feed-card-art{position:relative;display:block;height:auto;aspect-ratio:16/9;overflow:hidden}
+.recipe-library .room-card .feed-card-art>img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover}
+.recipe-library .room-card .feed-card-art>.feed-art-placeholder{position:absolute;inset:0}
+@media(min-width:1000px){
+ .workspace-cooking .app{max-width:1120px;padding-inline:32px}
+ .workspace-cooking .app[data-page=chat] .companion{max-width:none}
+ .workspace-cooking .companion:has(.cooking-preparation){display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:40px;align-items:start}
+ .workspace-cooking .companion:has(.cooking-preparation)>.companion-back-main,.workspace-cooking .companion:has(.cooking-preparation)>.cooking-save-state{grid-column:1 / -1}
+ .workspace-cooking .companion:has(.cooking-preparation)>.cooking-hero{grid-column:1;grid-row:3;position:sticky;top:24px}
+ .workspace-cooking .companion:has(.cooking-preparation)>.companion-messages{grid-column:2;grid-row:3}
+ .workspace-cooking .companion:has(.cooking-preparation)>.companion-day-divider{display:none}
+ .workspace-cooking .cooking-task-dock{width:min(calc(100% - 64px),1056px);max-width:1056px}
+ .recipe-reading{max-width:1120px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:40px;align-items:start}
+ .recipe-reading-back{grid-column:1 / -1}
+ .recipe-reading-hero{grid-column:1;grid-row:2 / span 3;position:sticky;top:24px}
+ .recipe-reading-detail{grid-column:2;grid-row:2 / span 8}
+ .recipe-reading-start,.recipe-reading>.recipe-settings,.recipe-reading>.recipe-ingredients-summary{grid-column:1}
+ .recipe-reading-hero>.room-art{height:auto;max-height:none;aspect-ratio:4/3}
+}
+
+/* The header owns the top inset; the legacy app inset is only for cooking. */
+@media(max-width:999px){.native-ios body:not(.workspace-cooking) .app{padding-top:0}.native-ios .app>header,.native-ios .workspace-chat .app>header{top:0;height:64px}}

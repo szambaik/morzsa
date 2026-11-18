@@ -10,7 +10,6 @@ final class MorzsaTextInput: UITextView, UITextViewDelegate {
     private var maxLength = 2000
     private var cssScale: CGFloat = 1
     private var lastReportedHeight: CGFloat = 0
-    private lazy var doneButton = UIBarButtonItem(title: "Kész", style: .done, target: self, action: #selector(dismissKeyboard))
     var onChange: (([String: Any]) -> Void)?
 
     init() {
@@ -37,14 +36,12 @@ final class MorzsaTextInput: UITextView, UITextViewDelegate {
         placeholderLabel.isAccessibilityElement = false
         placeholderLabel.isUserInteractionEnabled = false
         addSubview(placeholderLabel)
-        let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 320, height: 44))
-        toolbar.items = [UIBarButtonItem(systemItem: .flexibleSpace), doneButton]
-        inputAccessoryView = toolbar
+        // Keep the editor next to the keyboard without an extra accessory row.
+        inputAccessoryView = nil
         isHidden = true
     }
 
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
-    @objc private func dismissKeyboard() { resignFirstResponder() }
 
     func update(_ state: [String: Any], revision: Int, scale: CGFloat) {
         guard revision >= latestRevision else { return }
@@ -75,7 +72,6 @@ final class MorzsaTextInput: UITextView, UITextViewDelegate {
         }
         maxLength = max(1, min(2000, state["maxLength"] as? Int ?? 2000))
         placeholderLabel.text = state["placeholder"] as? String
-        doneButton.title = state["dismissLabel"] as? String ?? "Kész"
         placeholderLabel.isHidden = !text.isEmpty
         accessibilityLabel = state["label"] as? String
         isEditable = state["editable"] as? Bool != false
@@ -127,6 +123,11 @@ final class MorzsaTextInput: UITextView, UITextViewDelegate {
         guard range.location + range.length <= (text as NSString).length else { return false }
         let candidate = (text as NSString).replacingCharacters(in: range, with: replacement)
         return markedTextRange != nil || candidate.utf16.count <= maxLength
+    }
+
+    func dismiss(for key: String) {
+        guard key == session else { return }
+        resignFirstResponder()
     }
 
     func takeSubmission(for key: String) -> [String: Any]? {
