@@ -23,7 +23,9 @@ if(Capacitor.isNativePlatform()){
  let handler,pending;const seen=new Set();
  const receive=async url=>{
   let u;try{u=new URL(url)}catch{return}if(u.protocol!=='io.github.szambaik.morzsa:'||u.hostname!=='auth-callback'||u.pathname&&u.pathname!=='/')return;
-  const code=u.searchParams.get('code')||u.searchParams.get('error');if(!code||seen.has(code))return;seen.add(code);if(seen.size>10)seen.delete(seen.values().next().value);if(handler)await handler(url);else pending=url;
+  const code=u.searchParams.get('code')||u.searchParams.get('error');if(!code||seen.has(code))return;seen.add(code);if(seen.size>10)seen.delete(seen.values().next().value);
+  // Dismiss Safari before network/session restoration, including cold launches.
+  await Browser.close().catch(()=>{});if(handler)await handler(url);else pending=url;
  };
  window.MorzsaNative={
   callback,

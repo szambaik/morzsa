@@ -48,7 +48,18 @@ secret was a SHA-256 digest rather than the original client secret. On November
 18 the correct credential was loaded from the downloaded OAuth client JSON,
 validated against Google's token endpoint, and applied to Secrets Manager and
 Cognito. The importer now refuses Google secret digests before changing any
-provider configuration. User confirmation of the corrected login remains pending.
+provider configuration. The user confirmed the corrected login and existing
+household/pantry on web and iOS. Native OAuth callback handling now dismisses
+the browser before restoring the session and household.
+
+The first real Plus chat exposed conditional-write conflicts during accounting.
+Reservations now use fresh transactions without unrelated conversation snapshots;
+accounting, recipe saves and answer caching retry rejected conditional writes
+at most four times. Model calls remain outside these retry boundaries.
+Targeted checks preserve concurrent data, single provider calls, bounded retries
+and immediate native browser dismissal; the required local release gate passed.
+A single live OpenAI Plus chat in an isolated synthetic dataset completed with
+a valid answer and no recipe or pantry/list operations.
 Physical-device microphone/voice flows remain interactive device checks.
 No complete separate backend regression or load test was run.
 Production publication must use the existing protected workflow.
