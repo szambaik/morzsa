@@ -22,6 +22,7 @@ Az összevonás a meglévő `apply_household_changes` RPC egyetlen tranzakciója
 - A célzott böngészős ellenőrzés 42 tesztet teljesít: HU/EN, 320/390/1280 px, bolti mennyiség és fókusz, régi mentés, összevonás és visszavonás, két konyhatag, revízióváltozás azonos végértékkel, tranzakciós ütközés, kapcsolat- és cache-hiba, függő mentés. A képernyők axe WCAG A/AA ellenőrzése hibamentes.
 - A célzott modellek 13 regressziós tesztje lefedi a névazonosítást, importot, mennyiségeket, metaadatokat, jsonb objektumkulcs-sorrendet és az árbecslési konverziókat.
 - Az új böngészős ellenőrzés a kötelező `design-audit/check-release.mjs` részévé vált. A meglévő publikálási kapu és a tesztelt artifactból történő Pages-deploy megmaradt.
+- A GitHub első auditfutása az Ubuntu csomagtükör lassú rendszerkönyvtár-letöltése miatt érte el a 15 perces időkorlátot. A job most a lockfile Playwright 1.58.2 verziójához rögzített hivatalos Noble-image-et használja, előre telepített Chromium/WebKit böngészőkkel és rendszerkönyvtárakkal. Külön indítási ellenőrzés igazolja mindkét böngésző működését; a kötelező tesztek és a deploy függősége változatlan.
 - A tesztek elkülönített SQL-adatbázist és szintetikus fiókokat használnak; nincs éles adat, fizetett AI-hívás vagy külső hálózati írás. Valódi készülékes VoiceOver és bolti használat külön ellenőrzést igényel.
 
 [Árbecslési források és kiszerelések](SHOPPING-PRICE-BASELINES-2026-11-18.md) · [42 teszt eredménye](evidence/pantry-shopping-release-2026-11-18/results.json)
