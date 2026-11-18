@@ -1,0 +1,21 @@
+.shopping-price{display:block;margin:3px 0 0;color:var(--muted);font-size:11px;line-height:1.4;overflow-wrap:anywhere}
+.shopping-price.is-unknown{font-size:10px}
+.shopping-category-nav button[data-complete=true]{opacity:1}
+.shopping-category-nav button[data-complete=true][aria-pressed=false]{color:var(--green)}
+.shopping-price-summary{margin:10px 0 14px;border:1px solid var(--line);border-radius:14px;background:var(--white);color:var(--ink)}
+.shopping-price-summary>summary{display:flex;align-items:center;flex-wrap:wrap;gap:4px 10px;min-height:48px;padding:10px 12px;list-style:none;cursor:pointer;font-size:12px}
+.shopping-price-summary>summary::-webkit-details-marker{display:none}
+.shopping-price-summary>summary>span:first-child{flex:1;min-width:120px}
+.shopping-price-summary>summary strong{font-size:13px;white-space:nowrap}
+.shopping-price-summary>div{padding:0 12px 12px;font-size:12px;line-height:1.5;color:var(--muted)}
+.shopping-price-summary p{margin:5px 0 8px}.shopping-price-summary a{display:inline-flex;align-items:center;min-height:44px;color:var(--green)}
+.shopping-quick-quantity{display:flex;align-items:center;gap:6px;flex:1 0 calc(100% - 52px);margin-left:52px;min-width:0}
+.shopping-quick-quantity[hidden]{display:none!important}
+.app[data-page=shopping] #main:has(.shopping-quick-quantity:not([hidden])){padding-bottom:calc(var(--shopping-dock-height,155px) + 140px)}
+.shopping-mode-row:has(.shopping-quick-quantity:not([hidden])){flex-wrap:wrap}
+.shopping-quick-quantity button{min-width:44px;min-height:44px;border:1px solid var(--line);border-radius:12px;background:var(--white);font:inherit;font-size:13px;padding:8px}
+.shopping-quick-quantity button:disabled{opacity:.4}.shopping-quick-quantity output{flex:1;min-width:0;font-size:12px;text-align:center;overflow-wrap:anywhere}
+.shopping-duplicates{margin:8px 0 12px;padding:10px 12px;border:1px dashed var(--line);border-radius:14px;font-size:12px;line-height:1.5}
+.shopping-duplicates p{margin:0 0 6px}.shopping-duplicates button{min-height:44px;background:transparent;color:var(--green);border:0;font:inherit;padding:8px 0}
+.shopping-merge-preview{padding:8px 0;border-top:1px solid var(--line);font-size:13px;line-height:1.5}.shopping-merge-preview small{display:block;color:var(--muted)}
+@media(max-width:360px){.shopping-quick-quantity{margin-left:48px;flex-basis:calc(100% - 48px)}.shopping-quick-quantity button{padding:7px}.shopping-price-summary>summary{font-size:11px}}

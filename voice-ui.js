@@ -88,7 +88,7 @@ async function openVoiceCommand(mode='voice',initialText='',options={}){
  function requestContext(){return {assistant:true,...(options.onOutput?{companion:true}:{}),destination,context:{...(options.discoveryContext?.recipeDiscovery?{recipeDiscovery:options.discoveryContext.recipeDiscovery}:{}),...(options.discoveryContext?.recipeFeedback?{recipeFeedback:options.discoveryContext.recipeFeedback}:{}),...(options.cookingRecipe?{cookingRecipe:options.cookingRecipe,...(Number.isInteger(options.cookingStep)?{cookingStep:options.cookingStep}:{})}:{}),uncertain:window.PantryReview?.uncertain()||[],stock:Object.keys(state.stock).filter(n=>state.stock[n]>0).slice(0,1000),cart:state.cart.slice(0,1000).map(i=>({name:i.name,quantity:i.quantity||1,unit:i.unit||productUnit(i.name)}))},history:conversation.slice(-6)}}
  function receive(output){
   if(options.onOutput){close();options.onOutput(output);return}
-  operations=VoiceModel.resolve(output,[...catalog,...state.custom],productEnglish,QuickEntry).map(o=>({...o,enabled:true}));
+  operations=VoiceModel.resolve(output,[...catalog,...state.custom],productEnglish,QuickEntry,state).map(o=>({...o,enabled:true}));
   conversation.push({role:'user',text:output.transcript},{role:'model',text:output.answer||output.clarification||say('Módosításokat javasoltam, még nincsenek mentve.','Changes proposed, not yet saved.')});conversation=conversation.slice(-6);
   if(operations.length)review(output);else answerView(output);
  }

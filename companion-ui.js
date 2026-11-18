@@ -205,7 +205,7 @@ window.MorzsaCompanion=(()=>{
  function receive(output,text,shown='',instant=false){
   if(!VoiceModel.validate(output)||output.answer!==undefined&&typeof output.answer!=='string')throw Error('VOICE_INVALID_RESPONSE');
   const discoveryBefore=D.fromThread(thread(),RecipeRoomModel.recipe);
-  const operations=VoiceModel.resolve(output,[...catalog,...state.custom],productEnglish,QuickEntry),recipes=(output.recipes||[]).map(RecipeRoomModel.recipe).filter(Boolean),answer=(output.answer||'').trim(),clarification=(output.clarification||'').trim();
+  const operations=VoiceModel.resolve(output,[...catalog,...state.custom],productEnglish,QuickEntry,state),recipes=(output.recipes||[]).map(RecipeRoomModel.recipe).filter(Boolean),answer=(output.answer||'').trim(),clarification=(output.clarification||'').trim();
   if(!answer&&!clarification&&!operations.length&&!recipes.length)throw Error('VOICE_EMPTY_RESPONSE');
   if(text===undefined)append({role:'user',text:output.transcript,recipes:[]});
   append({role:'model',text:answer||clarification||(operations.length?say('Így módosítanám. Nézd át, mielőtt mentjük.','Here are the proposed changes. Review before saving.'):say('Hoztam egy receptötletet.','Here is a recipe idea.')),recipes:(output.recipes||[]).map(RecipeRoomModel.recipe).filter(Boolean),...(operations.length?{result:say('Javaslat, nincs mentve.','Proposed, not saved.')}:clarification?{result:say('Pontosítás szükséges.','Clarification needed.')}:{})});

@@ -32,3 +32,6 @@ assert.equal(dynamicRecipes.status,0,'Dynamic recipe, timer and contextual guida
 
 const recipeDiscovery=spawnSync(process.execPath,[path.join(import.meta.dirname,'recipe-discovery.mjs')],{cwd:root,stdio:'inherit',env:{...process.env,MORZSA_DISCOVERY_OUTPUT:path.join(result.runDir,'recipe-discovery')}});
 assert.equal(recipeDiscovery.status,0,'Recipe alternatives, retained preferences, recooking and feedback regressions must pass');
+
+const shoppingRelease=spawnSync(process.execPath,[path.join(import.meta.dirname,'shopping-release.mjs')],{cwd:root,stdio:'inherit',env:{...process.env,MORZSA_SHOPPING_OUTPUT:path.join(result.runDir,'shopping-release')}});
+assert.equal(shoppingRelease.status,0,'Ingredient identity, quantity, category, price and atomic consolidation regressions must pass');
