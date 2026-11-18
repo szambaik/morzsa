@@ -1,0 +1,221 @@
+{
+  "checks": [
+    {
+      "id": "ALIAS-MANUAL",
+      "status": "passed",
+      "details": [
+        {
+          "name": "Krumpli",
+          "quantity": 1,
+          "unit": "kg",
+          "done": false,
+          "source": "Gyors felvétel"
+        },
+        {
+          "name": "Tojás",
+          "quantity": 1,
+          "unit": "db",
+          "done": false,
+          "source": "Gyors felvétel"
+        },
+        {
+          "name": "Mizo tej",
+          "quantity": 1,
+          "unit": "csomag",
+          "done": false,
+          "source": "Gyors felvétel"
+        },
+        {
+          "name": "Saját jegyzet",
+          "quantity": 1,
+          "unit": "csomag",
+          "done": false,
+          "source": "Gyors felvétel"
+        }
+      ]
+    },
+    {
+      "id": "CATEGORY-BRANDED",
+      "status": "passed"
+    },
+    {
+      "id": "PRICE-PARTIAL",
+      "status": "passed"
+    },
+    {
+      "id": "PRICE-SOURCE",
+      "status": "passed",
+      "details": "A lista becsült részösszege\n330–630 Ft\n⌄\n\n2/4 tételhez van árbecslés. 2 tétel nincs az összegben.\n\nMég megvásárolandó, ismert árú tételek: 330–630 Ft\n\nTájékoztató sáv a KSH 2025-ös országos átlagáraiból, ±30% ráhagyással. Nem aktuális bolti árajánlat. A feltételezett kiszerelés a tételnél látható.\n\nÁrbecslés forrása: KSH"
+    },
+    {
+      "id": "QUANTITY-FAST",
+      "status": "passed"
+    },
+    {
+      "id": "PRICE-RECALCULATES",
+      "status": "passed",
+      "details": "Becsült: 120–240 Ft"
+    },
+    {
+      "id": "CATEGORY-OVERRIDE",
+      "status": "passed"
+    },
+    {
+      "id": "GEOMETRY-hu-320",
+      "status": "passed"
+    },
+    {
+      "id": "AXE-planning-hu-320",
+      "status": "passed",
+      "details": []
+    },
+    {
+      "id": "GEOMETRY-hu-390",
+      "status": "passed"
+    },
+    {
+      "id": "AXE-planning-hu-390",
+      "status": "passed",
+      "details": []
+    },
+    {
+      "id": "GEOMETRY-hu-1280",
+      "status": "passed"
+    },
+    {
+      "id": "AXE-planning-hu-1280",
+      "status": "passed",
+      "details": []
+    },
+    {
+      "id": "GEOMETRY-en-320",
+      "status": "passed"
+    },
+    {
+      "id": "AXE-planning-en-320",
+      "status": "passed",
+      "details": []
+    },
+    {
+      "id": "GEOMETRY-en-390",
+      "status": "passed"
+    },
+    {
+      "id": "AXE-planning-en-390",
+      "status": "passed",
+      "details": []
+    },
+    {
+      "id": "GEOMETRY-en-1280",
+      "status": "passed"
+    },
+    {
+      "id": "AXE-planning-en-1280",
+      "status": "passed",
+      "details": []
+    },
+    {
+      "id": "ALIAS-STORE",
+      "status": "passed"
+    },
+    {
+      "id": "QUANTITY-STORE-FOCUS",
+      "status": "passed"
+    },
+    {
+      "id": "AXE-store-390",
+      "status": "passed",
+      "details": []
+    },
+    {
+      "id": "MERGE-PREVIEW-NO-WRITES",
+      "status": "passed"
+    },
+    {
+      "id": "AXE-merge-preview-390",
+      "status": "passed",
+      "details": []
+    },
+    {
+      "id": "MERGE-LOCAL",
+      "status": "passed"
+    },
+    {
+      "id": "MERGE-UNDO-LOCAL",
+      "status": "passed"
+    },
+    {
+      "id": "MERGE-STOCK-APPROXIMATE",
+      "status": "passed"
+    },
+    {
+      "id": "MERGE-FOCUS-RETURN",
+      "status": "passed"
+    },
+    {
+      "id": "OLD-SAVE-LOAD",
+      "status": "passed"
+    },
+    {
+      "id": "OLD-ALIAS-AVAILABILITY",
+      "status": "passed"
+    },
+    {
+      "id": "OLD-ALIAS-NO-NEW-KEY",
+      "status": "passed"
+    },
+    {
+      "id": "MERGE-PARTNER-STALE",
+      "status": "passed"
+    },
+    {
+      "id": "MERGE-REVISION-ABA",
+      "status": "passed"
+    },
+    {
+      "id": "MERGE-SQL-ATOMIC-CONFLICT",
+      "status": "passed"
+    },
+    {
+      "id": "MERGE-FAILURE-NO-WRITES",
+      "status": "passed"
+    },
+    {
+      "id": "MERGE-SHARED-RETRY",
+      "status": "passed"
+    },
+    {
+      "id": "MERGE-UNDO-PARTNER-SAFE",
+      "status": "passed"
+    },
+    {
+      "id": "QUANTITY-SHARED-CONFIRMED",
+      "status": "passed"
+    },
+    {
+      "id": "MERGE-PENDING-OUTBOX",
+      "status": "passed",
+      "details": {
+        "status": "busy"
+      }
+    },
+    {
+      "id": "MERGE-CONFIRMED-CACHE-FAILURE",
+      "status": "passed"
+    },
+    {
+      "id": "MERGE-REPEAT-NO-DUPLICATES",
+      "status": "passed"
+    },
+    {
+      "id": "NO-BROWSER-ERRORS",
+      "status": "passed",
+      "details": []
+    }
+  ],
+  "errors": [],
+  "limitations": [
+    "Synthetic SQL and accounts; no production data, paid AI, or external network.",
+    "KSH baselines and package assumptions are estimates, not live store quotes."
+  ]
+}

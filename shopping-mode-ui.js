@@ -1,12 +1,12 @@
 window.ShoppingMode=(()=>{
  const M=ShoppingModeModel,say=(hu,en)=>language==='en'?en:hu,ui=n=>'<img class="workspace-icon" src="assets/ui/'+n+'.svg" alt="" width="22" height="22">';
  let scope='',active=null,visible=false,route=[],routeRevision=0,query='',addDraft='',showAll=false,completedOpen=false,busy=false,serial=0,available=true,undo=null;
- let selectedCategory='',layoutObserver=null,categoryObserver=null,feedbackTimer=0,receiptTicket=null,feedbackObserver=null,feedbackDock=null,wake=null,wakePending=false,keepAwake=false,addOpen=false;
+ let selectedCategory='',layoutObserver=null,categoryObserver=null,feedbackTimer=0,receiptTicket=null,feedbackObserver=null,feedbackDock=null,wake=null,wakePending=false,keepAwake=false,addOpen=false,quickQuantity='';
  const itemCategory=i=>M.category(i,productCategory);
  const shortCategory=c=>({'Tejtermék és tojás':'Tej és tojás','Hús és felvágott':'Húsok','Rizs és tészta':'Rizs, tészta','Konzervek és hüvelyesek':'Konzervek','Szószok és olajok':'Szósz, olaj','Reggeli és rágcsálnivaló':'Reggeli','Sütés és édesség':'Sütés','Magvak és rágcsálnivalók':'Magvak, nasi','Papír és konyhai kellékek':'Papír, konyha','Takarítás és mosás':'Takarítás'})[c]||c;
  const current=()=>M.key(household?.userId(),household?.active),read=k=>{try{return JSON.parse(localStorage.getItem(k))}catch{return null}};
  function persist(){try{localStorage.setItem(scope,JSON.stringify({session:active,visible,route,routeRevision,keepAwake}))}catch{}}
- function sync(){const next=current();if(next===scope)return;scope=next;serial++;const old=read(scope)||{};active=M.session(old.session);visible=!!active&&old.visible===true;route=M.route(old.route,categoryPriorityOrder);routeRevision=Number(old.routeRevision)||0;keepAwake=old.keepAwake===true;query='';addDraft='';addOpen=false;showAll=false;completedOpen=false;busy=false;undo=null;available=true;selectedCategory='';clearFeedback();queueMicrotask(refresh)}
+ function sync(){const next=current();if(next===scope)return;scope=next;serial++;const old=read(scope)||{};active=M.session(old.session);visible=!!active&&old.visible===true;route=M.route(old.route,categoryPriorityOrder);routeRevision=Number(old.routeRevision)||0;keepAwake=old.keepAwake===true;query='';addDraft='';addOpen=false;showAll=false;completedOpen=false;busy=false;undo=null;available=true;selectedCategory='';quickQuantity='';clearFeedback();queueMicrotask(refresh)}
  async function refresh(){sync();if(!household?.active||!household.readShoppingState)return;const context=scope,id=++serial;try{const data=await household.readShoppingState();if(context!==current()||id!==serial)return;const before=JSON.stringify([active,route]);const received=M.session(data.session);if(received)received.removed=data.removed||active?.removed||[];active=received;route=M.route(data.route?.categories,categoryPriorityOrder);routeRevision=data.route?.revision||0;available=true;if(!active)visible=false;persist();if(before!==JSON.stringify([active,route])&&page==='shopping')renderShopping()}catch{if(context===current()){available=false}}}
  async function start(){sync();if(busy)return;busy=true;try{if(household?.active){if(!household.startShoppingSession)throw Error('SETUP');active=M.session(await household.startShoppingSession(crypto.randomUUID()))}else if(!active)active={id:crypto.randomUUID(),started_at:new Date().toISOString(),started_by:household?.userId()||null,removed:[]};visible=true;query='';selectedCategory='';showAll=false;completedOpen=false;persist();page='shopping';busy=false;render();window.scrollTo(0,0)}catch{toast(say('A vásárlás most nem indítható. Ellenőrizd a kapcsolatot és próbáld újra.','Could not start shopping. Check your connection and try again.'))}finally{busy=false}}
  function exit(){visible=false;clearFeedback();persist();updateWake();render();window.scrollTo(0,0)}
@@ -51,7 +51,7 @@ window.ShoppingMode=(()=>{
  function showFeedback(ticket,message,label,action,settled=false){
   if(receiptTicket!==ticket||ticket.scope!==current()||page!=='shopping')return;
   clearTimeout(feedbackTimer);let host=document.getElementById('shopping-action-feedback');if(!host){host=document.createElement('div');host.id='shopping-action-feedback';host.className='shopping-action-toast';host.setAttribute('role','status');host.setAttribute('data-no-translate','');document.body.append(host)}
-  host.dataset.status=ticket.status;host.innerHTML='<span>'+esc(message)+'</span>'+(action?'<button>'+esc(label)+'</button>':'');host.querySelector('button')?.addEventListener('click',()=>{if(receiptTicket===ticket&&ticket.scope===current())action()});positionFeedback();
+  host.dataset.status=ticket.status;host.innerHTML='<span>'+esc(message)+'</span>'+(action?'<button>'+esc(label)+'</button>':'');host.querySelector('button')?.addEventListener('click',()=>{if(receiptTicket===ticket&&ticket.scope===current())action()});positionFeedback();if(document.activeElement?.closest('.shopping-quick-quantity'))revealQuantity(quickQuantity);
   if(settled)feedbackTimer=setTimeout(()=>{if(receiptTicket===ticket)clearFeedback()},10000);
  }
  function saveAction(before,next,message,options={}){
@@ -75,12 +75,37 @@ window.ShoppingMode=(()=>{
   if(!ok){clearFeedback();return false}if(!household?.active)onStatus({status:'saved',state:next});return true;
  }
  function setPurchased(name,done){const before=state,next=M.check(before,name,done,household?.userId()||null,new Date().toISOString());if(saveAction(before,next,displayName(name)+say(done?' · Megvásárolva':' · Még hátravan',done?' · Purchased':' · Still to buy')))renderShopping()}
+ function revealQuantity(name){
+  requestAnimationFrame(()=>{
+   const panel=main.querySelector('[data-item="'+CSS.escape(name)+'"] .shopping-quick-quantity');if(!panel||panel.hidden||page!=='shopping')return;
+   const r=panel.getBoundingClientRect(),receipt=document.getElementById('shopping-action-feedback'),dock=main.querySelector('.shopping-mode-dock')||document.getElementById('workspace-assistant'),top=main.querySelector('.shopping-mode-top')?.getBoundingClientRect().bottom||0,bottom=Math.min(innerHeight,receipt?.getBoundingClientRect().top??Infinity,dock?.getBoundingClientRect().top??Infinity)-12;
+   if(r.bottom>bottom)window.scrollBy({top:r.bottom-bottom,behavior:'instant'});else if(r.top<top+12)window.scrollBy({top:r.top-top-12,behavior:'instant'});
+  });
+ }
+ function bindQuantities(){
+  for(const row of main.querySelectorAll('.shopping-mode-row')){
+   const name=row.dataset.item,item=state.cart.find(i=>i.name===name),toggle=row.querySelector('[data-quantity-toggle]'),panel=row.querySelector('.shopping-quick-quantity');if(!item||!toggle||!panel)continue;
+   const open=quickQuantity===name;toggle.setAttribute('aria-expanded',String(open));panel.hidden=!open;panel.querySelector('output').textContent=cartAmount(item);
+   toggle.onclick=()=>{quickQuantity=open?'':name;bindQuantities();if(!open)revealQuantity(name)};
+   for(const button of panel.querySelectorAll('[data-quantity-step]')){
+    const direction=Number(button.dataset.quantityStep),unit=item.unit||productUnit(name);button.disabled=!QuantityModel.adjust(item.quantity||1,unit,direction);
+    button.setAttribute('aria-label',displayName(name)+' · '+(direction>0?'+':'−')+QuantityModel.format(QuantityModel.step(unit),unit,language));
+    button.onclick=()=>{
+     const before=state,actual=before.cart.find(i=>i.name===name);if(!actual)return;
+     const amount=QuantityModel.adjust(actual.quantity||1,actual.unit||productUnit(name),direction);if(!amount)return;
+     const next={...before,cart:before.cart.map(i=>i.name===name?{...i,...amount}:i)};
+     const expected={[name]:{quantity:actual.quantity??null,unit:actual.unit??null}};
+     if(saveAction(before,next,confirmed=>{const saved=confirmed.cart.find(i=>i.name===name);return saved?say('Mentve: ','Saved: ')+cartAmount(saved):say('A tétel lekerült.','Item removed.')},{expected})){refreshShoppingRows();const fresh=main.querySelector('[data-item="'+CSS.escape(name)+'"] [data-quantity-step="'+direction+'"]');if(fresh&&!fresh.disabled)fresh.focus({preventScroll:true});revealQuantity(name)}
+    };
+   }
+  }
+ }
  function bindAddForm(){
   const form=main.querySelector('#shopping-mode-add'),input=form.querySelector('input'),options=form.querySelector('#shopping-mode-options'),context=scope;let choices=[],selected=-1;
   const close=()=>{choices=[];selected=-1;options.hidden=true;input.setAttribute('aria-expanded','false');input.removeAttribute('aria-activedescendant');positionFeedback()};
   const commit=names=>{
    if(!form.isConnected||context!==current()||!active||busy)return;names=names.map(n=>n.trim()).filter(Boolean);if(!names.length)return;
-   const before=state,next=M.add(before,names,{sessionId:active.id,actor:household?.userId()||null,now:new Date().toISOString(),resolve:n=>QuickEntry.match(n,[...catalog,...state.custom],productEnglish),unitFor:productUnit,known:catalog});
+   const before=state,next=M.add(before,names,{sessionId:active.id,actor:household?.userId()||null,now:new Date().toISOString(),resolve:n=>QuickEntry.match(n,[...catalog,...state.custom],productEnglish),unitFor:productUnit,known:catalog,identify:productIdentity.key});
    const changes=M.receipt(before,next),label=changes.length===1?displayName(changes[0].name)+(before.cart.some(i=>i.name===changes[0].name)?'':say(' hozzáadva',' added')):changes.length+say(' tétel hozzáadva',' items added');
    if(saveAction(before,next,changes.length?label+say(' · Megvásárolva',' · Purchased'):say('Már megvásárolva.','Already purchased.'))){addDraft='';renderShopping();main.querySelector('#shopping-mode-add input')?.focus({preventScroll:true})}
   };
@@ -118,7 +143,7 @@ window.ShoppingMode=(()=>{
   main.querySelectorAll('[data-check-item]').forEach(b=>b.onclick=()=>{const item=state.cart[Number(b.dataset.checkItem)];if(item)setPurchased(item.name,!item.done)});
   main.querySelectorAll('[data-edit-item]').forEach(b=>b.onclick=()=>editItem(state.cart[Number(b.dataset.editItem)].name));
   bindAddForm();
-  main.querySelector('[data-finish-shopping]').onclick=()=>showFinishPrompt();showUndo();window.MorzsaWorkspace?.mount();layout();updateWake();return true;
+  main.querySelector('[data-finish-shopping]').onclick=()=>showFinishPrompt();showUndo();bindQuantities();window.ShoppingPrices?.mount();window.ShoppingDuplicates?.mount();window.MorzsaWorkspace?.mount();layout();updateWake();return true;
  }
  function editItem(name){
   sync();const initial=state.cart.find(i=>i.name===name);if(!initial)return;const context=scope,original=structuredClone(initial),categories=M.route(route,categoryPriorityOrder),q=document.getElementById('quantity-dialog');
@@ -154,5 +179,5 @@ window.ShoppingMode=(()=>{
  function viewport(){const v=window.visualViewport;document.documentElement.style.setProperty('--shopping-keyboard',(v?Math.max(0,innerHeight-v.height-v.offsetTop):0)+'px')}window.visualViewport?.addEventListener('resize',viewport);window.visualViewport?.addEventListener('scroll',viewport);
  window.addEventListener('resize',positionFeedback);window.visualViewport?.addEventListener('resize',positionFeedback);window.visualViewport?.addEventListener('scroll',positionFeedback);
  window.addEventListener('morzsa-auth-change',()=>{sync();refresh();updateWake()});document.addEventListener('visibilitychange',updateWake);window.addEventListener('online',refresh);window.addEventListener('morzsa-resume',refresh);setInterval(()=>{if(!document.hidden&&!household?.realtimeHealthy?.())refresh()},20000);
- return {render:renderMode,normal,positionFeedback,refresh,start,remove,editItem,toggle:setPurchased,summary:()=>M.summary(state,active),finish,active:()=>{sync();return !!active},visible:()=>{sync();return visible}};
+ return {render:renderMode,normal,bindQuantities,positionFeedback,refresh,start,remove,editItem,toggle:setPurchased,summary:()=>M.summary(state,active),finish,active:()=>{sync();return !!active},visible:()=>{sync();return visible}};
 })();
