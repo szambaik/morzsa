@@ -10,9 +10,16 @@ const QuantityModel=(()=>{
   return quantity>=1&&quantity<=999?{quantity,unit}:null;
  }
  function format(quantity,unit,language='hu'){return Number(quantity).toLocaleString(language==='en'?'en-GB':'hu-HU',{maximumFractionDigits:6})+' '+label(unit,language)}
+ const step=unit=>unit==='g'?50:unit==='ml'?100:1;
+ function adjust(quantity,unit,direction){
+  if(![-1,1].includes(direction)||!Number.isFinite(quantity)||!codes.includes(unit))return null;
+  let value=Math.round((quantity+direction*step(unit))*1e6)/1e6;
+  if(value>=1000&&['g','ml'].includes(unit)){value/=1000;unit=unit==='g'?'kg':'l'}
+  return normalize(value,unit);
+ }
  function recipeAmount(text,language='hu'){
   if(language!=='en')return String(text);return String(text).replace(/(\d),(\d)/g,'$1.$2').replace(/(^|\s)(db|darab|csomag|doboz|üveg|pohár|tk|ek)(?=$|[\s.,/])/gu,(_,space,unit)=>space+label(unit==='darab'?'db':unit,'en')).replace(/\bnagy\b/g,'large').replace(/\bközepes\b/g,'medium').replace(/\bkis\b/g,'small');
  }
- return {codes,label,parse,normalize,format,recipeAmount};
+ return {codes,label,parse,normalize,format,recipeAmount,step,adjust};
 })();
 if(typeof module!=='undefined')module.exports=QuantityModel;

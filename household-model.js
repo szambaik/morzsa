@@ -17,9 +17,9 @@ const HouseholdModel={
   }return next;
  },
  // Additive pantry-only import; keep the older full import contract unchanged.
- pantryImportPlan(source,target,catalog=[]){
+ pantryImportPlan(source,target,catalog=[],identify=null){
   const next=JSON.parse(JSON.stringify(target)),added=[],kept=[];
-  const norm=name=>name.normalize("NFC").trim().toLocaleLowerCase("hu");
+  const norm=identify||(typeof productIdentity==='undefined'?name=>name.normalize("NFC").trim().toLocaleLowerCase("hu"):productIdentity.key);
   const stockNames=new Map(Object.keys(next.stock).map(name=>[norm(name),name]));
   const customNames=new Map(next.custom.map(item=>[norm(item.name),item.name]));
   const catalogNames=new Map(catalog.map(item=>[norm(item.name),item.name]));

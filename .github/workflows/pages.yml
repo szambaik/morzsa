@@ -13,9 +13,12 @@ jobs:
   audit:
     name: Audit regression gate
     runs-on: ubuntu-latest
-    # Match design-audit/package-lock.json; browsers and Linux libraries are preinstalled.
-    container: mcr.microsoft.com/playwright:v1.58.2-noble
     timeout-minutes: 15
+    # Match design-audit/package-lock.json. Includes both browsers and their
+    # system libraries, avoiding slow per-run Ubuntu mirror downloads.
+    container:
+      image: mcr.microsoft.com/playwright:v1.58.2-noble
+      options: --ipc=host
     env:
       MORZSA_AUDIT_BROWSER_CHANNEL: chromium
     steps:
@@ -27,12 +30,16 @@ jobs:
           cache-dependency-path: |
             package-lock.json
             design-audit/package-lock.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
       - run: npm ci
       - run: npm test
       - run: python3 -m unittest discover -s tests -p 'test*.py'
       - run: npm --prefix design-audit ci
       - run: npm --prefix design-audit test
-      - run: npx --prefix design-audit playwright --version
+      - name: Verify prepared browser runtime
+        run: node design-audit/check-browser-runtime.mjs
       - run: node design-audit/check-release.mjs
       - run: node design-audit/mobile/check-mobile.mjs after chromium
       - run: node design-audit/mobile/check-mobile.mjs after webkit

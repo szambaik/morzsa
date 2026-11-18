@@ -40,7 +40,7 @@ The original GitHub gate exhausted its 15-minute budget while downloading Ubuntu
 
 ## Verification
 
-- npm test: **370 JavaScript tests passed**, plus **11 SQL suites**, including the new household collaboration suite.
+- npm test: **383 JavaScript tests passed** after integrating the pantry/shopping release, plus **11 SQL suites**, including the new household collaboration suite.
 - SQL covers repeated migration, legacy adoption, explicit unshare preservation, private chats, immutable recipe IDs, independent member favourites, cooking states, shared names/preferences, normalized stale list writes, server authors, durable retry after partner deletion, direct-write denial and revoked access.
 - node tests/household-collaboration.browser.mjs: **17 checks passed** with independent Anna/Peti browser contexts using the real UI against the isolated fixture.
 - Browser checks include shared favourites with a separate own heart, partner cooking/history, disabled partner mutations, independent own cooking, paused states, adding/checking authors, named activity, shared dietary context, private generic chat and a real dropped-response/retry scenario.
@@ -49,6 +49,7 @@ The original GitHub gate exhausted its 15-minute budget while downloading Ubuntu
 - node design-audit/check-release.mjs: passed on the final product source. Run 2026-11-18T06-03-27-834Z-fba0b8: full audit, **32 axe scans**, **54 targeted checks**, native control scope/fallback checks, progressive recipe checks and dynamic cooking regressions.
 - git diff --check: passed.
 - Pre-merge recheck: full local release gate passed again (2026-11-18T06-36-50-097Z-9eccaa); audit harness tests passed.
+- Integrated origin/main e2ae2ad (pantry/shopping PR #23), keeping its ingredient identity, quantity controls, prices and prepared browser runtime. Resolved shared-file conflicts by combining its shopping markup with household attribution and shared recipes. The merged source passed the full release gate (2026-11-18T06-50-26-345Z-eb568d), including all **42 pantry/shopping release checks** and the **17 household UI checks**. Web and mobile bundles were rebuilt successfully.
 
 Evidence: [browser-results.json](household-collaboration-2026-11-18/browser-results.json), [mobile recipes](household-collaboration-2026-11-18/recipes-390.png), [narrow mobile recipes](household-collaboration-2026-11-18/recipes-320.png), [shopping authors/activity](household-collaboration-2026-11-18/shopping-390.png).
 

@@ -13,9 +13,10 @@ const VoiceModel=(()=>{
   const quantity=op.quantity??(found&&(!op.unit||op.unit===found.unit)?found.quantity||1:1);
   return canonical({...op,quantity,unit});
  }
- function resolve(value,items,english={},quick){
+ function resolve(value,items,english={},quick,current=null){
   if(!validate(value))throw Error('VOICE_INVALID_RESPONSE');
-  return value.operations.map(o=>{const ranked=quick.ranked(o.name,items,english),exact=ranked.find(r=>r.exact);return {...canonical(o),name:exact?.item.name||o.name.trim(),confirmed:!!exact,suggestions:ranked.slice(0,5).map(r=>r.item.name)}});
+  const identity=quick.identity?.(items,english);
+  return value.operations.map(o=>{const ranked=quick.ranked(o.name,items,english),preferred=identity?.resolve(o.name),exact=ranked.find(r=>r.exact&&r.item.name===preferred)||ranked.find(r=>r.exact);let name=exact?.item.name||o.name.trim();if(current&&identity)name=identity.target(name,o.action==='list_set'?current.cart.map(i=>i.name):Object.keys(current.stock));return {...canonical(o),name,confirmed:!!exact,suggestions:ranked.slice(0,5).map(r=>r.item.name)}});
  }
  function plan(current,operations,items,unitFor){
   if(!validate({transcript:'',clarification:'',operations}))throw Error('VOICE_INVALID_RESPONSE');
