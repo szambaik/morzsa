@@ -1,10 +1,11 @@
+import {resultCache} from '../_shared/result-cache.mjs';
 import '../../../cooking-experience.js';
 import '../../../recipe-discovery.js';
 const RecipeDiscovery=globalThis.RecipeDiscovery;
 const CookingExperience=globalThis.CookingExperience;
 import { generate } from './provider.mjs';
 import { textOutput } from './groq.mjs';
-import { streamedResponse,outputResponse } from './stream.mjs';
+import { readGeminiStream,outputResponse } from './stream.mjs';
 import { validRecipes, geminiBody, RECIPE_IMAGE_INSTRUCTION } from '../recipe-ideas/handler.mjs';
 const actions=['stock_add','stock_remove','list_set'],units=['db','kg','g','l','ml','csomag','doboz','üveg','pohár'];
 export function validOutput(v){return v&&(v.recipes===undefined||validRecipes({answer:'ok',recipes:v.recipes},true))&&(v.answer===undefined||typeof v.answer==='string'&&v.answer.length<=5000)&&typeof v.transcript==='string'&&v.transcript.length<=3000&&typeof v.clarification==='string'&&v.clarification.length<=500&&Array.isArray(v.operations)&&v.operations.length<=30&&v.operations.every(o=>o&&actions.includes(o.action)&&typeof o.name==='string'&&o.name.trim().length>0&&o.name.length<=80&&!/[\u0000-\u001f]/.test(o.name)&&!['__proto__','constructor','prototype'].includes(o.name.trim())&&(o.quantity===null||Number.isFinite(o.quantity)&&o.quantity>0&&o.quantity<=999)&&(o.unit===null||units.includes(o.unit)))}
@@ -34,7 +35,7 @@ function contextFor(input){
  return {assistant:true,...(input.companion===true?{companion:true,...(input.stream===true?{stream:true,...(input.recipePreview===true?{recipePreview:true}:{})}:{})}:{}),destination:input.destination==='list'?'list':'stock',context:{...(discovery?{recipeDiscovery:discovery}:{}),...(feedback?{recipeFeedback:feedback.map(f=>({title:f.title,signals:[...new Set(f.signals)],...(f.rating?{rating:f.rating}:{}),...(f.notes?{notes:f.notes}:{})}))}:{}),...(week?{weeklyPlan:{week:week.week,people:week.people,cooks:week.cooks,budget:week.budget}}:{}),...(session?{cookingSession:{phase:session.phase,paused:session.paused===true,completedSteps:session.completedSteps,timers:session.timers.map(t=>({id:t.id,step:t.step,label:t.label,remainingSeconds:t.remainingSeconds,paused:t.paused===true})),...(session.notes?{notes:session.notes}:{})}}:{}),...(favourites?{cookingFavourites:favourites}:{}),...(c.noScale===true?{noScale:true}:{}),...(patterns?{patterns:{frequentProducts:[...patterns.frequentProducts],favouriteRecipes:[...patterns.favouriteRecipes]}}:{}),...(p?{preferences:{servings:p.servings,maxMinutes:p.maxMinutes,diet:p.diet,avoid:p.avoid}}:{}),...(recent.length?{recentCooked:recent}:{}),...(low.length?{low}:{}),...(cookingStep!==undefined?{cookingStep}:{}),...(c.cookingBaseServings!==undefined?{cookingBaseServings:c.cookingBaseServings}:{}),...(cookingRecipe?{cookingRecipe:{title:cookingRecipe.title,summary:cookingRecipe.summary,minutes:cookingRecipe.minutes,...(cookingRecipe.servings!==undefined?{servings:cookingRecipe.servings}:{}),...(cookingRecipe.equipment?{equipment:cookingRecipe.equipment}:{}),ingredients:cookingRecipe.ingredients.map(i=>({name:i.name,amount:i.amount})),steps:cookingRecipe.steps,...(cookingRecipe.stepTitles?{stepTitles:cookingRecipe.stepTitles}:{})}}:{}),...(recipe?{recipe:{name:recipe.name,ingredients:recipe.ingredients.map(i=>({name:i.name,amount:i.amount})),steps:recipe.steps}}:{}),uncertain:c.uncertain||[],stock:c.stock||[],cart:(c.cart||[]).map(o=>({name:o.name,quantity:o.quantity??null,unit:o.unit??null}))},history:history.map(m=>({role:m.role,text:m.text}))};
 }
 export function normalizeInput(input){
- const extra=contextFor(input||{});
+ const extra=contextFor(input||{});if(input?.householdId!=null){if(typeof input.householdId!=='string'||! /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(input.householdId))throw Error('VOICE_INVALID_INPUT');extra.householdId=input.householdId;}
  if(input?.image!==undefined){
   const img=input.image;
   if(input.audio||!img||img.mimeType!=='image/jpeg'||typeof img.data!=='string'||img.data.length<16||img.data.length>2000000||img.data.length%4!==0||!/^\/9j\/[A-Za-z0-9+/]*={0,2}$/.test(img.data)||typeof input.text!=='string'||!input.text.trim()||input.text.length>2000)throw Error('VOICE_INVALID_INPUT');
@@ -105,11 +106,25 @@ export function createHandler(config,fetcher=fetch){return async request=>{
   const quota=await fetcher(config.url+'/rest/v1/rpc/claim_voice_command',{method:'POST',headers:{apikey:config.serviceKey,Authorization:'Bearer '+config.serviceKey,'Content-Type':'application/json'},body:JSON.stringify({user_id:user.id}),signal:AbortSignal.any([request.signal,AbortSignal.timeout(10000)])});
   if(!quota.ok)throw Error('VOICE_SETUP_REQUIRED');if(await quota.json()!==true)throw Error('VOICE_DAILY_LIMIT');
   request.signal.throwIfAborted();
-  if(config.groqKey&&input.text&&!input.image&&!input.audio){const produce=(onAnswer,signal)=>textOutput(input,bodyFor(input),config,fetcher,onAnswer,o=>finalOutput(o,input),signal);if(input.stream)return outputResponse(produce,headers,request.signal);return reply(200,await produce(()=>{},request.signal))}
-  const response=await generate(input,bodyFor(input),config,fetcher,request.signal);
-  if(input.stream)return streamedResponse(response,headers,output=>finalOutput(output,input),request.signal);
-  const data=await response.json(),candidate=data.candidates?.[0];if(candidate?.finishReason!=='STOP')throw Error('VOICE_INVALID_RESPONSE');
-  const raw=(candidate.content?.parts||[]).filter(p=>!p.thought).map(p=>p.text||'').join('');if(raw.length>(input.companion?50000:24000))throw Error('VOICE_INVALID_RESPONSE');let output;try{output=JSON.parse(raw)}catch{throw Error('VOICE_INVALID_RESPONSE')}
-  if(!validOutput(output))throw Error('VOICE_INVALID_RESPONSE');return reply(200,finalOutput(output,input));
+  const modelKey='voice-v1:'+JSON.stringify([config.groqKey&&input.text&&!input.image&&!input.audio?config.groqModel||'openai/gpt-oss-120b':config.model||'gemini-3.1-flash-lite',config.fallbackModel||'']);
+  const cached=await resultCache(config,fetcher,{userId:user.id,householdId:input.householdId,type:input.image?'ingredient_recognition':'assistant_text',model:modelKey,input:{...input,prompt:bodyFor({...input,stream:false})},signal:request.signal});
+  const produce=async(onAnswer,signal)=>{
+   signal?.throwIfAborted();
+   if(validOutput(cached.payload)){onAnswer(cached.payload.answer||'');return cached.payload}
+   let output;
+   if(config.groqKey&&input.text&&!input.image&&!input.audio)output=await textOutput(input,bodyFor(input),config,fetcher,onAnswer,o=>finalOutput(o,input),signal);
+   else{
+    const response=await generate(input,bodyFor(input),config,fetcher,signal);
+    if(input.stream)output=await readGeminiStream(response,onAnswer,signal);
+    else{
+     const data=await response.json(),candidate=data.candidates?.[0];if(candidate?.finishReason!=='STOP')throw Error('VOICE_INVALID_RESPONSE');
+     const raw=(candidate.content?.parts||[]).filter(p=>!p.thought).map(p=>p.text||'').join('');if(raw.length>(input.companion?50000:24000))throw Error('VOICE_INVALID_RESPONSE');try{output=JSON.parse(raw)}catch{throw Error('VOICE_INVALID_RESPONSE')}
+    }
+    if(!validOutput(output))throw Error('VOICE_INVALID_RESPONSE');output=finalOutput(output,input);
+   }
+   signal?.throwIfAborted();if(validOutput(output))await cached.put(output,input.image?3600:300);return output;
+  };
+  if(input.stream)return outputResponse(produce,headers,request.signal);return reply(200,await produce(()=>{},request.signal));
+
  }catch(e){const code=['VOICE_INVALID_INPUT','VOICE_SETUP_REQUIRED','VOICE_DAILY_LIMIT','VOICE_PROVIDER_ERROR','VOICE_PROVIDER_BUSY','VOICE_PROVIDER_LIMIT','VOICE_TIMEOUT','VOICE_INVALID_RESPONSE'].includes(e.message)?e.message:'VOICE_UNAVAILABLE';return reply(code==='VOICE_INVALID_INPUT'?400:['VOICE_DAILY_LIMIT','VOICE_PROVIDER_LIMIT'].includes(code)?429:code==='VOICE_SETUP_REQUIRED'?503:502,{error:code})}
 }}

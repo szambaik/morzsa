@@ -1,28 +1,52 @@
 window.RecipeLibrary=(()=>{
  const M=PersistenceModel,say=(hu,en)=>language==='en'?en:hu;
  let account='',generation=0,loading=false,loaded=false,error='',entries=[],pageOffset=0,hasMore=true,tab='for-you',query='',tag='',library=[];
- let householdSupported=null;const missing=e=>/Could not find.*(?:adopt_household_recipes|household_recipe_index|set_household_recipe_library)|function.*(?:adopt_household_recipes|household_recipe_index|set_household_recipe_library).*does not exist/i.test(e.message||'');const positions=new Map();const cache=new Map();let ranking=null,repaintPending=false;
+ let feedSerial=0;let householdSupported=null;const missing=e=>/Could not find.*(?:adopt_household_recipes|household_recipe_index|set_household_recipe_library)|function.*(?:adopt_household_recipes|household_recipe_index|set_household_recipe_library).*does not exist/i.test(e.message||'');const positions=new Map();const cache=new Map();let ranking=null,repaintPending=false;
  const capable=()=>!!household?.dataRpc;
  const asset=path=>window.MORZSA_CLOUD?.url+'/storage/v1/object/public/recipe-catalog/'+path;
  function repaint(){if(page!=='recipes')return;if(document.activeElement?.matches('.recipe-feed-search input')){repaintPending=true;return}repaintPending=false;window.RecipeRoom?.render()}
- function reset(){const u=JSON.stringify([household?.userId()||'guest',household?.active||'local']);if(u===account)return;account=u;generation++;householdSupported=null;loading=false;library=[];ranking=null;cache.clear();loadLibrary().then(importFavourites)}
+ const device=()=>window.MorzsaCache,current=()=>device()?.current();
+ const feedAssetLoads=new WeakMap(),feedAssetObserver=typeof IntersectionObserver==='undefined'?null:new IntersectionObserver(items=>{for(const item of items)if(item.isIntersecting){feedAssetObserver.unobserve(item.target);feedAssetLoads.get(item.target)?.();feedAssetLoads.delete(item.target)}},{rootMargin:'100px'});
+ if(feedAssetObserver&&typeof MutationObserver!=='undefined')new MutationObserver(records=>{for(const record of records)for(const node of record.removedNodes){if(node.isConnected)continue;for(const img of [node,...(node.querySelectorAll?.('.feed-card-art>img')||[])])if(img.nodeType===1&&!img.isConnected)feedAssetObserver.unobserve(img)}}).observe(document.documentElement,{childList:true,subtree:true});
+ function rank(){ranking=M.rank(entries,{stock:state.stock,favourites:library.filter(r=>r.favourite).map(r=>r.recipeId),recent:window.KitchenIntelligence?.recentTitles()||[],prefs:window.KitchenIntelligence?.prefs()||{}})}
+ function reset(){const u=JSON.stringify([household?.userId()||'guest',household?.active||'local']);if(u===account)return;account=u;generation++;householdSupported=null;loading=false;loaded=false;entries=[];pageOffset=0;hasMore=true;query='';tag='';error='';library=[];ranking=null;cache.clear();positions.clear();const epoch=generation,scope=current();device()?.get(scope,'recipes','library',{stale:true}).then(saved=>{if(epoch!==generation||!saved||library.length||!device().valid(scope))return;library=saved;rank();repaint()});loadLibrary().then(ok=>{if(ok)importFavourites()})}
  async function loadLibrary(){
-  reset();if(!household?.userId()||!capable())return;const epoch=generation,hid=household.active;let rows;
-  try{
-   if(hid&&householdSupported!==false){try{await household.dataRpc('adopt_household_recipes',{hid});if(epoch!==generation)return;rows=await household.dataRpc('household_recipe_index',{hid});householdSupported=Array.isArray(rows);if(!Array.isArray(rows))rows=null}catch(e){if(!missing(e))throw e;householdSupported=false}}
+  reset();if(!household?.userId()||!capable())return;
+  const epoch=generation,hid=household.active,scope=current();
+  const read=async()=>{
+   let rows;
+   if(hid&&householdSupported!==false){try{await household.dataRpc('adopt_household_recipes',{hid});if(epoch!==generation)return [];rows=await household.dataRpc('household_recipe_index',{hid});householdSupported=Array.isArray(rows);if(!Array.isArray(rows))rows=null}catch(e){if(!missing(e))throw e;householdSupported=false}}
    if(!rows)rows=await household.dataRead('recipe_library_entries?select=recipe_id,favourite,status,recipe_documents(id,content,tags,published)&order=updated_at.desc');
+   return rows;
+  };
+  try{
+   const rows=scope?await device().run(scope,'recipes','library',read):await read();
    if(epoch!==generation||hid!==household.active)return;
-   library=rows.filter(r=>r.recipe_documents).map(r=>({...r.recipe_documents.content,recipeId:r.recipe_id,published:r.recipe_documents.published===true,tags:r.recipe_documents.tags||[],favourite:r.favourite,ownFavourite:r.ownFavourite??r.favourite,status:r.status}));repaint();
-  }catch{}
+   library=rows.filter(r=>r.recipe_documents).map(r=>({...r.recipe_documents.content,recipeId:r.recipe_id,published:r.recipe_documents.published===true,tags:r.recipe_documents.tags||[],favourite:r.favourite,ownFavourite:r.ownFavourite??r.favourite,status:r.status}));if(scope)device().put(scope,'recipes','library',library,{ttl:30000});rank();repaint();return true;
+  }catch(e){if(epoch===generation&&[401,403].includes(e.httpStatus)){library=[];if(scope)device().clearScope(scope);rank();repaint()}return false}
  }
  async function loadFeed(more=false){
-  reset();if(!capable()||loading)return;loading=true;error='';const epoch=generation;if(!more){pageOffset=0;entries=[];ranking=null}repaint();
-  try{const rows=await household.dataRpc('recipe_feed',{page_offset:pageOffset,page_size:24,search_text:query,tag},false);if(epoch!==generation)return;entries.push(...rows);pageOffset+=rows.length;hasMore=rows.length===24;loaded=true;
+  reset();if(!capable()||more&&loading)return;const feedToken=++feedSerial;loading=true;error='';const epoch=generation,scope=current(),feedKey=JSON.stringify([query,tag]),offset=more?pageOffset:0,search=query,filter=tag;if(!more){pageOffset=0;entries=[];ranking=null}repaint();
+  if(!more&&scope){const saved=await device().get(scope,'recipe-feed',feedKey,{stale:true});if(epoch!==generation||feedToken!==feedSerial)return;if(saved){entries=saved;loaded=true;rank();repaint()}}
+  try{const work=()=>household.dataRpc('recipe_feed',{page_offset:offset,page_size:24,search_text:search,tag:filter},false);const rows=scope?await device().run(scope,'recipe-feed',feedKey+':'+offset,work):await work();if(epoch!==generation||feedToken!==feedSerial||feedKey!==JSON.stringify([query,tag]))return;if(!more)entries=[];entries.push(...rows);if(!more&&scope)device().put(scope,'recipe-feed',feedKey,rows,{ttl:300000});pageOffset+=rows.length;hasMore=rows.length===24;loaded=true;
    const ranked=M.rank(entries,{stock:state.stock,favourites:library.filter(r=>r.favourite).map(r=>r.recipeId),recent:window.KitchenIntelligence?.recentTitles()||[],prefs:window.KitchenIntelligence?.prefs()||{}});ranking=more&&ranking?[...ranking,...ranked.filter(r=>!ranking.some(old=>old.id===r.id))]:ranked;
-  }catch{if(epoch===generation){loaded=true;error=say('A receptgyűjtemény most nem tölthető be.','The recipe collection could not load.')}}finally{if(epoch===generation){loading=false;repaint()}}
+  }catch{if(epoch===generation&&feedToken===feedSerial){loaded=true;error=say('A receptgyűjtemény most nem tölthető be.','The recipe collection could not load.')}}finally{if(epoch===generation&&feedToken===feedSerial){loading=false;repaint()}}
  }
- async function get(id){reset();const epoch=generation;if(cache.has(id))return cache.get(id);const rows=await household.dataRead('recipe_documents?id=eq.'+encodeURIComponent(id)+'&select=id,content,tags,published',!!household?.userId());if(epoch!==generation)throw Error('Account changed');if(!rows[0])throw Error('Recipe unavailable');const r={...rows[0].content,recipeId:rows[0].id,published:rows[0].published===true,tags:rows[0].tags||[]};cache.set(id,r);return r}
- async function save(r,favourite=false,status='saved'){reset();const epoch=generation,user=household.userId(),hid=household.active,recipe=await MorzsaPersistence.ensureRecipe(r);if(epoch!==generation)throw Error('Account changed');const args={rid:recipe.recipeId,liked:favourite,cooking_status:status};if(hid&&householdSupported!==false){try{await household.dataRpc('set_household_recipe_library',{hid,...args},true,user)}catch(e){if(!missing(e))throw e;householdSupported=false;await household.dataRpc('set_recipe_library',args,true,user)}}else await household.dataRpc('set_recipe_library',args,true,user);if(epoch!==generation)return;const old=library.find(x=>x.recipeId===recipe.recipeId);library=library.filter(x=>x.recipeId!==recipe.recipeId);library.unshift({...recipe,favourite,ownFavourite:favourite,status:status==='saved'&&old?old.status:status});if(hid)await loadLibrary();repaint();return recipe}
+ async function get(id){
+  reset();const epoch=generation,scope=current();
+  const fetchDocument=async()=>{
+   const work=()=>household.dataRead('recipe_documents?id=eq.'+encodeURIComponent(id)+'&select=id,content,tags,published',!!household?.userId());
+   const rows=scope?await device().run(scope,'recipe-document',id,work):await work();
+   if(epoch!==generation)throw Error('Account changed');
+   if(!rows[0]){cache.delete(id);if(scope)device().remove(scope,'recipe-document',id);throw Error('Recipe unavailable')}
+   const r={...rows[0].content,recipeId:rows[0].id,published:rows[0].published===true,tags:rows[0].tags||[]};cache.set(id,r);if(scope)device().put(scope,'recipe-document',id,r,{ttl:300000});return r;
+  };
+  const saved=cache.get(id)||(scope?await device().get(scope,'recipe-document',id,{stale:true}):null);
+  if(epoch!==generation)throw Error('Account changed');
+  if(saved){cache.set(id,saved);fetchDocument().catch(e=>{if(epoch===generation&&[401,403].includes(e.httpStatus)){cache.delete(id);if(scope)device().clearScope(scope)}});return saved}
+  return fetchDocument();
+ }
+ async function save(r,favourite=false,status='saved'){reset();const epoch=generation,user=household.userId(),hid=household.active,recipe=await MorzsaPersistence.ensureRecipe(r);if(epoch!==generation)throw Error('Account changed');const args={rid:recipe.recipeId,liked:favourite,cooking_status:status};if(hid&&householdSupported!==false){try{await household.dataRpc('set_household_recipe_library',{hid,...args},true,user)}catch(e){if(!missing(e))throw e;householdSupported=false;await household.dataRpc('set_recipe_library',args,true,user)}}else await household.dataRpc('set_recipe_library',args,true,user);if(epoch!==generation)return;const old=library.find(x=>x.recipeId===recipe.recipeId);library=library.filter(x=>x.recipeId!==recipe.recipeId);library.unshift({...recipe,favourite,ownFavourite:favourite,status:status==='saved'&&old?old.status:status});if(current())device().put(current(),'recipes','library',library,{ttl:30000});if(hid)await loadLibrary();rank();repaint();return recipe}
  function isFavourite(r){return library.some(x=>(x.ownFavourite??x.favourite)&&(x.recipeId===r.recipeId||RecipeRoomModel.identity(x)===RecipeRoomModel.identity(r)))}
  function overview(){if(!capable())return null;reset();if(!loaded&&!loading&&capable())queueMicrotask(()=>loadFeed());return {tab,loading,error,entries:tab==='browse'?entries:ranking||entries,hasMore,library,query,tag}}
  function controls(){
@@ -44,6 +68,7 @@ window.RecipeLibrary=(()=>{
   return content+(loading?'<div class="recipe-feed-state" role="status"><h2>'+say('Keressük a következő kedvenced','Finding your next favourite')+'</h2><p>'+say('A receptgyűjtemény betöltése…','Loading the recipe collection…')+'</p></div>':error?'<div class="recipe-feed-state" role="status"><h2>'+say('Most nem értük el a recepteket','Could not reach the recipes')+'</h2><p>'+esc(error)+'</p><button class="small-button" data-feed-retry>'+say('Újrapróbálás','Retry')+'</button></div>':!(tab==='for-you'?groups.length:list.length)?'<div class="recipe-feed-state"><h2>'+say('Keressünk másik ötletet','Let’s try another idea')+'</h2><p>'+empty+'</p><button class="small-button" data-feed-reset>'+say('Összes recept','All recipes')+'</button></div>':'')+(hasMore&&!loading&&!error?'<button class="small-button recipe-feed-more" data-feed-more>'+say('További receptek','More recipes')+'</button>':'');
  }
  function bind(root){window.MorzsaHousehold?.bind(root);
+  const assetScope=current();if(assetScope)root.querySelectorAll('.feed-card-art>img').forEach(img=>{const remote=img.getAttribute('src');if(!remote?.startsWith(window.MORZSA_CLOUD?.url+'/storage/v1/object/public/recipe-catalog/'))return;img.removeAttribute('src');const load=()=>device().image(assetScope,remote).then(url=>{if(img.isConnected&&device().valid(assetScope))img.src=url}).catch(()=>{if(img.isConnected&&device().valid(assetScope))img.src=remote});feedAssetLoads.set(img,load);if(feedAssetObserver)feedAssetObserver.observe(img);else load()});
   root.querySelectorAll('[data-feed-image]').forEach(host=>{const id=host.dataset.feedImage,r=entries.find(r=>r.id===id)||library.find(r=>r.recipeId===id);if(r)window.RecipeImages?.mount(host,{...r,recipeId:id},-1,{autoCreate:true,quiet:true})});
   root.querySelectorAll('button[data-feed-tab]').forEach(b=>b.onclick=()=>{positions.set(tab,scrollY);tab=b.dataset.feedTab;repaint();requestAnimationFrame(()=>window.scrollTo({top:positions.get(tab)||0,behavior:'instant'}))});root.querySelectorAll('[data-feed-tag]').forEach(b=>b.onclick=()=>{tag=b.dataset.feedTag;const menu=b.closest('details');if(menu)menu.open=false;loadFeed()});
   root.querySelector('.recipe-feed-search')?.addEventListener('submit',e=>{e.preventDefault();query=e.target.elements.recipeQuery.value.trim();loadFeed()});
@@ -54,6 +79,7 @@ window.RecipeLibrary=(()=>{
  async function importFavourites(){if(!household?.userId())return;const epoch=generation;const old=RecipeRoomModel.favourites((()=>{try{return JSON.parse(localStorage.getItem(RecipeRoomModel.favouritesKey(household.userId())))}catch{return []}})());for(const r of old){if(epoch!==generation)return;if(!isFavourite(r))try{await save(r,true)}catch{break}}}
  window.addEventListener('morzsa-preferences-change',()=>{ranking=M.rank(entries,{stock:state.stock,favourites:library.filter(r=>r.favourite).map(r=>r.recipeId),recent:window.KitchenIntelligence?.recentTitles()||[],prefs:window.KitchenIntelligence?.prefs()||{}});repaint()});
  document.addEventListener('focusout',()=>{if(repaintPending)queueMicrotask(repaint)});
- window.addEventListener('morzsa-auth-change',()=>{reset();loadLibrary().then(importFavourites)});
+ window.addEventListener('morzsa-auth-change',()=>{reset();loadLibrary().then(ok=>{if(ok)importFavourites()})});
+ window.addEventListener('morzsa-household-change',()=>{reset();loadLibrary()});
  return {favouriteTitles:()=>library.filter(r=>r.favourite).map(r=>r.title),tab:()=>tab,overview,controls,cards,bind,get,save,isFavourite,loadFeed,loadLibrary,refresh:()=>{reset();return loadLibrary()}};
 })();

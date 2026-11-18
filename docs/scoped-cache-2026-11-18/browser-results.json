@@ -1,0 +1,1 @@
+{"passed":true,"cachedKitchenPaintMs":30,"delayedReadMs":1600,"cachedDocumentMs":4.5,"checks":["IndexedDB reload","cache-first pantry/cart/favourites/feed","background refresh","persisted image offline and renewed signature","account isolation","revocation and late writes"],"errors":[]}

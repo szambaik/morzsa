@@ -2,6 +2,7 @@ import WebSocket from 'npm:ws@8.18.3';
 import {createHandler} from './handler.mjs';
 import {VOICE_SECONDS,realtimeCents} from './realtime.mjs';
 const config={
+ resultCacheEnabled:Deno.env.get('RESULT_CACHE_ENABLED')!=='false',
  url:Deno.env.get('SUPABASE_URL'),publishableKey:Deno.env.get('SUPABASE_ANON_KEY'),serviceKey:Deno.env.get('SUPABASE_SERVICE_ROLE_KEY'),
  openaiKey:Deno.env.get('OPENAI_API_KEY'),textModel:Deno.env.get('OPENAI_TEXT_MODEL')||'gpt-6-luna',complexTextModel:Deno.env.get('OPENAI_COMPLEX_TEXT_MODEL')||'gpt-6.1-terra',imageModel:Deno.env.get('OPENAI_IMAGE_MODEL')||'gpt-image-2.6-flare',voiceModel:Deno.env.get('OPENAI_REALTIME_MODEL')||'gpt-realtime-2.1-mini',
  origins:(Deno.env.get('VOICE_ORIGINS')||'https://szambaik.github.io,capacitor://localhost,https://localhost').split(','),

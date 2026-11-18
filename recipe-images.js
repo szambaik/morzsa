@@ -46,18 +46,18 @@ window.RecipeImages=(()=>{
  function mount(host,recipe,step=-1,options={}){
   if(!host||(!household?.userId()&&!recipe.recipeId)||!household.recipeImage)return;
   mounted.get(host)?.();
-  const id=key(recipe,step);let entry=entries.get(id);if(!entry||entry.expiresAt&&entry.expiresAt<Date.now()){entry={status:'new'};entries.set(id,entry)}
+  const id=key(recipe,step),deviceScope=window.MorzsaCache?.current();let entry=entries.get(id);if(!entry||entry.expiresAt&&entry.expiresAt<Date.now()){entry={status:'new'};entries.set(id,entry)}
   const canCreate=()=>!!household?.userId()&&!options.cacheOnly;
-  let autoAttempted=false,visible=false,observer=null,disposed=false;const dispose=()=>{if(disposed)return;disposed=true;observer?.disconnect();entry.views?.delete(host);mounted.delete(host)};mounted.set(host,dispose);const live=()=>!disposed&&host.isConnected&&key(recipe,step)===id;
+  let autoAttempted=false,visible=false,observer=null,disposed=false;const dispose=()=>{if(disposed)return;disposed=true;observer?.disconnect();entry.views?.delete(host);mounted.delete(host)};mounted.set(host,dispose);const live=()=>!disposed&&host.isConnected&&key(recipe,step)===id&&(!deviceScope||window.MorzsaCache.valid(deviceScope));
   const paint=()=>{
    if(!live()){dispose();return}host.replaceChildren();host.className=[...new Set((host.className||'').split(/\s+/).filter(Boolean).concat('generated-recipe-image'))].join(' ');host.dataset.imageStatus=entry.status;
    // A cache-only lookup may finish after the cooking hero was mounted.
    if(entry.status==='missing'&&visible&&canCreate()&&options.autoCreate&&!autoAttempted&&!autoCreated.has(id)){autoAttempted=true;autoCreated.add(id);load(true);return}
    if(entry.status==='ready'){
-    const img=document.createElement('img');img.src=entry.url;img.alt=recipe.title+' · '+say(step<0?'AI-illusztráció a recepthez':'AI-illusztráció a főzési lépéshez',step<0?'AI recipe illustration':'AI cooking step illustration');img.loading=options.hero?'eager':'lazy';if(options.hero)img.fetchPriority='high';img.width=768;img.height=512;
+    const img=document.createElement('img');const remote=entry.url;img.src=entry.deviceUrl||remote;if(deviceScope&&!entry.deviceUrl)window.MorzsaCache.image(deviceScope,remote).then(url=>{if(live()&&entry.url===remote&&host.children[0]===img){entry.deviceUrl=url;img.src=url}}).catch(()=>{});img.alt=recipe.title+' · '+say(step<0?'AI-illusztráció a recepthez':'AI-illusztráció a főzési lépéshez',step<0?'AI recipe illustration':'AI cooking step illustration');img.loading=options.hero?'eager':'lazy';if(options.hero)img.fetchPriority='high';img.width=768;img.height=512;
     const downloading=entry.decodedUrl===entry.url?null:placeholder();if(downloading)downloading.className+=' image-download-placeholder';
     img.onload=()=>{if(live()&&host.children[0]===img){entry.recoveryAttempts=0;entry.decodedUrl=entry.url;downloading?.remove?.()}};
-    img.onerror=()=>{if(!live()||host.children[0]!==img||entry.status!=='ready'||entry.url!==img.src)return;entry.status='failed';delete entry.decodedUrl;entry.error='IMAGE_LOAD_FAILED';retryRead(entry);refresh()};const caption=document.createElement('small');caption.textContent=say('AI-illusztráció · Morzsa','AI illustration · Morzsa');const cover=entries.get(key(recipe,-1));const duplicate=step>=0&&cover?.url&&new URL(cover.url).pathname===new URL(entry.url).pathname;if(!duplicate){host.append(img,caption);if(downloading)host.append(downloading)}else{host.dataset.duplicateCover='true';const note=document.createElement('small');note.textContent=say('Ehhez a lépéshez nincs külön illusztráció.','No separate illustration for this step.');host.append(note)}
+    img.onerror=()=>{if(!live()||host.children[0]!==img||entry.status!=='ready'||entry.url!==remote)return;entry.status='failed';delete entry.decodedUrl;entry.error='IMAGE_LOAD_FAILED';retryRead(entry);refresh()};const caption=document.createElement('small');caption.textContent=say('AI-illusztráció · Morzsa','AI illustration · Morzsa');const cover=entries.get(key(recipe,-1));const duplicate=step>=0&&cover?.url&&new URL(cover.url).pathname===new URL(entry.url).pathname;if(!duplicate){host.append(img,caption);if(downloading)host.append(downloading)}else{host.dataset.duplicateCover='true';const note=document.createElement('small');note.textContent=say('Ehhez a lépéshez nincs külön illusztráció.','No separate illustration for this step.');host.append(note)}
     if(step>=0&&!options.cacheOnly&&entry.canReplace){const replace=document.createElement('button');replace.type='button';replace.className='image-replace';replace.textContent=say('Másik képet kérek','Create a different image');replace.onclick=()=>{
       replace.disabled=true;const confirm=document.createElement('div');confirm.className='image-replace-confirm';const note=document.createElement('span');note.textContent=say('Új képet generálunk és mentünk. Ez a képkeretből fogyaszt.','Generate and cache a replacement. This uses your image allowance.');const yes=document.createElement('button'),no=document.createElement('button');yes.type=no.type='button';yes.textContent=say('Új kép készítése','Generate replacement');no.textContent=say('Mégsem','Cancel');yes.onclick=()=>load(true,true);no.onclick=()=>{confirm.remove();replace.disabled=false};confirm.append(note,yes,no);host.append(confirm)};host.append(replace)}return;
    }
@@ -88,26 +88,27 @@ window.RecipeImages=(()=>{
   };
   async function load(create,regenerate=false){
    autoAttempted ||= create;
-   if(entry.status==='loading'||entry.retryAt>Date.now())return;entry.status='loading';entry.creating=create;delete entry.error;if(create){entry.requestedAt=Date.now();entry.pollAttempts=0}refresh();
+   if(entry.status==='loading'||entry.checking||entry.retryAt>Date.now())return;const keepReady=!create&&entry.status==='ready';entry.checking=true;if(!keepReady)entry.status='loading';entry.creating=create;delete entry.error;if(create){entry.requestedAt=Date.now();entry.pollAttempts=0}refresh();
    const work=async()=>{
     // Navigation may detach every view while another image occupies the queue.
     // Keep a replacement view of the same recipe alive, but skip abandoned work.
-    if(key(recipe,step)!==id||create&&![...entry.views.keys()].some(view=>view.isConnected)){entry.status='new';autoCreated.delete(id);return}
+    if(key(recipe,step)!==id||create&&![...entry.views.keys()].some(view=>view.isConnected)){entry.status='new';entry.checking=false;autoCreated.delete(id);return}
     try{let r;if(household.libraryImage&&(recipe.recipeId||window.MorzsaPersistence&&household.dataRpc)){const saved=recipe.recipeId?recipe:await MorzsaPersistence.ensureRecipe(recipe);r=await household.libraryImage({recipeId:saved.recipeId,step,create,...(regenerate?{regenerate:true}:{})})}else r=await household.recipeImage({recipe,step,create});if(r.status==='ready'){
       const base=window.MORZSA_CLOUD?.url;if(typeof r.url!=='string'||!base||!(r.url.startsWith(base+'/storage/v1/object/sign/')||recipe.recipeId&&r.url.startsWith(base+'/storage/v1/object/public/recipe-catalog/')))throw Error('IMAGE_UNAVAILABLE');
-      Object.assign(entry,{status:'ready',url:r.url,expiresAt:r.expiresAt,canReplace:r.canReplace===true});
-     }else {entry.status=r.status==='pending'?'pending':'missing';if(entry.status==='pending'&&!entry.polls&&Date.now()-(entry.requestedAt||Date.now())<90000){const token={};entry.polls=token;entry.requestedAt??=Date.now();const attempt=entry.pollAttempts||0;entry.pollAttempts=attempt+1;const delay=attempt<4?750:attempt<8?1500:4000;entry.pollTimer=setTimeout(()=>{if(entry.polls!==token)return;entry.polls=null;entry.pollTimer=null;if(!document.hidden&&key(recipe,step)===id&&[...entry.views.keys()].some(view=>view.isConnected))load(false)},delay)}};
-    }catch(e){entry.error=Object.hasOwn(errors,e.message)||e.message==='IMAGE_LIMIT'?e.message:e.httpStatus===401?'IMAGE_SIGN_IN_REQUIRED':['AbortError','TimeoutError'].includes(e.name)?'IMAGE_TIMEOUT':'IMAGE_UNAVAILABLE';entry.status=entry.error==='IMAGE_LIMIT'?'limit':'failed';
+      if(key(recipe,step)!==id||deviceScope&&!window.MorzsaCache.valid(deviceScope))return;if(entry.url!==r.url)delete entry.deviceUrl;Object.assign(entry,{status:'ready',url:r.url,expiresAt:r.expiresAt,canReplace:r.canReplace===true});if(deviceScope)window.MorzsaCache.put(deviceScope,'recipe-image',id,{url:r.url,expiresAt:r.expiresAt,canReplace:r.canReplace===true},{ttl:Math.max(0,(r.expiresAt||Date.now()+300000)-Date.now()),staleTtl:7*86400000});
+     }else {if(deviceScope)window.MorzsaCache.remove(deviceScope,'recipe-image',id);delete entry.deviceUrl;entry.status=r.status==='pending'?'pending':'missing';if(entry.status==='pending'&&!entry.polls&&Date.now()-(entry.requestedAt||Date.now())<90000){const token={};entry.polls=token;entry.requestedAt??=Date.now();const attempt=entry.pollAttempts||0;entry.pollAttempts=attempt+1;const delay=attempt<4?750:attempt<8?1500:4000;entry.pollTimer=setTimeout(()=>{if(entry.polls!==token)return;entry.polls=null;entry.pollTimer=null;if(!document.hidden&&key(recipe,step)===id&&[...entry.views.keys()].some(view=>view.isConnected))load(false)},delay)}};
+    }catch(e){if(key(recipe,step)!==id||deviceScope&&!window.MorzsaCache.valid(deviceScope))return;if(e.httpStatus===403||e.message==='IMAGE_ACCESS_DENIED'){if(deviceScope)window.MorzsaCache.clearScope(deviceScope);delete entry.deviceUrl;delete entry.url}if(keepReady&&!['IMAGE_ACCESS_DENIED','IMAGE_SIGN_IN_REQUIRED'].includes(e.message)&&![401,403].includes(e.httpStatus)){entry.checking=false;return}entry.error=Object.hasOwn(errors,e.message)||e.message==='IMAGE_LIMIT'?e.message:e.httpStatus===401?'IMAGE_SIGN_IN_REQUIRED':['AbortError','TimeoutError'].includes(e.name)?'IMAGE_TIMEOUT':'IMAGE_UNAVAILABLE';entry.status=entry.error==='IMAGE_LIMIT'?'limit':'failed';
      if(['IMAGE_COOLDOWN','IMAGE_PROVIDER_LIMIT'].includes(entry.error)){const seconds=Math.min(300,Math.max(1,Number(e.retryAfter)||60));entry.retryAt=Date.now()+seconds*1000;setTimeout(()=>{delete entry.retryAt;refresh()},seconds*1000)}
      if(['IMAGE_TIMEOUT','IMAGE_LOAD_FAILED','IMAGE_UNAVAILABLE'].includes(entry.error))retryRead(entry);
     }
-    refresh();
+    entry.checking=false;refresh();
    };
    if(create){queue=queue.then(work,work);await queue}else await read(work);
   }
+  if(deviceScope)window.MorzsaCache.get(deviceScope,'recipe-image',id,{stale:true}).then(saved=>{if(!saved||!live()||entry.status==='ready'||entry.creating||!window.MorzsaCache.valid(deviceScope))return;Object.assign(entry,saved,{status:'ready'});refresh();if(!entry.checking)load(false)});
   paint();
   if(entry.status!=='ready'&&!options.cacheOnly||entry.status==='new'){
-   observer=new IntersectionObserver(items=>{if(items.some(i=>i.isIntersecting)){observer.disconnect();if(!live()||entry.views.get(host)!==paint)return;visible=true;const queued=auto.delete(id),create=canCreate()&&(queued||options.autoCreate===true)&&!autoCreated.has(id);if(entry.status==='new'||entry.status==='missing'){
+   observer=new IntersectionObserver(items=>{if(items.some(i=>i.isIntersecting)){observer.disconnect();if(!live()||entry.views.get(host)!==paint)return;visible=true;const queued=auto.delete(id),create=canCreate()&&(queued||options.autoCreate===true)&&!autoCreated.has(id);if(entry.status==='ready'){load(false)}else if(entry.status==='new'||entry.status==='missing'){
     // A ready cover must not wait behind another card's slow generation.
     const generate=create&&(!options.quiet||entry.status==='missing');if(generate)autoCreated.add(id);load(generate);
    }else if(entry.status==='pending'&&!entry.polls||entry.status==='failed'&&!entry.recoveryTimer)paint.recover();else paint()}},{rootMargin:'100px'});observer.observe(host);
@@ -116,10 +117,11 @@ window.RecipeImages=(()=>{
  }
  async function cachedCover(recipe){
   const id=key(recipe,-1),entry=entries.get(id);if(entry?.status!=='ready'||entry.expiresAt<Date.now())return '';
-  const response=await fetch(entry.url,{signal:AbortSignal.timeout(4000)});
+  const source=window.MorzsaCache?await window.MorzsaCache.image(window.MorzsaCache.current(),entry.url):entry.url;const response=await fetch(source,{signal:AbortSignal.timeout(4000)});
   if(!response.ok||Number(response.headers.get('content-length'))>3000000)return '';
   const blob=await response.blob();if(blob.size>3000000||!['image/png','image/jpeg','image/webp'].includes(blob.type)||key(recipe,-1)!==id)return '';
   return await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(blob)});
  }
+ const resetImages=()=>{for(const entry of entries.values()){clearTimeout(entry.pollTimer);clearTimeout(entry.recoveryTimer)}entries.clear();auto.clear();autoCreated.clear()};window.addEventListener?.('morzsa-auth-change',resetImages);window.addEventListener?.('morzsa-household-change',resetImages);
  return {mount,enqueue,cachedCover};
 })();
