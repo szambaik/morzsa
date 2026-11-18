@@ -37,7 +37,10 @@ try{
    if(width===390){await p.evaluate(()=>scrollTo(0,0));await shot(dest);if(dest==='pantry'){await p.locator('.pantry-tools summary').click();await shot('pantry-menu');const overlap=await p.locator('.pantry-tools').evaluate(el=>{const rs=[...el.querySelectorAll('button,select')].filter(b=>b.getBoundingClientRect().height).map(b=>b.getBoundingClientRect());return rs.some((a,i)=>rs.some((b,j)=>i!==j&&a.left<b.right&&a.right>b.left&&a.top<b.bottom&&a.bottom>b.top))});check('Pantry menu controls do not overlap',!overlap);await p.locator('.pantry-tools summary').click()}}
    if(mode!=='before'){
     // Keep the end-of-content probe outside reactive #main across async redraws.
-    await p.evaluate(()=>{const end=document.createElement('div');end.id='mobile-end-check';end.style.height='44px';document.querySelector('#main').after(end);scrollTo(0,document.documentElement.scrollHeight)});await p.waitForTimeout(80);
+    await p.evaluate(()=>{const end=document.createElement('div');end.id='mobile-end-check';end.style.height='44px';document.querySelector('#main').after(end)});
+    // The recipe feed can redraw after navigation; measure its settled bottom,
+    // retaining the same clearance invariant instead of relying on an 80 ms delay.
+    await p.waitForFunction(()=>{scrollTo(0,document.documentElement.scrollHeight);const end=document.querySelector('#mobile-end-check').getBoundingClientRect(),nav=document.querySelector('.app>nav')?.getBoundingClientRect();return !nav?.height||end.bottom<=nav.top-8},null,{timeout:3000});
     check(width+' '+dest+' last action clears navigation',await p.evaluate(()=>{const end=document.querySelector('#mobile-end-check').getBoundingClientRect(),nav=document.querySelector('.app>nav')?.getBoundingClientRect();return !nav?.height||end.bottom<=nav.top-8}));await p.locator('#mobile-end-check').evaluate(el=>el.remove());
    }
    await p.evaluate(()=>scrollTo(0,document.documentElement.scrollHeight));await p.waitForTimeout(60);if(width===390&&dest==='overview')await shot('long-page-bottom');
