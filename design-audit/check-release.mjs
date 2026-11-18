@@ -29,3 +29,6 @@ assert.equal(recipeLatency.status,0,'Progressive recipe, cancellation and retry 
 
 const dynamicRecipes=spawnSync(process.execPath,[path.join(import.meta.dirname,'dynamic-recipes.mjs')],{cwd:root,stdio:'inherit',env:{...process.env,MORZSA_DYNAMIC_OUTPUT:path.join(result.runDir,'dynamic-recipes')}});
 assert.equal(dynamicRecipes.status,0,'Dynamic recipe, timer and contextual guidance regressions must pass');
+
+const recipeDiscovery=spawnSync(process.execPath,[path.join(import.meta.dirname,'recipe-discovery.mjs')],{cwd:root,stdio:'inherit',env:{...process.env,MORZSA_DISCOVERY_OUTPUT:path.join(result.runDir,'recipe-discovery')}});
+assert.equal(recipeDiscovery.status,0,'Recipe alternatives, retained preferences, recooking and feedback regressions must pass');

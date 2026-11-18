@@ -1,7 +1,7 @@
 const {test}=require('node:test'),assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs');
 function presentation(reduced=false){
  let now=0,id=0;const frames=new Map(),stream={textContent:''},answer={textContent:'',classList:{remove(){}},closest:()=>({set outerHTML(text){answer.final=text}})};
- const context={window:{scrollTo(){}},main:{querySelector:s=>s==='[data-stream-answer]'?stream:s==='[data-answer-reveal]'?answer:{toggleAttribute(){}}},document:{hidden:false,documentElement:{scrollHeight:900},querySelector:()=>null},CompanionModel:{},CookingSession:require('../cooking-session'),WeeklyPlanModel:require('../weekly-plan-model'),language:'hu',page:'chat',scrollY:0,innerHeight:600,performance:{now:()=>now},matchMedia:()=>({matches:reduced}),ChatFormat:{render:text=>text},esc:text=>text,requestAnimationFrame:fn=>{frames.set(++id,fn);return id},cancelAnimationFrame:n=>frames.delete(n)};
+ const context={window:{scrollTo(){}},main:{querySelector:s=>s==='[data-stream-answer]'?stream:s==='[data-answer-reveal]'?answer:{toggleAttribute(){}}},document:{hidden:false,documentElement:{scrollHeight:900},querySelector:()=>null},CompanionModel:{},RecipeDiscovery:require('../recipe-discovery'),CookingSession:require('../cooking-session'),WeeklyPlanModel:require('../weekly-plan-model'),language:'hu',page:'chat',scrollY:0,innerHeight:600,performance:{now:()=>now},matchMedia:()=>({matches:reduced}),ChatFormat:{render:text=>text},esc:text=>text,requestAnimationFrame:fn=>{frames.set(++id,fn);return id},cancelAnimationFrame:n=>frames.delete(n)};
  const source=fs.readFileSync('companion-ui.js','utf8').split(' const safeRead=')[0];
  vm.runInNewContext(source+`
  context='test';book={active:'one',threads:[{id:'one',messages:[]}]};
