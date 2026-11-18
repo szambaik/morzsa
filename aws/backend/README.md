@@ -49,6 +49,10 @@ answers/recipe previews; the client exposes the existing NDJSON protocol and
 only accepts a validated final result for saving. Provider generation does not
 run inside the HTTP API request timeout. Cancelling the UI does not guarantee
 cancelling an already submitted provider request.
+Active chat progress polls every 350 ms; provider updates are coalesced every
+250 ms rather than written for each token. This is incremental job progress,
+not a direct HTTP token relay. Accounting and result persistence retry rejected
+revision writes and DynamoDB transaction conflicts without repeating generation.
 
 Household and conversation notifications currently use a 20-second foreground
 poll. This has the same application refresh hooks, but is not instant push.
