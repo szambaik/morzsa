@@ -43,8 +43,14 @@ native iOS project compiled for generic iOS with signing disabled. Android
 assets were synchronized; an Android SDK is not installed on this Mac, so its
 native binary is produced by the existing Android CI workflow.
 
-Actual Google login and physical-device microphone/voice flows remain interactive
-device checks. No complete separate backend regression or load test was run.
+Google login initially failed with `invalid_client`: the imported Google OAuth
+secret was a SHA-256 digest rather than the original client secret. On November
+18 the correct credential was loaded from the downloaded OAuth client JSON,
+validated against Google's token endpoint, and applied to Secrets Manager and
+Cognito. The importer now refuses Google secret digests before changing any
+provider configuration. User confirmation of the corrected login remains pending.
+Physical-device microphone/voice flows remain interactive device checks.
+No complete separate backend regression or load test was run.
 Production publication must use the existing protected workflow.
 
 The two older `ROLLBACK_COMPLETE` stacks are `morzsa-backend-pilot` (API Gateway
