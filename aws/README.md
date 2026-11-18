@@ -82,7 +82,11 @@ regionális költség. A minimális próba csak a runtime alapadatait adja.
    új domain nem előfeltétel az első pilothoz.
 
 Az AWS CLI v2 telepítve van, a morzsa profil eu-north-1 régióval létrejött.
-A böngészős belépés és az Agent Toolkit telepítésének ellenőrzése még hátravan.
+A böngészős belépés és az STS-hozzáférés ellenőrzése sikeres. Az Agent Toolkit
+25 alap skillt telepített; a távoli katalógus 126 skillje elérhető. Az AWS MCP
+a morzsa profilra van állítva. Az új MCP-eszközök betöltéséhez új Codex-session
+kell; a skillfrissítő hook bizalmi lépését a telepítő külön jelzi. A részletes,
+titkokat nem tartalmazó telepítési állapot a TOOLKIT-SETUP.md fájlban található.
 Az új AWS experience-ben a regionális erőforrásokat kizárólag a kiválasztott
 régióba telepítjük; Lambda@Edge és több régiós StackSets nem része a tervnek.
 Az Agent Toolkit konfigurációs szolgáltatása külön, us-east-1-ben érhető el.
