@@ -10,6 +10,7 @@ window.MorzsaViewport=(()=>{
   const inset=Math.max(0,innerHeight-height-top),editing=!!document.activeElement?.matches('textarea,input:not([type=checkbox]):not([type=radio]),select');
   const keyboard=nativeKeyboard||editing&&(v?.scale||1)<1.1&&inset>100;
   root.classList.toggle('keyboard-open',keyboard);
+  root.classList.toggle('shell-scrolled',window.scrollY>8);
   const nav=document.querySelector('.app>nav'),native=root.classList.contains('native-tabbar');
   const navHeight=keyboard?0:native?parseFloat(getComputedStyle(root).getPropertyValue('--native-tabbar-height'))||0:nav?.getBoundingClientRect().height||0;
   const docks=[...document.querySelectorAll('.companion-compose-wrap,.room-compose-wrap,#workspace-assistant,.cooking-task-dock,#workspace-quick-add.workspace-add-fab')];
@@ -31,9 +32,9 @@ window.MorzsaViewport=(()=>{
  function refresh(){if(!frame&&!disposed)frame=requestAnimationFrame(update)}
  const focus=()=>refresh(),nativeEvent=e=>{nativeKeyboard=e.detail.open;refresh()};
  const vv=window.visualViewport;
- vv?.addEventListener('resize',refresh);vv?.addEventListener('scroll',refresh);window.addEventListener('resize',refresh);
+ vv?.addEventListener('resize',refresh);vv?.addEventListener('scroll',refresh);window.addEventListener('resize',refresh);window.addEventListener('scroll',refresh,{passive:true});
  document.addEventListener('focusin',focus);document.addEventListener('focusout',focus);window.addEventListener('morzsa-keyboard',nativeEvent);
  const classes=new MutationObserver(refresh);classes.observe(root,{attributes:true,attributeFilter:['class']});classes.observe(document.body,{attributes:true,attributeFilter:['class']});
  refresh();
- return {refresh,subscribe(fn){listeners.add(fn);if(last.height)fn(last);refresh();return()=>listeners.delete(fn)},dispose(){disposed=true;cancelAnimationFrame(frame);resize.disconnect();classes.disconnect();listeners.clear();vv?.removeEventListener('resize',refresh);vv?.removeEventListener('scroll',refresh);window.removeEventListener('resize',refresh);document.removeEventListener('focusin',focus);document.removeEventListener('focusout',focus);window.removeEventListener('morzsa-keyboard',nativeEvent)}};
+ return {refresh,subscribe(fn){listeners.add(fn);if(last.height)fn(last);refresh();return()=>listeners.delete(fn)},dispose(){disposed=true;cancelAnimationFrame(frame);resize.disconnect();classes.disconnect();listeners.clear();vv?.removeEventListener('resize',refresh);vv?.removeEventListener('scroll',refresh);window.removeEventListener('resize',refresh);window.removeEventListener('scroll',refresh);document.removeEventListener('focusin',focus);document.removeEventListener('focusout',focus);window.removeEventListener('morzsa-keyboard',nativeEvent)}};
 })();
