@@ -11,7 +11,7 @@ export function textBodyFor(clean){
    .replace('Within each step string,','Within each step instruction string,')
    .replace('Recipe ingredient names, amounts and steps must be plain text','Recipe ingredient names, amounts and step instructions must be plain text');
  }
- body.systemInstruction.parts.push({text:'The server supplies transcript from the written request. Do not generate transcript. Default to one complete recipe unless the user explicitly requests alternatives or the weekly plan requires multiple recipes. For a follow-up question, answer it without regenerating a recipe unless requested. Each recipe step must pair its title with the full instruction for that phase. In a multi-action instruction, separate numbered actions with newlines, restarting at 1. Include the actual cooking and doneness steps, not only preparation.'});
+ body.systemInstruction.parts.push({text:'The server supplies transcript from the written request. Do not generate transcript. For open-ended meal discovery default to three distinct complete recipes when feasible; keep specifically named dishes, variations and single-recipe requests to one unless alternatives are requested. Follow the weekly plan recipe count when present. For a follow-up question, answer it without regenerating a recipe unless requested. Each recipe step must pair its title with the full instruction for that phase. In a multi-action instruction, separate numbered actions with newlines, restarting at 1. Include the actual cooking and doneness steps, not only preparation.'});
  const recipe=schema.properties.recipes?.items;
  if(recipe){
   // Plus images already consume title, ingredients and method directly.

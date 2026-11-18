@@ -1,0 +1,13 @@
+.recipe-idea-tools{margin:16px 0;padding:16px;background:#e8edde;border:1px solid #d5dece;border-radius:20px;color:#344638}
+.recipe-idea-tools>p{font-size:13px;line-height:1.5;margin:0 0 12px;overflow-wrap:anywhere}
+.recipe-idea-tools summary,.recipe-variants summary{cursor:pointer;padding:12px 0;font-size:14px;font-weight:600;min-height:44px}
+.recipe-idea-tools fieldset{border:0;padding:0;margin:8px 0 12px}
+.recipe-idea-tools legend{font-size:14px;margin-bottom:8px}
+.recipe-idea-tools label,.cooking-feedback-signals label{display:flex;align-items:center;gap:10px;min-height:44px;font-size:14px}
+.recipe-variants{margin-top:8px;border-top:1px solid #dddccf}
+.recipe-variants>div{display:flex;gap:8px;flex-wrap:wrap;padding-bottom:8px}
+.recipe-variants button{min-height:44px;flex:1 1 120px}
+.cooking-feedback-signals{border:0;padding:8px 0;margin:0}
+.cooking-feedback-signals legend{font-weight:600}
+.recipe-feedback-explainer{font-size:13px;line-height:1.5;color:#4e6151}
+.recipe-idea-tools button:focus-visible,.recipe-variants button:focus-visible,.recipe-idea-tools summary:focus-visible{outline:3px solid #344638;outline-offset:3px}
