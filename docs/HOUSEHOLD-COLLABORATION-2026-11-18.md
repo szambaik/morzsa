@@ -34,7 +34,9 @@ Legacy started/favourite recipes are adopted into the first selected household w
 
 Additive RPCs have precise missing-function fallbacks for older servers. Such a server keeps the previous personal recipe library and existing shared preferences/shopping behavior; full household recipes, nicknames and durable retry receipts require the migration. Other database/network errors are not silently downgraded.
 
-**Deployment status:** SQL was validated in an isolated PostgreSQL-compatible fixture. It has not been applied to production in this task. No production data, invitations or paid AI calls were used. Applying the migration is still required for the complete feature to work live.
+**Deployment status:** The exact tested migration was applied to production on 2026-11-18 using the authenticated Supabase Management API. A read-only verification confirmed the tables/RPCs, RLS, denied anonymous/direct writes and realtime publication. See [backend-deployment.json](household-collaboration-2026-11-18/backend-deployment.json) for the migration digest and checks. Recipe adoption still happens when each owner loads the library; no invitations or paid AI calls were made. The client becomes live after the PR merges and the protected Pages release succeeds.
+
+The original GitHub gate exhausted its 15-minute budget while downloading Ubuntu browser dependencies, before running the UI checks. The gate now uses the official Playwright v1.58.2 Noble container, matching the locked test dependency. Its browsers and Linux libraries are preinstalled; every audit/build/deployment gate remains required.
 
 ## Verification
 
@@ -46,7 +48,8 @@ Additive RPCs have precise missing-function fallbacks for older servers. Such a 
 - npm run build:web and npm run build:mobile: passed. This verifies the bundled frontend; no signed iPhone build was produced here.
 - node design-audit/check-release.mjs: passed on the final product source. Run 2026-11-18T06-03-27-834Z-fba0b8: full audit, **32 axe scans**, **54 targeted checks**, native control scope/fallback checks, progressive recipe checks and dynamic cooking regressions.
 - git diff --check: passed.
+- Pre-merge recheck: full local release gate passed again (2026-11-18T06-36-50-097Z-9eccaa); audit harness tests passed.
 
 Evidence: [browser-results.json](household-collaboration-2026-11-18/browser-results.json), [mobile recipes](household-collaboration-2026-11-18/recipes-390.png), [narrow mobile recipes](household-collaboration-2026-11-18/recipes-320.png), [shopping authors/activity](household-collaboration-2026-11-18/shopping-390.png).
 
-Fixture food imagery is synthetic test evidence; generated food-image accuracy, real Supabase realtime transport, physical-device behavior and production migration execution were not validated by these tests.
+Fixture food imagery is synthetic test evidence; generated food-image accuracy, live two-member realtime transport and physical-device behavior were not validated by these tests. Production migration execution and schema/access configuration were verified separately as recorded above.
