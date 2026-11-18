@@ -11,6 +11,9 @@ import {createVault} from './vault.mjs';
 import {installIOSUI} from './ios-ui.js';
 if(Capacitor.isNativePlatform()){
  const callback='io.github.szambaik.morzsa://auth-callback',vault=createVault(SecureStoragePlugin,localStorage);
+ const awsSecure={get:({key})=>SecureStoragePlugin.get({key:'aws:'+key}),set:({key,value})=>SecureStoragePlugin.set({key:'aws:'+key,value})};
+ const awsLegacy={getItem:key=>localStorage.getItem('aws:'+key),removeItem:key=>localStorage.removeItem('aws:'+key)};
+ const awsVault=createVault(awsSecure,awsLegacy),activeVault=()=>window.MORZSA_CLOUD?.provider==='aws'?awsVault:vault;
  document.documentElement.classList.add('native-app');
  if(Capacitor.getPlatform()==='ios'){
   document.documentElement.classList.add('native-ios');
@@ -24,7 +27,7 @@ if(Capacitor.isNativePlatform()){
  };
  window.MorzsaNative={
   callback,
-  loadSession:()=>vault.loadSession(),saveSession:value=>vault.saveSession(value),
+  loadSession:()=>activeVault().loadSession(),saveSession:value=>activeVault().saveSession(value),
   copyText:text=>Clipboard.write({string:text}),
   shareText:payload=>Share.share({...payload,dialogTitle:payload.title}),
   async exportRecipe({name,content,title}){
@@ -37,12 +40,13 @@ if(Capacitor.isNativePlatform()){
    const bytes=crypto.getRandomValues(new Uint8Array(32)),verifier=Array.from(bytes,b=>b.toString(16).padStart(2,'0')).join('');
    const digest=new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(verifier)));
    const challenge=btoa(String.fromCharCode(...digest)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
-   await vault.saveProof({verifier,at:Date.now()});
+   const state=crypto.randomUUID();await activeVault().saveProof({verifier,at:Date.now(),...(window.MORZSA_CLOUD?.provider==='aws'?{state}:{})});
+   if(window.MORZSA_CLOUD?.provider==='aws'){url=new URL(window.MORZSA_AWS.authDomain+'/oauth2/authorize');url.search=new URLSearchParams({client_id:window.MORZSA_AWS.clientId,response_type:'code',identity_provider:'Google',scope:'openid email profile aws.cognito.signin.user.admin',redirect_uri:callback,code_challenge:challenge,code_challenge_method:'S256',state});await Browser.open({url:url.href});return;}
    url.searchParams.set('redirect_to',callback);url.searchParams.set('flow_type','pkce');url.searchParams.set('code_challenge',challenge);url.searchParams.set('code_challenge_method','s256');
    await Browser.open({url:url.href});
   },
   async consume(url){
-   const u=new URL(url);if(u.protocol!=='io.github.szambaik.morzsa:'||u.hostname!=='auth-callback'||u.pathname&&u.pathname!=='/')throw Error('Invalid sign-in callback');const saved=await vault.takeProof();if(!saved||Date.now()-saved.at>600000||!u.searchParams.get('code')||u.searchParams.has('error'))throw Error('Invalid sign-in callback');
+   const u=new URL(url);if(u.protocol!=='io.github.szambaik.morzsa:'||u.hostname!=='auth-callback'||u.pathname&&u.pathname!=='/')throw Error('Invalid sign-in callback');const saved=await activeVault().takeProof();if(!saved||Date.now()-saved.at>600000||!u.searchParams.get('code')||u.searchParams.has('error')||saved.state&&saved.state!==u.searchParams.get('state'))throw Error('Invalid sign-in callback');
    return {auth_code:u.searchParams.get('code'),code_verifier:saved.verifier};
   },
   async onAuth(fn){handler=fn;if(pending){const url=pending;pending=null;await fn(url)}},

@@ -29,7 +29,7 @@ window.MorzsaCache = (() => {
     }
     let request;
     try {
-      request = indexedDB.open("morzsa-device-cache", 1);
+      request = indexedDB.open(window.MORZSA_CLOUD?.provider==="aws"?"morzsa-aws-device-cache":"morzsa-device-cache", 1);
     } catch {
       resolve();
       return;

@@ -3,9 +3,13 @@ import {build} from 'esbuild';
 import path from 'node:path';
 import {bundleWebRuntime} from './web-bundle.mjs';
 import {bundleNativeRuntime} from './native-bundle.mjs';
+import {buildVersion} from './build-version.mjs';
 const native=!process.argv.includes('--web'),root=path.resolve(import.meta.dirname,'..'),dest=path.join(root,native?'dist':'web-dist');
 await rm(dest,{recursive:true,force:true});await mkdir(dest,{recursive:true});
 let html=await readFile(path.join(root,'index.html'),'utf8');
+const version=await buildVersion(root,html,native?'iOS / Android':'web',process.argv.includes('--supabase')?'supabase':'aws');
+html=html.replace('<script ', '<script>window.MORZSA_BUILD='+JSON.stringify(version)+';</script><script ');
+await writeFile(path.join(dest,'version.json'),JSON.stringify(version)+'\n');
 const files=new Set([...html.matchAll(/(?:src|href)="([^"?#]+)(?:[?#][^"]*)?"/g)].map(m=>m[1]).filter(p=>/^[\w-]+\.(js|css)$/.test(p)));
 // Only entry-point runtime files and curated artwork belong in the application.
 if(!native)for(const file of files)await cp(path.join(root,file),path.join(dest,file));
