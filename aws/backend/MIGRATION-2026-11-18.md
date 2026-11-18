@@ -55,7 +55,9 @@ the browser before restoring the session and household.
 The first real Plus chat exposed conditional-write conflicts during accounting.
 Reservations now use fresh transactions without unrelated conversation snapshots;
 accounting, recipe saves and answer caching retry rejected conditional writes
-at most four times. Model calls remain outside these retry boundaries.
+and DynamoDB transaction conflicts at most four times. Model calls remain outside
+these retry boundaries. Progress writes coalesce provider tokens every 250 ms,
+including the final snapshot; active streaming clients poll progress every 350 ms.
 Targeted checks preserve concurrent data, single provider calls, bounded retries
 and immediate native browser dismissal; the required local release gate passed.
 A single live OpenAI Plus chat in an isolated synthetic dataset completed with

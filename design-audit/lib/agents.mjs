@@ -39,7 +39,7 @@ export async function invokeCodex({prompt,runDir,name,images=[],schema,timeoutMs
  for(const p of images)args.push('--image',p);args.push('-');
  const log=fs.createWriteStream(path.join(runDir,'logs',name+'.log'),{flags:'wx'});
  const result=await new Promise(resolve=>{
-  let settled=false;const finish=x=>{if(settled)return;settled=true;clearTimeout(timer);log.end();resolve(x);};
+  let settled=false;const finish=x=>{if(settled)return;settled=true;clearTimeout(timer);log.end(()=>resolve(x));};
   const child=spawn(executable,args,{stdio:['pipe','pipe','pipe'],env:{...process.env},cwd:runDir});
   const timer=setTimeout(()=>{child.kill('SIGTERM');setTimeout(()=>child.kill('SIGKILL'),3000).unref();finish({ok:false,error:'Provider timed out after '+timeoutMs+'ms'});},timeoutMs);
   for(const stream of [child.stdout,child.stderr])createInterface({input:stream}).on('line',line=>{if(!settled)log.write(redactProviderLog(line)+'\n')});

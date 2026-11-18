@@ -25,3 +25,12 @@ test('persistent conflicts stop after four attempts',async()=>{
  await assert.rejects(retryConflict(async()=>{attempts++;throw Object.assign(Error('Conflict'),{status:409,retryable:true})}));
  assert.equal(attempts,4);
 });
+test('DynamoDB transaction cancellation retries without repeating generation',async()=>{
+ const {retryConflict}=await import('../aws/backend/retry.mjs');let attempts=0;
+ const output={answer:'already generated'};
+ const saved=await retryConflict(async()=>{
+  if(++attempts===1)throw Object.assign(Error('Transaction canceled'),{name:'TransactionCanceledException',CancellationReasons:[{Code:'None'},{Code:'TransactionConflict'}]});
+  return output;
+ });
+ assert.equal(saved,output);assert.equal(attempts,2);
+});
