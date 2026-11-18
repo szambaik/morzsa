@@ -26,10 +26,10 @@
   cloud.busy=true;cartSync=true;const hid=cloud.active,user=session?.user?.id,valid=()=>hid===cloud.active&&user===session?.user?.id;const indicator=setTimeout(()=>{if(valid())cartStatus()},500);
   try{
    if(cartFailed){const rows=await fetchRows(hid,true);if(!valid())return;cloud.rows=rows}cartFailed=false;
-   while(cartOutbox.length){const batch=cartOutbox.slice();let done=false,rejected;for(const intent of batch)reportCart(intent,{status:'pending'});
+   while(cartOutbox.length){if(!cartOutbox[0].batchId){const id=crypto.randomUUID();cartOutbox.forEach(intent=>{if(!intent.batchId)intent.batchId=id});persistCart()}const batch=cartOutbox.filter(intent=>intent.batchId===cartOutbox[0].batchId);let done=false,rejected;for(const intent of batch)reportCart(intent,{status:'pending'});
     for(let attempt=0;attempt<3&&!done;attempt++){
      rejected=new Map();const target=HouseholdModel.applyCartIntents(HouseholdModel.decode(cloud.rows,state),batch,(name,intent)=>rejected.set(intent,[...(rejected.get(intent)||[]),name])),changes=HouseholdModel.diff(cloud.rows,target);
-     try{if(changes.length)await rpc('apply_household_changes',{hid,changes});if(!valid())return;const rows=await fetchRows(hid,false);if(!valid())return;cloud.rows=rows;done=true;if([...rejected.keys()].some(intent=>!cartReceipts.has(intent)))toast(say('A közben módosult tételeknél a friss listát tartottuk meg.','For changed items, the latest shared list was kept.'))}
+     try{await applyCartOnce(hid,batch[0].batchId,changes);if(!valid())return;const rows=await fetchRows(hid,false);if(!valid())return;cloud.rows=rows;done=true;if([...rejected.keys()].some(intent=>!cartReceipts.has(intent)))toast(say('A közben módosult tételeknél a friss listát tartottuk meg.','For changed items, the latest shared list was kept.'))}
      catch(e){if(!valid())return;if(!e.message?.includes('Conflict')||attempt===2)throw e;const rows=await fetchRows(hid,true);if(!valid())return;cloud.rows=rows}
     }
     cartOutbox.splice(0,batch.length);state=overlayCart(cloud.rows);
@@ -43,6 +43,12 @@
   }catch{if(valid()){cartFailed=true;cartStatus(true);for(const intent of cartOutbox)reportCart(intent,{status:'failed'})}}
   finally{clearTimeout(indicator);cloud.busy=false;cartSync=false;if(!cartFailed&&cartOutbox.length)cartTimer=setTimeout(flushCart,120)}
  }
+ async function applyCartOnce(hid,request_id,changes){
+  try{const result=await rpc('apply_household_changes_once',{hid,request_id,changes});if(result?.applied===true)return;if(result!==null&&result!==undefined)throw Error('Invalid cart receipt')}
+  catch(e){if(!/Could not find.*apply_household_changes_once|function.*apply_household_changes_once.*does not exist/i.test(e.message||''))throw e}
+  // Older deployed servers retain the existing revision-checked contract.
+  return rpc('apply_household_changes',{hid,changes});
+ }
  const pendingCart=()=>{if(!cartOutbox.length)return false;toast(say('A listád még mentésre vár. Próbáld újra a szinkronizálást.','Your list is waiting to save. Retry syncing first.'));return true};
  cloud.readPantryReviews=()=>request('/rest/v1/household_pantry_reviews?household_id=eq.'+encodeURIComponent(cloud.active)+'&select=product_name,last_confirmed_at,stock_revision');
  cloud.confirmPantryReviews=names=>rpc('confirm_pantry_items',{hid:cloud.active,items:names.map(name=>({name,revision:cloud.rows.find(r=>r.bucket==='stock'&&r.key===name)?.revision}))});
@@ -54,8 +60,13 @@
  cloud.libraryImage=payload=>request('/functions/v1/recipe-image',{...payload,householdId:cloud.active,quality:window.AIMode?.isPlus()?'plus':'free'},!!session,'POST',85000);
  let cloudDataConnection=null;
  cloud.subscribeData=onChange=>{cloudDataConnection?.close();if(!session)return {close(){}};return cloudDataConnection=HouseholdLive.connectData({url:config.url,key:config.publishableKey,token:session.access_token,userId:session.user.id,onChange})};
- cloud.readKitchenIntelligence=async()=>{const hid=encodeURIComponent(cloud.active),[preferences,events,cooked]=await Promise.all([request('/rest/v1/household_kitchen_preferences?household_id=eq.'+hid+'&select=key,value,revision'),request('/rest/v1/household_kitchen_events?household_id=eq.'+hid+'&select=id,actor_id,created_at,event_type,subject,item_count&order=id.desc&limit=12'),request('/rest/v1/household_kitchen_events?household_id=eq.'+hid+'&event_type=eq.recipe_completed&select=event_type,subject,created_at&order=id.desc&limit=8')]);return {preferences,events,cooked}};
- cloud.saveKitchenPreferences=changes=>rpc('set_kitchen_preferences',{hid:cloud.active,changes});
+ cloud.readKitchenIntelligence=async()=>{
+  const householdId=cloud.active,hid=encodeURIComponent(householdId);
+  try{const result=await rpc('household_collaboration_snapshot',{hid:householdId});if(Array.isArray(result?.preferences)&&Array.isArray(result?.events)&&Array.isArray(result?.cooked))return result;if(result!==null&&result!==undefined)throw Error('Invalid kitchen snapshot')}
+  catch(e){if(!/Could not find.*household_collaboration_snapshot|function.*household_collaboration_snapshot.*does not exist/i.test(e.message||''))throw e}
+  const [preferences,events,cooked]=await Promise.all([request('/rest/v1/household_kitchen_preferences?household_id=eq.'+hid+'&select=key,value,revision'),request('/rest/v1/household_kitchen_events?household_id=eq.'+hid+'&select=id,actor_id,created_at,event_type,subject,item_count&order=id.desc&limit=12'),request('/rest/v1/household_kitchen_events?household_id=eq.'+hid+'&event_type=eq.recipe_completed&select=event_type,subject,created_at&order=id.desc&limit=8')]);return {preferences,events,cooked};
+ };
+ cloud.saveKitchenPreferences=async(changes,display_name)=>{const hid=cloud.active;if(display_name)try{return await rpc('set_household_preferences',{hid,changes,display_name})}catch(e){if(!/Could not find.*set_household_preferences|function.*set_household_preferences.*does not exist/i.test(e.message||''))throw e}return rpc('set_kitchen_preferences',{hid,changes})};
  cloud.recordKitchenRecipe=(kind,title,client_id)=>rpc('record_kitchen_recipe',{hid:cloud.active,kind,title,client_id});
  cloud.readShoppingState=async()=>{const hid=encodeURIComponent(cloud.active),[sessions,routes]=await Promise.all([request('/rest/v1/household_shopping_sessions?household_id=eq.'+hid+'&finished_at=is.null&select=*'),request('/rest/v1/household_shopping_routes?household_id=eq.'+hid+'&select=*')]);const session=sessions[0]||null;let removed=[];if(session)try{const events=await request('/rest/v1/household_kitchen_events?household_id=eq.'+hid+'&event_type=eq.list_removed&created_at=gte.'+encodeURIComponent(session.started_at)+'&select=subject&limit=100');removed=[...new Set(events.map(e=>e.subject).filter(n=>typeof n==='string'&&!state.cart.some(i=>i.name===n)))]}catch{}return {session,route:routes[0]||null,removed}};
  cloud.startShoppingSession=sid=>rpc('start_shopping_session',{hid:cloud.active,sid});
@@ -120,8 +131,8 @@
  const editingText=()=>document.activeElement?.matches('textarea,select,input:not([type=checkbox]):not([type=radio]):not([type=button])');
  let lastSharedRefresh=0;const liveTables=new Set();let liveAll=false;
  function stopLive(){liveConnection?.close();liveConnection=null;clearTimeout(liveRefreshTimer);liveDirty=false;liveTables.clear();liveAll=false}
- function queueLiveRefresh(table){if(['household_records','household_pantry_reviews','household_kitchen_preferences','household_kitchen_events','household_shopping_sessions','household_shopping_routes'].includes(table))liveTables.add(table);else if(table!==false)liveAll=true;liveDirty=true;clearTimeout(liveRefreshTimer);liveRefreshTimer=setTimeout(async()=>{if(!cloud.active||document.hidden)return;if(cloud.busy||blockingDialog()||editingText()){queueLiveRefresh(false);return}liveDirty=false;const tables=liveAll?null:[...liveTables];liveAll=false;liveTables.clear();await refresh({tables})},350)}
- function startLive(){stopLive();if(!cloud.active||!session||typeof HouseholdLive==='undefined')return;liveConnection=HouseholdLive.connect({url:config.url,key:config.publishableKey,token:session.access_token,householdId:cloud.active,extraTables:[...(window.KitchenIntelligence?.realtimeTables()||[]),'household_shopping_sessions','household_shopping_routes'],onChange:queueLiveRefresh,onReady:queueLiveRefresh})}
+ function queueLiveRefresh(table){if(['household_records','household_pantry_reviews','household_kitchen_preferences','household_kitchen_events','household_shopping_sessions','household_shopping_routes','household_recipe_entries','household_member_names','conversations','conversation_shares'].includes(table))liveTables.add(table);else if(table!==false)liveAll=true;liveDirty=true;clearTimeout(liveRefreshTimer);liveRefreshTimer=setTimeout(async()=>{if(!cloud.active||document.hidden)return;if(cloud.busy||blockingDialog()||editingText()){queueLiveRefresh(false);return}liveDirty=false;const tables=liveAll?null:[...liveTables];liveAll=false;liveTables.clear();await refresh({tables})},350)}
+ function startLive(){stopLive();if(!cloud.active||!session||typeof HouseholdLive==='undefined')return;liveConnection=HouseholdLive.connect({url:config.url,key:config.publishableKey,token:session.access_token,householdId:cloud.active,extraTables:[...(window.KitchenIntelligence?.realtimeTables()||[]),'household_shopping_sessions','household_shopping_routes','household_recipe_entries','household_member_names','conversations','conversation_shares'],onChange:queueLiveRefresh,onReady:queueLiveRefresh})}
  document.addEventListener('visibilitychange',()=>{if(!document.hidden&&cloud.active)queueLiveRefresh()});
  window.addEventListener('online',()=>{if(cloud.active){startLive();queueLiveRefresh()}});
  async function refresh({tables=null}={}){
@@ -135,16 +146,16 @@
     paintCart();
     if(changed.length){
      const labels={home:say('otthon','at home'),gone:say('elfogyott','used up'),listed:say('listán','on list'),unlisted:say('levéve a listáról','off list'),bought:say('megvan','bought')};
-     toast(say('Közös frissítés · ','Household update · ')+(details.length?details.slice(0,2).map(d=>displayName(d.name)+': '+labels[d.kind]).join(' · '):changed.slice(0,2).map(displayName).join(', '))+(details.length>2?' +'+(details.length-2):''));
+     if(!window.MorzsaHousehold?.ready())toast(say('Közös frissítés · ','Household update · ')+(details.length?details.slice(0,2).map(d=>displayName(d.name)+': '+labels[d.kind]).join(' · '):changed.slice(0,2).map(displayName).join(', '))+(details.length>2?' +'+(details.length-2):''));
      clearTimeout(toast.timer);toast.timer=setTimeout(()=>document.getElementById('toast').classList.remove('visible'),4000);
      requestAnimationFrame(()=>document.querySelectorAll('[data-ingredient]').forEach(el=>{if(changed.includes(el.dataset.ingredient)){el.classList.add('shared-change');setTimeout(()=>el.classList.remove('shared-change'),1500)}}));
     }
    }
    }
    if(!tables||tables.includes('household_pantry_reviews'))window.PantryReview?.refresh();
-   if(!tables||tables.some(t=>['household_kitchen_preferences','household_kitchen_events'].includes(t)))window.KitchenIntelligence?.refresh();
+   if(!tables||tables.some(t=>['household_kitchen_preferences','household_kitchen_events','household_member_names','conversations','conversation_shares'].includes(t)))window.KitchenIntelligence?.refresh();
    if(!tables||tables.some(t=>['household_shopping_sessions','household_shopping_routes'].includes(t)))window.ShoppingMode?.refresh();
-   if(!tables)lastSharedRefresh=Date.now();status('Közös háztartás · szinkronizálva','Shared household · synced');
+   if(!tables||tables.includes('household_recipe_entries'))window.RecipeLibrary?.refresh();if(!tables)lastSharedRefresh=Date.now();status('Közös háztartás · szinkronizálva','Shared household · synced');
   }catch(e){status('Szinkronizálás sikertelen','Sync failed')}finally{cloud.busy=false;refreshing=false;if(cartOutbox.length&&!cartFailed)cartTimer=setTimeout(flushCart,0)}
  }
 
@@ -160,9 +171,9 @@
  }
  async function connect(hid,{name}={}){
   if(cloud.busy||pendingCart())return;const previous=cloud.active;cloud.busy=true;switchingName=name||houseNames.get(hid)||say('Háztartás','Household');paintInviteBadge();
-  try{const rows=await fetchRows(hid);if(!previous)localBackup=JSON.parse(JSON.stringify(state));cloud.active=hid;cloud.rows=rows;cartOutbox=[];try{const saved=JSON.parse(localStorage.getItem(outboxKey())||'[]');if(Array.isArray(saved)&&saved.every(i=>Array.isArray(i.cart)&&Array.isArray(i.custom)))cartOutbox=saved}catch{}cartFailed=!!cartOutbox.length;homeUndo.length=0;shoppingDraft='';pantryDraft='';pantryBatch=[];pantryListed.clear();state=overlayCart(rows);rememberHousehold();render();window.PantryReview?.refresh();q.close();status('Közös háztartás · szinkronizálva','Shared household · synced');clearInterval(pollTimer);pollTimer=setInterval(()=>{if(!liveConnection?.healthy?.()||Date.now()-lastSharedRefresh>=60000)refresh()},8000);startLive()}finally{cloud.busy=false;switchingName='';paintInviteBadge();if(cartOutbox.length)cartTimer=setTimeout(flushCart,0)}
+  try{const rows=await fetchRows(hid);if(!previous)localBackup=JSON.parse(JSON.stringify(state));cloud.active=hid;cloud.rows=rows;cartOutbox=[];try{const saved=JSON.parse(localStorage.getItem(outboxKey())||'[]');if(Array.isArray(saved)&&saved.every(i=>Array.isArray(i.cart)&&Array.isArray(i.custom)))cartOutbox=saved}catch{}cartFailed=!!cartOutbox.length;homeUndo.length=0;shoppingDraft='';pantryDraft='';pantryBatch=[];pantryListed.clear();state=overlayCart(rows);rememberHousehold();render();window.PantryReview?.refresh();q.close();status('Közös háztartás · szinkronizálva','Shared household · synced');clearInterval(pollTimer);pollTimer=setInterval(()=>{if(!liveConnection?.healthy?.()||Date.now()-lastSharedRefresh>=60000)refresh()},8000);startLive();window.dispatchEvent(new Event('morzsa-household-change'))}finally{cloud.busy=false;switchingName='';paintInviteBadge();if(cartOutbox.length)cartTimer=setTimeout(flushCart,0)}
  }
- function disconnect({remember=true}={}){if(cloud.busy)return;stopLive();clearTimeout(cartTimer);cartOutbox=[];cartFailed=false;homeUndo.length=0;shoppingDraft='';pantryDraft='';pantryBatch=[];pantryListed.clear();cloud.active=null;clearInterval(pollTimer);if(localBackup){state={...localBackup,likes:state.likes,skips:state.skips,chats:state.chats,sortMode:state.sortMode};localStorage.setItem('morzsa-v2',JSON.stringify(state));localBackup=null;render()}if(remember)rememberHousehold();paintInviteBadge();window.PantryReview?.refresh();status('Csak ezen az eszközön','This device only')}
+ function disconnect({remember=true}={}){if(cloud.busy)return;stopLive();clearTimeout(cartTimer);cartOutbox=[];cartFailed=false;homeUndo.length=0;shoppingDraft='';pantryDraft='';pantryBatch=[];pantryListed.clear();cloud.active=null;clearInterval(pollTimer);if(localBackup){state={...localBackup,likes:state.likes,skips:state.skips,chats:state.chats,sortMode:state.sortMode};localStorage.setItem('morzsa-v2',JSON.stringify(state));localBackup=null;render()}if(remember)rememberHousehold();paintInviteBadge();window.PantryReview?.refresh();window.dispatchEvent(new Event('morzsa-household-change'));status('Csak ezen az eszközön','This device only')}
  async function run(button,fn){if(menuBusy||cloud.busy||pendingCart())return;menuBusy=true;button.disabled=true;const error=q.querySelector('.household-error');error.textContent='';try{await fn()}catch(e){(q.querySelector('.household-error')||error).textContent=errorText(e)}finally{button.disabled=false;menuBusy=false}}
  function button(id,hu,en){return '<button class="small-button full" id="'+id+'">'+say(hu,en)+'</button>'}
  function localPantry(){
@@ -301,7 +312,7 @@
  // Freeze mutations until a write is acknowledged; other devices use revision checks.
  for(const event of ['click','submit','pointerdown','keydown'])document.addEventListener(event,e=>{if(e.target.closest('[data-pantry-details],#catalog-search,[data-pantry-view],#pantry-category'))return;const cartAction=e.target.closest('[data-cart],[data-step],[data-delete],.list-row label,#add-cart,[data-check-item],[data-edit-item],#shopping-mode-add,#shopping-action-feedback');if(cloud.cartInteractive&&cartAction)return;if((cloud.busy||cartOutbox.length)&&e.target.closest('#main,#quantity-dialog,#clear-dialog,#history-dialog')){e.preventDefault();e.stopImmediatePropagation()}},true);
  window.addEventListener('online',()=>{if(cartOutbox.length)flushCart();else refresh()});document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh()});
- paintInviteBadge();window.PantryReview?.refresh();status('Csak ezen az eszközön','This device only');
+ paintInviteBadge();window.PantryReview?.refresh();window.dispatchEvent(new Event('morzsa-household-change'));status('Csak ezen az eszközön','This device only');
  async function start(){try{if(window.MorzsaNative)session=await window.MorzsaNative.loadSession();authPending=!!incomingLink;if(incomingLink)await receiveLink();else await restoreHousehold();await window.MorzsaNative?.onAuth(nativeAuth);if(q.open)await open()}catch{authPending=false;authNotice=say('A biztonságos bejelentkezést nem sikerült betölteni. Nyisd meg újra az appot.','Could not load secure sign-in. Reopen the app.');status(authNotice,authNotice);await open()}}
  start();
  loadInvitations();setInterval(async()=>{if(document.hidden||authPending)return;await loadInvitations();if(q.open&&!q.contains(document.activeElement))paintInvitations()},30000);
