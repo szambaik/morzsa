@@ -1,3 +1,4 @@
+import {resultCache} from '../_shared/result-cache.mjs';
 import {normalizeInput,validOutput,finalOutput} from '../voice-command/handler.mjs';
 import {textBodyFor,publicTextOutput} from './text-contract.mjs';
 import {outputResponse} from '../voice-command/stream.mjs';
@@ -61,13 +62,14 @@ export function createHandler(config,fetcher=fetch){return async request=>{
   const clean=normalizeInput(input);request.signal.throwIfAborted();await reserve('chat',12);
   // Measured fast text path; retain the stronger model for photos and batch plans.
   const textConfig={...config,textModel:clean.image||clean.context?.weeklyPlan?(config.complexTextModel||MODELS.complexText):(config.textModel||MODELS.text)};
-  const produce=async(onAnswer,signal,onRecipes)=>{try{signal?.throwIfAborted();console.info(JSON.stringify({event:'morzsa_plus_chat_ready',preflightMs:Date.now()-started}));const responseBody=textBodyFor(clean);
+  const cached=await resultCache(config,fetcher,{userId:user.id,householdId:hid,type:clean.image?'ingredient_recognition':'assistant_text',model:'plus-v1:'+textConfig.textModel,input:{...clean,prompt:textBodyFor({...clean,stream:false})},signal:request.signal});
+  const produce=async(onAnswer,signal,onRecipes)=>{try{signal?.throwIfAborted();if(validOutput(cached.payload)){await settle('complete',textConfig.textModel,{cached:true},0);signal?.throwIfAborted();onAnswer(cached.payload.answer||'');return cached.payload}console.info(JSON.stringify({event:'morzsa_plus_chat_ready',preflightMs:Date.now()-started}));const responseBody=textBodyFor(clean);
    const generated=await openaiText(responseBody,textConfig,fetcher,onAnswer,signal,clean.recipePreview?onRecipes:undefined),usage=generated.usage,output=publicTextOutput(generated.output,clean.text);if(!validOutput(output))throw Error('VOICE_INVALID_RESPONSE');
    // Response-only compatibility with the older focused recipe discussion.
    finalOutput(output,clean);if(clean.context?.recipe)output.operations=[];
    const model=textConfig.textModel,rates=model==='gpt-6.1-terra'?[1,5]:model==='gpt-6-luna'?[.1,.5]:null;
    const cents=rates&&Number.isFinite(usage.input_tokens)&&Number.isFinite(usage.output_tokens)?Math.max(1,Math.ceil((usage.input_tokens*rates[0]+usage.output_tokens*rates[1])/10000)):undefined;
-   const settlementStarted=Date.now();await settle('complete',model,usage,cents);console.info(JSON.stringify({event:'morzsa_plus_chat_complete',settlementMs:Date.now()-settlementStarted,totalMs:Date.now()-started,recipes:output.recipes?.length||0}));return output;
+   const settlementStarted=Date.now();await settle('complete',model,usage,cents);console.info(JSON.stringify({event:'morzsa_plus_chat_complete',settlementMs:Date.now()-settlementStarted,totalMs:Date.now()-started,recipes:output.recipes?.length||0}));signal?.throwIfAborted();await cached.put(output,clean.image?3600:300);return output;
   }catch(e){await settle('failed',textConfig.textModel).catch(()=>{});throw e}};
   if(clean.stream)return outputResponse(produce,headers,request.signal);return reply(200,await produce(()=>{},request.signal));
  }catch(e){if(reserved)await settle('failed',config.textModel||MODELS.text).catch(()=>{});const known=['PLUS_MONTHLY_BUDGET','PLUS_SERVICE_LIMIT','PLUS_CHAT_LIMIT','PLUS_IMAGE_LIMIT','PLUS_VOICE_LIMIT','PLUS_API_QUOTA','PLUS_SETUP_REQUIRED','PLUS_ACCESS_REQUIRED','PLUS_LIMIT','PLUS_REQUEST_PENDING','VOICE_INVALID_INPUT','VOICE_PROVIDER_LIMIT','VOICE_PROVIDER_BUSY','VOICE_SETUP_REQUIRED','VOICE_INVALID_RESPONSE','VOICE_PROVIDER_ERROR'];const error=known.includes(e.message)?e.message:['TimeoutError','AbortError'].includes(e.name)?'VOICE_TIMEOUT':'VOICE_UNAVAILABLE';return reply(error==='VOICE_INVALID_INPUT'?400:error==='PLUS_ACCESS_REQUIRED'?403:['PLUS_MONTHLY_BUDGET','PLUS_SERVICE_LIMIT','PLUS_CHAT_LIMIT','PLUS_IMAGE_LIMIT','PLUS_VOICE_LIMIT','PLUS_API_QUOTA','PLUS_LIMIT','PLUS_REQUEST_PENDING','VOICE_PROVIDER_LIMIT'].includes(error)?429:503,{error})}

@@ -1,9 +1,11 @@
+import {resultCache} from '../_shared/result-cache.mjs';
 import '../../../recipe-discovery.js';
 const RecipeDiscovery=globalThis.RecipeDiscovery;
 export const RECIPE_IMAGE_INSTRUCTION=' For each recipe also return imagePrompt: a 40–70 word English description of the finished dish for a realistic food photograph, at most 1000 characters. This field alone must always be English, regardless of the conversation language. Derive its appearance from the title, ingredients and method: describe the actual texture, shape, visible ingredients and appropriate serving vessel. Use a single 3:2 landscape composition, warm natural daylight and restrained props. Do not add ingredients, garnishes, text, logos or a collage. Describe only the finished dish, never a preparation step. Keep this internal image description out of answer and summary.';
 const moods={any:'Suggest varied practical dishes.',sweet:'Only sweet dishes or desserts.',comfort:'Filling comforting savoury main dishes.',light:'Light vegetable-forward meals, avoiding heavy cream sauces and deep frying.',surprise:'Three distinct creative but practical dishes using everyday ingredients.'};
 export function normalizeInput(input){
  if(!input||!Array.isArray(input.names)||(!input.names.length&&input.conversation!==true)||input.names.length>200)throw Error('AI_INVALID_INPUT');
+ if(input.householdId!=null&&(typeof input.householdId!=='string'||! /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(input.householdId)))throw Error('AI_INVALID_INPUT');
  const names=[...new Set(input.names.map(n=>{if(typeof n!=='string'||!n.trim()||n.length>80||/[\u0000-\u001f]/.test(n))throw Error('AI_INVALID_INPUT');return n.normalize('NFC').trim()}))].sort();
  if(input.uncertain!==undefined&&(!Array.isArray(input.uncertain)||input.uncertain.length>200||input.uncertain.some(n=>typeof n!=='string'||n.length>80)))throw Error('AI_INVALID_INPUT');
  const uncertain=names.filter(n=>(input.uncertain||[]).includes(n));
@@ -11,7 +13,7 @@ export function normalizeInput(input){
  if(conversation&&(!text(input.text,2000)||!Array.isArray(input.history||[])||(input.history||[]).length>6||(input.history||[]).some(m=>!['user','model'].includes(m?.role)||!text(m.text,4000))))throw Error('AI_INVALID_INPUT');
  const c=input.context||{},discovery=c.recipeDiscovery===undefined?null:RecipeDiscovery.context(c.recipeDiscovery,r=>validRecipes({answer:'ok',recipes:[r]},true)?r:null),feedback=c.recipeFeedback,p=c.preferences;
  if(c.recipeDiscovery!==undefined&&!discovery||feedback!==undefined&&!RecipeDiscovery.validFeedback(feedback)||p!==undefined&&(!p||!Number.isInteger(p.servings)||p.servings<1||p.servings>8||![0,25,45,60].includes(p.maxMinutes)||!['any','vegetarian','vegan'].includes(p.diet)||!Array.isArray(p.avoid)||p.avoid.length>10||!p.avoid.every(n=>text(n,80))))throw Error('AI_INVALID_INPUT');
- return {...(conversation?{context:{...(discovery?{recipeDiscovery:discovery}:{}),...(feedback?{recipeFeedback:feedback}:{}),...(p?{preferences:{servings:p.servings,maxMinutes:p.maxMinutes,diet:p.diet,avoid:p.avoid}}:{})},conversation:true,text:input.text,history:input.history||[]}:{}),names,uncertain,language:input.language==='en'?'en':'hu',quick:input.preferences?.quick===true,mood:Object.hasOwn(moods,input.preferences?.mood)?input.preferences.mood:'any'};
+ return {...(input.householdId?{householdId:input.householdId}:{}),...(conversation?{context:{...(discovery?{recipeDiscovery:discovery}:{}),...(feedback?{recipeFeedback:feedback}:{}),...(p?{preferences:{servings:p.servings,maxMinutes:p.maxMinutes,diet:p.diet,avoid:p.avoid}}:{})},conversation:true,text:input.text,history:input.history||[]}:{}),names,uncertain,language:input.language==='en'?'en':'hu',quick:input.preferences?.quick===true,mood:Object.hasOwn(moods,input.preferences?.mood)?input.preferences.mood:'any'};
 }
 const text=(value,max)=>typeof value==='string'&&value.trim().length>0&&value.length<=max;
 export function validRecipes(value,conversation=false){return value&&(!conversation||text(value.answer,4000))&&Array.isArray(value.recipes)&&(conversation?value.recipes.length<=3:value.recipes.length===3)&&value.recipes.every(r=>text(r.title,100)&&text(r.summary,400)&&(r.imagePrompt===undefined||typeof r.imagePrompt==='string'&&r.imagePrompt.length<=1000)&&(r.servings===undefined||Number.isInteger(r.servings)&&r.servings>=1&&r.servings<=24)&&(r.equipment===undefined||Array.isArray(r.equipment)&&r.equipment.length<=4&&r.equipment.every(s=>text(s,100)))&&Number.isInteger(r.minutes)&&r.minutes>=1&&r.minutes<=240&&Array.isArray(r.ingredients)&&r.ingredients.length>=1&&r.ingredients.length<=15&&r.ingredients.every(i=>text(i.name,80)&&text(i.amount,80))&&Array.isArray(r.steps)&&r.steps.length>=1&&r.steps.length<=6&&r.steps.every(s=>text(s,1000))&&(r.stepTitles===undefined||Array.isArray(r.stepTitles)&&r.stepTitles.length===r.steps.length&&r.stepTitles.every(s=>text(s,80))))}
@@ -48,9 +50,12 @@ export function createHandler(config,fetcher=fetch){
    const dbHeaders={apikey:config.serviceKey,Authorization:'Bearer '+config.serviceKey,'Content-Type':'application/json'};
    const db=(path,options={})=>fetcher(config.url+'/rest/v1/'+path,{...options,headers:{...dbHeaders,...options.headers},signal:AbortSignal.timeout(10000)});
    const cleanResult=payload=>{const fresh=RecipeDiscovery.freshRecipes(payload.recipes,input.context?.recipeDiscovery);if(payload.recipes.length&&!fresh.length||!input.conversation&&fresh.length!==3)throw Error('AI_INVALID_RESPONSE');return {...payload,recipes:fresh}};
+   const backendCache=await resultCache(config,fetcher,{userId:user.id,householdId:input.householdId,type:'recipe_recommendations',model:'recipes-v1:'+model,input:{...input,prompt:geminiBody(input)},signal:request.signal});
    const work=async()=>{
+    if(validRecipes(backendCache.payload,input.conversation))return {...cleanResult(backendCache.payload),cached:true};
+    if(!input.householdId){
     const cached=await db('recipe_idea_cache?owner_id=eq.'+user.id+'&cache_key=eq.'+key+'&expires_at=gt.'+encodeURIComponent(new Date().toISOString())+'&select=payload&limit=1');
-    if(!cached.ok)throw Error('AI_SETUP_REQUIRED');const rows=await cached.json();if(validRecipes(rows[0]?.payload,input.conversation))return {...cleanResult(rows[0].payload),cached:true};
+    if(!cached.ok)throw Error('AI_SETUP_REQUIRED');const rows=await cached.json();if(validRecipes(rows[0]?.payload,input.conversation))return {...cleanResult(rows[0].payload),cached:true};}
     const quota=await db('rpc/claim_recipe_idea_request',{method:'POST',body:JSON.stringify({user_id:user.id})});if(!quota.ok)throw Error('AI_SETUP_REQUIRED');if(await quota.json()!==true)throw Error('AI_DAILY_LIMIT');
     const result=await fetcher('https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent',{method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':config.geminiKey},body:JSON.stringify(geminiBody(input)),signal:AbortSignal.timeout(30000)});
     if(result.status===429)throw Error('AI_DAILY_LIMIT');if(!result.ok)throw Error('AI_PROVIDER_ERROR');const data=await result.json(),candidate=data.candidates?.[0];if(candidate?.finishReason!=='STOP')throw Error('AI_INVALID_RESPONSE');
@@ -58,10 +63,10 @@ export function createHandler(config,fetcher=fetch){
     if(!validRecipes(payload,input.conversation)||input.quick&&payload.recipes.some(r=>r.minutes>25))throw Error('AI_INVALID_RESPONSE');
     payload=cleanResult(payload);
     // Cache failure must not discard a valid answer already paid for by quota.
-    try{await db('recipe_idea_cache?on_conflict=owner_id,cache_key',{method:'POST',headers:{Prefer:'resolution=merge-duplicates'},body:JSON.stringify({owner_id:user.id,cache_key:key,payload,expires_at:new Date(Date.now()+86400000).toISOString()})})}catch{}
-    return {...payload,cached:false};
+    try{if(!input.householdId)await db('recipe_idea_cache?on_conflict=owner_id,cache_key',{method:'POST',headers:{Prefer:'resolution=merge-duplicates'},body:JSON.stringify({owner_id:user.id,cache_key:key,payload,expires_at:new Date(Date.now()+86400000).toISOString()})})}catch{}
+    request.signal.throwIfAborted();await backendCache.put(payload,86400);return {...payload,cached:false};
    };
-   const pendingKey=user.id+key;let promise=pending.get(pendingKey);if(!promise){promise=work();pending.set(pendingKey,promise)}try{return reply(200,await promise)}finally{if(pending.get(pendingKey)===promise)pending.delete(pendingKey)}
+   const pendingKey=user.id+key+':'+(backendCache.version??'uncached');let promise=pending.get(pendingKey);if(!promise){promise=work();pending.set(pendingKey,promise)}try{return reply(200,await promise)}finally{if(pending.get(pendingKey)===promise)pending.delete(pendingKey)}
   }catch(error){const code=['AI_INVALID_INPUT','AI_SETUP_REQUIRED','AI_DAILY_LIMIT','AI_PROVIDER_ERROR','AI_INVALID_RESPONSE'].includes(error.message)?error.message:'AI_UNAVAILABLE';return reply(code==='AI_INVALID_INPUT'?400:code==='AI_DAILY_LIMIT'?429:code==='AI_SETUP_REQUIRED'?503:502,{error:code})}
  };
 }

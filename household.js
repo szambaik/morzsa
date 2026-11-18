@@ -77,11 +77,11 @@
  cloud.realtimeStart=payload=>request('/functions/v1/plus-assistant',plusPayload('connect',payload),true,'POST',30000);
  cloud.realtimeEnd=(requestId,diagnostic={})=>request('/functions/v1/plus-assistant',plusPayload('end',{requestId,...diagnostic}),true,'POST',15000);
  cloud.voiceStatus=()=>window.AIMode?.isPlus()?cloud.plusStatus():request('/functions/v1/voice-command',undefined,false);
- cloud.voiceCommand=payload=>{if(!session)throw Error('VOICE_SIGN_IN_REQUIRED');return request(window.AIMode?.isPlus()?'/functions/v1/plus-assistant':'/functions/v1/voice-command',window.AIMode?.isPlus()?plusPayload('chat',payload):payload,true,'POST',60000)};
- cloud.voiceCommandStream=(payload,onAnswer,signal,onRecipes)=>{if(!session)throw Error('VOICE_SIGN_IN_REQUIRED');return request(window.AIMode?.isPlus()?'/functions/v1/plus-assistant':'/functions/v1/voice-command',window.AIMode?.isPlus()?plusPayload('chat',{...payload,stream:true,recipePreview:typeof onRecipes==='function'}):{...payload,stream:true},true,'POST',60000,{onAnswer,signal,onRecipes})};
+ cloud.voiceCommand=payload=>{if(!session)throw Error('VOICE_SIGN_IN_REQUIRED');return request(window.AIMode?.isPlus()?'/functions/v1/plus-assistant':'/functions/v1/voice-command',window.AIMode?.isPlus()?plusPayload('chat',payload):{...payload,householdId:cloud.active},true,'POST',60000)};
+ cloud.voiceCommandStream=(payload,onAnswer,signal,onRecipes)=>{if(!session)throw Error('VOICE_SIGN_IN_REQUIRED');return request(window.AIMode?.isPlus()?'/functions/v1/plus-assistant':'/functions/v1/voice-command',window.AIMode?.isPlus()?plusPayload('chat',{...payload,stream:true,recipePreview:typeof onRecipes==='function'}):{...payload,householdId:cloud.active,stream:true},true,'POST',60000,{onAnswer,signal,onRecipes})};
  cloud.recipeImage=payload=>{if(!session)throw Error('IMAGE_SIGN_IN_REQUIRED');return request(window.AIMode?.isPlus()?'/functions/v1/plus-assistant':'/functions/v1/recipe-image',window.AIMode?.isPlus()?plusPayload('image',payload):payload,true,'POST',85000)};
  cloud.recipeAIStatus=()=>window.AIMode?.isPlus()?cloud.plusStatus():request('/functions/v1/recipe-ideas',undefined,false);
- cloud.recipeIdeas=async payload=>{if(!session)throw Error('AI_SIGN_IN_REQUIRED');if(!window.AIMode?.isPlus())return request('/functions/v1/recipe-ideas',payload,true,'POST',45000);const result=await cloud.voiceCommand({assistant:true,companion:true,text:payload.text||'Adj egy receptet a készletből.',language:payload.language,context:{stock:payload.names||[],uncertain:payload.uncertain||[],cart:[]},history:payload.history||[]});return {answer:result.answer,recipes:result.recipes||[]}};
+ cloud.recipeIdeas=async payload=>{if(!session)throw Error('AI_SIGN_IN_REQUIRED');if(!window.AIMode?.isPlus())return request('/functions/v1/recipe-ideas',{...payload,householdId:cloud.active},true,'POST',45000);const result=await cloud.voiceCommand({assistant:true,companion:true,text:payload.text||'Adj egy receptet a készletből.',language:payload.language,context:{stock:payload.names||[],uncertain:payload.uncertain||[],cart:[]},history:payload.history||[]});return {answer:result.answer,recipes:result.recipes||[]}};
  let liveConnection=null,liveRefreshTimer=null,liveDirty=false;
  let localBackup=null,authEmail='',authMode='login',recoveryMode=false,pollTimer,invitations=[],inviteUnavailable=false,inviteLoading=false;
  const houseNames=new Map();cloud.activeName=()=>houseNames.get(cloud.active)||say('Közös háztartás','Shared household');let switchingName='',menuBusy=false,newHouseholdId=null;
@@ -112,20 +112,22 @@
   if(response.ok&&options.onAnswer&&response.headers.get('Content-Type')?.includes('application/x-ndjson'))return await ChatStream.read(response,options.onAnswer,options.onRecipes);
   const text=await response.text();if(options.expectedUser&&options.expectedUser!==session?.user?.id)throw Error('Account changed');let data;try{data=text?JSON.parse(text):null}catch{throw Error('Invalid server response')}
   if(!response.ok&&path.startsWith('/functions/v1/plus-assistant')&&response.status===404)throw Error('PLUS_SETUP_REQUIRED');
-  if(!response.ok)throw Object.assign(Error(data?.message||data?.msg||data?.error_description||(typeof data?.error==='string'?data.error:'Request failed')),path==='/functions/v1/recipe-image'?{httpStatus:response.status,retryAfter:data?.retryAfter}:{});return data;}catch(e){if(controller.signal.aborted&&!options.signal?.aborted&&path==='/functions/v1/voice-command')throw Error('VOICE_TIMEOUT');if(controller.signal.aborted&&path==='/functions/v1/recipe-image')throw Error('IMAGE_TIMEOUT');throw e}finally{clearTimeout(timeout);options.signal?.removeEventListener('abort',abort)}
+  if(!response.ok)throw Object.assign(Error(data?.message||data?.msg||data?.error_description||(typeof data?.error==='string'?data.error:'Request failed')),{httpStatus:response.status,retryAfter:data?.retryAfter});return data;}catch(e){if(controller.signal.aborted&&!options.signal?.aborted&&path==='/functions/v1/voice-command')throw Error('VOICE_TIMEOUT');if(controller.signal.aborted&&path==='/functions/v1/recipe-image')throw Error('IMAGE_TIMEOUT');throw e}finally{clearTimeout(timeout);options.signal?.removeEventListener('abort',abort)}
  }
  async function setSession(value){
   const previousUser=session?.user?.id,version=++authVersion;if(value&&!value.expires_at)value.expires_at=Math.floor(Date.now()/1000)+(value.expires_in||3600);
   if(window.MorzsaNative)await window.MorzsaNative.saveSession(value);else if(value)localStorage.setItem('morzsa-session',JSON.stringify(value));else localStorage.removeItem('morzsa-session');
-  if(version!==authVersion)return;session=value;liveConnection?.updateToken(session?.access_token||'');cloudDataConnection?.updateToken?.(session?.access_token||'');invitations=[];paintInviteBadge();if(previousUser!==session?.user?.id)window.dispatchEvent(new Event('morzsa-auth-change'));
+  if(version!==authVersion)return;if(previousUser&&previousUser!==value?.user?.id)window.MorzsaCache?.clearAccount(previousUser);session=value;liveConnection?.updateToken(session?.access_token||'');cloudDataConnection?.updateToken?.(session?.access_token||'');invitations=[];paintInviteBadge();if(previousUser!==session?.user?.id)window.dispatchEvent(new Event('morzsa-auth-change'));
  }
  const rpc=(name,args)=>request('/rest/v1/rpc/'+name,args);
  async function fetchRows(hid=cloud.active,verify=true){
+  const user=session?.user?.id,cacheScope=window.MorzsaCache?.scope(user,hid),expectedUser=user;
+  const read=path=>request(path,undefined,true,'GET',20000,{expectedUser});
   if(verify){
-  const houses=await request('/rest/v1/households?id=eq.'+encodeURIComponent(hid)+'&select=id,name');if(!houses.length)throw Error(say('A háztartás már nem érhető el.','This household is no longer accessible.'));
+  const houses=await read('/rest/v1/households?id=eq.'+encodeURIComponent(hid)+'&select=id,name');if(!houses.length){window.MorzsaCache?.clearScope(cacheScope);throw Object.assign(Error(say('A háztartás már nem érhető el.','This household is no longer accessible.')),{httpStatus:403})}
   houseNames.set(hid,houses[0].name);if(hid===cloud.active)paintInviteBadge();
   }
-  const rows=[];let offset=0;while(true){const part=await request('/rest/v1/household_records?household_id=eq.'+encodeURIComponent(hid)+'&select=bucket,key,value,revision&order=bucket,key&limit=1000&offset='+offset);rows.push(...part);if(part.length<1000)break;offset+=part.length}return rows;
+  const rows=[];let offset=0;while(true){const part=await read('/rest/v1/household_records?household_id=eq.'+encodeURIComponent(hid)+'&select=bucket,key,value,revision&order=bucket,key&limit=1000&offset='+offset);rows.push(...part);if(part.length<1000)break;offset+=part.length}if(user!==session?.user?.id)throw Error('Account changed');if(cacheScope)window.MorzsaCache.put(cacheScope,'household','rows',{rows,name:houseNames.get(hid)},{ttl:30000,staleTtl:86400000});return rows;
  }
  const blockingDialog=()=>document.querySelector('dialog[open]:not(#companion-quick):not(#companion-history)');
  const editingText=()=>document.activeElement?.matches('textarea,select,input:not([type=checkbox]):not([type=radio]):not([type=button])');
@@ -137,9 +139,9 @@
  window.addEventListener('online',()=>{if(cloud.active){startLive();queueLiveRefresh()}});
  async function refresh({tables=null}={}){
   if(!cloud.active||document.hidden||cloud.busy||q.open||blockingDialog()||editingText())return;
-  cloud.busy=true;refreshing=true;
+  const hid=cloud.active,user=session?.user?.id;cloud.busy=true;refreshing=true;
   try{
-   if(!tables||tables.includes('household_records')){const rows=await fetchRows();
+   if(!tables||tables.includes('household_records')){const rows=await fetchRows();if(hid!==cloud.active||user!==session?.user?.id)return;
    if(JSON.stringify(rows)!==JSON.stringify(cloud.rows)){
     const changed=HouseholdLive.changedNames(cloud.rows,rows),details=HouseholdLive.describeChanges(cloud.rows,rows);cloud.rows=rows;state=overlayCart(rows);
     try{localStorage.setItem(cloud.storageKey(),JSON.stringify(state))}catch{}
@@ -156,7 +158,7 @@
    if(!tables||tables.some(t=>['household_kitchen_preferences','household_kitchen_events','household_member_names','conversations','conversation_shares'].includes(t)))window.KitchenIntelligence?.refresh();
    if(!tables||tables.some(t=>['household_shopping_sessions','household_shopping_routes'].includes(t)))window.ShoppingMode?.refresh();
    if(!tables||tables.includes('household_recipe_entries'))window.RecipeLibrary?.refresh();if(!tables)lastSharedRefresh=Date.now();status('Közös háztartás · szinkronizálva','Shared household · synced');
-  }catch(e){status('Szinkronizálás sikertelen','Sync failed')}finally{cloud.busy=false;refreshing=false;if(cartOutbox.length&&!cartFailed)cartTimer=setTimeout(flushCart,0)}
+  }catch(e){if([401,403].includes(e.httpStatus)&&hid===cloud.active&&user===session?.user?.id){window.MorzsaCache?.clearScope(window.MorzsaCache.scope(user,hid));cloud.busy=false;disconnect({remember:false})}status('Szinkronizálás sikertelen','Sync failed')}finally{cloud.busy=false;refreshing=false;if(cartOutbox.length&&!cartFailed)cartTimer=setTimeout(flushCart,0)}
  }
 
  async function push(){
@@ -196,8 +198,33 @@
   }finally{cloud.busy=false;if(cartOutbox.length&&!cartFailed)cartTimer=setTimeout(flushCart,0)}
  };
  async function connect(hid,{name}={}){
-  if(cloud.busy||pendingCart())return;const previous=cloud.active;cloud.busy=true;switchingName=name||houseNames.get(hid)||say('Háztartás','Household');paintInviteBadge();
-  try{const rows=await fetchRows(hid);if(!previous)localBackup=JSON.parse(JSON.stringify(state));cloud.active=hid;cloud.rows=rows;cartOutbox=[];try{const saved=JSON.parse(localStorage.getItem(outboxKey())||'[]');if(Array.isArray(saved)&&saved.every(i=>Array.isArray(i.cart)&&Array.isArray(i.custom)))cartOutbox=saved}catch{}cartFailed=!!cartOutbox.length;homeUndo.length=0;shoppingDraft='';pantryDraft='';pantryBatch=[];pantryListed.clear();state=overlayCart(rows);rememberHousehold();render();window.PantryReview?.refresh();q.close();status('Közös háztartás · szinkronizálva','Shared household · synced');clearInterval(pollTimer);pollTimer=setInterval(()=>{if(!liveConnection?.healthy?.()||Date.now()-lastSharedRefresh>=60000)refresh()},8000);startLive();window.dispatchEvent(new Event('morzsa-household-change'))}finally{cloud.busy=false;switchingName='';paintInviteBadge();if(cartOutbox.length)cartTimer=setTimeout(flushCart,0)}
+  if(cloud.busy||pendingCart())return;
+  const previous=cloud.active,user=session?.user?.id,scope=window.MorzsaCache?.scope(user,hid);
+  const valid=()=>user===session?.user?.id&&(!scope||window.MorzsaCache.valid(scope));
+  cloud.busy=true;switchingName=name||houseNames.get(hid)||say('Háztartás','Household');paintInviteBadge();
+  let installed=false;
+  const install=rows=>{
+   if(!valid())return;
+   if(!installed){
+    if(!previous)localBackup=JSON.parse(JSON.stringify(state));cloud.active=hid;cartOutbox=[];
+    try{const saved=JSON.parse(localStorage.getItem(outboxKey())||'[]');if(Array.isArray(saved)&&saved.every(i=>Array.isArray(i.cart)&&Array.isArray(i.custom)))cartOutbox=saved}catch{}
+    cartFailed=!!cartOutbox.length;homeUndo.length=0;shoppingDraft='';pantryDraft='';pantryBatch=[];pantryListed.clear();installed=true;
+   }
+   cloud.rows=rows;state=overlayCart(rows);rememberHousehold();render();q.close();
+  };
+  try{
+   const cached=scope?await window.MorzsaCache.get(scope,'household','rows',{stale:true}):null;
+   if(!valid())return;
+   if(cached&&Array.isArray(cached.rows)){if(cached.name)houseNames.set(hid,cached.name);install(cached.rows);status('Közös háztartás · frissítés…','Shared household · refreshing…');window.dispatchEvent(new Event('morzsa-household-change'))}
+   const rows=await fetchRows(hid);if(!valid())return;install(rows);status('Közös háztartás · szinkronizálva','Shared household · synced');
+  }catch(e){
+   if(!valid())return;
+   if([401,403].includes(e.httpStatus)){if(scope)window.MorzsaCache?.clearScope(scope);cloud.busy=false;if(installed)disconnect({remember:false});throw e}
+   if(!installed)throw e;status('A mentett konyha látszik · frissítésre vár','Showing saved kitchen · waiting to refresh');
+  }finally{
+   cloud.busy=false;switchingName='';paintInviteBadge();
+   if(installed&&valid()&&cloud.active===hid){clearInterval(pollTimer);pollTimer=setInterval(()=>{if(!liveConnection?.healthy?.()||Date.now()-lastSharedRefresh>=60000)refresh()},8000);startLive();window.PantryReview?.refresh();window.dispatchEvent(new Event('morzsa-household-change'));if(cartOutbox.length)cartTimer=setTimeout(flushCart,0)}
+  }
  }
  function disconnect({remember=true}={}){if(cloud.busy)return;stopLive();clearTimeout(cartTimer);cartOutbox=[];cartFailed=false;homeUndo.length=0;shoppingDraft='';pantryDraft='';pantryBatch=[];pantryListed.clear();cloud.active=null;clearInterval(pollTimer);if(localBackup){state={...localBackup,likes:state.likes,skips:state.skips,chats:state.chats,sortMode:state.sortMode};localStorage.setItem('morzsa-v2',JSON.stringify(state));localBackup=null;render()}if(remember)rememberHousehold();paintInviteBadge();window.PantryReview?.refresh();window.dispatchEvent(new Event('morzsa-household-change'));status('Csak ezen az eszközön','This device only')}
  async function run(button,fn){if(menuBusy||cloud.busy||pendingCart())return;menuBusy=true;button.disabled=true;const error=q.querySelector('.household-error');error.textContent='';try{await fn()}catch(e){(q.querySelector('.household-error')||error).textContent=errorText(e)}finally{button.disabled=false;menuBusy=false}}
