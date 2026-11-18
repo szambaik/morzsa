@@ -7,7 +7,7 @@ const mode=process.env.MORZSA_PROBE_TEST_FAILURE;
 const reply=data=>process.stdout.write(JSON.stringify(data));
 if (args[0]==='sts') reply({Account:account});
 else if (args[0]==='cloudformation') reply({Stacks:[{Outputs:['JavaSnap','JavaPlain','NodePlain'].map(name=>({
-  OutputKey:name,OutputValue:'arn:aws:lambda:eu-west-1:'+(mode==='account'?'999999999999':account)+':function:'+stack+'-'+name+':probe'
+  OutputKey:name,OutputValue:'arn:aws:lambda:eu-north-1:'+(mode==='account'?'999999999999':account)+':function:'+stack+'-'+name+':probe'
 }))}]});
 else if (args[0]==='lambda' && args[1]==='get-function-configuration') reply({
   SnapStart:{ApplyOn:'PublishedVersions',OptimizationStatus:mode==='snapshot'?'Off':'On'}});

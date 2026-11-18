@@ -24,13 +24,13 @@ java -cp aws/snapstart/build/classes:aws/snapstart/build/test-classes morzsa.aws
 
 AWS CLI v2, kész helyi profil és külön pilot deployment bucket kell. A profil,
 bucket és account helyettesítők, nem titkok. Az aws sts get-caller-identity
-paranccsal előbb ellenőrizd a fiókot. A deployment bucket legyen eu-west-1
+paranccsal előbb ellenőrizd a fiókot. A deployment bucket legyen eu-north-1
 régióban, publikus hozzáférés tiltásával és titkosítással. A telepítés már
 AWS-erőforrást és mért használatot hoz létre.
 
 ~~~sh
-aws cloudformation package --template-file aws/snapstart/build/template.json --s3-bucket DEPLOYMENT_BUCKET --output-template-file aws/snapstart/build/packaged.json --region eu-west-1 --profile AWS_PROFILE
-aws cloudformation deploy --template-file aws/snapstart/build/packaged.json --stack-name morzsa-snapstart-pilot --capabilities CAPABILITY_IAM --region eu-west-1 --profile AWS_PROFILE
+aws cloudformation package --template-file aws/snapstart/build/template.json --s3-bucket DEPLOYMENT_BUCKET --output-template-file aws/snapstart/build/packaged.json --region eu-north-1 --profile AWS_PROFILE
+aws cloudformation deploy --template-file aws/snapstart/build/packaged.json --stack-name morzsa-snapstart-pilot --capabilities CAPABILITY_IAM --region eu-north-1 --profile AWS_PROFILE
 node aws/snapstart/benchmark.mjs morzsa-snapstart-pilot AWS_PROFILE
 ~~~
 
@@ -48,8 +48,8 @@ publikálásakor várni kell a készenlétre; a benchmark ellenőrzi az On álla
 Takarítás a mérés után:
 
 ~~~sh
-aws cloudformation delete-stack --stack-name morzsa-snapstart-pilot --region eu-west-1 --profile AWS_PROFILE
-aws cloudformation wait stack-delete-complete --stack-name morzsa-snapstart-pilot --region eu-west-1 --profile AWS_PROFILE
+aws cloudformation delete-stack --stack-name morzsa-snapstart-pilot --region eu-north-1 --profile AWS_PROFILE
+aws cloudformation wait stack-delete-complete --stack-name morzsa-snapstart-pilot --region eu-north-1 --profile AWS_PROFILE
 ~~~
 
 A stack törlése a saját három funkciót, aliasokat, verziókat és naplócsoportokat

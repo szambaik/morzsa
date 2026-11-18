@@ -5,8 +5,9 @@ Supabase Edge Functions másik futtatója. Az AWS út bejelentkezése, adatbázi
 jogosultságkezelése, szinkronja, képtárolása és AI-funkciói nem függhetnek a
 Supabase működésétől. A jelenlegi Supabase-kód és konfiguráció megmarad.
 
-A havi infrastruktúra-keret legfeljebb 15 EUR, AI-díjak nélkül. Új AWS-fiók
-készül; a szolgáltatások saját ingyenes keretét az induló kredittől külön
+A havi infrastruktúra-keret legfeljebb 15 EUR, AI-díjak nélkül. A felhasználó
+az új AWS experience-t használja, kiválasztott régiója eu-north-1, CLI-profilja
+morzsa, magyarázati szintje MEDIUM. A szolgáltatások saját ingyenes keretét az induló kredittől külön
 számoljuk. A korábbi Lightsail és Supabase-funkciókat futtató AWS változatok
 nem az elfogadott cél.
 
@@ -35,7 +36,7 @@ közös háztartásba. A privát előzmények nem válnak automatikusan megoszto
 
 ## Futás és cold start
 
-- Régió: eu-west-1; VPC/NAT nélküli Lambdák az induló felállásban.
+- Régió: eu-north-1; VPC/NAT nélküli Lambdák az induló felállásban.
 - Külön kis csomag a gyakori adat-API-nak és az AI/hang útvonalnak. Képfeldolgozó
   és modellfüggőségeket nem töltünk be a készlet/lista kérésekhez.
 - A meglévő tiszta JavaScript üzleti segédek használhatók az új AWS-úton is,
@@ -66,7 +67,7 @@ regionális költség. A minimális próba csak a runtime alapadatait adja.
 
 ## Mi kell a telepítéshez
 
-1. Kész AWS-fiók és helyi AWS CLI bejelentkezés, lehetőleg ideiglenes/SSO
+1. Kész AWS-projekt és helyi AWS CLI bejelentkezés, lehetőleg ideiglenes/SSO
    hozzáféréssel. A profil neve és a nem titkos account ID elég a konfiguráció
    kiválasztásához; access key, session token, root-jelszó nem kell chatbe.
 2. Az induló, külön pilot környezethez Lambda, IAM, CloudFormation,
@@ -80,7 +81,11 @@ regionális költség. A minimális próba csak a runtime alapadatait adja.
    konfiguráció Cognitóhoz. A repo publikus originje és iOS callbackje ismert;
    új domain nem előfeltétel az első pilothoz.
 
-A CLI és AWS-profil ebben az előkészítésben még nincs beállítva.
+Az AWS CLI v2 telepítve van, a morzsa profil eu-north-1 régióval létrejött.
+A böngészős belépés és az Agent Toolkit telepítésének ellenőrzése még hátravan.
+Az új AWS experience-ben a regionális erőforrásokat kizárólag a kiválasztott
+régióba telepítjük; Lambda@Edge és több régiós StackSets nem része a tervnek.
+Az Agent Toolkit konfigurációs szolgáltatása külön, us-east-1-ben érhető el.
 
 ## Sorrend és élesíthetőség
 

@@ -10,7 +10,7 @@ const stack=process.argv[2],profile=process.argv[3];
 if (!stack || !/^[A-Za-z][A-Za-z0-9-]{0,39}$/.test(stack)) {
   throw new Error('Usage: node benchmark.mjs STACK_NAME [AWS_PROFILE]; this invokes metered AWS services');
 }
-const region='eu-west-1',taskDir=await mkdtemp(path.join(tmpdir(),'morzsa-snapstart-'));
+const region='eu-north-1',taskDir=await mkdtemp(path.join(tmpdir(),'morzsa-snapstart-'));
 const aws=args=>new Promise((resolve,reject)=>{
   const child=spawn('aws',[...args,'--region',region,'--output','json',...(profile?['--profile',profile]:[])],
     {env:{...process.env,AWS_PAGER:''},stdio:['ignore','pipe','pipe']});
