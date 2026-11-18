@@ -1,0 +1,28 @@
+{
+  "verifiedAt": "2026-11-18T11:10:34.710763+00:00",
+  "projectRef": "cbgcugshwivxpaurzyqq",
+  "migration": "20261118_scoped_result_cache.sql",
+  "migrationSha256": "782f2cd98f7d6368442f61a56396edfba647364a36c902ac0118de6c2e8e9aa1",
+  "checks": {
+    "anon_blocked": true,
+    "backend_rpc_allowed": true,
+    "cache_table": true,
+    "client_blocked": true,
+    "client_rpc_blocked": true,
+    "dashboard_available": true,
+    "read_rpc": true,
+    "rls_enabled": true,
+    "version_table": true,
+    "write_rpc": true
+  },
+  "functions": [
+    "recipe-ideas",
+    "voice-command",
+    "plus-assistant"
+  ],
+  "functionSourceSha256": {
+    "recipe-ideas": "9314ed5cd23ee0549ff220007d0df5faa86bb555be481ff5bee06ece1de0953f",
+    "voice-command": "1bbe40cb5f8246432f2b6e095472cda839051067c9b8fe19e350437e14944b93",
+    "plus-assistant": "6dacd9872ba294e61a2475ed8d847ae3bf36ce6a11385fddd72a3624637e168e"
+  }
+}

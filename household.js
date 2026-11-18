@@ -222,7 +222,7 @@
  async function connect(hid,{name}={}){
   if(cloud.busy||pendingCart())return;
   const previous=cloud.active,user=session?.user?.id,scope=window.MorzsaCache?.scope(user,hid);
-  const valid=()=>!!user&&user===session?.user?.id&&(!scope||window.MorzsaCache.valid(scope));
+  const valid=()=>!!user&&user===session?.user?.id&&(!scope||window.MorzsaCache.scope(user,hid).epoch===scope.epoch);
   cloud.busy=true;switchingName=name||houseNames.get(hid)||say('Háztartás','Household');paintInviteBadge();
   let installed=false;
   const install=rows=>{
