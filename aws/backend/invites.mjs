@@ -1,0 +1,19 @@
+import {randomUUID,createHash} from 'node:crypto';
+import {rows,replace} from './store.mjs';
+import {fail,uuid} from './engine.mjs';
+const now=()=>new Date().toISOString(),alive=i=>i.status==='pending'&&Date.parse(i.expires_at)>Date.now();
+export async function inviteRpc(e,name,a){const global=await e.global(),mail=e.profile.emailVerified?e.profile.email?.toLowerCase():null,invites=global.householdEmailInvites??=[],tokens=global.householdTokens??[];
+ const edit=async()=>{await e.global(true);global.householdEmailInvites??=[];global.householdTokens??=[];};
+ const addMember=async hid=>{const h=await e.tx.edit('H#'+hid);if(!rows(h,'households').some(r=>r.id===hid))fail(404,'Household unavailable');const m={household_id:hid,user_id:e.uid};if(!rows(h,'household_members').some(m=>m.user_id===e.uid))rows(h,'household_members').push(m);const u=await e.user(true);if(!rows(u,'household_members').some(m=>m.household_id===hid))rows(u,'household_members').push(m);};
+ switch(name){
+ case 'list_household_email_invites':{if(!mail)return [];const out=[];for(const i of invites.filter(i=>i.email===mail&&alive(i))){const h=await e.tx.get('H#'+i.household_id),house=rows(h,'households')[0];if(house)out.push({id:i.id,household_id:i.household_id,household_name:house.name,expires_at:i.expires_at});}return out;}
+ case 'list_sent_household_invites':await e.household(a.hid,false,true);return invites.filter(i=>i.household_id===a.hid).map(({id,email,status,expires_at})=>({id,email,status,expires_at}));
+ case 'send_household_email_invite':{await e.household(a.hid,true,true);const email=typeof a.recipient_email==='string'?a.recipient_email.trim().toLowerCase():'';if(email.length>254||! /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))fail(400,'Invalid email');if(email===mail)fail(400,'Cannot invite yourself');if(invites.filter(i=>i.household_id===a.hid&&i.email!==email&&alive(i)).length>=50)fail(429,'Too many pending invitations');await edit();const prior=invites.find(i=>i.household_id===a.hid&&i.email===email),next={id:prior?.id??randomUUID(),household_id:a.hid,email,status:'pending',created_at:now(),expires_at:new Date(Date.now()+7*86400000).toISOString()};if(prior)Object.assign(prior,next);else global.householdEmailInvites.push(next);return next.id;}
+ case 'respond_household_email_invite':{const i=invites.find(i=>i.id===a.invitation_id);if(!i||!mail||i.email!==mail||!alive(i)||typeof a.accept_invite!=='boolean')fail(403,'Invitation unavailable');await edit();if(a.accept_invite)await addMember(i.household_id);i.status=a.accept_invite?'accepted':'declined';return a.accept_invite?i.household_id:null;}
+ case 'revoke_household_email_invite':{const i=invites.find(i=>i.id===a.invitation_id&&i.status==='pending');if(!i)fail(403,'Owner access required');await e.household(i.household_id,false,true);await edit();i.status='revoked';return null;}
+ case 'invite_household':{await e.household(a.hid,false,true);await edit();const token=randomUUID()+randomUUID();global.householdTokens.push({token_hash:createHash('sha256').update(token).digest('hex'),household_id:a.hid,used_at:null,expires_at:new Date(Date.now()+7*86400000).toISOString()});return token;}
+ case 'join_household':{if(typeof a.invite_token!=='string'||a.invite_token.length>200)fail(400,'Invalid invitation');const digest=createHash('sha256').update(a.invite_token).digest('hex'),i=tokens.find(i=>i.token_hash===digest||i.token_hash==='\\x'+digest);if(!i||i.used_at||Date.parse(i.expires_at)<=Date.now())fail(403,'Invitation expired or already used');await edit();await addMember(i.household_id);i.used_at=now();return i.household_id;}
+ case 'revoke_household_invites':await e.household(a.hid,false,true);await edit();for(const i of tokens.filter(i=>i.household_id===a.hid&&!i.used_at))i.expires_at=now();return null;
+ default:return undefined;
+ }
+}

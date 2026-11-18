@@ -32,7 +32,17 @@ export function createTemplate(buildId) {
       Name:'probe',FunctionName:{Ref:name},FunctionVersion:{'Fn::GetAtt':[version,'Version']}}};
     outputs[name]={Value:{Ref:name+'Alias'}};
   }
-  return {AWSTemplateFormatVersion:'2010-09-09',Description:
+  for (const [id,resource] of Object.entries(resources)) {
+    resource.Metadata={'com.aws.cloudformation.Context':{
+      why:id==='ProbeRole'?'Allow the runtime probes to write only their own logs':
+        resource.Type==='AWS::Lambda::Function'?'Compare bounded runtime work without network or application dependencies':
+        resource.Type==='AWS::Logs::LogGroup'?'Retain runtime init/restore reports briefly for measurement':
+        resource.Type==='AWS::Lambda::Version'?'Publish immutable code; SnapStart requires a published version':
+        'Invoke the published probe consistently',
+      must:['No application data or public endpoints','No VPC or provisioned concurrency','Keep both Java functions on identical code and memory']
+    }};
+  }
+  return {AWSTemplateFormatVersion:'2010-09-09',Metadata:{AWSToolsMetrics:{AWSAgentToolkit:'aws-cloudformation@3'}},Description:
     'Morzsa isolated IAM-only SnapStart runtime benchmark; no application data or public endpoints',
     Resources:resources,Outputs:outputs};
 }

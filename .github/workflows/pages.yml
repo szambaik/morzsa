@@ -49,7 +49,7 @@ jobs:
       - run: npm run build:web
       - run: node design-audit/verify-web-build.mjs
       - name: Record verified release revision
-        run: node -e "require('fs').writeFileSync('web-dist/version.json', JSON.stringify({commit:process.env.GITHUB_SHA,run:process.env.GITHUB_RUN_ID,audit:'passed'})+'\n')"
+        run: node -e "const fs=require('fs');const version=JSON.parse(fs.readFileSync('web-dist/version.json'));fs.writeFileSync('web-dist/version.json', JSON.stringify({...version,commit:process.env.GITHUB_SHA,run:process.env.GITHUB_RUN_ID,audit:'passed'})+'\n')"
       - uses: actions/upload-pages-artifact@v3
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         with:

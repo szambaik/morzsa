@@ -1,0 +1,3 @@
+// Provider selection is explicit. A failed request never switches its database.
+window.MORZSA_AWS={provider:'aws',url:'https://8wk2nknxma.execute-api.eu-north-1.amazonaws.com',publishableKey:'aws-public-client',region:'eu-north-1',clientId:'7khmfirga1tu8jkj4acirnombk',authDomain:'https://morzsa-backend-805089420194.auth.eu-north-1.amazoncognito.com'};
+(()=>{const choice=new URL(location.href).searchParams.get('backend');let saved;try{if(['aws','supabase'].includes(choice))localStorage.setItem('morzsa-backend-choice',choice);saved=localStorage.getItem('morzsa-backend-choice');}catch{}const aws=choice?choice==='aws':window.MORZSA_BUILD?window.MORZSA_BUILD.backend==='aws':saved==='aws';if(aws)window.MORZSA_CLOUD={...window.MORZSA_AWS};})();

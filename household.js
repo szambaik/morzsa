@@ -1,8 +1,9 @@
 (() => {
  const config=window.MORZSA_CLOUD||{},configured=!!(config.url&&config.publishableKey),q=document.getElementById('household-dialog');
+ const backendKey=k=>window.MorzsaAWS?.key(k)||k;
  const say=(hu,en)=>language==='en'?en:hu;
- let session,authVersion=0,refreshPromise;try{if(!window.MorzsaNative)session=JSON.parse(localStorage.getItem('morzsa-session'))}catch{}
- const cloud=window.household={active:null,rows:[],busy:false,configured,notify:()=>push(),storageKey:()=>cloud.active?'morzsa-household-cache-'+cloud.active:'morzsa-v2'};
+ let session,authVersion=0,refreshPromise;try{if(!window.MorzsaNative)session=JSON.parse(localStorage.getItem(backendKey('morzsa-session')))}catch{}
+ const cloud=window.household={active:null,rows:[],busy:false,configured,notify:()=>push(),storageKey:()=>cloud.active?backendKey('morzsa-household-cache-')+cloud.active:'morzsa-v2'};
  let cartOutbox=[],cartSync=false,refreshing=false,cartTimer=null,cartFailed=false;
  Object.defineProperty(cloud,'cartPending',{get:()=>cartOutbox.length});
  Object.defineProperty(cloud,'cartInteractive',{get:()=>!!cloud.active&&(!cloud.busy||cartSync||refreshing)});
@@ -10,7 +11,7 @@
  const reportCart=(intent,outcome)=>{try{cartReceipts.get(intent)?.(outcome)}catch{/* A presentation callback must not interrupt synchronization. */}};
  cloud.retryCart=()=>flushCart();
  cloud.realtimeHealthy=()=>liveConnection?.healthy?.()===true;
- const outboxKey=()=> 'morzsa-cart-outbox-'+session?.user?.id+'-'+cloud.active;
+ const outboxKey=()=> backendKey('morzsa-cart-outbox-')+session?.user?.id+'-'+cloud.active;
  const persistCart=()=>{if(cartOutbox.length)localStorage.setItem(outboxKey(),JSON.stringify(cartOutbox));else localStorage.removeItem(outboxKey())};
  const overlayCart=rows=>HouseholdModel.applyCartIntents(HouseholdModel.decode(rows,state),cartOutbox);
  const paintCart=()=>{if(page==='shopping')refreshShoppingRows();else render();window.MorzsaCompanion?.refreshQuick();updateCount()};
@@ -85,7 +86,7 @@
  let liveConnection=null,liveRefreshTimer=null,liveDirty=false;
  let localBackup=null,authEmail='',authMode='login',recoveryMode=false,pollTimer,invitations=[],inviteUnavailable=false,inviteLoading=false;
  const houseNames=new Map();cloud.activeName=()=>houseNames.get(cloud.active)||say('Közös háztartás','Shared household');let switchingName='',menuBusy=false,newHouseholdId=null;
- const preferenceKey=()=>session?.user?.id?'morzsa-last-household-'+session.user.id:null;
+ const preferenceKey=()=>session?.user?.id?backendKey('morzsa-last-household-')+session.user.id:null;
  function rememberHousehold(){const key=preferenceKey();if(key)try{localStorage.setItem(key,JSON.stringify({id:cloud.active,name:houseNames.get(cloud.active)||''}))}catch{toast(say('A választást nem sikerült megjegyezni ezen az eszközön.','Could not remember your choice on this device.'))}}
  let syncIssue=null;
  function syncFailed(kind){syncIssue=kind;paintSyncIssue()}
@@ -110,7 +111,7 @@
   try{await connect(saved.id,{name:saved.name})}catch{if(valid())syncFailed('load')}
  }
  const incomingLink=AuthLink.consume(location.href);if(incomingLink)history.replaceState(null,'',incomingLink.cleanURL);
- let authPending=!!incomingLink||!!window.MorzsaNative,authNotice='';
+ let authPending=!!incomingLink||!!window.MorzsaNative||!!window.MorzsaAWS?.pendingCallback,authNotice='';
  function status(hu,en){if(hu==='Közös háztartás · szinkronizálva')syncIssue=null;if(cartOutbox.length&&cartFailed){cartStatus(true);return}const el=document.getElementById('cloud-status');delete el.dataset.cartSync;el.textContent=say(hu,en);el.hidden=['Csak ezen az eszközön','Közös háztartás · szinkronizálva','Közös háztartás'].includes(hu);paintSyncIssue()}
  function errorText(e){if(['AbortError','TimeoutError'].includes(e.name)||e.message==='CLOUD_TIMEOUT')return say('A betöltés túl sokáig tartott. Próbáld újra.','Loading took too long. Please retry.');if(e.message?.includes('Invalid login credentials'))return say('Hibás email-cím vagy jelszó.','Incorrect email or password.');if(e.message?.includes('Email not confirmed'))return say('Előbb erősítsd meg az email-címedet a kapott levélben.','Confirm your email using the message in your inbox first.');if(e.message?.includes('Conflict'))return say('Valaki közben módosította a listát. Frissítettük; ismételd meg a műveletet.','Someone changed the list. It has been refreshed; repeat your action.');return e.message||say('Nem sikerült kapcsolódni.','Could not connect.')}
  async function refreshAuth(){
@@ -128,7 +129,7 @@
   const text=await response.text();if(options.expectedUser&&options.expectedUser!==session?.user?.id)throw Error('Account changed');let data;try{data=text?JSON.parse(text):null}catch{throw Error('Invalid server response')}
   // PostgREST rejects expired JWTs before executing the request. Refresh once,
   // including saves, but never replay an assistant/provider request.
-  if(!response.ok&&response.status===401&&auth&&uid&&path.startsWith('/rest/v1/')&&!options.authRetried&&['PGRST301','PGRST303'].includes(data?.code)){
+  if(!response.ok&&response.status===401&&auth&&uid&&path.startsWith('/rest/v1/')&&!options.authRetried&&(window.MorzsaAWS||['PGRST301','PGRST303'].includes(data?.code))){
    if(uid!==session?.user?.id)throw Error('Account changed');
    if(access===session.access_token)await refreshAuth();
    return await request(path,body,auth,method,timeoutMs,{...options,authRetried:true,expectedUser:uid});
@@ -138,7 +139,7 @@
  }
  async function setSession(value){
   const previousUser=session?.user?.id,version=++authVersion;if(value&&!value.expires_at)value.expires_at=Math.floor(Date.now()/1000)+(value.expires_in||3600);
-  if(window.MorzsaNative)await window.MorzsaNative.saveSession(value);else if(value)localStorage.setItem('morzsa-session',JSON.stringify(value));else localStorage.removeItem('morzsa-session');
+  if(window.MorzsaNative)await window.MorzsaNative.saveSession(value);else if(value)localStorage.setItem(backendKey('morzsa-session'),JSON.stringify(value));else localStorage.removeItem(backendKey('morzsa-session'));
   if(version!==authVersion)return;if(previousUser&&previousUser!==value?.user?.id)window.MorzsaCache?.clearAccount(previousUser);session=value;liveConnection?.updateToken(session?.access_token||'');cloudDataConnection?.updateToken?.(session?.access_token||'');invitations=[];paintInviteBadge();if(previousUser!==session?.user?.id)window.dispatchEvent(new Event('morzsa-auth-change'));
  }
  const rpc=(name,args)=>request('/rest/v1/rpc/'+name,args);
@@ -188,8 +189,8 @@
   if(pendingCart())return false;
   if(cloud.busy){state=HouseholdModel.decode(cloud.rows,state);render();toast(say('Mentés folyamatban, próbáld újra.','Saving in progress; try again.'));return}
   const changes=HouseholdModel.diff(cloud.rows,state);if(!changes.length)return true;
-  const draft=JSON.stringify(state),hid=cloud.active;try{localStorage.setItem('morzsa-pending-'+hid,draft)}catch{state=HouseholdModel.decode(cloud.rows,state);render();toast(say('A böngésző nem tudta menteni a változtatást.','The browser could not save this change.'));return}cloud.busy=true;status('Mentés…','Saving…');
-  try{await rpc('apply_household_changes',{hid,changes});cloud.rows=await fetchRows();state=HouseholdModel.decode(cloud.rows,state);localStorage.setItem(cloud.storageKey(),JSON.stringify(state));localStorage.removeItem('morzsa-pending-'+hid);render();window.PantryReview?.refresh();window.KitchenIntelligence?.refresh();window.ShoppingMode?.refresh();status('Közös háztartás · szinkronizálva','Shared household · synced');return true}
+  const draft=JSON.stringify(state),hid=cloud.active;try{localStorage.setItem(backendKey('morzsa-pending-')+hid,draft)}catch{state=HouseholdModel.decode(cloud.rows,state);render();toast(say('A böngésző nem tudta menteni a változtatást.','The browser could not save this change.'));return}cloud.busy=true;status('Mentés…','Saving…');
+  try{await rpc('apply_household_changes',{hid,changes});cloud.rows=await fetchRows();state=HouseholdModel.decode(cloud.rows,state);localStorage.setItem(cloud.storageKey(),JSON.stringify(state));localStorage.removeItem(backendKey('morzsa-pending-')+hid);render();window.PantryReview?.refresh();window.KitchenIntelligence?.refresh();window.ShoppingMode?.refresh();status('Közös háztartás · szinkronizálva','Shared household · synced');return true}
   catch(e){try{cloud.rows=await fetchRows()}catch{}state=HouseholdModel.decode(cloud.rows,state);render();status('Nem sikerült menteni · ismételd meg','Not saved · repeat your action');toast(errorText(e));return false}
   finally{cloud.busy=false}
  }
@@ -341,7 +342,7 @@
   if(invitations.length)button.insertAdjacentHTML('beforeend','<span class="invite-badge" aria-hidden="true">'+invitations.length+'</span>');
  }
  async function loadInvitations(){
-  if(!session||!configured||inviteLoading)return;inviteLoading=true;const uid=session.user?.id;
+  if(authPending||!session||!configured||inviteLoading)return;inviteLoading=true;const uid=session.user?.id;
   try{const rows=await rpc('list_household_email_invites',{});if(session?.user?.id!==uid)return;invitations=rows;inviteUnavailable=false;paintInviteBadge();const section=q.querySelector("#incoming-invitations");if(section&&!section.contains(document.activeElement))paintInvitations()}
   catch(e){if(session?.user?.id===uid){inviteUnavailable=true}}
   finally{inviteLoading=false}
@@ -360,7 +361,7 @@
  function paintAccount(){const b=document.getElementById('account-button');if(b){b.textContent=session?say('Fiókom','Account'):say('Belépés','Sign in');b.setAttribute('aria-label',session?say('Fiókom és háztartásaim','Account and households'):say('Belépés vagy regisztráció','Sign in or register'))}}
  function paintAuth(body){
   const signup=authMode==='signup',reset=authMode==='reset';q.querySelector('h2').textContent=reset?say('Új jelszó kérése','Reset password'):signup?say('Regisztráció','Create account'):say('Belépés','Sign in');
-  body.innerHTML='<div class="auth-tabs"><button data-auth="login" aria-pressed="'+(!signup&&!reset)+'">'+say('Belépés','Sign in')+'</button><button data-auth="signup" aria-pressed="'+signup+'">'+say('Regisztráció','Register')+'</button></div><form id="password-auth"><label>Email<input name="email" type="email" required autocomplete="username" value="'+esc(authEmail)+'"></label>'+(!reset?'<label>'+say('Jelszó','Password')+'<input name="password" type="password" required '+(signup?'minlength="8"':'')+' autocomplete="'+(signup?'new-password':'current-password')+'"></label>'+(signup?'<p class="helper">'+say('Legalább 8 karakter. A regisztráció után igazold az email-címedet a kapott levélben.','At least 8 characters. Confirm your email using the message sent after registration.')+'</p>':''):'<p>'+say('Küldünk egy jelszóbeállító linket. Ezzel korábbi, linkkel létrehozott fiókodhoz is beállíthatsz jelszót.','We will send a password reset link. You can also use it to set a password for an account previously accessed with email links.')+'</p>')+'<button class="primary full">'+(reset?say('Jelszóbeállító levél kérése','Send reset email'):signup?say('Fiók létrehozása','Create account'):say('Belépés','Sign in'))+'</button></form><p id="signin-feedback" role="status"></p>'+(!reset?button('forgot-password','Elfelejtett / még nincs jelszavam','Forgot / no password yet')+button('google-signin','Belépés Google-fiókkal','Continue with Google'):'');
+  body.innerHTML='<div class="auth-tabs"><button data-auth="login" aria-pressed="'+(!signup&&!reset)+'">'+say('Belépés','Sign in')+'</button><button data-auth="signup" aria-pressed="'+signup+'">'+say('Regisztráció','Register')+'</button></div><form id="password-auth"><label>Email<input name="email" type="email" required autocomplete="username" value="'+esc(authEmail)+'"></label>'+(!reset?'<label>'+say('Jelszó','Password')+'<input name="password" type="password" required '+(signup?(window.MorzsaAWS?'minlength="12"':'minlength="8"'):'')+' autocomplete="'+(signup?'new-password':'current-password')+'"></label>'+(signup?'<p class="helper">'+say(window.MorzsaAWS?'Legalább 12 karakter, kis- és nagybetű, szám és jel. Regisztráció után erősítsd meg az email-címedet.':'Legalább 8 karakter. A regisztráció után igazold az email-címedet a kapott levélben.',window.MorzsaAWS?'At least 12 characters, upper and lower case letters, a number and a symbol. Confirm your email after registration.':'At least 8 characters. Confirm your email using the message sent after registration.')+'</p>':''):'<p>'+say('Küldünk egy jelszóbeállító linket. Ezzel korábbi, linkkel létrehozott fiókodhoz is beállíthatsz jelszót.','We will send a password reset link. You can also use it to set a password for an account previously accessed with email links.')+'</p>')+'<button class="primary full">'+(reset?say('Jelszóbeállító levél kérése','Send reset email'):signup?say('Fiók létrehozása','Create account'):say('Belépés','Sign in'))+'</button></form><p id="signin-feedback" role="status"></p>'+(!reset?button('forgot-password','Elfelejtett / még nincs jelszavam','Forgot / no password yet')+button('google-signin','Belépés Google-fiókkal','Continue with Google'):'');
   body.querySelectorAll('[data-auth]').forEach(b=>b.onclick=()=>{authEmail=body.querySelector('[name=email]').value;authMode=b.dataset.auth;authNotice='';open()});
   const forgot=body.querySelector('#forgot-password');if(forgot)forgot.onclick=()=>{authEmail=body.querySelector('[name=email]').value;authMode='reset';open()};
   body.querySelector('#password-auth').onsubmit=e=>{e.preventDefault();const form=e.target;run(form.querySelector('button'),async()=>{
@@ -396,7 +397,7 @@
  const resumeShared=()=>{if(authPending||!session)return;if(!cloud.active)return restoreHousehold();if(cartOutbox.length)return flushCart();return refresh()};
  window.addEventListener('online',resumeShared);window.addEventListener('focus',resumeShared);document.addEventListener('visibilitychange',()=>{if(!document.hidden)resumeShared()});
  paintInviteBadge();window.PantryReview?.refresh();window.dispatchEvent(new Event('morzsa-household-change'));status('Csak ezen az eszközön','This device only');
- async function start(){try{if(window.MorzsaNative)session=await window.MorzsaNative.loadSession();paintInviteBadge();authPending=!!incomingLink;if(incomingLink)await receiveLink();else await restoreHousehold();await window.MorzsaNative?.onAuth(nativeAuth);if(q.open)await open()}catch{authPending=false;authNotice=say('A biztonságos bejelentkezést nem sikerült betölteni. Nyisd meg újra az appot.','Could not load secure sign-in. Reopen the app.');status(authNotice,authNotice);await open()}}
+ async function start(){try{await window.MorzsaAWS?.ready;if(window.MorzsaAWS&&!window.MorzsaNative)session=JSON.parse(localStorage.getItem(backendKey('morzsa-session')));if(window.MorzsaNative)session=await window.MorzsaNative.loadSession();paintInviteBadge();authPending=!!incomingLink;if(incomingLink)await receiveLink();else await restoreHousehold();await window.MorzsaNative?.onAuth(nativeAuth);if(q.open)await open()}catch{authPending=false;authNotice=say('A biztonságos bejelentkezést nem sikerült betölteni. Nyisd meg újra az appot.','Could not load secure sign-in. Reopen the app.');status(authNotice,authNotice);await open()}}
  start();
  loadInvitations();setInterval(async()=>{if(document.hidden||authPending)return;await loadInvitations();if(q.open&&!q.contains(document.activeElement))paintInvitations()},30000);
  window.addEventListener('focus',()=>loadInvitations());

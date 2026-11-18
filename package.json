@@ -5,6 +5,8 @@
   "scripts": {
     "test": "node --test tests/*.test.cjs && node tests/household-sql.test.mjs && node tests/email-invites.test.mjs && node tests/recipe-ai-sql.test.mjs && node tests/voice-sql.test.mjs && node tests/realtime-sql.test.mjs && node tests/pantry-review-sql.test.mjs && node tests/kitchen-sql.test.mjs && node tests/shopping-mode-sql.test.mjs && node tests/persistence-sql.test.mjs && node tests/proactive-sql.test.mjs && node tests/household-collaboration-sql.test.mjs && node tests/scoped-cache-sql.test.mjs",
     "build:mobile": "node scripts/build-mobile.mjs",
+    "build:mobile:supabase": "node scripts/build-mobile.mjs --supabase",
+    "build:web:supabase": "node scripts/build-mobile.mjs --web --supabase",
     "sync:mobile": "npm run build:mobile && cap sync",
     "open:ios": "cap open ios",
     "open:android": "cap open android",

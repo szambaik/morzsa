@@ -1,0 +1,31 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Private, encrypted deployment artifacts for the isolated Morzsa runtime probe; no application or user data.",
+  "Metadata": {"AWSToolsMetrics": {"AWSAgentToolkit": "aws-cloudformation@3"}},
+  "Resources": {
+    "ArtifactsBucket": {
+      "Type": "AWS::S3::Bucket",
+      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Retain",
+      "Metadata": {"com.aws.cloudformation.Context": {
+        "why": "Store only small runtime-probe deployment archives with automatic expiration.",
+        "must": ["Block public access", "Encrypt at rest", "Use HTTPS", "Never store user data"]
+      }},
+      "Properties": {
+        "PublicAccessBlockConfiguration": {"BlockPublicAcls": true, "BlockPublicPolicy": true, "IgnorePublicAcls": true, "RestrictPublicBuckets": true},
+        "BucketEncryption": {"ServerSideEncryptionConfiguration": [{"ServerSideEncryptionByDefault": {"SSEAlgorithm": "AES256"}}]},
+        "VersioningConfiguration": {"Status": "Enabled"},
+        "LifecycleConfiguration": {"Rules": [{"Id": "ExpireProbeArtifacts", "Status": "Enabled", "ExpirationInDays": 7, "NoncurrentVersionExpiration": {"NoncurrentDays": 1}, "AbortIncompleteMultipartUpload": {"DaysAfterInitiation": 1}}]}
+      }
+    },
+    "ArtifactsBucketPolicy": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Metadata": {"com.aws.cloudformation.Context": {"why": "Deny non-TLS access to the probe archives.", "must": ["No public allow statement", "Cover both bucket and object ARNs"]}},
+      "Properties": {
+        "Bucket": {"Ref": "ArtifactsBucket"},
+        "PolicyDocument": {"Version": "2012-10-17", "Statement": [{"Sid": "DenyInsecureTransport", "Effect": "Deny", "Principal": "*", "Action": "s3:*", "Resource": [{"Fn::GetAtt": ["ArtifactsBucket", "Arn"]}, {"Fn::Sub": "${ArtifactsBucket.Arn}/*"}], "Condition": {"Bool": {"aws:SecureTransport": false}}}]}
+      }
+    }
+  },
+  "Outputs": {"BucketName": {"Value": {"Ref": "ArtifactsBucket"}}}
+}

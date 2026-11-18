@@ -1,0 +1,37 @@
+import {CognitoIdentityProviderClient,ListUsersCommand,GetUserCommand,InitiateAuthCommand,SignUpCommand,ConfirmSignUpCommand,ForgotPasswordCommand,ConfirmForgotPasswordCommand,GlobalSignOutCommand} from '@aws-sdk/client-cognito-identity-provider';
+import {DynamoDBClient} from '@aws-sdk/client-dynamodb';
+import {DynamoDBDocumentClient,GetCommand,PutCommand} from '@aws-sdk/lib-dynamodb';
+import {randomUUID} from 'node:crypto';
+import {withTelemetry} from './telemetry.mjs';
+const config={region:process.env.AWS_REGION,maxAttempts:3},auth=new CognitoIdentityProviderClient(config),db=DynamoDBDocumentClient.from(new DynamoDBClient(config),{marshallOptions:{removeUndefinedValues:true}});
+const pool=process.env.USER_POOL,client=process.env.APP_CLIENT,table=process.env.DATA_TABLE,domain=process.env.AUTH_DOMAIN;
+const origins=['https://szambaik.github.io','capacitor://localhost','https://localhost','http://localhost','http://localhost:8080'];
+const fail=(status,message)=>{throw Object.assign(Error(message),{status});};
+const email=v=>{if(typeof v!=='string'||v.length>254||/\p{Cc}/u.test(v)||! /^[^\s@"\\]+@[^\s@"\\]+\.[^\s@"\\]+$/.test(v))fail(400,'Invalid email');return v.trim().toLowerCase();};
+async function username(address){const r=await auth.send(new ListUsersCommand({UserPoolId:pool,Filter:'email = "'+email(address)+'"',Limit:2}));return r.Users?.find(u=>!u.Username.startsWith('Google_'))?.Username??r.Users?.[0]?.Username;}
+async function profile(access){let claims;try{claims=JSON.parse(Buffer.from(access.split('.')[1],'base64url'));}catch{fail(401,'Sign in required');}
+ if(claims.token_use!=='access'||claims.client_id!==client||claims.iss!=='https://cognito-idp.'+config.region+'.amazonaws.com/'+pool)fail(401,'Sign in required');
+ const user=await auth.send(new GetUserCommand({AccessToken:access})),attrs=Object.fromEntries(user.UserAttributes.map(a=>[a.Name,a.Value])),key={PK:'IDENTITY#'+attrs.sub,SK:'PROFILE'};let p=(await db.send(new GetCommand({TableName:table,Key:key,ConsistentRead:true}))).Item;
+ if(!p){const userId=randomUUID();try{await db.send(new PutCommand({TableName:table,Item:{...key,userId,email:attrs.email,emailVerified:attrs.email_verified==='true',disabled:false,source:'cognito'},ConditionExpression:'attribute_not_exists(PK)'}));}catch(e){if(e.name!=='ConditionalCheckFailedException')throw e;}p=(await db.send(new GetCommand({TableName:table,Key:key,ConsistentRead:true}))).Item;}
+ if(p.disabled)fail(403,'Account disabled');if(p.email!==attrs.email||p.emailVerified!==(attrs.email_verified==='true')){p={...p,email:attrs.email,emailVerified:attrs.email_verified==='true'};await db.send(new PutCommand({TableName:table,Item:p,ConditionExpression:'userId = :uid',ExpressionAttributeValues:{':uid':p.userId}}));}return {id:p.userId,email:attrs.email,email_confirmed_at:attrs.email_verified==='true'?new Date().toISOString():null,user_metadata:p.userMetadata??{}};
+}
+async function session(t,refresh){if(!t?.AccessToken)fail(401,'Additional sign-in challenge required');return {access_token:t.AccessToken,refresh_token:t.RefreshToken??refresh,expires_in:t.ExpiresIn,expires_at:Math.floor(Date.now()/1000)+t.ExpiresIn,token_type:'bearer',user:await profile(t.AccessToken)};}
+async function authHandler(event){const origin=event.headers?.origin??'',headers={'Content-Type':'application/json','Cache-Control':'private, no-store',...(origins.includes(origin)?{'Access-Control-Allow-Origin':origin,Vary:'Origin','Access-Control-Allow-Headers':'Authorization,Content-Type','Access-Control-Allow-Methods':'GET,POST,OPTIONS'}:{})},answer=(body,statusCode=200)=>({statusCode,headers,body:JSON.stringify(body)});
+ try{if(origin&&!origins.includes(origin))fail(403,'Origin denied');const method=event.requestContext?.http?.method,path=event.rawPath,q=event.queryStringParameters??{},access=(event.headers?.authorization??'').replace(/^Bearer /i,'');if(method==='OPTIONS')return {statusCode:204,headers,body:''};let input={};if(event.body){if(event.body.length>12000)fail(400,'Invalid request');input=JSON.parse(event.body);}
+ if(path==='/auth/v1/settings')return answer({external:{google:true},provider:'aws'});
+ if(path==='/auth/v1/user'&&method==='GET')return answer(await profile(access));
+ if(path==='/auth/v1/token'){
+  if(q.grant_type==='password'){const u=await username(input.email);if(!u)fail(401,'Invalid login credentials');try{return answer(await session((await auth.send(new InitiateAuthCommand({ClientId:client,AuthFlow:'USER_PASSWORD_AUTH',AuthParameters:{USERNAME:u,PASSWORD:input.password}}))).AuthenticationResult));}catch(e){if(e.name==='UserNotConfirmedException')fail(400,'Email not confirmed');if(e.status)throw e;fail(401,'Invalid login credentials');}}
+  if(q.grant_type==='refresh_token')return answer(await session((await auth.send(new InitiateAuthCommand({ClientId:client,AuthFlow:'REFRESH_TOKEN_AUTH',AuthParameters:{REFRESH_TOKEN:input.refresh_token}}))).AuthenticationResult,input.refresh_token));
+  if(q.grant_type==='pkce'){const redirect=input.redirect_uri??'io.github.szambaik.morzsa://auth-callback';if(!['https://szambaik.github.io/morzsa/','io.github.szambaik.morzsa://auth-callback','http://localhost:8080/'].includes(redirect))fail(400,'Invalid callback');const r=await fetch(domain+'/oauth2/token',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({grant_type:'authorization_code',client_id:client,code:input.auth_code,code_verifier:input.code_verifier,redirect_uri:redirect}),signal:AbortSignal.timeout(10000)});if(!r.ok)fail(401,'Invalid sign-in callback');const t=await r.json();return answer(await session({AccessToken:t.access_token,RefreshToken:t.refresh_token,ExpiresIn:t.expires_in}));}
+  fail(400,'Unsupported sign-in flow');
+ }
+ if(path==='/auth/v1/signup'){if(await username(input.email))fail(400,'Account already exists; sign in or reset your password');const uid=randomUUID();await auth.send(new SignUpCommand({ClientId:client,Username:uid,Password:input.password,UserAttributes:[{Name:'email',Value:email(input.email)}]}));return answer({confirmation_required:true});}
+ if(path==='/auth/v1/confirm'){const u=await username(input.email);if(!u)fail(400,'Invalid confirmation');await auth.send(new ConfirmSignUpCommand({ClientId:client,Username:u,ConfirmationCode:input.code}));return answer({confirmed:true});}
+ if(path==='/auth/v1/recover'){const u=await username(input.email);if(u){try{await auth.send(new ForgotPasswordCommand({ClientId:client,Username:u}));}catch(e){if(!['InvalidParameterException','UserNotFoundException','NotAuthorizedException'].includes(e.name))throw e;}}return answer({code_required:true});}
+ if(path==='/auth/v1/reset'){const u=await username(input.email);if(!u)fail(400,'Invalid recovery code');await auth.send(new ConfirmForgotPasswordCommand({ClientId:client,Username:u,ConfirmationCode:input.code,Password:input.password}));return answer({updated:true});}
+ if(path==='/auth/v1/logout'){await auth.send(new GlobalSignOutCommand({AccessToken:access}));return answer({signed_out:true});}
+ fail(404,'Auth endpoint unavailable');
+ }catch(e){return answer({error:e.status?e.message:['CodeMismatchException','ExpiredCodeException'].includes(e.name)?'Invalid or expired confirmation code':e.name==='InvalidPasswordException'?'Use at least 12 characters, upper and lower case letters, a number and a symbol':'Sign-in temporarily unavailable'},e.status??400);}
+}
+export const handler=withTelemetry(authHandler,'auth');
