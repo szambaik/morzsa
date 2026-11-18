@@ -11,7 +11,8 @@
 :root.keyboard-open #workspace-quick-add.workspace-add-fab{visibility:hidden}
 :root .cooking-question-open .companion-messages{padding-bottom:16px;top:var(--viewport-top);bottom:calc(var(--keyboard-inset,0px) + var(--task-dock-height,0px) + var(--composer-height,0px) + 24px)}
 @media(max-width:999px){
- :root .app>header{position:sticky;top:var(--viewport-top);z-index:22;background:var(--bg);padding-top:env(safe-area-inset-top,0px);box-sizing:content-box}
+ :root .app>header{position:sticky;top:var(--viewport-top);z-index:22;background:transparent;padding-top:env(safe-area-inset-top,0px);box-sizing:content-box}
+ :root.shell-scrolled .app>header{background:color-mix(in srgb,var(--bg) 88%,transparent);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
 }
 /* One flowing popup, independent of the title and of the legacy catalog menu. */
 .pantry-library .pantry-tools{flex:none;align-self:flex-start}

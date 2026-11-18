@@ -22,6 +22,8 @@ for(const id of required)assert.ok(checks.some(c=>c.id===id&&c.status==='passed'
 assert.ok(checks.length>=54&&checks.every(c=>c.status==='passed'),'All targeted checks must pass');
 const ios=spawnSync(process.execPath,[path.join(root,'tests/check-ios-controls.mjs'),path.join(result.runDir,'ios-controls')],{cwd:root,stdio:'inherit'});
 assert.equal(ios.status,0,'Native control scope and web fallback regressions must pass');
+const householdRecovery=spawnSync(process.execPath,[path.join(root,'tests/household-recovery.browser.mjs')],{cwd:root,stdio:'inherit'});
+assert.equal(householdRecovery.status,0,'Native household recovery, retained local saves and JWT retry regressions must pass');
 console.log('Release gate passed: full audit, '+scans.length+' axe scans, '+checks.length+' targeted checks.');
 
 const recipeLatency=spawnSync(process.execPath,[path.join(import.meta.dirname,'recipe-latency.mjs')],{cwd:root,stdio:'inherit'});
