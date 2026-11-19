@@ -17,7 +17,9 @@ DynamoDB state, asynchronous AI workflow and private image storage are preserved
 - A single follow-up control group belongs to the latest completed recipe turn.
   New idea and refinement use the existing AI workflow, preserving the original
   request, later corrections, refinements and excluded dishes. Recipe variations
-  remain available through a smaller secondary disclosure.
+  remain available through a smaller secondary disclosure. Background refreshes
+  preserve the open refinement editor, unsubmitted checkbox changes and focus;
+  a new AI request resets the editor to its submitted constraints.
 - What I took into account presents the actual retained request/corrections and
   selected refinements. Bare follow-ups such as Again or Give me a recipe do not
   appear as meaningful constraints. All user text is escaped.
