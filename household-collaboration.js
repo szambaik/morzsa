@@ -33,5 +33,5 @@ window.MorzsaHousehold=(()=>{
  function nameField(){return '<label>'+say('Neved a közös konyhában','Your name in the shared kitchen')+'<input name="memberName" maxlength="60" autocomplete="nickname" value="'+esc(ownName())+'" placeholder="'+say('Pl. Peti','e.g. Alex')+'"></label>'}
  window.addEventListener('morzsa-household-change',()=>{sync();window.KitchenIntelligence?.refresh();window.RecipeLibrary?.refresh();window.MorzsaPersistence?.refresh()});
  window.addEventListener('morzsa-auth-change',sync);
- return {sync,update,mount,bind,cookingMarkup,actorName,eventText,nameField,ownName,ready:()=>{sync();return loaded}};
+ return {memberCount:()=>{sync();return loaded?snapshot.members.length:null},sync,update,mount,bind,cookingMarkup,actorName,eventText,nameField,ownName,ready:()=>{sync();return loaded}};
 })();

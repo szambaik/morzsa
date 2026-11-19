@@ -75,7 +75,7 @@ window.MorzsaProactive=(()=>{
    const html=list.length?'<details class="proactive-shopping-fold" data-proactive-fold '+(!state.cart.length?'open':'')+'><summary>'+icon('sparkles')+'<span>'+say('Jól jöhet a listádra','Useful for your list')+'</span><small>'+list.length+say(' javaslat',' ideas')+'</small></summary><div class="proactive-grid">'+list.map(s=>productCard(s,true)).join('')+'</div><button class="proactive-primary proactive-approve" data-proactive-approve '+(!selection.size?'disabled':'')+'>'+say('Kijelöltek a listára','Add selected to list')+' · '+selection.size+'</button>'+privacyNote()+'</details>':'';
    setHost(main,'.proactive-shopping',html,host=>(main.querySelector('#add-cart')||main.querySelector('.pantry-heading'))?.after(host));
   }
-  if(page==='recipes'&&main.querySelector('.recipe-library[data-feed-tab="for-you"]')){
+  if(page==='recipes'&&main.querySelector('.recipe-library[data-feed-tab="for-you"]')&&!main.querySelector('.recipe-discovery-page')){
    setHost(main.querySelector('.recipe-library'),'.proactive-recommendations',picks.length?'<h2>'+say('Morzsa ajánlja','Morzsa recommends')+'</h2><p class="proactive-caption">'+say('A készletedből és a főzési ízlésedből indulunk.','Based on your pantry and cooking preferences.')+'</p>'+picks.slice(0,2).map(recipeCard).join(''):'',host=>main.querySelector('.recipe-feed-tabs')?.after(host));
    const featured=new Set(picks.slice(0,2).map(s=>s.recipeId));main.querySelectorAll('.recipe-discovery-section').forEach(section=>{const cards=[...section.querySelectorAll('.room-card')];cards.forEach(card=>card.hidden=featured.has(card.querySelector('[data-feed-recipe]')?.dataset.feedRecipe));section.hidden=cards.length>0&&cards.every(card=>card.hidden)});
   }
