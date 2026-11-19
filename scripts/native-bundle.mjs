@@ -23,7 +23,7 @@ export async function bundleNativeRuntime(root,dest,html){
  for(const [link] of links){const file=link.match(/href="([^"?]+)/)?.[1];if(!file||!/^[\w-]+\.css$/.test(file))throw Error('Unexpected native stylesheet');styles.push(await readFile(path.join(root,file),'utf8'))}
  styles.push(await readFile(path.join(root,'mobile/ios.css'),'utf8'));
  // iOS uses its local system fonts: no remote font stylesheet, download, or reflow.
- const css=styles.join('\n').replace(/@import\s+url\(['"]?https:\/\/fonts\.googleapis\.com\/[^;]+;/g,'').replace(/(['"]?)(Inter|Sora)\1/g,'-apple-system');
+ const css=styles.join('\n').replace(/@import\s+url\(['"]?https:\/\/fonts\.googleapis\.com\/[^)]*\)\s*;/g,'').replace(/(['"]?)(Inter|Sora|Nunito Sans)\1/g,'-apple-system');
  const compiledCSS=await transform(css,{loader:'css',minify:true,target:['safari15','chrome100'],legalComments:'none'});
  await writeFile(path.join(dest,'morzsa-app.css'),compiledCSS.code);
  for(const [tag] of scriptTags)html=html.replace(tag,'');
