@@ -495,6 +495,8 @@ window.MorzsaCompanion=(()=>{
   main.querySelectorAll('[data-recipe-shopping]').forEach(b=>b.onclick=()=>{const id=book.active,ctx=context;RecipeIngredientsPanel.open(cards[Number(b.dataset.recipeShopping)],{valid:()=>id===book.active&&ctx===scope()})});
   main.querySelectorAll('[data-view-recipe]').forEach(b=>b.onclick=()=>{savePosition();RecipeRoom.open(cards[Number(b.dataset.viewRecipe)])});
   main.querySelector('[data-more-ideas]')?.addEventListener('click',()=>moreIdeas());
+  main.querySelectorAll('[data-refine-panel]>summary,[data-retained-request]>summary').forEach(el=>el.addEventListener('click',e=>{e.preventDefault();el.parentElement.open=!el.parentElement.open;rememberDiscoveryEditor()}));
+  main.querySelectorAll('[name=refinement]').forEach(el=>el.addEventListener('change',rememberDiscoveryEditor));
   main.querySelector('[data-refine-ideas]')?.addEventListener('submit',e=>{e.preventDefault();moreIdeas(new FormData(e.target).getAll('refinement'))});
   cards.forEach((r,index)=>main.querySelectorAll('[data-chat-variant-'+index+']').forEach(b=>b.onclick=()=>variant(r,b.getAttribute('data-chat-variant-'+index))));
   main.querySelectorAll('[data-cook]').forEach(b=>b.onclick=()=>discuss(cards[Number(b.dataset.cook)]));

@@ -109,7 +109,7 @@ async page=>{
  await page.locator('#companion-input').fill('Első üzenet');
  await page.evaluate(()=>{MorzsaPersistence.beginTurn=(...args)=>new Promise((resolve,reject)=>{window.releaseHistory=()=>oldBegin(...args).then(resolve,reject)})});
  await page.locator('#companion-form button[type=submit]').click();await page.locator('.companion-pending-send').waitFor();await page.waitForFunction(()=>!!window.releaseHistory);
- await page.locator('#companion-input').fill('A következő kérdésem');await page.evaluate(()=>releaseHistory());
+ await page.locator('#companion-input').fill('A következő kérdésem');await page.evaluate(()=>{releaseHistory()});
  await page.locator('#companion-form [data-action=send]').waitFor();
  check(await page.locator('#companion-input').inputValue()==='A következő kérdésem','successful submission preserves the next draft typed during preparation');
  check(await page.locator('.companion-message.user').count()===1,'one completed send creates exactly one persisted user message');
