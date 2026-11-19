@@ -95,13 +95,10 @@
   sync();if(!M.recipe(r))return;if(options.portions)portionChoices.set(portionKey(r),options.portions);readingOrigin=page;libraryPosition=scrollY;readingRecipe=r;view='library';page='recipes';render();window.scrollTo({top:0,behavior:'instant'});
  }
  function renderReading(){
-  const r=readingRecipe,id=remember(r);
-  main.innerHTML='<section class="recipe-room recipe-reading" data-no-translate><button class="recipe-reading-back" data-reading-back>'+ui('arrow-right')+say('Receptek','Recipes')+'</button><div class="recipe-reading-hero">'+art(r)+'<p class="room-meta">'+r.minutes+say(' perc',' min')+' · '+esc(CookingExperience.difficulty(r,language))+'</p><h1>'+esc(r.title)+'</h1><p>'+esc(recipeView(r).summary)+'</p></div><details class="recipe-reading-export"><summary aria-label="'+say('Recept műveletek','Recipe actions')+'">···</summary>'+exportButtons(id)+'</details><div class="recipe-reading-start"><button class="room-continue" data-start-cooking>'+ui('chef-hat')+say('Főzés indítása','Start cooking')+'</button></div><div class="recipe-reading-detail"></div></section>';
-  main.querySelector('[data-reading-back]').onclick=()=>{readingRecipe=null;if(readingOrigin==='chat'){MorzsaCompanion.returnToChat(libraryPosition);return}renderRoom();window.scrollTo({top:libraryPosition,behavior:'instant'})};
-  main.querySelector('[data-start-cooking]').textContent=say('Előkészítem a főzést','Prepare to cook');
-  main.querySelector('[data-start-cooking]').onclick=()=>window.MorzsaCompanion?.discuss(r,portionsFor(r));
-  bind(main);window.RecipeImages?.mount(main.querySelector('.room-image-cache'),r,-1,{autoCreate:true,hero:true});
-  renderDetail(r,main.querySelector('.recipe-reading-detail'),false);window.MorzsaWorkspace?.mount();window.MorzsaHousehold?.mount();window.MorzsaHousehold?.bind(main);
+  const r=readingRecipe,t={recipe:r,portions:portionsFor(r),cookingStep:0,completedSteps:[],cooking:{}},start=()=>window.MorzsaCompanion?.discuss(r,portionsFor(r));
+  main.innerHTML=RecipeCookingPage.markup(t,{mode:'full',reading:true});
+  RecipeCookingPage.bind(main.querySelector('.recipe-cooking-page'),t,{reading:true,onMode:mode=>{if(mode==='focus')start()},onStart:start,onPortions:next=>{portionChoices.set(portionKey(r),next);renderReading()},onBack:()=>{readingRecipe=null;if(readingOrigin==='chat'){MorzsaCompanion.returnToChat(libraryPosition);return}renderRoom();window.scrollTo({top:libraryPosition,behavior:'instant'})}});
+  window.MorzsaWorkspace?.mount();window.MorzsaHousehold?.mount();
  }
  function renderDetail(r,detail,modal=false,options={}){
   if(!r)return;sync();const id=remember(r),portions=RecipePortions.selection(r,options.portions||portionsFor(r)),displayRecipe=RecipePortions.view(r,portions);
