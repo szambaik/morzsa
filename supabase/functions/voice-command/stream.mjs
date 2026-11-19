@@ -1,8 +1,16 @@
-// Only the first top-level answer string is previewed. Operations are never streamed.
+// Preview the top-level answer regardless of field order; never stream operations.
+import {recipePreviews} from '../plus-assistant/recipe-preview.mjs';
 export function partialAnswer(raw){
- const match=/^\s*\{\s*"answer"\s*:\s*"/.exec(raw);if(!match)return '';
- let result='';
- for(let i=match[0].length;i<raw.length;i++){
+ if(typeof raw!=='string'||raw.length>50000)return '';
+ let depth=0,start=-1;
+ for(let at=0;at<raw.length;at++){
+  const c=raw[at];if(c==='{'||c==='['){depth++;continue}if(c==='}'||c===']'){depth--;continue}if(c!=='"')continue;
+  const begin=at++;while(at<raw.length){if(raw[at]==='\\'){at+=2;continue}if(raw[at]==='"')break;at++}if(at>=raw.length)break;
+  if(depth!==1)continue;let next=at+1;while(next<raw.length&&/\s/.test(raw[next]))next++;if(raw[next]!==':')continue;
+  let key;try{key=JSON.parse(raw.slice(begin,at+1))}catch{return ''}if(key!=='answer')continue;next++;while(next<raw.length&&/\s/.test(raw[next]))next++;if(raw[next]!=='"')return '';start=next+1;break;
+ }
+ if(start<0)return '';let result='';
+ for(let i=start;i<raw.length;i++){
   const c=raw[i];if(c==='"')break;
   if(c!=='\\'){result+=c;continue}
   const next=raw[++i];if(next===undefined)break;
@@ -12,16 +20,17 @@ export function partialAnswer(raw){
  // Do not render a dangling UTF-16 surrogate between network chunks.
  return result.replace(/[\uD800-\uDBFF]$/,'').slice(0,5000);
 }
-export async function readGeminiStream(response,onAnswer,signal){
+export async function readGeminiStream(response,onAnswer,signal,onRecipes){
  const reader=response.body?.getReader();if(!reader)throw Error('VOICE_INVALID_RESPONSE');
  const cancel=()=>reader.cancel().catch(()=>{});signal?.addEventListener('abort',cancel,{once:true});
- const decoder=new TextDecoder();let buffer='',raw='',finish='',last='',total=0,completed=false;
+ const decoder=new TextDecoder();let buffer='',raw='',finish='',last='',total=0,completed=false,lastRecipes='';
  const consume=event=>{
   const text=event.split('\n').filter(l=>l.startsWith('data:')).map(l=>l.slice(5).trimStart()).join('\n');if(!text||text==='[DONE]')return;
   const data=JSON.parse(text);if(data.error){const code=Number(data.error.code),status=['INVALID_ARGUMENT','UNAUTHENTICATED','PERMISSION_DENIED','RESOURCE_EXHAUSTED','INTERNAL','UNAVAILABLE','DEADLINE_EXCEEDED'].includes(data.error.status)?data.error.status:'UNKNOWN';console.warn(JSON.stringify({event:'morzsa_stream_provider_failure',code:Number.isInteger(code)?code:null,status}));throw Error(code===429?'VOICE_PROVIDER_LIMIT':[500,502,503,504].includes(code)?'VOICE_PROVIDER_BUSY':'VOICE_PROVIDER_ERROR')}const candidate=data.candidates?.[0];
   if(candidate?.finishReason)finish=candidate.finishReason;
   raw+=(candidate?.content?.parts||[]).filter(p=>!p.thought).map(p=>p.text||'').join('');if(raw.length>50000)throw Error('VOICE_INVALID_RESPONSE');
   const answer=partialAnswer(raw);if(answer!==last){last=answer;onAnswer(answer)}
+  if(onRecipes){const recipes=recipePreviews(raw),key=JSON.stringify(recipes);if(recipes.length&&key!==lastRecipes){lastRecipes=key;onRecipes(recipes)}}
  };
  try{
   signal?.throwIfAborted();while(true){signal?.throwIfAborted();const {value,done}=await reader.read();if(done)break;total+=value.length;if(total>1000000)throw Error('VOICE_INVALID_RESPONSE');buffer+=decoder.decode(value,{stream:true});buffer=buffer.replace(/\r\n/g,'\n');let end;while((end=buffer.indexOf('\n\n'))>=0){consume(buffer.slice(0,end));buffer=buffer.slice(end+2)}}

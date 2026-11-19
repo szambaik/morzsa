@@ -123,9 +123,11 @@
   if(auth&&session&&session.expires_at*1000<Date.now()+60000)await refreshAuth();
   const access=session?.access_token,uid=session?.user?.id;
   if(options.expectedUser&&options.expectedUser!==session?.user?.id)throw Error('Account changed');
+  let requestOutcome='failed',requestId,httpStatus;const finishTiming=window.MorzsaTelemetry?.start('request',{operation:path.split('?')[0].replace(/[a-f0-9-]{36}/gi,':id')});
   const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),timeoutMs),abort=()=>controller.abort();options.signal?.addEventListener('abort',abort,{once:true});if(options.signal?.aborted)controller.abort();
   try{const response=await fetch(config.url+path,{method,signal:controller.signal,headers:{apikey:config.publishableKey,'Content-Type':options.contentType||'application/json',...(auth&&session?{Authorization:'Bearer '+session.access_token}:{})},...(body===undefined?{}:{body:options.raw?body:JSON.stringify(body)})});
-  if(response.ok&&options.onAnswer&&response.headers.get('Content-Type')?.includes('application/x-ndjson'))return await ChatStream.read(response,options.onAnswer,options.onRecipes);
+  requestId=response.headers.get('X-Morzsa-Request-Id');httpStatus=response.status;
+  if(response.ok&&options.onAnswer&&response.headers.get('Content-Type')?.includes('application/x-ndjson')){const result=await ChatStream.read(response,options.onAnswer,options.onRecipes);requestOutcome='complete';return result;}
   const text=await response.text();if(options.expectedUser&&options.expectedUser!==session?.user?.id)throw Error('Account changed');let data;try{data=text?JSON.parse(text):null}catch{throw Error('Invalid server response')}
   // PostgREST rejects expired JWTs before executing the request. Refresh once,
   // including saves, but never replay an assistant/provider request.
@@ -135,7 +137,7 @@
    return await request(path,body,auth,method,timeoutMs,{...options,authRetried:true,expectedUser:uid});
   }
   if(!response.ok&&path.startsWith('/functions/v1/plus-assistant')&&response.status===404)throw Error('PLUS_SETUP_REQUIRED');
-  if(!response.ok)throw Object.assign(Error(data?.message||data?.msg||data?.error_description||(typeof data?.error==='string'?data.error:'Request failed')),{httpStatus:response.status,code:data?.code,...(path==='/functions/v1/recipe-image'?{retryAfter:data?.retryAfter}:{})});return data;}catch(e){if(controller.signal.aborted&&!options.signal?.aborted&&path==='/functions/v1/voice-command')throw Error('VOICE_TIMEOUT');if(controller.signal.aborted&&path==='/functions/v1/recipe-image')throw Error('IMAGE_TIMEOUT');throw e}finally{clearTimeout(timeout);options.signal?.removeEventListener('abort',abort)}
+  if(!response.ok)throw Object.assign(Error(data?.message||data?.msg||data?.error_description||(typeof data?.error==='string'?data.error:'Request failed')),{httpStatus:response.status,code:data?.code,...(path==='/functions/v1/recipe-image'?{retryAfter:data?.retryAfter}:{})});requestOutcome='complete';window.MorzsaTelemetry?.server(data?.telemetry);return data;}catch(e){if(controller.signal.aborted&&!options.signal?.aborted&&path==='/functions/v1/voice-command')throw Error('VOICE_TIMEOUT');if(controller.signal.aborted&&path==='/functions/v1/recipe-image')throw Error('IMAGE_TIMEOUT');throw e}finally{finishTiming?.({outcome:controller.signal.aborted?'cancelled':requestOutcome,requestId,httpStatus});clearTimeout(timeout);options.signal?.removeEventListener('abort',abort)}
  }
  async function setSession(value){
   const previousUser=session?.user?.id,version=++authVersion;if(value&&!value.expires_at)value.expires_at=Math.floor(Date.now()/1000)+(value.expires_in||3600);

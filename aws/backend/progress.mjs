@@ -7,13 +7,15 @@ export function createProgressWriter(publish,interval=250){
   chain=chain.then(()=>publish(snapshot)).catch(()=>{});
  };
  const update=value=>{
+  if(Object.entries(value).every(([key,v])=>JSON.stringify(progress[key])===JSON.stringify(v)))return;
   progress={...progress,...value};dirty=true;
   const delay=interval-(Date.now()-last);
   if(delay<=0)send();else if(timer===null)timer=setTimeout(send,delay);
  };
  return {
-  answer:text=>update({answer:text.slice(0,5000)}),
-  recipes:list=>update({recipes:list.map(({title,summary,minutes,servings})=>({title,...(summary?{summary}:{}),...(minutes?{minutes}:{}),...(servings?{servings}:{})}))}),
+  answer:(text,telemetry)=>update({answer:text.slice(0,5000),...(telemetry?{telemetry}:{})}),
+  recipes:(list,telemetry)=>update({...(telemetry?{telemetry}:{}),recipes:list.map(({title,summary,minutes,servings})=>({title,...(summary?{summary}:{}),...(minutes?{minutes}:{}),...(servings?{servings}:{})}))}),
+  telemetry:value=>update({telemetry:value}),
   flush:()=>{send();return chain}
  };
 }
