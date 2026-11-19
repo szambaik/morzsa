@@ -47,7 +47,7 @@ proactive-ui.js, workspace-ui.js and index.html.
 
 New tests: tests/chat-workspace-model.test.cjs and
  tests/chat-workspace.browser.mjs. Updated the existing recipe-discovery test's
-refinement selector and extended the existing iOS control regression. The AWS
+refinement selector, the mobile AI-settings disclosure path, and extended the existing iOS control regression. The AWS
 chat regression is included in design-audit/check-release.mjs.
 
 ## Verification
@@ -65,7 +65,9 @@ chat regression is included in design-audit/check-release.mjs.
 - Full release gate passed: 32 axe scans, 54 targeted regressions, 77 iOS control
   checks, 34 native-composer checks, 127 viewport checks, household recovery,
   progressive recipes/cancellation, dynamic cooking, recipe discovery, shopping
-  and the new AWS chat regression.
+  and the new AWS chat regression. The mobile Chromium suite also passed 134
+  checks, including denied Plus, mode switching, late status, keyboard and
+  navigation/request stability.
 - Evidence is in design/chat-workspace-2026-11-19 and the local audit run's
   chat-workspace directory. Screenshots show synthetic test households.
 
