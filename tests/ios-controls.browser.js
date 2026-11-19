@@ -39,6 +39,8 @@ async page=>{
   check(await page.evaluate(()=>{const a=document.getElementById('workspace-new-chat').getBoundingClientRect(),b=document.querySelector('#companion-form button[type=submit]').getBoundingClientRect();return !!document.querySelector('.app>header #workspace-new-chat')&&a.top<80&&a.right>innerWidth-100&&a.bottom<b.top}),'new chat stays in the top-right header at '+width);
  }
  await page.setViewportSize({width:390,height:844});await tick();
+ check(await page.locator('#workspace-household-toggle').evaluate(el=>!el.classList.contains('ios-native-control')&&getComputedStyle(el).opacity==='1'),'household header shortcut retains its existing trusted web control');
+ await page.locator('#workspace-household-toggle').click();await page.locator('#workspace-context-drawer[open]').waitFor();await tick();check(await page.evaluate(()=>glassCalls.at(-1).buttons.length===0),'household drawer hides background native controls');await page.locator('[data-context-close]').click();await tick();
  await page.locator('#companion-input').fill('Hosszabb kérdés\nTöbb sorban\nA receptről\nÉs a készletről');
  check(await page.locator('#companion-input').evaluate(el=>el.getBoundingClientRect().height>44&&Math.abs(el.getBoundingClientRect().bottom-el.closest('form').querySelector('[data-mic]').getBoundingClientRect().bottom)<3),'multiline draft grows while controls stay aligned at the bottom');
  await page.locator('#companion-input').fill('');await page.locator('#companion-input').blur();

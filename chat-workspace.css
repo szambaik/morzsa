@@ -1,0 +1,130 @@
+/* Morzsa's conversational hierarchy: messages, results and next actions. */
+.workspace-chat:not(.workspace-cooking) .companion-message.model{background:transparent;border:0;box-shadow:none;padding:16px 0;margin:8px 0 24px;border-radius:0}
+.companion-answer{line-height:1.7;overflow-wrap:anywhere}
+.companion-results{display:grid;gap:18px;margin-top:16px}
+.workspace-chat .companion-speaker{margin-bottom:8px;color:var(--muted);font-size:12px}
+.workspace-chat:not(.workspace-cooking) .companion-heading{margin:4px 0 16px;color:var(--muted)}
+.companion-results .companion-recipe{margin:0;padding:0;overflow:hidden;border:1px solid var(--line);border-radius:20px;background:var(--white);box-shadow:none}
+.chat-recipe-visual.generated-recipe-image{position:relative;display:block;aspect-ratio:16/9;width:100%;margin:0;overflow:hidden;border-radius:0;background:var(--sage)}
+.chat-recipe-visual.generated-recipe-image>img{display:block;width:100%;height:100%;object-fit:cover;aspect-ratio:16/9;border-radius:0;max-height:none}
+.chat-recipe-visual.generated-recipe-image>small{position:absolute;left:0;bottom:0;margin:0;padding:5px 10px;background:#fffdf7ed;color:var(--ink);font-size:11px;line-height:1.4;opacity:1;border-radius:0 8px 0 0}
+.chat-recipe-visual.generated-recipe-image>.image-placeholder{width:100%;height:100%;aspect-ratio:16/9;border-radius:0}
+.chat-recipe-visual.generated-recipe-image[data-image-status=missing]:empty{display:none}
+.chat-recipe-body{padding:20px}
+.chat-recipe-body .ai-content-label{display:block;width:auto;margin:0 0 8px;padding:0;border:0;background:transparent;color:var(--orange-ink);font:600 11px/1.5 Inter,system-ui;letter-spacing:.02em}
+.chat-recipe-body h3{margin:0 0 8px;font:600 23px/1.3 Sora,Inter,system-ui;letter-spacing:-.5px;overflow-wrap:anywhere}
+.chat-recipe-body .companion-recipe-meta{display:flex;align-items:center;gap:5px;margin:0 0 12px;color:var(--muted);font-size:13px;line-height:1.5}
+.chat-recipe-body .companion-recipe-meta>img{width:16px;height:16px}
+.chat-recipe-description{margin:0 0 16px;color:var(--muted);font-size:14px;line-height:1.65}
+.chat-recipe-availability{padding:12px 0;border-top:1px solid var(--line);font-size:12px;line-height:1.6}
+.chat-recipe-availability p{margin:0 0 5px;overflow-wrap:anywhere}
+.chat-recipe-availability p:first-child{display:flex;gap:5px;align-items:center;flex-wrap:wrap;color:var(--ink)}
+.chat-recipe-availability p>img{width:16px;height:16px}
+.chat-recipe-availability p:last-child{margin-bottom:0}
+.chat-recipe-missing{color:var(--orange-ink)}
+.chat-recipe-check{color:var(--muted)}
+.chat-recipe-body .companion-actions{display:flex;align-items:stretch;gap:8px;margin:8px 0 0}
+.chat-recipe-body .recipe-chat-cook{display:flex;align-items:center;justify-content:space-between;gap:10px;flex:1;min-width:0;min-height:48px;margin:0;padding:12px 16px;border:1px solid var(--orange);border-radius:12px;background:var(--orange);color:#fffdf7;font:600 14px/1.4 Inter,system-ui}
+.chat-recipe-body .recipe-chat-cook>img{filter:brightness(0) invert(1);width:20px;height:20px}
+.chat-recipe-body .recipe-chat-icon{display:grid;place-items:center;flex:none;width:48px;min-height:48px;padding:11px;border:1px solid var(--line);border-radius:12px;background:transparent;color:var(--ink)}
+.chat-recipe-body .recipe-chat-icon[aria-pressed=true]{background:var(--sage);border-color:var(--green)}
+.chat-recipe-secondary{display:flex;align-items:flex-start;gap:12px;margin-top:8px;flex-wrap:wrap}
+.chat-recipe-secondary>.companion-recipe-shopping{display:flex;align-items:center;gap:7px;min-height:44px;width:auto;flex:none;margin:0;padding:8px 0;border:0;background:transparent;color:var(--muted);font:500 12px/1.5 Inter,system-ui}
+.chat-recipe-secondary>.companion-recipe-shopping>img{width:18px;height:18px}
+.chat-recipe-secondary .recipe-variants{flex:1;min-width:0;margin:0;border:0}
+.chat-recipe-secondary .recipe-variants>summary{display:flex;align-items:center;justify-content:flex-end;gap:8px;min-height:44px;padding:8px 0;list-style:none;color:var(--muted);font:500 12px/1.5 Inter,system-ui}
+.chat-recipe-secondary .recipe-variants>summary::-webkit-details-marker{display:none}
+.chat-recipe-secondary .recipe-variants>summary::after{content:'⌄';font-size:16px}
+.chat-recipe-secondary .recipe-variants[open]{flex-basis:100%}
+.chat-recipe-secondary .recipe-variants[open]>summary{justify-content:flex-start}
+.chat-recipe-secondary .recipe-variants>div{padding:4px 0 0}
+/* One set of follow-up controls belongs to the latest recipe result. */
+.companion-messages>.recipe-idea-tools{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:0 12px;margin:4px 0 22px;padding:12px 0 16px;border:0;border-bottom:1px solid var(--line);border-radius:0;background:transparent}
+.recipe-idea-tools .recipe-idea-heading{align-self:center}
+.recipe-idea-tools .recipe-idea-heading strong{font:500 14px/1.6 Inter,system-ui;color:var(--ink)}
+.recipe-idea-tools .recipe-idea-actions{display:flex;gap:8px;align-items:flex-start}
+.recipe-idea-tools [data-more-ideas]{display:flex;align-items:center;gap:12px;min-height:44px;width:auto;padding:10px 14px;border:1px solid var(--line);border-radius:12px;background:var(--sage);color:var(--ink);font-size:13px;white-space:nowrap}
+.recipe-idea-tools [data-refine-panel]{position:relative}
+.recipe-idea-tools [data-refine-panel]>summary{min-height:44px;width:auto;padding:10px 4px;border:0;list-style:none;background:transparent;color:var(--muted);font:500 12px/1.6 Inter,system-ui;white-space:nowrap}
+.recipe-idea-tools [data-refine-panel]>summary::-webkit-details-marker{display:none}
+.recipe-idea-tools [data-refine-ideas]{position:static;width:100%;max-width:420px;margin:6px 0 0;padding:16px;box-sizing:border-box;border:1px solid var(--line);border-radius:16px;background:var(--white);box-shadow:0 8px 24px #34463815}
+.recipe-idea-tools [data-refine-ideas] fieldset{margin:0 0 12px}
+.recipe-idea-tools [data-refine-ideas] legend{font-size:13px}
+.recipe-idea-tools [data-refine-ideas] label{padding:6px 8px;font-size:13px}
+.recipe-retained{grid-column:1/-1;margin:6px 0 0;color:var(--muted);font-size:12px;line-height:1.6}
+.recipe-idea-tools .recipe-retained>summary{display:list-item;min-height:44px;width:auto;padding:10px 0;border:0;background:transparent;font:500 12px/1.6 Inter,system-ui;list-style-position:inside;color:var(--muted)}
+.recipe-retained blockquote{margin:0;padding:0 0 0 12px;border-left:2px solid var(--sage);color:var(--ink);font-size:13px;overflow-wrap:anywhere}
+.recipe-retained p{margin:10px 0 4px;font-size:12px}
+.recipe-retained ul{padding-left:20px;margin:4px 0 0;overflow-wrap:anywhere}
+.workspace-chat .companion-nudge{background:var(--sage);box-shadow:none}
+/* Household information reads existing state; the compact view never edits it. */
+#workspace-context{right:24px;top:88px;width:232px;padding:18px;max-height:calc(100dvh - 112px);background:var(--white);border-radius:18px;box-shadow:none;overscroll-behavior:contain}
+#workspace-context h2,#workspace-context-drawer h2{font:600 16px/1.5 Sora,Inter,system-ui;margin:0 0 5px;color:var(--ink)}
+#workspace-context p,#workspace-context-drawer p{display:block;margin:0;padding:0;border:0;line-height:1.6}
+.household-context-heading>p{font-size:12px;color:var(--ink);overflow-wrap:anywhere}
+#workspace-context .household-context-status,#workspace-context-drawer .household-context-status{font-size:11px;color:var(--muted);margin:4px 0 14px}
+.household-context-section{padding:16px 0 0;margin:16px 0 0;border-top:1px solid var(--line)}
+.household-context-section h3{display:flex;align-items:center;gap:8px;margin:0 0 8px;font:600 13px/1.5 Inter,system-ui;color:var(--ink)}
+.household-context-section h3>img{width:18px;height:18px}
+.household-context-section h3>span{margin-left:auto;font-size:12px;min-width:20px;text-align:center}
+#workspace-context .household-context-summary,#workspace-context-drawer .household-context-summary{font-size:12px;margin-bottom:8px;color:var(--ink)}
+.household-context-section ul{list-style:none;padding:0;margin:0}
+.household-context-section li{display:flex;align-items:baseline;gap:8px;padding:5px 0;font-size:12px;line-height:1.6}
+.household-context-section li>span{flex:1;min-width:0;overflow-wrap:anywhere}
+.household-context-section li>small{color:var(--muted);font-size:11px;flex:none}
+#workspace-context .household-context-check,#workspace-context-drawer .household-context-check{font-size:12px;margin-top:6px;color:var(--muted);overflow-wrap:anywhere}
+.household-context-empty{font-size:12px;color:var(--muted)}
+#workspace-context [data-context-open],#workspace-context-drawer [data-context-open]{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;min-height:44px;margin:8px 0 0;padding:8px 0;border:0;background:transparent;text-align:left;color:var(--green);font:600 12px/1.5 Inter,system-ui}
+.household-context-section [data-context-open]>img{width:17px;height:17px}
+.app>header #workspace-household-toggle{display:grid;place-items:center;order:2;width:44px;height:44px;min-width:44px;min-height:44px;flex:none;margin-left:auto;padding:11px;border:0;border-radius:12px;background:transparent;color:var(--ink)}
+.app>header:has(#workspace-household-toggle:not([hidden])) #workspace-new-chat{margin-left:0}
+.app>header #workspace-household-toggle[hidden]{display:none}
+#workspace-context-drawer{position:fixed;inset:auto;width:min(420px,calc(100vw - 24px));margin:0;padding:22px;box-sizing:border-box;border:1px solid var(--line);border-radius:20px;background:var(--bg);color:var(--ink);overflow:auto;overscroll-behavior:contain;transform:none}
+#workspace-context-drawer::backdrop{background:#34463855;backdrop-filter:none}
+#workspace-context-drawer .household-context-heading{padding-right:44px}
+.household-context-close{position:absolute;top:12px;right:12px;display:grid;place-items:center;width:44px;height:44px;padding:11px;border:0;background:transparent;color:var(--ink);border-radius:50%}
+/* Conversation navigation and personalization keep distinct places. */
+#workspace-sidebar .companion-new,#companion-history .companion-new{order:0;margin:4px 0 12px;border-radius:12px;min-height:44px;font-weight:500}
+#workspace-sidebar .companion-panel-head h2,#companion-history .companion-panel-head h2{font:600 14px/1.5 Inter,system-ui}
+#workspace-sidebar .workspace-settings-area{margin-top:auto;padding-top:12px;border-top:1px solid var(--line);flex:none}
+.workspace-settings>.workspace-preferences,.workspace-settings>.workspace-introduction,.workspace-settings>.workspace-telemetry{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;padding:10px 4px;margin:0;border:0;background:transparent;text-align:left;font:500 13px/1.5 Inter,system-ui;color:var(--ink)}
+.workspace-ai-settings>summary,.workspace-language-settings>summary{display:flex;align-items:center;min-height:44px;margin:0;padding:10px 4px;cursor:pointer;list-style:none;font:500 13px/1.5 Inter,system-ui;color:var(--ink)}
+.workspace-ai-settings>summary::after,.workspace-language-settings>summary::after{content:'⌄';margin-left:auto}
+.workspace-ai-settings>summary::-webkit-details-marker,.workspace-language-settings>summary::-webkit-details-marker{display:none}
+.workspace-settings .workspace-language>span{display:none}
+.workspace-ai-settings>label,.workspace-ai-settings>.workspace-ai-status{margin-left:4px;margin-right:4px}
+.workspace-language-settings .language-switch{margin:4px 0 12px}
+@media(min-width:1000px){.workspace-chat:not(.workspace-cooking) .companion{max-width:680px}.companion-compose-wrap{max-width:680px}}
+@media(min-width:1280px){
+ .workspace-has-context.workspace-chat:not(.workspace-cooking) .app{padding-right:280px}
+ .workspace-has-context.workspace-chat #main{max-width:100%}
+ .workspace-has-context.workspace-chat:not(.workspace-cooking) .companion-compose-wrap{right:auto;left:calc(var(--workspace-rail) + (100% - var(--workspace-rail) - 280px)/2);width:calc(100% - var(--workspace-rail) - 344px);max-width:680px;transform:translateX(-50%)}
+}
+@media(max-width:999px){
+ .app>header:has(#workspace-household-toggle:not([hidden])) .brand{font-size:clamp(18px,4.8vw,24px)}
+ .app>header:has(#workspace-household-toggle:not([hidden])) .brand-mark{width:26px;height:26px}
+}
+@media(max-width:599px){
+ .chat-recipe-body{padding:16px}
+ .chat-recipe-body h3{font-size:20px;line-height:1.35}
+ .chat-recipe-description{font-size:13px}
+ .chat-recipe-body .recipe-chat-cook{font-size:13px;padding:12px}
+ .companion-messages>.recipe-idea-tools{grid-template-columns:1fr;gap:6px}
+ .recipe-idea-tools .recipe-idea-actions{justify-content:flex-start;gap:12px}
+ .recipe-retained{grid-column:1}
+}
+@media(prefers-reduced-motion:reduce){#workspace-context-drawer,.companion-results,.recipe-idea-tools{animation:none;transition:none}}
+
+.recipe-idea-tools:has([data-refine-panel][open]){grid-template-columns:1fr}
+.recipe-idea-actions:has([data-refine-panel][open]){display:grid;grid-template-columns:1fr}
+.recipe-idea-actions:has([data-refine-panel][open]) [data-more-ideas]{justify-self:start}
+
+.recipe-retained-preview{display:block;margin:3px 0 0 12px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink);font-weight:400}
+.proactive-chat{position:relative}
+.proactive-chat .proactive-heading{padding-right:44px}
+.proactive-chat-dismiss{display:grid;place-items:center;width:44px;height:44px;padding:11px}
+@media(min-width:1280px){.workspace-has-context.workspace-chat:not(.workspace-cooking) .app>header{margin-right:-280px}}
+.recipe-idea-tools:has([data-refine-panel][open]){grid-template-columns:minmax(0,1fr)}
+.recipe-idea-actions:has([data-refine-panel][open]){grid-template-columns:minmax(0,1fr)}
+.recipe-retained,.recipe-retained>summary,.recipe-idea-heading,.recipe-idea-actions{min-width:0;max-width:100%;box-sizing:border-box}
+@media(max-width:599px){.companion-messages>.recipe-idea-tools{grid-template-columns:minmax(0,1fr)}}
