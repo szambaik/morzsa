@@ -24,6 +24,7 @@ async page=>{
  check(await page.locator('#companion-input').evaluate(el=>el.classList.contains('ios-native-text-input')&&el.tabIndex===-1&&el.getAttribute('aria-hidden')==='true'),'acknowledged UITextView replaces only the web text editor');
  check(await page.locator('#companion-form button').evaluateAll(els=>els.every(el=>getComputedStyle(el).opacity==='1')),'photo voice and send retain their existing web controls');
  check(await page.locator('#companion-form [type=submit]').isDisabled(),'empty native draft disables Send');
+ check(await page.locator('#companion-form [type=submit]').evaluate(el=>getComputedStyle(el).backgroundColor==='rgb(230, 177, 152)'),'disabled Send retains the Morzsa orange background');
  await page.evaluate(()=>document.body.dispatchEvent(new PointerEvent('pointerdown',{bubbles:true})));
  check(await page.evaluate(()=>dismissCalls===1),'background tap requests native keyboard dismissal');
  await page.evaluate(()=>document.querySelector('#companion-form [data-mic]').dispatchEvent(new PointerEvent('pointerdown',{bubbles:true})));
@@ -59,15 +60,23 @@ async page=>{
   window.originalBegin=MorzsaPersistence.beginTurn;
   MorzsaPersistence.beginTurn=(...args)=>new Promise((resolve,reject)=>args[1]?.signal.addEventListener('abort',()=>reject(new DOMException('Stopped','AbortError')),{once:true}));
  });await tick();
- await page.locator('#companion-form [type=submit]').click();await page.waitForFunction(()=>!!window.resolveNativeSubmit);
+ await page.evaluate(()=>{
+  MorzsaCompanion.render();nativeEdit('Küldendő üzenet');nativeText+='!';
+  document.querySelector('#companion-form [type=submit]').dispatchEvent(new PointerEvent('pointerdown',{bubbles:true,cancelable:true,pointerType:'touch',isPrimary:true}));
+ });await page.waitForFunction(()=>!!window.resolveNativeSubmit);
  await page.evaluate(()=>{document.querySelector('#companion-form').requestSubmit(document.querySelector('#companion-form [type=submit]'));nativeEdit('Következő kérdésem');MorzsaCompanion.render();resolveNativeSubmit()});
  await page.locator('.companion-pending-send').waitFor();
  check(await page.locator('#companion-form [data-action=stop]').isEnabled(),'Stop remains available during a response');
+ check(await page.locator('.companion-stop-icon').evaluate(el=>{const r=el.getBoundingClientRect();return r.width===14&&r.height===14}),'Stop uses a true square independent of font metrics');
  check(await page.evaluate(()=>submitCalls===1),'rapid repeat submit consumes native text exactly once');
+ check(true,'one touch submits while the replacement DOM editor is awaiting native acknowledgment');
  check((await page.locator('.companion-pending-send').innerText()).includes('Küldendő üzenet!'),'send captures the latest native keystroke even before its edit event');
  check(true,'redrawing the form during native submission preserves the send');
  check(await page.locator('#companion-input').inputValue()==='Következő kérdésem','typing during native submission becomes the next draft');
- await page.waitForTimeout(450);await page.locator('#companion-form [data-action=stop]').click();await page.locator('[data-retry]').waitFor();
+ await page.waitForTimeout(450);
+ await page.locator('#companion-form [data-action=stop]').evaluate(el=>el.dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true,detail:1})));
+ check(await page.locator('.companion-pending-send').count()===1,'touch Send consumes its delayed click instead of stopping the response');
+ await page.locator('#companion-form [data-action=stop]').click();await page.locator('[data-retry]').waitFor();
  check(await page.locator('#companion-input').inputValue()==='Következő kérdésem','stopping a response retains the next native draft');
  // Commit the native edit before failing its bridge update, in the same task.
  // Separate evaluations can let the bridge fail before the edit is dispatched;

@@ -52,9 +52,10 @@ button:focus-visible,summary:focus-visible,a:focus-visible,input:focus-visible,t
 #companion-form textarea,.workspace-composer input{flex:1;min-width:0;border:0;background:transparent;font-size:16px;line-height:1.45;padding:11px 5px;resize:none}
 #companion-form button,.workspace-composer button{display:grid;place-items:center;flex:none;width:44px;height:44px;min-height:44px;padding:10px;border:0;border-radius:50%;background:transparent}
 #companion-form button[type=submit],.workspace-composer button[type=submit]{background:var(--orange);color:white}
-#companion-form button[type=submit]:disabled{background:#DDE3EA;color:#788595;opacity:1;box-shadow:none;cursor:default}
+#companion-form button[type=submit]:disabled{background:#e6b198;color:white;opacity:1;box-shadow:none;cursor:default}
+#companion-form .companion-stop-icon{display:block;width:14px;height:14px;background:currentColor;border-radius:2px}
 #companion-form button[type=submit]:not(:disabled) img{filter:brightness(0) invert(1)}
-#companion-form button[type=submit]:disabled img{opacity:.45}
+#companion-form button[type=submit]:disabled img{opacity:1}
 .companion-voice-glass{display:none}
 .workspace-composer button[type=submit] img{filter:brightness(0) invert(1)}
 #workspace-assistant:before{content:'';position:absolute;inset:-24px -16px -12px;background:linear-gradient(180deg,transparent,var(--bg) 55%);z-index:-1;pointer-events:none}
