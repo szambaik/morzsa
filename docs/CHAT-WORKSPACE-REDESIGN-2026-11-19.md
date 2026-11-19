@@ -81,5 +81,7 @@ The fixture blocks third-party network access, including external font requests;
 font families and brand styles are preserved in the production CSS.
 
 No backend infrastructure or resource configuration was changed. The existing
-CloudFront/S3 publisher consumes the successful main audit artifact; frontend
-publication must retain that artifact's AWS backend and revision marker.
+CloudFront/S3 publisher consumes the exact successful main Build and sanity
+artifact under the current release policy. Its revision marker records
+sanity: passed and audit: not-run. The local verification results above are
+separate from this publication marker; no artifact is rebuilt during upload.
