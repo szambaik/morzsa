@@ -15,6 +15,7 @@ window.MorzsaWorkspace=(()=>{
  settings.querySelector('.workspace-account').append(account);settings.querySelector('.workspace-language-host').append(languageSwitch);
  languageSwitch.querySelector('[data-language=hu]').textContent='Magyar';languageSwitch.querySelector('[data-language=en]').textContent='English';
  settings.querySelector('.workspace-preferences').onclick=()=>{document.getElementById('companion-history')?.close();window.KitchenIntelligence?.openPreferences()};
+ const diagnostics=document.createElement('button');diagnostics.type='button';diagnostics.className='workspace-telemetry';diagnostics.innerHTML=glyph('clock')+'<span></span>';diagnostics.onclick=()=>window.MorzsaTelemetry?.open();settings.querySelector('.workspace-settings').append(diagnostics);
  settings.querySelector('.workspace-introduction').onclick=()=>{document.getElementById('companion-history')?.close();window.MorzsaOnboarding?.open()};
  const aiMode=settings.querySelector('#workspace-ai-mode');
  const aiStatus=document.createElement('p');aiStatus.id='workspace-ai-status';aiStatus.className='workspace-ai-status';aiStatus.setAttribute('role','status');aiMode.setAttribute('aria-describedby',aiStatus.id);aiMode.closest('label').after(aiStatus);
@@ -48,6 +49,7 @@ window.MorzsaWorkspace=(()=>{
   syncAIMode();
   settings.querySelector('[data-settings-label]').textContent=say('Beállítások','Settings');settings.querySelector('[data-language-label]').textContent=say('Nyelv','Language');
   settings.querySelector('.workspace-preferences span').textContent=say('Főzési ízlésem','Cooking preferences');
+  diagnostics.querySelector('span').textContent=say('Műveletek és válaszidők','Operations and response times');
   settings.querySelector('.workspace-introduction span').textContent=say('Morzsa bemutató','Morzsa introduction');languageSwitch.setAttribute('aria-label',say('Nyelv','Language'));
   languageSwitch.querySelectorAll('[data-language]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.language===language)));
  }

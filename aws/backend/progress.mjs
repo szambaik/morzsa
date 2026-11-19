@@ -14,6 +14,7 @@ export function createProgressWriter(publish,interval=250){
  return {
   answer:text=>update({answer:text.slice(0,5000)}),
   recipes:list=>update({recipes:list.map(({title,summary,minutes,servings})=>({title,...(summary?{summary}:{}),...(minutes?{minutes}:{}),...(servings?{servings}:{})}))}),
+  telemetry:value=>update({telemetry:value}),
   flush:()=>{send();return chain}
  };
 }

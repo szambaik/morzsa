@@ -82,13 +82,13 @@ window.MorzsaProactive=(()=>{
  }
  function privacyNote(){return '<p class="proactive-caption">'+say(household?.active&&remoteReady?'A visszajelzést a közös konyha megjegyzi.':'A visszajelzést ebben a konyhában, ezen az eszközön jegyzem meg.',household?.active&&remoteReady?'Feedback is remembered by your shared kitchen.':'Feedback is remembered for this kitchen on this device.')+'</p>'}
  function chat(host,{quiet=false,bought=false,hasMessages=false}={}){
-  if(bought)return false;sync();if(quiet||hasMessages){if(host.querySelector('.proactive-chat'))host.replaceChildren();return true}
-  const items=products(),picks=recommendations(),s=items[0];
-  // Keep the compact existing review when checking pantry is the only next step.
-  if(s?.kind==='review'&&!picks.length)return false;
-  const html=s||picks.length?'<aside class="proactive-chat"><p>'+(s?'<strong>'+esc(displayName(s.name))+'</strong> · '+esc(reason(s)):'<strong>'+esc(picks[0].recipe.title)+'</strong><br>'+say('Ötlet a készletedből.','An idea from your pantry.'))+'</p><div class="proactive-actions">'+(s?'<button data-proactive-overview>'+say('Megnézem','View suggestion')+icon('arrow-right')+'</button>':'<button data-proactive-recipe="'+esc(picks[0].recipeId)+'">'+say('Megnézem','View recipe')+icon('arrow-right')+'</button>')+'</div></aside>':'';
-  if(host._proactiveHTML!==html||html&&!host.querySelector('.proactive-chat')){host.innerHTML=html;host._proactiveHTML=html;bind(host)}return true;
+  if(bought)return false;sync();if(quiet){if(host.querySelector('.proactive-chat'))host.replaceChildren();return true}
+  const weight={out:100,low:90,recurring:65},items=products().filter(s=>s.kind!=='review').sort((a,b)=>(weight[b.kind]||0)-(weight[a.kind]||0)||(b.score||0)-(a.score||0)),shown=items.slice(0,6),picks=shown.length||hasMessages?[]:recommendations();
+  if(!shown.length&&!picks.length)return false;
+  const html=shown.length?'<aside class="proactive-chat proactive-restock"><div class="proactive-heading"><h2>'+say('Érdemes pótolni','Worth restocking')+'</h2><span>'+shown.length+say(' tétel',' items')+'</span></div><p class="proactive-caption">'+say('Elöl az elfogyott, utána a kevésnek jelölt tételek. A vásárlási becslést külön jelzem.','Used-up items first, then those running low. Shopping estimates are labelled.')+'</p><ol>'+shown.map(s=>'<li>'+productCard(s)+'</li>').join('')+'</ol>'+(items.length>shown.length?'<button data-proactive-overview>'+say('További javaslatok','More suggestions')+icon('arrow-right')+'</button>':'')+'</aside>':'<aside class="proactive-chat"><p><strong>'+esc(picks[0].recipe.title)+'</strong><br>'+say('Ötlet a készletedből.','An idea from your pantry.')+'</p><div class="proactive-actions"><button data-proactive-recipe="'+esc(picks[0].recipeId)+'">'+say('Megnézem','View recipe')+icon('arrow-right')+'</button></div></aside>';
+  if(host._proactiveHTML!==html||!host.querySelector('.proactive-chat')){host.innerHTML=html;host._proactiveHTML=html;bind(host)}return true;
  }
+
  async function respond(selected,action){
   sync();if(!selected.length||busy||household?.busy||household?.cartPending)return;
   const current=context,epoch=generation,live=products();

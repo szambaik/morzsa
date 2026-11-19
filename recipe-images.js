@@ -89,6 +89,7 @@ window.RecipeImages=(()=>{
   async function load(create,regenerate=false){
    autoAttempted ||= create;
    if(entry.status==='loading'||entry.checking||entry.retryAt>Date.now())return;const keepReady=!create&&entry.status==='ready';entry.checking=true;if(!keepReady)entry.status='loading';entry.creating=create;delete entry.error;if(create){entry.requestedAt=Date.now();entry.pollAttempts=0}refresh();
+   const finishTiming=window.MorzsaTelemetry?.start('image',{operation:create?'generate':step<0?'cover-cache':'step-cache'});
    const work=async()=>{
     // Navigation may detach every view while another image occupies the queue.
     // Keep a replacement view of the same recipe alive, but skip abandoned work.
@@ -103,9 +104,9 @@ window.RecipeImages=(()=>{
     }
     entry.checking=false;refresh();
    };
-   if(create){queue=queue.then(work,work);await queue}else await read(work);
+   try{if(create){queue=queue.then(work,work);await queue}else await read(work)}finally{finishTiming?.({outcome:entry.status,cache:!create&&entry.status==='ready'?'backend':'miss',error:entry.error})}
   }
-  if(deviceScope)window.MorzsaCache.get(deviceScope,'recipe-image',id,{stale:true}).then(saved=>{if(!saved||!live()||entry.status==='ready'||entry.creating||!window.MorzsaCache.valid(deviceScope))return;Object.assign(entry,saved,{status:'ready'});refresh();if(!entry.checking)load(false)});
+  if(deviceScope)window.MorzsaCache.get(deviceScope,'recipe-image',id,{stale:true}).then(saved=>{if(!saved||!live()||entry.status==='ready'||entry.creating||!window.MorzsaCache.valid(deviceScope))return;window.MorzsaTelemetry?.record('image',{operation:step<0?'cover-cache':'step-cache',cache:'device',outcome:'ready'});Object.assign(entry,saved,{status:'ready'});refresh();if(!entry.checking)load(false)});
   paint();
   if(entry.status!=='ready'&&!options.cacheOnly||entry.status==='new'){
    observer=new IntersectionObserver(items=>{if(items.some(i=>i.isIntersecting)){observer.disconnect();if(!live()||entry.views.get(host)!==paint)return;visible=true;const queued=auto.delete(id),create=canCreate()&&(queued||options.autoCreate===true)&&!autoCreated.has(id);if(entry.status==='ready'){load(false)}else if(entry.status==='new'||entry.status==='missing'){
