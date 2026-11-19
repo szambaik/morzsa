@@ -12,9 +12,9 @@ The distribution uses PriceClass_100. It does not buy provisioned capacity,
 WAF or Shield Advanced. Standard CloudFront/S3 usage is billed against the
 account's applicable allowances; actual charges depend on traffic and credits.
 
-The existing **Audit regression gate** remains mandatory. The CloudFront job
+The automatic **Build and sanity** check is required. Full regression is manual. The CloudFront job
 consumes the same github-pages artifact as the Pages job and validates its
-revision and audit marker before uploading. Hashed assets upload before HTML;
+revision and verification marker before uploading. Hashed assets upload before HTML;
 old filenames remain available for already loaded clients. Every release
 invalidates one wildcard path. Index, manifest and version responses must
 revalidate; hashed filenames may be cached for a year; other assets for an hour.
@@ -52,7 +52,7 @@ continues its automatic protected release. Do not store permanent AWS keys in
 GitHub to work around this restriction.
 
 A signed-in local morzsa profile can publish the artifact from a successful main
-Audit regression gate with deploy.mjs. Set AWS_PROFILE=morzsa,
+Build and sanity check with deploy.mjs. Set AWS_PROFILE=morzsa,
 AWS_FRONTEND_BUCKET and AWS_FRONTEND_DISTRIBUTION from deployment.json, and
 GITHUB_SHA to the exact verified artifact revision. Pass the extracted artifact
 directory as the script argument. The script refuses an unverified artifact or a
@@ -61,4 +61,4 @@ revision mismatch. No rebuild is needed or permitted in this publish step.
 If organization policy later permits GitHub OIDC, update the frontend stack with
 EnableGitHubPublisher=true, supplying an existing provider ARN when appropriate,
 and configure the three repository variables from the stack outputs. Subsequent
-main releases then publish the same audit-approved artifact automatically.
+main releases then publish the same verified artifact automatically.

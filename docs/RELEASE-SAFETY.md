@@ -1,10 +1,17 @@
 # Release safety for concurrent Morzsa work
 
-Production is released through .github/workflows/pages.yml. The workflow runs
-unit/SQL/Python tests, a full isolated browser audit, 32 accessibility scans and
-54 targeted audit regressions before uploading the built web artifact. Deployment
-requires that gate. Main is protected against force pushes and requires the
-Audit regression gate check on an up-to-date branch.
+Production uses .github/workflows/pages.yml. Ordinary pushes and pull requests
+run a web build and one isolated browser sanity pass (navigation, overflow,
+script errors and local-save persistence). Main requires Build and sanity.
+The exact successful artifact deploys to Pages and can be published to CloudFront.
+Its version.json records verification: build-sanity, sanity: passed, audit: not-run.
+
+Full regression runs only when explicitly requested: GitHub Actions > Full
+regression > Run workflow, or GH_HOST=github.com gh workflow run regression.yml
+--ref main. It retains the unit/SQL/Python, accessibility, native-adapter,
+recipe, shopping and performance suites. Mobile builds also run only through
+Actions > Mobile builds > Run workflow. Do not repeat the full suite locally,
+on PR and on main for routine edits.
 
 The audit fix release was merged in PR #1. It includes the reviewed
 cooking/onboarding baseline and seven confirmed audit fixes. The follow-up
@@ -28,8 +35,8 @@ For the parallel feature sessions:
 1. Save your work on a branch; do not discard the shared uncommitted checkout.
 2. Fetch the current origin/main and merge it into that branch.
 3. Resolve shared-file conflicts, retaining both feature work and the audit fixes.
-4. Run the release regression gate and open a pull request.
-5. Merge after the required check passes; Pages publishes the tested artifact.
+4. Run a targeted sanity check and open a pull request.
+5. Merge after the required check passes; Pages publishes the build-and-sanity artifact.
 
 A stale direct push is rejected. Do not bypass this with a force push, disable
 the required check, or restore whole files from an older snapshot. Tests protect
