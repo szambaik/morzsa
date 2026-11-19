@@ -38,3 +38,27 @@ and step images remain persistently cached in backend S3 and recipe records.
 The device caches metadata in IndexedDB and image blobs for seven days, scoped
 to the account/household. This first distribution hosts only public frontend
 assets. It does not expose private images or cache authenticated API replies.
+
+## Current deployment
+
+The deployment identifiers are recorded in deployment.json. The web entry point
+is https://d149jrhkz4lpb2.cloudfront.net/ . The backend stack uses that exact
+FrontendOrigin, preserving the previous Pages and native login callbacks.
+
+This account's organization policy explicitly denies GitHub OIDC administration.
+The frontend stack therefore uses EnableGitHubPublisher=false. Static hosting
+and cache still work; automatic GitHub-to-AWS publishing is not enabled. Pages
+continues its automatic protected release. Do not store permanent AWS keys in
+GitHub to work around this restriction.
+
+A signed-in local morzsa profile can publish the artifact from a successful main
+Audit regression gate with deploy.mjs. Set AWS_PROFILE=morzsa,
+AWS_FRONTEND_BUCKET and AWS_FRONTEND_DISTRIBUTION from deployment.json, and
+GITHUB_SHA to the exact verified artifact revision. Pass the extracted artifact
+directory as the script argument. The script refuses an unverified artifact or a
+revision mismatch. No rebuild is needed or permitted in this publish step.
+
+If organization policy later permits GitHub OIDC, update the frontend stack with
+EnableGitHubPublisher=true, supplying an existing provider ARN when appropriate,
+and configure the three repository variables from the stack outputs. Subsequent
+main releases then publish the same audit-approved artifact automatically.
