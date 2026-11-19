@@ -9,7 +9,7 @@ export async function verifyAIMode(p,fixture,check,shot){
   await r.fulfill({json:status});
  });
  const settings=p.locator('.workspace-settings'),select=p.locator('#workspace-ai-mode'),status=p.locator('#workspace-ai-status');
- const open=async()=>{await p.evaluate(()=>MorzsaCompanion.openHistory());if(!await settings.getAttribute('open').then(x=>x!==null))await settings.locator('summary').first().click()};
+ const open=async()=>{await p.evaluate(()=>MorzsaCompanion.openHistory());if(!await settings.getAttribute('open').then(x=>x!==null))await settings.locator('summary').first().click();const ai=settings.locator('.workspace-ai-settings');if(!await ai.getAttribute('open').then(x=>x!==null))await ai.locator('summary').first().click()};
  const close=()=>p.locator('#companion-history [data-close]').click();
  const send=async(text,plan)=>{fixture.ai.push(plan);const from=fixture.calls.length;await p.locator('#companion-input').fill(text);await p.locator('#companion-form').evaluate(el=>el.requestSubmit());await p.locator(plan.error?'[data-retry]':'[data-action=send]').waitFor();await p.waitForFunction(()=>MorzsaPersistence.status()==='synced');return fixture.calls.slice(from).filter(c=>c.method==='POST'&&c.path.startsWith('/functions/'))};
  const output={answer:'A módváltás utáni válasz.',transcript:'Segíts a vacsorával.',recipes:[],operations:[],clarification:''};

@@ -37,3 +37,6 @@ assert.equal(recipeDiscovery.status,0,'Recipe alternatives, retained preferences
 
 const shoppingRelease=spawnSync(process.execPath,[path.join(import.meta.dirname,'shopping-release.mjs')],{cwd:root,stdio:'inherit',env:{...process.env,MORZSA_SHOPPING_OUTPUT:path.join(result.runDir,'shopping-release')}});
 assert.equal(shoppingRelease.status,0,'Ingredient identity, quantity, category, price and atomic consolidation regressions must pass');
+
+const chatWorkspace=spawnSync(process.execPath,[path.join(root,'tests/chat-workspace.browser.mjs'),'--aws'],{cwd:root,stdio:'inherit',env:{...process.env,MORZSA_CHAT_WORKSPACE_OUTPUT:path.join(result.runDir,'chat-workspace')}});
+assert.equal(chatWorkspace.status,0,'Chat hierarchy, household context, persisted actions and AWS adapter regressions must pass');

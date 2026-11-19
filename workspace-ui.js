@@ -15,6 +15,8 @@ window.MorzsaWorkspace=(()=>{
  const settings=document.createElement('section');settings.className='workspace-settings-area';settings.setAttribute('data-no-translate','');
  settings.innerHTML='<details class="workspace-settings"><summary>'+glyph('sliders-horizontal')+'<span data-settings-label></span></summary><div class="workspace-account"></div><div class="workspace-language"><span data-language-label></span><div class="workspace-language-host"></div></div><label class="workspace-ai-mode"><span data-ai-mode-label></span><select id="workspace-ai-mode"><option value="plus">Morzsa Plus</option><option value="free"></option></select></label></details><button type="button" class="workspace-preferences" data-kitchen-preferences>'+glyph('heart')+'<span></span></button><button type="button" class="workspace-introduction">'+glyph('sparkles')+'<span></span></button>';
  settings.querySelector('.workspace-settings').append(settings.querySelector('.workspace-preferences'),settings.querySelector('.workspace-introduction'));
+ const settingsBody=settings.querySelector('.workspace-settings'),accountSection=settings.querySelector('.workspace-account'),preferences=settings.querySelector('.workspace-preferences'),aiLabel=settings.querySelector('.workspace-ai-mode'),languageSection=settings.querySelector('.workspace-language');
+ accountSection.after(preferences);const aiGroup=document.createElement('details');aiGroup.className='workspace-ai-settings';aiGroup.innerHTML='<summary><span data-ai-settings-label></span></summary>';aiLabel.before(aiGroup);aiGroup.append(aiLabel);const languageGroup=document.createElement('details');languageGroup.className='workspace-language-settings';languageGroup.innerHTML='<summary><span data-language-settings-label></span></summary>';languageSection.before(languageGroup);languageGroup.append(languageSection);settingsBody.insertBefore(aiGroup,languageGroup);
  const account=document.getElementById('household-button'),languageSwitch=document.querySelector('.language-switch');
  settings.querySelector('.workspace-account').append(account);settings.querySelector('.workspace-language-host').append(languageSwitch);
  languageSwitch.querySelector('[data-language=hu]').textContent='Magyar';languageSwitch.querySelector('[data-language=en]').textContent='English';
@@ -40,10 +42,10 @@ window.MorzsaWorkspace=(()=>{
   aiMode.querySelector('[value=free]').textContent=say('Ingyenes','Free');
   aiMode.value=window.AIMode?.get()||'plus';
   aiMode.disabled=!window.AIMode||window.MorzsaCompanion?.canChangeAIMode?.()===false;
-  if(settings.querySelector('.workspace-settings').open)refreshAIStatus();
+  if(settings.querySelector('.workspace-settings').open&&settings.querySelector('.workspace-ai-settings').open)refreshAIStatus();
  }
  aiMode.onchange=()=>{if(window.MorzsaCompanion?.canChangeAIMode?.()===false){syncAIMode();return}if(!window.AIMode?.set(aiMode.value))toast(say('A beállítást nem sikerült menteni.','Could not save this setting.'));syncAIMode()};
- settings.querySelector('.workspace-settings').addEventListener('toggle',()=>{aiStatusKey='';syncAIMode()});
+ settings.querySelector('.workspace-settings').addEventListener('toggle',()=>{aiStatusKey='';syncAIMode()});settings.querySelector('.workspace-ai-settings').addEventListener('toggle',()=>{aiStatusKey='';syncAIMode()});
  window.addEventListener('morzsa-ai-mode-change',syncAIMode);
  window.addEventListener('morzsa-auth-change',syncAIMode);
  function attachSettings(host){
@@ -51,7 +53,7 @@ window.MorzsaWorkspace=(()=>{
   const dialog=document.getElementById('companion-history');host=host||(matchMedia('(min-width:1000px)').matches?sidebar:dialog?.open?dialog:sidebar);
   if(settings.parentElement!==host)host.append(settings);
   syncAIMode();
-  settings.querySelector('[data-settings-label]').textContent=say('Beállítások','Settings');settings.querySelector('[data-language-label]').textContent=say('Nyelv','Language');
+  settings.querySelector('[data-settings-label]').textContent=say('Fiók és beállítások','Account & settings');settings.querySelector('[data-ai-settings-label]').textContent=say('AI beállítások','AI settings');settings.querySelector('[data-language-settings-label]').textContent=say('Nyelv','Language');settings.querySelector('[data-language-label]').textContent=say('Nyelv','Language');
   settings.querySelector('.workspace-preferences span').textContent=say('Főzési ízlésem','Cooking preferences');
   diagnostics.querySelector('span').textContent=say('Műveletek és válaszidők','Operations and response times');
   settings.querySelector('.workspace-introduction span').textContent=say('Morzsa bemutató','Morzsa introduction');languageSwitch.setAttribute('aria-label',say('Nyelv','Language'));
@@ -93,7 +95,37 @@ window.MorzsaWorkspace=(()=>{
   window.MorzsaOnboarding?.mount();document.body.classList.toggle('introduction-active',!!main.querySelector('.morzsa-introduction'));
    window.MorzsaCompanion?.mountResume();window.KitchenIntelligence?.mount();window.WeeklyPlanUI?.mountEntry();mountActivity();mountKitchen();mountContext();window.MorzsaProactive?.mount();window.ShoppingMode?.positionFeedback();
  }
- function mountContext(){let panel=document.getElementById('workspace-context');const cart=state.cart.filter(i=>!i.done);if(!panel){panel=document.createElement('aside');panel.id='workspace-context';panel.setAttribute('data-no-translate','');document.body.append(panel)}panel.hidden=innerWidth<1340||page!=='chat'||!!main.querySelector('.cooking-guide,.cooking-preparation,.cooking-completion')||!cart.length;document.body.classList.toggle('workspace-has-context',!panel.hidden);if(panel.hidden)return;panel.innerHTML='<h2>'+say('A listád','Your list')+'</h2>'+cart.slice(0,5).map(i=>'<p><strong>'+esc(displayName(i.name))+'</strong><small>'+esc(cartAmount(i))+'</small></p>').join('')+'<button>'+say('Lista megnyitása','Open list')+' · '+cart.length+'</button>';panel.querySelector('button').onclick=()=>dashboardGo('shopping')}
+ let contextDialog=null,contextOpener=null;
+ function contextMarkup(){
+  const cart=state.cart.filter(i=>!i.done),stock=Object.entries(state.stock).filter(([,value])=>value>0),uncertain=window.PantryReview?.uncertain()||[],check=[...new Set([...stock.filter(([,value])=>value===1).map(([name])=>name),...uncertain.filter(name=>state.stock[name]>0)])];
+  const shared=!!household?.active,name=shared?household.activeName?.()||say('Közös konyha','Shared kitchen'):say('Saját konyhád','Your kitchen');
+  const status=navigator.onLine===false?say('Mentett adatok · offline','Saved data · offline'):household?.cartPending?say('Listamódosítás mentésre vár','List changes are waiting to sync'):household?.busy?say('Adatok frissítése…','Refreshing data…'):shared?say('A közös háztartás adatai','Shared household data'):say('Készlet és lista ezen az eszközön','Pantry and list on this device');
+  return '<div class="household-context-heading"><h2 >'+say('Háztartás','Household')+'</h2><p>'+esc(name)+'</p></div><p class="household-context-status" role="status">'+status+'</p><section class="household-context-section" aria-label="'+say('Bevásárlólista áttekintése','Shopping list summary')+'"><h3>'+glyph('shopping-cart')+say('Bevásárlólista','Shopping list')+'<span>'+cart.length+'</span></h3><p class="household-context-summary">'+say(cart.length+' tétel vár beszerzésre',cart.length+(cart.length===1?' item still to buy':' items still to buy'))+'</p>'+(cart.length?'<ul>'+cart.slice(0,3).map(i=>'<li><span>'+esc(displayName(i.name))+'</span><small>'+esc(cartAmount(i))+'</small></li>').join('')+'</ul>':'<p class="household-context-empty">'+say('Most nincs felírt tétel.','No outstanding items.')+'</p>')+'<button type="button" data-context-open="shopping">'+say('Teljes lista megnyitása','Open full list')+glyph('arrow-right')+'</button></section><section class="household-context-section" aria-label="'+say('Készlet áttekintése','Pantry summary')+'"><h3>'+glyph('house')+say('Készlet','Pantry')+'</h3><p class="household-context-summary">'+say(stock.length+' termék otthon jelölve',stock.length+(stock.length===1?' product marked at home':' products marked at home'))+'</p>'+(check.length?'<p class="household-context-check">'+say('Kevés vagy ellenőrizendő: ','Running low or needs checking: ')+esc(check.slice(0,3).map(displayName).join(', '))+(check.length>3?' +'+(check.length-3):'')+'</p>':!stock.length?'<p class="household-context-empty">'+say('Jelezd Morzsának, mi van otthon.','Tell Morzsa what you have at home.')+'</p>':'')+'<button type="button" data-context-open="pantry">'+say('Készlet megnyitása','Open pantry')+glyph('arrow-right')+'</button></section>';
+ }
+ function paintContext(host,drawer=false){
+  const html=(drawer?'<button type="button" class="household-context-close" data-context-close aria-label="'+say('Bezárás','Close')+'">'+glyph('x')+'</button>':'')+contextMarkup();
+  if(host._contextHTML===html)return;const focus=host.contains(document.activeElement)?document.activeElement.dataset.contextOpen||(document.activeElement.hasAttribute('data-context-close')?'close':null):null;
+  host.innerHTML=html;host._contextHTML=html;host.querySelector('h2').id=host.id+'-title';
+  host.querySelector('[data-context-close]')?.addEventListener('click',()=>host.close());
+  host.querySelectorAll('[data-context-open]').forEach(button=>button.onclick=()=>{contextDialog?.close();dashboardGo(button.dataset.contextOpen)});
+  if(focus)host.querySelector(focus==='close'?'[data-context-close]':'[data-context-open="'+focus+'"]')?.focus({preventScroll:true});
+ }
+ function openContextPanel(event){
+  contextOpener=event.currentTarget;
+  if(!contextDialog){contextDialog=document.createElement('dialog');contextDialog.id='workspace-context-drawer';contextDialog.setAttribute('data-no-translate','');contextDialog.setAttribute('aria-labelledby','workspace-context-drawer-title');document.body.append(contextDialog)}
+  paintContext(contextDialog,true);if(contextDialog.open)return;
+  const unsubscribe=window.MorzsaViewport?.subscribe(v=>{contextDialog.style.maxHeight=Math.max(120,v.height-24)+'px';contextDialog.style.top=(v.top+12)+'px';contextDialog.style.left=(v.left+Math.max(12,(v.width-Math.min(420,v.width-24))/2))+'px'});
+  contextDialog.showModal();contextDialog.querySelector('[data-context-close]').focus({preventScroll:true});
+  contextDialog.addEventListener('close',()=>{unsubscribe?.();if(page==='chat'&&contextOpener?.isConnected&&!contextOpener.hidden)contextOpener.focus({preventScroll:true})},{once:true});
+ }
+ function mountContext(){
+  let panel=document.getElementById('workspace-context');if(!panel){panel=document.createElement('aside');panel.id='workspace-context';panel.setAttribute('data-no-translate','');panel.setAttribute('aria-label',say('Háztartás áttekintése','Household summary'));document.body.append(panel)}
+  const available=page==='chat'&&!main.querySelector('.cooking-guide,.cooking-preparation,.cooking-completion'),wide=matchMedia('(min-width:1280px)').matches;
+  panel.hidden=!wide||!available;document.body.classList.toggle('workspace-has-context',!panel.hidden);if(!panel.hidden)paintContext(panel);
+  let toggle=document.getElementById('workspace-household-toggle');if(!toggle){toggle=document.createElement('button');toggle.type='button';toggle.id='workspace-household-toggle';toggle.className='workspace-household-toggle';toggle.innerHTML=glyph('house');toggle.onclick=openContextPanel;document.querySelector('.app>header').append(toggle)}
+  toggle.hidden=wide||!available;toggle.setAttribute('aria-label',say('Háztartás megnyitása','Open household'));toggle.setAttribute('aria-haspopup','dialog');toggle.title=say('Háztartás','Household');
+  if(contextDialog?.open){if(!available||wide)contextDialog.close();else paintContext(contextDialog,true)}
+ }
  function mountKitchen(){document.getElementById('workspace-kitchen')?.remove()}
  function openEntry(destination,initialDraft){
   if(working)return;
@@ -130,6 +162,6 @@ window.MorzsaWorkspace=(()=>{
  }
  function connectionNote(){let note=document.getElementById('workspace-connection-note');if(!note){note=document.createElement('div');note.id='workspace-connection-note';note.setAttribute('role','status');note.setAttribute('data-no-translate','');document.querySelector('.app header').after(note)}note.hidden=navigator.onLine!==false;note.textContent=say('Nincs internet. Az AI és a közös konyha frissítése szünetel.','No internet. AI and shared kitchen updates are unavailable.')}
  window.addEventListener('offline',connectionNote);window.addEventListener('online',connectionNote);connectionNote();
- matchMedia('(min-width:1000px)').addEventListener('change',mount);
- mount();return {mount,quick:openEntry,attachSettings};
+ window.addEventListener('morzsa-auth-change',()=>contextDialog?.close());window.addEventListener('online',mountContext);window.addEventListener('offline',mountContext);matchMedia('(min-width:1000px)').addEventListener('change',mount);matchMedia('(min-width:1280px)').addEventListener('change',mountContext);
+ mount();return {mount,quick:openEntry,attachSettings,refreshContext:mountContext};
 })();

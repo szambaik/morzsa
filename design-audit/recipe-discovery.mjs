@@ -36,7 +36,7 @@ try{
  await page.locator('[data-more-ideas]').click();await page.waitForFunction(()=>discoveryRequests.length===2);await idle();await synced();
  let request=await page.evaluate(()=>discoveryRequests.at(-1));assert.match(request.context.recipeDiscovery.request,/Két főre/);assert.equal(request.context.recipeDiscovery.action,'more');assert.equal(request.context.recipeDiscovery.excludeTitles.length,3);assert.equal(await page.locator('.companion-recipe').count(),6);
  results.push('Three alternatives and retained original request');
- await page.locator('.recipe-idea-tools summary').click();
+ await page.locator('[data-refine-panel]>summary').click();
  await page.locator('[name=refinement][value=less_cleanup]').check();await page.locator('[name=refinement][value=cheap]').check();await page.locator('[name=refinement][value=more_vegetables]').check();
  await page.locator('[data-refine-ideas] button').click();await page.waitForFunction(()=>discoveryRequests.length===3);await idle();await synced();
  request=await page.evaluate(()=>discoveryRequests.at(-1));assert.deepEqual(request.context.recipeDiscovery.refinements,['less_cleanup','cheap','more_vegetables']);
