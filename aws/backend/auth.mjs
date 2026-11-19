@@ -1,3 +1,4 @@
+import {allowedOrigins,webCallbacks} from './origins.mjs';
 import {CognitoIdentityProviderClient,ListUsersCommand,GetUserCommand,InitiateAuthCommand,SignUpCommand,ConfirmSignUpCommand,ForgotPasswordCommand,ConfirmForgotPasswordCommand,GlobalSignOutCommand} from '@aws-sdk/client-cognito-identity-provider';
 import {DynamoDBClient} from '@aws-sdk/client-dynamodb';
 import {DynamoDBDocumentClient,GetCommand,PutCommand} from '@aws-sdk/lib-dynamodb';
@@ -5,7 +6,7 @@ import {randomUUID} from 'node:crypto';
 import {withTelemetry} from './telemetry.mjs';
 const config={region:process.env.AWS_REGION,maxAttempts:3},auth=new CognitoIdentityProviderClient(config),db=DynamoDBDocumentClient.from(new DynamoDBClient(config),{marshallOptions:{removeUndefinedValues:true}});
 const pool=process.env.USER_POOL,client=process.env.APP_CLIENT,table=process.env.DATA_TABLE,domain=process.env.AUTH_DOMAIN;
-const origins=['https://szambaik.github.io','capacitor://localhost','https://localhost','http://localhost','http://localhost:8080'];
+const origins=allowedOrigins;
 const fail=(status,message)=>{throw Object.assign(Error(message),{status});};
 const email=v=>{if(typeof v!=='string'||v.length>254||/\p{Cc}/u.test(v)||! /^[^\s@"\\]+@[^\s@"\\]+\.[^\s@"\\]+$/.test(v))fail(400,'Invalid email');return v.trim().toLowerCase();};
 async function username(address){const r=await auth.send(new ListUsersCommand({UserPoolId:pool,Filter:'email = "'+email(address)+'"',Limit:2}));return r.Users?.find(u=>!u.Username.startsWith('Google_'))?.Username??r.Users?.[0]?.Username;}
@@ -23,7 +24,7 @@ async function authHandler(event){const origin=event.headers?.origin??'',headers
  if(path==='/auth/v1/token'){
   if(q.grant_type==='password'){const u=await username(input.email);if(!u)fail(401,'Invalid login credentials');try{return answer(await session((await auth.send(new InitiateAuthCommand({ClientId:client,AuthFlow:'USER_PASSWORD_AUTH',AuthParameters:{USERNAME:u,PASSWORD:input.password}}))).AuthenticationResult));}catch(e){if(e.name==='UserNotConfirmedException')fail(400,'Email not confirmed');if(e.status)throw e;fail(401,'Invalid login credentials');}}
   if(q.grant_type==='refresh_token')return answer(await session((await auth.send(new InitiateAuthCommand({ClientId:client,AuthFlow:'REFRESH_TOKEN_AUTH',AuthParameters:{REFRESH_TOKEN:input.refresh_token}}))).AuthenticationResult,input.refresh_token));
-  if(q.grant_type==='pkce'){const redirect=input.redirect_uri??'io.github.szambaik.morzsa://auth-callback';if(!['https://szambaik.github.io/morzsa/','io.github.szambaik.morzsa://auth-callback','http://localhost:8080/'].includes(redirect))fail(400,'Invalid callback');const r=await fetch(domain+'/oauth2/token',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({grant_type:'authorization_code',client_id:client,code:input.auth_code,code_verifier:input.code_verifier,redirect_uri:redirect}),signal:AbortSignal.timeout(10000)});if(!r.ok)fail(401,'Invalid sign-in callback');const t=await r.json();return answer(await session({AccessToken:t.access_token,RefreshToken:t.refresh_token,ExpiresIn:t.expires_in}));}
+  if(q.grant_type==='pkce'){const redirect=input.redirect_uri??'io.github.szambaik.morzsa://auth-callback';if(![...webCallbacks,'io.github.szambaik.morzsa://auth-callback'].includes(redirect))fail(400,'Invalid callback');const r=await fetch(domain+'/oauth2/token',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({grant_type:'authorization_code',client_id:client,code:input.auth_code,code_verifier:input.code_verifier,redirect_uri:redirect}),signal:AbortSignal.timeout(10000)});if(!r.ok)fail(401,'Invalid sign-in callback');const t=await r.json();return answer(await session({AccessToken:t.access_token,RefreshToken:t.refresh_token,ExpiresIn:t.expires_in}));}
   fail(400,'Unsupported sign-in flow');
  }
  if(path==='/auth/v1/signup'){if(await username(input.email))fail(400,'Account already exists; sign in or reset your password');const uid=randomUUID();await auth.send(new SignUpCommand({ClientId:client,Username:uid,Password:input.password,UserAttributes:[{Name:'email',Value:email(input.email)}]}));return answer({confirmation_required:true});}

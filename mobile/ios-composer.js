@@ -62,12 +62,22 @@ export function installIOSComposer(plugin){
  }
  async function submit(event){
   const form=event.target;
-  if(!active||form.id!=='companion-form'||event.submitter?.dataset.action==='stop')return;
+  if(form.id!=='companion-form'||event.submitter?.dataset.action==='stop')return;
+  current();
+  if(disposed||failed||!session||!visible(input))return;
   event.preventDefault();event.stopImmediatePropagation();if(submitting)return;
   const key=session,handler=form.onsubmit,button=event.submitter||form.querySelector('[type=submit]');
   if(!handler||button?.disabled)return;
   submitting=true;
   try{
+   // A redraw temporarily removes the DOM acknowledgment, while UIKit may
+   // still own the latest text. Restore readiness in this same send attempt.
+   if(!active){
+    const state=current(),rev=++revision,result=await plugin.setComposer({...state,revision:rev});
+    current();if(disposed||key!==session)return;
+    if(result.revision!==rev||result.kind!=='UITextView')throw Error('Native text input unavailable');
+    acknowledge();
+   }
    // Capture and clear atomically on UIKit's main thread, so subsequent typing
    // starts the next draft even while this bridge response is in flight.
    const value=await plugin.submitComposer({session:key});

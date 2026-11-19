@@ -1,3 +1,4 @@
+import {allowedOrigins} from './origins.mjs';
 import {DynamoDBClient} from '@aws-sdk/client-dynamodb';
 import {DynamoDBDocumentClient,GetCommand,QueryCommand} from '@aws-sdk/lib-dynamodb';
 import {S3Client,GetObjectCommand,PutObjectCommand} from '@aws-sdk/client-s3';
@@ -19,7 +20,7 @@ async function query(PK,prefix){const match=/^APP#([^#]+)#([HUCRG]#[a-z0-9-]+)$/
 const store={get,query};
 export function createHandler({store,presign,transaction=dataset=>new Transaction(dataset),writeEnabled=process.env.WRITE_ENABLED==='true',region=process.env.AWS_REGION,pool=process.env.USER_POOL,client=process.env.APP_CLIENT}) {
  return async event=>{
-  const origin=event.headers?.origin??'',allowed=['https://szambaik.github.io','capacitor://localhost','https://localhost','http://localhost','http://localhost:8080'];
+  const origin=event.headers?.origin??'',allowed=allowedOrigins;
   const cors=origin&&allowed.includes(origin)?{'Access-Control-Allow-Origin':origin,'Access-Control-Allow-Headers':'Authorization,Content-Type','Access-Control-Allow-Methods':'GET,POST,OPTIONS',Vary:'Origin'}:{};
   try {
    const path=event.rawPath??'/',method=event.requestContext?.http?.method??'GET';

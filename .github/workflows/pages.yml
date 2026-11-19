@@ -77,3 +77,33 @@ jobs:
       - name: Publish tested artifact
         id: deployment
         uses: actions/deploy-pages@v4
+  cloudfront:
+    name: Deploy verified web app to CloudFront
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && vars.AWS_FRONTEND_ROLE_ARN != ''
+    needs: audit
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+      id-token: write
+    env:
+      AWS_FRONTEND_BUCKET: ${{ vars.AWS_FRONTEND_BUCKET }}
+      AWS_FRONTEND_DISTRIBUTION: ${{ vars.AWS_FRONTEND_DISTRIBUTION }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/download-artifact@v4
+        with:
+          name: github-pages
+          path: verified-artifact
+      - name: Extract the audit-approved artifact
+        run: mkdir -p web-dist && tar -xf verified-artifact/artifact.tar -C web-dist
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_FRONTEND_ROLE_ARN }}
+          aws-region: eu-north-1
+      - run: npm --prefix aws/frontend ci
+      - name: Publish the verified revision and invalidate CloudFront
+        run: node aws/frontend/deploy.mjs web-dist
