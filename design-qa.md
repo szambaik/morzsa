@@ -1,73 +1,47 @@
-# Recipe-page mockup adoption — 2026-11-19
+# Cooking and full recipe workspace QA — 2026-11-19
 
-## Visual truth and implementation
+Source: design/cooking-page-2026-11-19/reference-wide.png (1522 x 1019),
+reference-compact.png (two illustrative cooking/reading layouts), and the
+user's accompanying description of shared state and the mobile bottom sheet.
 
-- Source: design/recipe-page-2026-11-19/reference.png, 1531 × 1023 pixels.
-- Implementation: http://127.0.0.1:8083/?actor=a .
-- Final screenshot: design/recipe-page-2026-11-19/implementation-final.png.
-- CSS viewport: 1531 × 1023, deviceScaleFactor 1. Source and implementation use the same pixel dimensions; no scaling or browser chrome in the comparison.
-- State: Hungarian, For you, six fixture recipes, full hero coverage, one active cooking session, three fixture household members.
-- Full comparison: design/recipe-page-2026-11-19/comparison-final.png.
-- Focused hero comparison: design/recipe-page-2026-11-19/focused-final.png.
-- Responsive evidence: responsive-320.png, responsive-390.png, responsive-768.png, responsive-1024.png and responsive-1531.png in the same directory. Mobile is a responsive adaptation of the desktop source.
-- Earlier root QA is preserved in previous-design-qa.md beside the source.
+## Visual comparison
 
-## Findings and comparison history
+Opened the combined source/implementation comparison-wide-01.png. Initial
+P2 issues: the previous cooking shell hid the sidebar and retained its fixed
+bottom dock; profile copy order was wrong, the checklist lacked visible check
+marks, and cover/step positions differed. Fixed these in the new scoped CSS
+and markup. The final combined comparison-wide-final.png was inspected after
+recapture at the same 1522 x 1019 viewport and the cooking step shown by the source.
 
-1. First comparison: the major layout aligned, but display text was too heavy,
-   sidebar icons did not match, and the mascot had a visible rectangular source
-   background. Fixed with lighter Nunito Sans heading weights, Phosphor regular
-   outline icons, source-color adjustments and background removal. Evidence:
-   comparison-01.png and comparison-02.png.
-2. Mobile comparison: embedded heart controls in photo crops could appear beside
-   live favourite buttons after resizing. Removed only those source-photo UI
-   regions, retaining the real controls and the food subjects.
-3. Compatibility class inspection: the preserved recipe-resume class inherited
-   an old 720px maximum. Restored the full 802px source column width.
-4. Release accessibility scan: household subtitle contrast was 4.38:1. Darkened
-   the secondary text slightly and retained a readable build-version label.
-5. Web/native packaging inspection: moved the web font import to the beginning
-   of the shared stylesheet. Native bundling removes the entire remote import
-   and maps recipe display text to the existing local system-font stack.
+The warm cream/sage/terracotta palette, narrow sidebar, photo-led recipe
+profile, segmented cooking/full recipe controls, stage progress, central cooking
+photo/instruction, next/previous actions, ingredient/tips/timer panels and
+compact header are present. The 1100-pixel full view shows all ingredient amounts
+and canonical method steps. Mobile captures at 390 pixels show readable controls
+and a bottom ingredient sheet; 320 pixels has no horizontal overflow.
 
-Final comparison identifies no remaining actionable P0/P1/P2 differences.
+## Content and behavior
 
-## Required fidelity surfaces
+The supplied wide and compact illustrations use different grouping of method
+instructions. The implementation follows the selected canonical cooking step,
+as in the compact reference, and shows all canonical steps in Full recipe.
+It does not invent substeps, a breakfast category, equipment or tips for real recipes.
+The reference dishes and source photo crops are local fixture data only.
 
-- Fonts/typography: Nunito Sans headings and Inter body text, matched heading and
-  card scales, normal-weight body copy, source-like wrapping and line heights.
-  Actual Nunito Sans Latin and extended-Latin 800 faces loaded in Chrome.
-- Spacing/layout: 234px sidebar; page x=269px; tabs y=103px and h=57px; hero
-  x=269px, y=258px, w=802.39px, h=321px; right column w=413.61px with 24px gap;
-  cooking section y=595px; lower section y=745px and four columns. Geometry is
-  aligned with the supplied reference. Responsive layouts retain usable controls.
-- Colors/tokens: warm cream, sage and terracotta, source-like borders and radii.
-  Secondary text is minimally darker where required by accessible contrast.
-- Imagery/assets: source photo subjects, source brand and illustrations, cleaned
-  transparent artwork, real icon assets and real interactive hearts. Production
-  uses household recipe data and the existing backend/device image cache. The
-  fictional mockup records and source food crops are confined to the local fixture.
-- Copy/content: source app labels and static copy are reproduced. Recipe names,
-  coverage, household name/member count and cooking status are data-driven in
-  production, without invented household inventory or cooking sessions.
+Targeted sanity passed: mode switch, current step and checklist preservation,
+serving conversion, persistent live timer through mode switch and reload,
+checklist and portions through reload, mobile sheet editing/closing, and layouts
+at 320/390/1100/1522. No page errors or horizontal overflow. Web build and the
+quick isolated bundled-app sanity passed. Full regression was not run, as requested.
 
-## Functional verification
+No SQL, RPC or shared record format was changed. Existing session steps, timer
+IDs/deadlines and portions remain canonical. Prepared-ingredient checks are
+local device state scoped by user, household and recipe/session; they do not
+change pantry availability. The original guarded pantry/shopping actions remain
+accessible through the sheet's collapsed Pantry and shopping list section.
 
-Chrome on the isolated SQL fixture passed: another idea, save and unsave,
-Saved tab, weekly planning dialog, search, recipe reading and return, cooking
-resume and responsive widths 320/390/768/1024/1531. No page errors or horizontal
-overflow. Existing saved records, favourite actions and cooking IDs remain the
-underlying contracts. Multiple cooking sessions remain accessible in a disclosure.
-
-Web and native bundle checks passed. The web font import is at the beginning
-of the compiled CSS; the native CSS contains no Google font URL or unresolved
-Nunito Sans family. The mandatory release gate remains the production publisher.
-
-## Follow-up polish
-
-- P3: small icon-shape/antialiasing differences remain because the source is a
-  raster mockup while the live controls use a consistent open-source icon family.
-- P3: source paper-lighting nuance is approximated with the established warm
-  page surface; layout and color roles are preserved.
+P3 follow-ups: small icon/antialiasing differences, raster source lighting and
+source-specific instruction grouping remain. Source illustrations are reused;
+real recipe images use the existing persistent backend and device cache.
 
 final result: passed

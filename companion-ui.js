@@ -378,7 +378,7 @@ window.MorzsaCompanion=(()=>{
   if(!isCooking())return '';
   const opts={esc,say,ui,stock:state.stock,resolve:n=>QuickEntry.match(n,[...catalog,...state.custom],productEnglish)||n,favourite:!!window.RecipeRoom?.isFavourite(thread().recipe),feedback:feedbackDrafts.get(book.active),feedbackOpen:feedbackOpen.has(book.active),consumptionOpen:consumptionOpen.has(book.active),usedUp:consumptionChoices.get(book.active)||[]};
   if(C.phase(thread())==='completion')return CookingUI.timers(thread(),opts)+CookingUI.completion(thread(),opts);
-  return RecipeCookingPage.markup(thread(),{mode:cookingView,disabled:!!(busy||saving||pending||preparing),timerEditor:{...timerEditors.get(timerKey()),key:timerKey()}});
+  return RecipeCookingPage.markup(thread(),{mode:cookingView,format:ingredientText,disabled:!!(busy||saving||pending||preparing),timerEditor:{...timerEditors.get(timerKey()),key:timerKey()}});
  }
  function showCookingIngredients(){
   sync();if(!isCooking())return;
