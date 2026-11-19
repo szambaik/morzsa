@@ -1,0 +1,12 @@
+{
+  "region": "eu-north-1",
+  "stack": "morzsa-frontend",
+  "frontendOrigin": "https://d149jrhkz4lpb2.cloudfront.net",
+  "distributionId": "E29FFYI2O0WB55",
+  "bucket": "morzsa-frontend-webbucket-dh95isspmmvw",
+  "backendStack": "morzsa-backend",
+  "githubPublisherEnabled": false,
+  "publisherConstraint": "Current AWS organization policy denies GitHub OIDC provider administration",
+  "initialVerifiedCommit": "5693ec9f17c3d8ab17f40dd51a86551bb7a7e1ab",
+  "initialAuditRun": "44471754165"
+}
