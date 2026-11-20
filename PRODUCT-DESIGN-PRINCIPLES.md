@@ -53,3 +53,17 @@ A user should be able to:
 - Tell Morzsa what they bought or used and have the application update accordingly.
 
 The ultimate goal is to make maintaining the application feel easier than sending a shopping list over a messaging app.
+
+## Navigation and visual density — 2026-11-19
+
+Chat is the primary entry point and navigation destination. Recipe, pantry,
+shopping and weekly-plan results are concrete cards with executable actions.
+The other views remain independently available and offer contextual access to
+Morzsa. Opening that access must preserve an existing draft.
+
+Overview prioritizes active cooking, shortages and the next useful action,
+not analytics. Shopping prioritizes categories, checkmarks, approximate prices
+and the in-store flow. Pantry prioritizes availability status over large art.
+Keep cards compact, moderately rounded and clearly ordered by typography.
+Terracotta is the main action color; green communicates status and selection.
+Use the existing icon family and show the mascot sparingly.

@@ -17,6 +17,7 @@ window.RecipeCookingPage=(()=>{
  }
  function tips(t){const parsed=RecipeRoomModel.stepContent(t.recipe.steps[t.cookingStep||0]);const all=t.recipe.preparationTips?.length?[...t.recipe.preparationTips]:[...parsed.tips];const g=t.cooking?.guidance;if(g?.portions===CookingExperience.signature(t.portions)){const safe=CookingExperience.guidance(g,t.recipe,t.cookingStep||0);for(const c of safe?.components||[])if(['tip_card','substitution_card','troubleshooting_card'].includes(c.type))all.push(c.text)}return [...new Set(all)].slice(0,6)}
  function photo(r,step=-1){
+  if(window.MORZSA_QA_UNIFIED_REFERENCE===true&&r.recipeId===window.MORZSA_QA_UNIFIED_RECIPE_ID&&(step<0||step===1))return '<div class="rc-photo"><img src="assets/unified-workspace-reference/'+(step<0?'caesar-salad.webp':'chicken-step.webp')+'" alt="'+esc(step<0?r.title:RecipeRoomModel.stepTitle(r,step))+'"></div>';
   const reference=window.MORZSA_QA_COOKING_REFERENCE===true&&r.recipeId===window.MORZSA_QA_COOKING_ID;
   if(reference)return '<div class="rc-photo"><img src="assets/'+(step===-2?'cooking-page-reference/porridge-finished.webp':step<0?'cooking-page-reference/porridge-cover.webp':'recipe-cooking-reference/oatmeal-step.webp')+'" alt="'+esc(step<0?r.title:RecipeRoomModel.stepTitle(r,step))+'"></div>';
   return '<div class="rc-photo" '+(step<0?'data-rc-cover':'data-cooking-image="'+step+'"')+'></div>';

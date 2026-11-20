@@ -65,9 +65,9 @@ window.MorzsaProactive=(()=>{
  }
  function mount(){
   sync();document.body.classList.add('proactive-enabled');if(!loading&&!busy)queueMicrotask(()=>refresh());
-  const items=products(),picks=page==='overview'||page==='recipes'?recommendations():[];
+  const items=products(),picks=page==='overview'||page==='recipes'?(window.MorzsaProactive?.recommendations?.()||recommendations()):[];
   if(page==='overview'){
-   const shown=items.slice(0,picks.length?2:3),html='<div class="proactive-heading"><div><h2>'+say('Érdemes ránézni','Worth a look')+'</h2></div><img src="assets/brands/morzsa.svg" width="28" height="28" alt=""></div>'+(shown.length?'<div class="proactive-grid">'+shown.map(s=>productCard(s)).join('')+'</div>':!picks.length?'<p class="proactive-empty">'+say(Object.keys(state.stock).length?'Most nincs sürgős javaslat. Ha változott valami, jelezd Morzsának.':'Néhány otthoni alapanyagból már tudok ötletet adni.',Object.keys(state.stock).length?'No pressing suggestions right now. Tell Morzsa if something changed.':'Add a few pantry items and I can help you find ideas.')+'</p>':'')+(picks.length?'<h2 class="proactive-subheading">'+say('Morzsa ajánlja','Morzsa recommends')+'</h2>'+recipeCard(picks[0]):'')+privacyNote();
+   const shown=items.slice(0,6),html=(shown.length||!picks.length?'<div class="proactive-heading"><div><h2>'+say('Érdemes ránézni','Worth a look')+'</h2></div><img src="assets/brands/morzsa.svg" width="28" height="28" alt=""></div>':'')+(shown.length?'<div class="proactive-grid">'+shown.map(s=>productCard(s)).join('')+'</div>':!picks.length?'<p class="proactive-empty">'+say(Object.keys(state.stock).length?'Most nincs sürgős javaslat. Ha változott valami, jelezd Morzsának.':'Néhány otthoni alapanyagból már tudok ötletet adni.',Object.keys(state.stock).length?'No pressing suggestions right now. Tell Morzsa if something changed.':'Add a few pantry items and I can help you find ideas.')+'</p>':'')+(picks.length?'<h2 class="proactive-subheading">'+say('Morzsa ajánlja','Morzsa recommends')+'</h2>'+recipeCard(picks[0]):'')+privacyNote();
    setHost(main.querySelector('.dashboard'),'.proactive-overview',html,host=>main.querySelector('.daily-counts')?.after(host));
   }
   if(page==='shopping'&&!ShoppingMode?.visible()){
@@ -113,7 +113,7 @@ window.MorzsaProactive=(()=>{
  }
  function saveRecipeFeedback(s,action){const next=M.respond(feedback,s,action);try{localStorage.setItem(storage(),JSON.stringify(next));feedback=next;return true}catch{toast(say('A visszajelzést nem sikerült menteni.','Could not save your feedback.'));return false}}
  async function openRecommendation(id){
-  const s=recommendations().find(s=>s.recipeId===id);if(!s)return;const current=scope();
+  const s=(window.MorzsaProactive?.recommendations?.()||recommendations()).find(s=>s.recipeId===id);if(!s)return;const current=scope();
   try{const r=s.recipe.steps?s.recipe:await RecipeLibrary.get(s.recipeId);if(current!==scope())return;saveRecipeFeedback(s,'opened');RecipeRoom.open(r)}catch{toast(say('A recept most nem tölthető be. Próbáld újra.','Could not load this recipe. Try again.'))}
  }
  function bind(host){
@@ -129,8 +129,11 @@ window.MorzsaProactive=(()=>{
  }
  // A tab returns to its own conversation, filters, draft and scroll position.
  const nav=document.querySelector('nav');
- nav.addEventListener('click',e=>{const button=e.target.closest('[data-page]');if(!button)return;e.preventDefault();e.stopImmediatePropagation();sync();const destination=button.dataset.page;if(destination===page)return;
-  positions.set(page,{scroll:scrollY,recipeQuery:main.querySelector('.recipe-feed-search input')?.value});page=destination;render();
+ nav.addEventListener('click',e=>{const button=e.target.closest('[data-page]');if(!button)return;e.preventDefault();e.stopImmediatePropagation();sync();const destination=button.dataset.page;
+  const origin=page,positionKey=page==='chat'&&document.body.classList.contains('workspace-cooking')?'cooking':page;
+  if(destination==='chat'&&window.UnifiedWorkspace){positions.set(positionKey,{scroll:scrollY});MorzsaCompanion.openContext(origin);const prior=positions.get('chat');requestAnimationFrame(()=>window.scrollTo({top:prior?.scroll||0,behavior:'instant'}));return}
+  if(destination===page)return;
+  positions.set(positionKey,{scroll:scrollY,recipeQuery:main.querySelector('.recipe-feed-search input')?.value});page=destination;render();
   const prior=positions.get(page);requestAnimationFrame(()=>{const input=main.querySelector('.recipe-feed-search input');if(input&&prior?.recipeQuery!==undefined)input.value=prior.recipeQuery;window.scrollTo({top:prior?.scroll||0,behavior:'instant'})});
  },true);
  window.addEventListener('morzsa-auth-change',()=>{sync();mount()});
