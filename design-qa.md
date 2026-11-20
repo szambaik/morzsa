@@ -1,47 +1,50 @@
-# Cooking and full recipe workspace QA — 2026-11-19
+# Unified Morzsa workspace design QA
 
-Source: design/cooking-page-2026-11-19/reference-wide.png (1522 x 1019),
-reference-compact.png (two illustrative cooking/reading layouts), and the
-user's accompanying description of shared state and the mobile bottom sheet.
+Reference: design/unified-workspace-2026-11-19/reference-board.png and the
+accompanying requirements.png. The six composed reference surfaces are adapted
+to real 1200x1060 desktop and 390/320 mobile layouts, rather than treated as six
+literal browser viewports inside the supplied board.
 
-## Visual comparison
+## Comparison and fixes
 
-Opened the combined source/implementation comparison-wide-01.png. Initial
-P2 issues: the previous cooking shell hid the sidebar and retained its fixed
-bottom dock; profile copy order was wrong, the checklist lacked visible check
-marks, and cover/step positions differed. Fixed these in the new scoped CSS
-and markup. The final combined comparison-wide-final.png was inspected after
-recapture at the same 1522 x 1019 viewport and the cooking step shown by the source.
+Opened comparison-final.png with the source and the six current implementation
+captures in the same image. Initial P2 issues were inherited overview grid
+placement, overlarge shopping rows/check targets, duplicate cooking resume
+blocks, the small-screen shopping heading overflow, and a legacy floating Add
+button assumed by the build verifier. These were corrected with scoped styles,
+shared layout helpers, and the verifier's equivalent visible Add entry point.
 
-The warm cream/sage/terracotta palette, narrow sidebar, photo-led recipe
-profile, segmented cooking/full recipe controls, stage progress, central cooking
-photo/instruction, next/previous actions, ingredient/tips/timer panels and
-compact header are present. The 1100-pixel full view shows all ingredient amounts
-and canonical method steps. Mobile captures at 390 pixels show readable controls
-and a bottom ingredient sheet; 320 pixels has no horizontal overflow.
+The final visual roles match: common cream/sage/terracotta shell, compact cards,
+consistent type hierarchy, clear action buttons, a central chat with executable
+recipe/list/week actions, useful overview tasks, categorized shopping with
+estimated prices and shopping mode, restrained pantry art/status, full recipe
+and focused cooking with ingredient access and notes. The mascot appears in the
+overview hero rather than every sidebar, following the written requirements.
+The brand uses the existing transparent mark instead of a screenshot background.
 
-## Content and behavior
+Intentional adaptations: pantry remains approximate availability rather than
+copying fictional quantity counters; overview actions replace the illustrated
+analytics tiles; real recipe steps retain their canonical flat grouping. Source
+food crops are opt-in local QA imagery only; production uses RecipeImages cache.
 
-The supplied wide and compact illustrations use different grouping of method
-instructions. The implementation follows the selected canonical cooking step,
-as in the compact reference, and shows all canonical steps in Full recipe.
-It does not invent substeps, a breakfast category, equipment or tips for real recipes.
-The reference dishes and source photo crops are local fixture data only.
+## Functional evidence
 
-Targeted sanity passed: mode switch, current step and checklist preservation,
-serving conversion, persistent live timer through mode switch and reload,
-checklist and portions through reload, mobile sheet editing/closing, and layouts
-at 320/390/1100/1522. No page errors or horizontal overflow. Web build and the
-quick isolated bundled-app sanity passed. Full regression was not run, as requested.
+Explicit local Chrome sanity passed for: missing ingredients to the list without
+duplicating unrelated records; selected recipe in the weekly planner; recipe
+variants; portions/checklist/timer preservation; cooking note save; contextual
+Morzsa access; confirmed cart receipt and guarded Undo with measured placement;
+Add review; shopping mode; pantry filter scope; existing draft preservation;
+and no horizontal overflow at 320/390/1200. Mobile recipe tips open the ingredient
+sheet. Final six-view and mobile captures have no browser page errors.
 
-No SQL, RPC or shared record format was changed. Existing session steps, timer
-IDs/deadlines and portions remain canonical. Prepared-ingredient checks are
-local device state scoped by user, household and recipe/session; they do not
-change pantry availability. The original guarded pantry/shopping actions remain
-accessible through the sheet's collapsed Pantry and shopping list section.
+Web build and the quick bundled-app sanity passed. Full regression and Xcode/
+Gradle builds were not run. Native web assets are synchronized separately.
+No SQL migration, user-data reset or new shared record format was introduced.
+Existing local saves, shared update guards, image cache and server-confirmed
+receipts remain the underlying contracts. Cooking notes use the existing feedback
+notes field; preparation checks retain their existing device-scoped store.
 
-P3 follow-ups: small icon/antialiasing differences, raster source lighting and
-source-specific instruction grouping remain. Source illustrations are reused;
-real recipe images use the existing persistent backend and device cache.
+P3 follow-up: small icon/raster/antialiasing differences and source-specific
+instruction grouping remain. Recipe and stock content is data-driven.
 
 final result: passed

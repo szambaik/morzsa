@@ -41,7 +41,7 @@ window.ShoppingMode=(()=>{
   if(options&&!options.hidden&&form){const top=form.getBoundingClientRect().top-(window.visualViewport?.offsetTop||0),receipt=document.getElementById('shopping-action-feedback');options.style.maxHeight=Math.max(0,Math.min(240,top-20-(receipt?.offsetHeight||0)))+'px'}
   const host=document.getElementById('shopping-action-feedback');if(!host)return;
   if(!receiptTicket||receiptTicket.scope!==current()||page!=='shopping'){clearFeedback();return}
-  const dock=main.querySelector('.shopping-mode-dock')||document.getElementById('workspace-assistant');
+  const dock=main.querySelector('.shopping-mode-dock,.unified-list-add')||document.getElementById('workspace-assistant');
   if(dock!==feedbackDock){feedbackObserver?.disconnect();feedbackDock=dock;if(window.ResizeObserver){feedbackObserver=new ResizeObserver(positionFeedback);if(dock)feedbackObserver.observe(dock)}}
   const r=dock?.getBoundingClientRect(),v=window.visualViewport,right=(v?.offsetLeft||0)+(v?.width||innerWidth),left=v?.offsetLeft||0;
   const dockVisible=r&&r.height&&r.width&&!dock.hidden,optionsTop=options&&!options.hidden?options.getBoundingClientRect().top:Infinity,bottom=dockVisible?Math.min(r.top,optionsTop):(v?.offsetTop||0)+(v?.height||innerHeight)-16;
@@ -78,7 +78,7 @@ window.ShoppingMode=(()=>{
  function revealQuantity(name){
   requestAnimationFrame(()=>{
    const panel=main.querySelector('[data-item="'+CSS.escape(name)+'"] .shopping-quick-quantity');if(!panel||panel.hidden||page!=='shopping')return;
-   const r=panel.getBoundingClientRect(),receipt=document.getElementById('shopping-action-feedback'),dock=main.querySelector('.shopping-mode-dock')||document.getElementById('workspace-assistant'),top=main.querySelector('.shopping-mode-top')?.getBoundingClientRect().bottom||0,bottom=Math.min(innerHeight,receipt?.getBoundingClientRect().top??Infinity,dock?.getBoundingClientRect().top??Infinity)-12;
+   const r=panel.getBoundingClientRect(),receipt=document.getElementById('shopping-action-feedback'),dock=main.querySelector('.shopping-mode-dock,.unified-list-add')||document.getElementById('workspace-assistant'),top=main.querySelector('.shopping-mode-top')?.getBoundingClientRect().bottom||0,bottom=Math.min(innerHeight,receipt?.getBoundingClientRect().top??Infinity,dock?.getBoundingClientRect().top??Infinity)-12;
    if(r.bottom>bottom)window.scrollBy({top:r.bottom-bottom,behavior:'instant'});else if(r.top<top+12)window.scrollBy({top:r.top-top-12,behavior:'instant'});
   });
  }
